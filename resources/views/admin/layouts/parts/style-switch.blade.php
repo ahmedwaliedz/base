@@ -6,17 +6,17 @@
     <ul class="dropdown-menu dropdown-menu-end dropdown-styles">
         <li>
             <a class="dropdown-item" href="javascript:void(0);" data-theme="light">
-                <span class="align-middle"><i class="ti ti-sun me-2"></i>Light</span>
+                <span class="align-middle"><i class="ti ti-sun me-2"></i>{{__('admin/main.light')}}</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item" href="javascript:void(0);" data-theme="dark">
-                <span class="align-middle"><i class="ti ti-moon me-2"></i>Dark</span>
+                <span class="align-middle"><i class="ti ti-moon me-2"></i>{{__('admin/main.dark')}}</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item" href="javascript:void(0);" data-theme="system">
-                <span class="align-middle"><i class="ti ti-device-desktop me-2"></i>System</span>
+                <span class="align-middle"><i class="ti ti-device-desktop me-2"></i>{{__('admin/main.system')}}</span>
             </a>
         </li>
     </ul>

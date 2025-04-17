@@ -27,6 +27,7 @@ class Admin extends Authenticatable
         'is_notify',
         'type',
         'role_id',
+        'image',
     ];
     protected $hidden = [
         'password',
@@ -42,6 +43,16 @@ class Admin extends Authenticatable
         'is_notify'         => true,
         'image'             => 'default.png',
     ];
+
+    public function getImageUrlAttribute($value)
+    {
+        return asset('uploads/admins/' . $this->attributes['image']);
+    }
+
+    public function getRoleNameAttribute($value)
+    {
+        return $this->role_id ? $this->role->name : __('admin/main.super_admin');
+    }
 
     public function setFullPhoneAttribute(string $value): void
     {

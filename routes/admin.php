@@ -5,6 +5,9 @@ use App\Http\Controllers\Admin\{
     HomeController,
     AuthController,
     LanguageController,
+    NotificationController,
+    ProfileController,
+    SettingController,
 };
 use App\Http\Middleware\Admin\AdminSetLocale;
 
@@ -28,6 +31,13 @@ use App\Http\Middleware\Admin\AdminSetLocale;
             Route::get('/home', [HomeController::class, 'home'])->name('home');
             // logout route
             Route::any('/logout', [AuthController::class, 'logout'])->name('logout');
+
+            // notifications route
+            Route::any('/notifications', [NotificationController::class, 'notifications'])->name('notifications');
+            // profile routes
+            Route::any('/profile', [ProfileController::class, 'profile'])->name('profile');
+            // settings routes
+            Route::any('/settings', [SettingController::class, 'settings'])->name('settings');
         });
     });
 
