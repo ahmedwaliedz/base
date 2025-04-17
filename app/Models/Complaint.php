@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Complaint extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'phone',
+        'email',
+        'subject',
+        'complaint',
+        'type',
+        'status',
+    ];
+
+    public function complaiantable()
+    {
+        return $this->morphTo();
+    }
+
+    public function getStatusAttribute($value)
+    {
+        return ComplaintStatus::from($value);
+    }
+
+    public function getTypeAttribute($value)
+    {
+        return ComplaintType::from($value);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ComplaintImage::class);
+    }
+
+    public function replays()
+    {
+        return $this->morphMany(Replay::class, 'replayable');
+    }
+}

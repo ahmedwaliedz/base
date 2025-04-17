@@ -1,0 +1,10 @@
+
+<?php
+
+return [
+    'email' => 'البريد الإلكتروني',
+    'enter' => 'قم بادخال ',
+    'optional' => 'اختياري',
+    'password' => 'كلمة المرور',
+    'this_field_is_required' => 'هذا الحقل مطلوب', 
+];

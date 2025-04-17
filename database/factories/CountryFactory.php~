@@ -1,0 +1,49 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\Country;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Country>
+ */
+class CountryFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    protected $model = Country::class;
+
+    public function definition(): array
+    {
+        // Load the JSON file containing the Arab countries data.
+        $jsonPath = database_path('json/arab_countries.json');
+        $countries = json_decode(\File::get($jsonPath), true);
+        // Randomly select one record from the JSON data.
+        $selected = $this->faker->randomElement($countries);
+
+        return [
+            'code' => $selected['code'],     // Country calling code
+            'flag' => $selected['flag'],     // Flag image filename
+            // Temporary attribute to pass translation data.
+            'selected_country' => $selected,
+        ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Country $country, array $attributes) {
+            // Retrieve our temporary selected country data.
+            if (isset($attributes['selected_country'])) {
+                $selected = $attributes['selected_country'];
+                // Assign translations for English and Arabic.
+                $country->translateOrNew('en')->name = $selected['en'];
+                $country->translateOrNew('ar')->name = $selected['ar'];
+                $country->save();
+            }
+        });
+    }
+}

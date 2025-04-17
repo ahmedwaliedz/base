@@ -1,0 +1,26 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Region;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use File;
+class RegionSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $jsonPath = database_path('json/regions.json');
+        $regions = json_decode(File::get($jsonPath), true);
+        foreach ($regions as $regionData) {
+            Region::create([
+                'country_id' => $regionData['country_id'],
+                'en' => $regionData['en'],
+                'ar' => $regionData['ar'],
+            ]);
+        }
+    }
+}

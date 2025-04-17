@@ -1,0 +1,26 @@
+<?php
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Replay>
+ */
+class ReplayFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'replay'            => $this->faker->sentence,
+            'replaybyable_id'   => $this->faker->numberBetween(1, 100),
+            'replaybyable_type' => $this->faker->randomElement(['App\Models\Admin', 'App\Models\User']),
+            'replayable_type' => $this->faker->randomElement(['App\Models\Complaint', 'App\Models\ContactMessage']),
+        ];
+    }
+}

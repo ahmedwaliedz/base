@@ -1,0 +1,56 @@
+[
+    { "city_id": 1, "en": { "name": "Olaya" },         "ar": { "name": "العليا" } },
+    { "city_id": 1, "en": { "name": "Sulaimaniyah" },    "ar": { "name": "السليمانية" } },
+    { "city_id": 1, "en": { "name": "Diplomatic Quarter" }, "ar": { "name": "الحي الدبلوماسي" } },
+    { "city_id": 1, "en": { "name": "Al Murabba" },      "ar": { "name": "المربع" } },
+    { "city_id": 1, "en": { "name": "Al Malaz" },         "ar": { "name": "الملاذ" } },
+    { "city_id": 1, "en": { "name": "Al Muruj" },         "ar": { "name": "المروج" } },
+    { "city_id": 1, "en": { "name": "Al Wurud" },         "ar": { "name": "الورود" } },
+
+    { "city_id": 2, "en": { "name": "Al Balad" },         "ar": { "name": "البلد" } },
+    { "city_id": 2, "en": { "name": "Azizia" },           "ar": { "name": "العزيزية" } },
+    { "city_id": 2, "en": { "name": "Al Hamra" },         "ar": { "name": "الحمرا" } },
+    { "city_id": 2, "en": { "name": "Al Shati" },          "ar": { "name": "الشاطئ" } },
+    { "city_id": 2, "en": { "name": "Al Rawdah" },         "ar": { "name": "الروضة" } },
+    { "city_id": 2, "en": { "name": "Al Naseem" },         "ar": { "name": "النسم" } },
+    { "city_id": 2, "en": { "name": "Al Qurtuba" },       "ar": { "name": "القرطبة" } },
+
+    { "city_id": 3, "en": { "name": "Al Faisaliyah" },     "ar": { "name": "الفيصلية" } },
+    { "city_id": 3, "en": { "name": "Al Aziziyah" },       "ar": { "name": "العزيزية" } },
+    { "city_id": 3, "en": { "name": "Sahara" },            "ar": { "name": "الصحراء" } },
+    { "city_id": 3, "en": { "name": "Industrial City" },   "ar": { "name": "المدينة الصناعية" } },
+    { "city_id": 3, "en": { "name": "Al Khaleej" },        "ar": { "name": "الخليج" } },
+    { "city_id": 3, "en": { "name": "Al Shuwaikh" },       "ar": { "name": "الشويخ" } },
+
+    { "city_id": 4, "en": { "name": "Al Khaleej" },        "ar": { "name": "الخليج" } },
+    { "city_id": 4, "en": { "name": "Al Aqrabiyah" },      "ar": { "name": "العقربية" } },
+    { "city_id": 4, "en": { "name": "Al Shouaibah" },       "ar": { "name": "الشعيبة" } },
+    { "city_id": 4, "en": { "name": "Al Nakheel" },         "ar": { "name": "النخيل" } },
+    { "city_id": 4, "en": { "name": "Al Rakah" },           "ar": { "name": "الرقة" } },
+
+    { "city_id": 7, "en": { "name": "Al Hada" },           "ar": { "name": "الهدى" } },
+    { "city_id": 7, "en": { "name": "Al Rabwah" },         "ar": { "name": "الربوة" } },
+    { "city_id": 7, "en": { "name": "Shafa" },             "ar": { "name": "شفا" } },
+    { "city_id": 7, "en": { "name": "Al Aflaj" },          "ar": { "name": "الأفلاج" } },
+
+    { "city_id": 8, "en": { "name": "Ajyad" },             "ar": { "name": "عجيد" } },
+    { "city_id": 8, "en": { "name": "Al Hindawiyyah" },     "ar": { "name": "الهنداوية" } },
+    { "city_id": 8, "en": { "name": "Al Muzdalifah" },      "ar": { "name": "المزدلفة" } },
+    { "city_id": 8, "en": { "name": "Al Khalil" },          "ar": { "name": "الخليل" } },
+
+    { "city_id": 9, "en": { "name": "Al Madinah District 1" }, "ar": { "name": "المنطقة 1" } },
+    { "city_id": 9, "en": { "name": "Al Madinah District 2" }, "ar": { "name": "المنطقة 2" } },
+    { "city_id": 9, "en": { "name": "Al Madinah District 3" }, "ar": { "name": "المنطقة 3" } },
+    { "city_id": 9, "en": { "name": "Al Madinah District 4" }, "ar": { "name": "المنطقة 4" } },
+
+    { "city_id": 1, "en": { "name": "Diriyah" },            "ar": { "name": "الدرعية" } },
+    { "city_id": 1, "en": { "name": "Al Muruj II" },         "ar": { "name": "المروج II" } },
+    { "city_id": 2, "en": { "name": "Al Rawdah II" },         "ar": { "name": "الروضة II" } },
+    { "city_id": 42, "en": { "name": "Zamalek" }, "ar": { "name": "الزمالك" } },
+    { "city_id": 42, "en": { "name": "Maadi" }, "ar": { "name": "المعادي" } },
+    { "city_id": 201, "en": { "name": "Muttrah" }, "ar": { "name": "المطرح" } },
+    { "city_id": 201, "en": { "name": "Seeb" }, "ar": { "name": "سيب" } },
+    { "city_id": 301, "en": { "name": "Salmiya" }, "ar": { "name": "السالمية" } },
+    { "city_id": 301, "en": { "name": "Fahaheel" }, "ar": { "name": "فحيحيل" } }
+
+]
