@@ -6,60 +6,26 @@ return [
         'icon' => '<i class="ti ti-home me-2"></i>',
         'has_child' => false,
     ],
-    'clients' => [
+    'roles' => [
+        'group'         => 'admin_roles_management',
         'is_main_route' => true,
-        'has_child' => true,
-        'icon' => '<i class="ti ti-users me-2"></i>',
-        'childs' => [
-            'index' => [
-                'is_sub_route' => true,
-            ],
-            'create' => [
-                'is_sub_route' => true,
-            ],
-            'store' => [],
-            'show' => [],
-            'edit' => [],
-            'update' => [],
-            'delete' => [],
-            'destroy' => [],
-        ],
+        'has_child'     => true,
+        'icon'          => '<i class="ti ti-eye-cog me-2"></i>',
+        'childs'        => [],
     ],
-    'users' => [
-        'group'         => 'user_management',
-        'is_main_route' => true,
-        'has_child' => true,
-        'icon' => '<i class="ti ti-users me-2"></i>',
-        'childs' => [
-            'index' => [
-                'is_sub_route' => true,
-            ],
-            'create' => [
-                'is_sub_route' => true,
-            ],
-            'store' => [],
-            'show' => [],
-            'edit' => [],
-            'update' => [],
-            'delete' => [],
-            'destroy' => [],
-        ],
-    ],
+
     'admins' => [
-        'group'         => 'user_management',
+        'group'         => 'admin_roles_management',
         'is_main_route' => true,
         'has_child'     => true,
         'icon'          => '<i class="ti ti-users-group me-2"></i>',
-        'childs'        => [
-            'index' => [],
-            'create' => [],
-            'store' => [],
-            'show' => [],
-            'edit' => [],
-            'update' => [],
-            'delete' => [],
-            'destroy' => [],
-        ],
+        'childs'        => [],
+    ],
+    'users' => [
+        'is_main_route' => true,
+        'has_child'     => true,
+        'icon'          => '<i class="ti ti-users me-2"></i>',
+        'childs'        => [],
     ],
 
 

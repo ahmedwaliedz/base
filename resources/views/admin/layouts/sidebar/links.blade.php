@@ -1,44 +1,56 @@
 <ul class="menu-inner">
-    @foreach($routes as $group)
+    @foreach($routes as $groupKey => $group)
         <li class="menu-item">
+
+            {{-- عنوان الجروب الرئيسي (نستدعي always المفتاح .index) --}}
             @if($group['has_dropdown'])
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     {!! $group['icon'] !!}
-                    <div>{{ $group['title'] }}</div>
+                    <div>{{ __("admin/routes.{$groupKey}.index") }}</div>
                 </a>
+
                 <ul class="menu-sub">
                     @foreach($group['children'] as $item)
                         <li class="menu-item">
+
+                            {{-- route داخل الجروب --}}
                             @if($item['has_dropdown'])
-                                <a href="{{ route('admin.' . $item['route']) }}" class="menu-link menu-toggle">
+                                <a href="{{ route('admin.'.$item['route']) }}"
+                                   class="menu-link menu-toggle">
                                     {!! $item['icon'] !!}
-                                    <div>{{ $item['title'] }}</div>
+                                    <div>{{ __("admin/routes.{$item['route']}") }}</div>
                                 </a>
+
                                 <ul class="menu-sub">
                                     @foreach($item['children'] as $sub)
                                         <li class="menu-item">
-                                            <a href="{{ route('admin.' . $sub['route']) }}" class="menu-link">
+                                            <a href="{{ route('admin.'.$sub['route']) }}" class="menu-link">
                                                 {!! $sub['icon'] !!}
-                                                <div>{{ $sub['title'] }}</div>
+                                                <div>{{ __("admin/routes.{$sub['route']}") }}</div>
                                             </a>
                                         </li>
                                     @endforeach
                                 </ul>
+
                             @else
-                                <a href="{{ route('admin.' . $item['route']) }}" class="menu-link">
+                                <a href="{{ route('admin.'.$item['route']) }}" class="menu-link">
                                     {!! $item['icon'] !!}
-                                    <div>{{ $item['title'] }}</div>
+                                    <div>{{ __("admin/routes.{$item['route']}") }}</div>
                                 </a>
                             @endif
+
                         </li>
                     @endforeach
                 </ul>
+
             @else
-                <a href="{{ route('admin.' . $group['route']) }}" class="menu-link">
+                {{-- simple route أو ungrouped --}}
+                <a href="{{ route('admin.'.$group['route']) }}" class="menu-link">
                     {!! $group['icon'] !!}
-                    <div>{{ $group['title'] }}</div>
+                    <div>{{ __("admin/routes.{$group['route']}") }}</div>
                 </a>
             @endif
+
         </li>
     @endforeach
 </ul>
