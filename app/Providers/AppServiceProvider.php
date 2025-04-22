@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\File;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -24,16 +26,11 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->email . $request->ip());
         });
 
-        $this->loadMigrationsFrom([
-            database_path().'/migrations',
-            database_path().'/migrations/complaints',
-            database_path().'/migrations/admins',
-            database_path().'/migrations/users',
-            database_path().'/migrations/countries',
-            database_path().'/migrations/more_pages',
-            database_path().'/migrations/Categories',
-            database_path().'/migrations/settings',
-        ]);
+        $this->loadMigrationsFrom(
+            collect(File::directories(database_path('migrations')))
+                ->prepend(database_path('migrations'))
+                ->toArray()
+        );
 
 
     }

@@ -19,25 +19,40 @@ class RoleFactory extends Factory
      */
     public function definition(): array
     {
-        $fakerEn = FakerFactory::create('en_US'); // English Faker
-        $fakerAr = FakerFactory::create('ar_SA'); // Arabic Faker
+        $fakerEn = FakerFactory::create('en_US');
+        $fakerAr = FakerFactory::create('ar_SA');
         $arabicJobTitles = [
             'مدير', 'مشرف', 'مهندس', 'محاسب', 'مبرمج', 'مدير مشروع', 'مصمم', 'أخصائي تسويق'
         ];
         return [
                 'en' => ['name' => $fakerEn->jobTitle],
-                'ar' => ['name' => $fakerAr->randomElement($arabicJobTitles),], // Use Faker Arabic provider if needed
+                'ar' => ['name' => $fakerAr->randomElement($arabicJobTitles),],
         ];
     }
     public function configure()
     {
         return $this->afterCreating(function (Role $role) {
-            $permissions = [
-                ['name' =>'admins.admins.create'],
-                ['name' =>'admins.admins.store'],
-                ['name' =>'admins.admins.edit'],
-            ];
-            $role->permissions()->createMany($permissions);
+            static $isFirstRole = true;
+
+            // Fetch all permissions
+            $permissions = Permission::all();
+
+            if ($isFirstRole) {
+                // Assign all permissions to the first role
+                $role->permissions()->attach($permissions->pluck('id')->toArray());
+                $isFirstRole = false;
+            } else {
+                // Assign random permissions to other roles
+                $randomPermissions = $permissions->random(rand(1, $permissions->count()));
+
+                // Ensure the 'index' permission is included
+                $indexPermission = $permissions->firstWhere('permission', 'index');
+                if ($indexPermission && !$randomPermissions->contains($indexPermission)) {
+                    $randomPermissions->push($indexPermission);
+                }
+
+                $role->permissions()->attach($randomPermissions->pluck('id')->toArray());
+            }
         });
     }
 }

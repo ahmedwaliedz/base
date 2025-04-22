@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Enums\AdminType;
+use App\Models\Admin;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -49,10 +51,16 @@ class AdminFactory extends Factory
 
     public function withSequencedPassword()
     {
-        $faker = \Faker\Factory::create('ar_SA');
         return $this->state(new \Illuminate\Database\Eloquent\Factories\Sequence(
             fn ($sequence) => ['password' => $sequence->index === 0 ? '123456' : 'password']
         ));
+    }
+
+    public function configure()
+    {
+//        return $this->afterCreating(function (Admin $admin) {
+//            $admin->permissions()->attach($admin->role()->permissions->pluck('id')->toArray());
+//        });
     }
 
 

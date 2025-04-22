@@ -38,6 +38,11 @@ use App\Http\Middleware\Admin\AdminSetLocale;
             Route::any('/profile', [ProfileController::class, 'profile'])->name('profile');
             // settings routes
             Route::any('/settings', [SettingController::class, 'settings'])->name('settings');
+
+            // try route resource
+            Route::resource('admins', SettingController::class)->names('admins');
+            Route::resource('users', SettingController::class)->names('users');
+            Route::resource('clients', SettingController::class)->names('clients');
         });
     });
 
