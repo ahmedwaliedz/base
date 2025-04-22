@@ -39,10 +39,12 @@ use App\Http\Middleware\Admin\AdminSetLocale;
             // settings routes
             Route::any('/settings', [SettingController::class, 'settings'])->name('settings');
 
-            // try route resource
-            Route::resource('admins', SettingController::class)->names('admins');
+            Route::resource('admins', SettingController::class);
+            Route::resource('roles', SettingController::class);
+
+
+
             Route::resource('users', SettingController::class)->names('users');
-            Route::resource('clients', SettingController::class)->names('clients');
         });
     });
 

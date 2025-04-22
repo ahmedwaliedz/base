@@ -58,9 +58,8 @@ class AdminFactory extends Factory
 
     public function configure()
     {
-//        return $this->afterCreating(function (Admin $admin) {
-//            $admin->permissions()->attach($admin->role()->permissions->pluck('id')->toArray());
-//        });
+        return $this->afterCreating(function (Admin $admin) {
+        });
     }
 
 
