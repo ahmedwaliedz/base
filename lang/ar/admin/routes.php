@@ -2,6 +2,7 @@
 
 return [
     'home' => 'الرئيسية',
+    'notifications' => 'الاشعارات',
     'admin_roles_management' => [
         'index' => 'إدارة المشرفين',
     ],

@@ -12,8 +12,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            Route::namespace('Admin')
-                ->prefix('admin') //<- here
+            Route::prefix('admin') //<- here
                 ->name('admin.')
                 ->group(base_path('routes/admin.php'));
         },

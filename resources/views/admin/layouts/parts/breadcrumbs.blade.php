@@ -1,15 +1,22 @@
-<div class="">
-    <a href="admin.clients.all"> <i class="ti ti-home-bolt me-2"></i> الرئيسية </a>
-    <span style="color: #999" class="mx-2">
-        <i class="fa fa-angle-left"></i>
-    </span>
-    <a style="" href="https://dashboard.calla-app.com/admin/clients">
-        <i class="ti ti-users me-2"></i> المستخدمين
-    </a>
-    <span style="color: #999" class="mx-2">
-        <i class="fa fa-angle-left"></i>
-    </span>
-    <a style="text-decoration:none;color:#999;cursor:default;" href="#">
-        <i class="ti ti-unlink"></i> الكل
-    </a>
+<div dir="rtl" class="">
+    @foreach($crumbs as $crumb)
+        {{-- render the crumb --}}
+        @if($crumb['active'])
+            <a style="text-decoration:none;color:#999;cursor:default;" href="#">
+                {!! $crumb['icon'] !!} {{ __('admin/routes.'.$crumb['title']) }}
+            </a>
+        @else
+            <a href="{{ $crumb['url'] }}">
+                {!! $crumb['icon'] !!} {{ __('admin/routes.'.$crumb['title']) }}
+            </a>
+        @endif
+
+        {{-- separator after, except on the last item --}}
+        @unless($loop->last)
+            <span class="mx-2" style="color: #999">
+                <i class="fa fa-angle-left"></i>
+            </span>
+        @endunless
+    @endforeach
 </div>
+
