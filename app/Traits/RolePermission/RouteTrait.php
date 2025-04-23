@@ -3,6 +3,7 @@
 namespace App\Traits\RolePermission;
 
 use App\Enums\AdminType;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 trait RouteTrait
@@ -10,7 +11,7 @@ trait RouteTrait
     public static function getAdminRouteNames(): array
     {
         // 1) collect all admin.* routes
-        $all = collect(\Route::getRoutes())
+        $all = collect(\Route::getRoutes('admin'))
             ->map->getName()
             ->filter(fn($name) => $name && str_starts_with($name, 'admin.'))
             ->map(fn($name) => substr($name, strlen('admin.')))
@@ -35,5 +36,17 @@ trait RouteTrait
 
         // 5) intersect and reindex
         return array_values(array_intersect($all, $perms));
+    }
+
+    protected static function getRouteParts(): array
+    {
+        $fullName = Route::currentRouteName();
+        $key      = Str::after($fullName, 'admin.');
+        return explode('.', $key);
+    }
+
+    protected static function isHome(array $parts): bool
+    {
+        return isset($parts[0]) && $parts[0] === 'home';
     }
 }

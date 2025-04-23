@@ -1,7 +1,7 @@
 <head>
     <meta charset="utf-8" />
     <meta  name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>{{__('admin/auth.login_page')}}</title>
+    <title> @stack('title' , __('admin/auth.login_page')) </title>
     <meta name="description" content="" />
     <link rel="icon" type="image/x-icon" href="{{asset('style/admin/img/favicon/favicon.ico')}}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

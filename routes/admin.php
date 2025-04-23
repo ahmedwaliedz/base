@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\{
     NotificationController,
     ProfileController,
     SettingController,
+    RoleController,
+    UserController,
 };
 use App\Http\Middleware\Admin\AdminSetLocale;
 
@@ -39,12 +41,13 @@ use App\Http\Middleware\Admin\AdminSetLocale;
             // settings routes
             Route::any('/settings', [SettingController::class, 'settings'])->name('settings');
 
-            Route::resource('admins', SettingController::class);
-            Route::resource('roles', SettingController::class);
+            Route::any('/notifications', [NotificationController::class, 'index'])->name('notifications');
+            Route::resource('admins', RoleController::class);
+            Route::resource('roles', RoleController::class);
 
 
 
-            Route::resource('users', SettingController::class)->names('users');
+            Route::resource('users', UserController::class)->names('users');
         });
     });
 
