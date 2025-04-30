@@ -8,7 +8,7 @@ trait BuildSimpleCrumbTrait
 {
     protected static function buildSimpleCrumb(bool $active , $key ): array
     {
-        $config = config('admin_routes.'.$key);
+        $config = config('sidebar_routes.'.$key);
         return [
             'title'  => $key ,
             'icon'   => $config['icon'] ?? '',

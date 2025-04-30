@@ -39,6 +39,6 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-        {!!   \App\Traits\RolePermission\Sidebar\SideBarTrait::getGroupedAdminRoutes() !!}
+        {!!   \App\Traits\Sidebar\SideBarTrait::getGroupedAdminRoutes() !!}
     </ul>
 </aside>

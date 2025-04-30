@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\RolePermission;
+namespace App\Traits;
 
 use App\Enums\AdminType;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +43,11 @@ trait RouteTrait
         $fullName = Route::currentRouteName();
         $key      = Str::after($fullName, 'admin.');
         return explode('.', $key);
+    }
+
+    protected static function getRouteParams()
+    {
+        return Route::current()->parameters();
     }
 
     protected static function isHome(array $parts): bool

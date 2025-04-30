@@ -7,19 +7,15 @@
 @section('content')
     <div class="card h-100">
         <div class="row h-100">
-            <form class="mb-3 validated-form form card-body" action="{{route('admin.roles.store')}}" method="POST" novalidate>
+            <form class="mb-3 validated-form form card-body" action="{{route('admin.roles.update' , $role->id )}}" method="POST" novalidate>
                 @csrf
+                @method('PUT')
                 <div class="row g-3">
-                    <x-form.text name="name"  class="col-md-6"  :is-required="true" is-multi-language="true"   />
-                    <div class="m-4 w-100 d-flex justify-content-center">
-                        <div class="divider w-75 align-self-center">
-                            <div class="divider-text">{{__('admin/main.permissions')}}</div>
-                        </div>
-                    </div>
+                    <x-form.text name="name" :value="$role->getTranslationsArray('name')"  class="col-md-6"  :is-required="true" is-multi-language="true"   />
                     {!! $html !!}
                 </div>
                 <div class="pt-4 d-flex justify-content-center mt-3">
-                    <button type="submit"   class="btn btn-primary me-sm-3 me-1 waves-effect waves-light submit-button">{{ __('admin/main.add') }}</button>
+                    <button type="submit"   class="btn btn-primary me-sm-3 me-1 waves-effect waves-light submit-button">{{ __('admin/main.edit') }}</button>
                     <a class="btn btn-label-dribbble waves-effect" href="{{ url()->previous() }}">{{ __('admin/main.back') }}</a>
                 </div>
             </form>

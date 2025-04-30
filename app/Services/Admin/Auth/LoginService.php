@@ -3,10 +3,11 @@
 namespace App\Services\Admin\Auth;
 use App\Services\Admin\Auth\LoginRateLimiter;
 use App\Traits\Response\ValidationResponseTrait;
+use App\Traits\Role\AuthGaurdFirstRouteTrait;
 use Illuminate\Support\Facades\Auth;
 class LoginService
 {
-    use ValidationResponseTrait;
+    use ValidationResponseTrait , AuthGaurdFirstRouteTrait;
     protected LoginRateLimiter $limiterService;
     protected CheckStatus $checkStatusService;
 
@@ -54,7 +55,7 @@ class LoginService
         return [
             'status' => 'success',
             'message' => __('admin/auth.login_success'),
-            'route' => route('admin.home'),
+            'route' => $this->firstAdminRoute(),
         ];
     }
 

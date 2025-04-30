@@ -3,8 +3,7 @@
 namespace  App\Traits\Breadcrumb;
 
 
-use App\Traits\RolePermission\RouteTrait;
-use Illuminate\Support\Facades\Route;
+use App\Traits\RouteTrait;
 
 trait BreadcrumbTrait
 {
@@ -13,8 +12,7 @@ trait BreadcrumbTrait
     public static function buildBreadcrumbsFromConfig()
     {
         $parts = self::getRouteParts();
-        $routes = config('admin_routes');
-        $groups = config('admin_groups');
+        $routes = config('sidebar_routes');
         $parentKey  = $parts[0] ?? null;
         $parentData = $routes[$parentKey] ?? [];
         $crumbs[] = self::buildSimpleCrumb(false , 'home');
