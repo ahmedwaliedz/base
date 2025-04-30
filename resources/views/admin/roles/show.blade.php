@@ -1,25 +1,16 @@
 @extends('admin.layouts.master')
 @push('css')
-    <link rel="stylesheet" href="{{asset('style/admin/validation/form-validation.css')}}"/>
-    <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/sweetalert2/sweetalert2.css')}}"/>
     <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/select2/select2.css')}}"/>
 @endpush
 @section('content')
     <div class="card h-100">
         <div class="row h-100">
-            <form class="mb-3 validated-form form card-body" action="{{route('admin.roles.store')}}" method="POST" novalidate>
-                @csrf
+            <form class="mb-3 form card-body">
                 <div class="row g-3">
-                    <x-form.text name="name"  class="col-md-6"  :is-required="true" is-multi-language="true"   />
-                    <div class="m-4 w-100 d-flex justify-content-center">
-                        <div class="divider w-75 align-self-center">
-                            <div class="divider-text">{{__('admin/main.permissions')}}</div>
-                        </div>
-                    </div>
+                    <x-form.text name="name" :value="$role->getTranslationsArray('name')"  class="col-md-6"  :is-required="true" is-multi-language="true"   />
                     {!! $html !!}
                 </div>
                 <div class="pt-4 d-flex justify-content-center mt-3">
-                    <button type="submit"   class="btn btn-primary me-sm-3 me-1 waves-effect waves-light submit-button">{{ __('admin/main.add') }}</button>
                     <a class="btn btn-label-dribbble waves-effect" href="{{ url()->previous() }}">{{ __('admin/main.back') }}</a>
                 </div>
             </form>
@@ -27,8 +18,6 @@
     </div>
 @endsection
 @push('js')
-    <script src="{{asset('style/admin/vendor/libs/sweetalert2/sweetalert2.js')}}"></script>
-    <script src="{{asset('style/admin/js/extended-ui-sweetalert2.js')}}"></script>
     <script src="{{asset('style/admin/validation/jqBootstrapValidation.js')}}"></script>
     <script src="{{asset('style/admin/vendor/libs/select2/select2.js')}}"></script>
     @include('admin.shared.js.submit-form-js')
@@ -49,6 +38,29 @@
         $(document).on('click', '.unselect-all', function() {
             const target = $(this).data('target');
             $(target).val(null).trigger('change');
+        });
+    </script>
+    <script>
+        $(function(){
+            $('.mb-2').remove()
+            $('.unselect-all').remove()
+            // disable all form controls inside your form
+            const $form = $('form.mb-3.form.card-body');
+
+            // disable plain inputs, textareas, buttons…
+            $form.find('input, textarea, button').prop('disabled', true);
+
+            // disable your Select2 selects *and* their visible boxes
+            $form.find('select.select2').each(function(){
+                // disable the original <select>
+                $(this).prop('disabled', true);
+
+                // disable the Select2 UI widget
+                const data = $(this).data('select2');
+                if (data && data.$container) {
+                    data.$container.find('.select2-selection').addClass('disabled');
+                }
+            });
         });
     </script>
 @endpush

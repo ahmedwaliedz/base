@@ -1,8 +1,18 @@
 <?php
 
 return [
+    'loginPage' => 'تسجيل الدخول',
     'home' => 'الرئيسية',
-    'notifications' => 'الاشعارات',
+    'settings' => [
+        'index' => 'الإعدادات',
+        'update' => 'تحديث الإعدادات',
+    ],
+    'notifications' => [
+        'index' => 'الإشعارات',
+        'sendEmail' => 'إرسال بريد إلكتروني',
+        'sendSms' => 'إرسال رسالة نصية',
+        'sendNotification' => 'إرسال إشعار',
+    ],
     'admin_roles_management' => [
         'index' => 'إدارة المشرفين',
     ],

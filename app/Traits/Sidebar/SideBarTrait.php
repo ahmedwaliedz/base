@@ -1,8 +1,8 @@
 <?php
 
-namespace  App\Traits\RolePermission\Sidebar;
+namespace  App\Traits\Sidebar;
 
-use App\Traits\RolePermission\RouteTrait;
+use App\Traits\RouteTrait;
 use Illuminate\Contracts\View\View;
 
 trait SideBarTrait
@@ -12,8 +12,8 @@ trait SideBarTrait
     public static function getGroupedAdminRoutes(): View
     {
         $routeNames   = self::getAdminRouteNames();
-        $routesConfig = config('admin_routes', []);
-        $groupsConfig = config('admin_groups', []);
+        $routesConfig = config('sidebar_routes', []);
+        $groupsConfig = config('sidebar_groups', []);
 
         $menu = [];
         // 1) simple

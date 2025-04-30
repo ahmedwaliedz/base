@@ -9,4 +9,11 @@
 <script src="{{asset('style/admin/vendor/libs/block-ui/block-ui.js')}}"></script>
 <script src="{{asset('style/admin/vendor/libs/sortablejs/sortable.js')}}"></script>
 <script src="{{asset('style/admin/js/main.js')}}"></script>
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
 @stack('js')

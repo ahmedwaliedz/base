@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Traits\RolePermission\Sidebar;
-
-use App\Traits\RolePermission\RouteTrait;
+namespace App\Traits\Sidebar;
 
 trait MainMethodsTrait
 {

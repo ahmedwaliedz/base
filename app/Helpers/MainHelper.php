@@ -41,3 +41,18 @@ if (!function_exists('getProjectName')) {
         }
     }
 }
+
+if (!function_exists('exceptedRoutes')) {
+    function exceptedRoutes() : array
+    {
+        return ['logout', 'lang.change', 'loginPage', 'login' , 'profile'];
+    }
+}
+
+if (!function_exists('currentRouteNameWithoutAdmin')) {
+    function currentRouteNameWithoutAdmin() : string
+    {
+        $currentRouteName = request()->route()->getName();
+        return __('admin/routes.'.str_replace('admin.', '', $currentRouteName));
+    }
+}

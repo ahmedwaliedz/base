@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Traits\RolePermission\Sidebar;
+namespace App\Traits\Sidebar;
 
 
 trait BuildGroupedRoutesTrait
