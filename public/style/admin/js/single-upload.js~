@@ -1,0 +1,25 @@
+// var readURL = function (input, myUpload) {
+//     if (input.files && input.files[0]) {
+//         let reader = new FileReader();
+//         reader.onload = function (e) {
+//             myUpload.prev("img").attr("src", e.target.result);
+//             if (e.target.result) {
+//                 myUpload.parent().find(".placeholder-text").hide();
+//                 myUpload.prev(".img-uploaded").show();
+//             }
+//         };
+//
+//         reader.readAsDataURL(input.files[0]);
+//     }
+// };
+// $(".file-upload").on("change", function (e) {
+//     e.preventDefault();
+//     readURL(this, $(this));
+//
+// });
+// $(document).on("click", ".delete-image", function () {
+//     $(this).parent().find(".img-uploaded").attr("src", "");
+//     $(this).parent().find(".placeholder-text").show();
+//     $(this).parent().find(".img-uploaded").hide();
+//     $(this).parent().find(".file-upload").val("");
+// });

@@ -1,0 +1,80 @@
+<?php
+
+namespace App\Traits;
+use Illuminate\Support\Str;
+
+trait testTrait
+{
+    public static function getAdminRouteNames(): array
+    {
+        return collect(\Route::getRoutes())
+            ->map(function ($route) {
+                return $route->getName();
+            })
+            ->filter(function ($name) {
+                return $name && str_starts_with($name, 'admin.');
+            })
+            ->map(function ($name) {
+                return str_replace('admin.', '', $name);
+            })
+            ->values()
+            ->toArray();
+    }
+
+    public static function getGroupedAdminRoutes(): array
+    {
+        $routeNames = self::getAdminRouteNames(); // ['home', 'admins.index', ...]
+        $config = config('admin_routes');
+        $result = [];
+
+        foreach ($config as $key => $group) {
+            if (!empty($group['is_main_route'])) {
+                if (!isset($group['has_child']) || !$group['has_child']) {
+                    if (in_array($key, $routeNames)) {
+                        $result[$key] = [
+                            'name' => $key,
+                            'icon' => $group['icon'] ?? '',
+                            'route' => $key,
+                            'children' => [],
+                        ];
+                    }
+                }
+
+                if (!empty($group['has_child'])) {
+                    $children = [];
+
+                    foreach ($routeNames as $routeName) {
+                        if (str_starts_with($routeName, $key.'.')) {
+                            $action = str_replace($key.'.', '', $routeName);
+                            $icon = $group[$action]['icon'] ?? null;
+
+                            $children[] = [
+                                'name' => $action,
+                                'icon' => $icon,
+                                'route' => $routeName,
+                            ];
+                        }
+                    }
+
+                    if (!empty($children)) {
+                        $result[$key] = [
+                            'name' => $key,
+                            'icon' => $group['icon'] ?? '',
+                            'route' => $key . '.index',
+                            'children' => $children,
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+
+
+
+
+
+
+}

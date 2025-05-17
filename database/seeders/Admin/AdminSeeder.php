@@ -14,9 +14,7 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         Admin::factory()
-            ->withSequencedType()
-            ->withSequencedEmail()
-            ->withSequencedRole()
+            ->withSequencedAttributes()
             ->count(5)
             ->create()
         ;

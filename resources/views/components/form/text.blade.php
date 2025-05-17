@@ -46,7 +46,11 @@
             class="form-control"
             {{ $isRequired ? 'required' : '' }}
             {{ $disabled ? 'disabled' : '' }}
-            @if($isRequired && $requiredMessage) data-validation-required-message="{{  $requiredMessage }}" @endif
+            @if($isRequired && $requiredMessage)
+                data-validation-required-message="{{  $requiredMessage }} "
+            @elseif($isRequired)
+                data-validation-required-message="{{  __('admin/validation.required_input', ['attribute' => __('admin/inputs.' . $label )]) }}"
+            @endif
             @if($isRequired) required  @endif
             @if($minLength) minlength="{{ $minLength }}" @endif
             @if($maxLength) maxlength="{{ $maxLength }}" @endif

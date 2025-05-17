@@ -1,4 +1,4 @@
-<div dir="rtl" class="">
+<div dir="rtl" class="mb-5">
     @foreach($crumbs as $crumb)
         {{-- render the crumb --}}
         @if($crumb['active'])

@@ -8,7 +8,6 @@
     </div>
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-        {!!   \App\Traits\Breadcrumb\BreadcrumbTrait::buildBreadcrumbsFromConfig() !!}
         <ul class="navbar-nav flex-row align-items-center ms-auto">
             @include('admin.layouts.parts.language')
             @include('admin.layouts.parts.style-switch')

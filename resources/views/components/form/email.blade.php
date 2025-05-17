@@ -14,7 +14,6 @@
         value="{{ $value }}"
         placeholder="{{__('admin/inputs.enter')}}{{ $placeholder }}"
         class="form-control"
-        {{ $isRequired ? 'required' : '' }}
         {{ $disabled ? 'disabled' : '' }}
         @if($isRequired && $requiredMessage) data-validation-required-message="{{  $requiredMessage }}" @endif
         @if($isRequired) required  @endif

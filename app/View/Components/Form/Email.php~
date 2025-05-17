@@ -41,7 +41,7 @@ class Email extends Component
         $this->maxLength = $maxLength;
         $this->minLength = $minLength;
         $this->isRequired = $isRequired;
-        $this->requiredMessage = $requiredMessage ?? __('admin/validation.required', ['attribute' => $this->label]);
+        $this->requiredMessage = $requiredMessage ?? __('admin/validation.required_input', ['attribute' => $this->label]);
         $this->disabled = $disabled;
         $this->autofocus = $autofocus;
     }

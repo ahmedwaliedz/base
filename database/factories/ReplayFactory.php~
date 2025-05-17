@@ -20,7 +20,7 @@ class ReplayFactory extends Factory
             'replay'            => $this->faker->sentence,
             'replaybyable_id'   => $this->faker->numberBetween(1, 100),
             'replaybyable_type' => $this->faker->randomElement(['App\Models\Admin', 'App\Models\User']),
-            'replayable_type'   => 'App\Models\Complaint' ,
+            'replayable_type' => $this->faker->randomElement(['App\Models\Complaint', 'App\Models\ContactMessage']),
         ];
     }
 }

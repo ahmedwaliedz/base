@@ -30,7 +30,7 @@
             </a>
         </li>
         <li>
-            <a class="dropdown-item" href="{{route('admin.settings')}}">
+            <a class="dropdown-item" href="{{route('admin.settings.index')}}">
                 <i class="ti ti-settings me-2 ti-sm"></i>
                 <span class="align-middle">{{__('admin/main.settings')}}</span>
             </a>

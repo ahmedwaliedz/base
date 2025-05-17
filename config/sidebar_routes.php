@@ -10,6 +10,11 @@ return [
         'has_child' => true,
         'childs'        => [],
     ],
+    'settings' => [
+        'icon' => '<i class="ti ti-settings me-2"></i>',
+        'has_child' => true,
+        'childs'        => [],
+    ],
     'roles' => [
         'has_child'     => true,
         'icon'          => '<i class="ti ti-eye-cog me-2"></i>',

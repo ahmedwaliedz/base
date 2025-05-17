@@ -18,7 +18,7 @@
     });
   }
 
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  // Fetch all the tab-forms we want to apply custom Bootstrap validation styles to
   const bsValidationForms = document.querySelectorAll('.needs-validation');
 
   // Loop over them and prevent submission
