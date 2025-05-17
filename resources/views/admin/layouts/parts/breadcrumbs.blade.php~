@@ -1,0 +1,22 @@
+<div dir="rtl" class="mb-4">
+    @foreach($crumbs as $crumb)
+        {{-- render the crumb --}}
+        @if($crumb['active'])
+            <a style="text-decoration:none;color:#999;cursor:default;" href="#">
+                {!! $crumb['icon'] !!} {{ __('admin/routes.'.$crumb['title']) }}
+            </a>
+        @else
+            <a href="{{ $crumb['url'] }}">
+                {!! $crumb['icon'] !!} {{ __('admin/routes.'.$crumb['title']) }}
+            </a>
+        @endif
+
+        {{-- separator after, except on the last item --}}
+        @unless($loop->last)
+            <span class="mx-2" style="color: #999">
+                <i class="fa fa-angle-left"></i>
+            </span>
+        @endunless
+    @endforeach
+</div>
+

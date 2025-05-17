@@ -35,8 +35,8 @@ class Email extends Component
     ) {
         $this->value = $value;
         $this->name = $name;
-        $this->label = $label ?? __('admin/inputs.' . $name);
-        $this->placeholder = $placeholder ?? __('admin/inputs.' . $name);
+        $this->label = $label ?  __('admin/inputs.' . $label) : __('admin/inputs.' . $name);
+        $this->placeholder = $placeholder ? __('admin/inputs.' . $placeholder) : __('admin/inputs.' . $name);
         $this->class = $class;
         $this->maxLength = $maxLength;
         $this->minLength = $minLength;

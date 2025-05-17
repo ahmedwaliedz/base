@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\Admin\AdminSetLocale;
+use App\Http\Middleware\Admin\{
+    AdminSetLocale,
+    CheckRolePermission,
+};
 
 use App\Http\Controllers\Admin\{
     HomeController,
@@ -32,37 +35,39 @@ use App\Http\Controllers\Admin\{
 
         // authenticated routes
         Route::middleware('auth:admin')->group(function () {
-            // logout route
-            Route::any('/logout'            , [AuthController::class, 'logout'])->name('logout');
+                // logout route
+                Route::any('/logout', [AuthController::class, 'logout'])->name('logout');
+            Route::middleware([CheckRolePermission::class])->group(function () {
 
-            // home page route
-            Route::get('/home'              , [HomeController::class, 'home'])->name('home');
-            // profile routes
-            Route::get('/profile'           , [ProfileController::class, 'profile'])->name('profile');
+                // home page route
+                Route::get('/home', [HomeController::class, 'home'])->name('home');
+                // profile routes
+                Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
 
-            // notifications route
-            Route::group(['prefix'     => 'notifications',], function () {
-                Route::get(''                   , [NotificationController::class, 'index'])->name('notifications.index');
-                Route::get('/send-email'        , [NotificationController::class, 'sendEmail'])->name('notifications.sendEmail');
-                Route::get('/send-sms'          , [NotificationController::class, 'sendSms'])->name('notifications.sendSms');
-                Route::get('/send-notification' , [NotificationController::class, 'sendNotification'])->name('notifications.sendNotification');
+                // notifications route
+                Route::group(['prefix' => 'notifications',], function () {
+                    Route::get('', [NotificationController::class, 'index'])->name('notifications.index');
+                    Route::get('/send-email', [NotificationController::class, 'sendEmail'])->name('notifications.sendEmail');
+                    Route::get('/send-sms', [NotificationController::class, 'sendSms'])->name('notifications.sendSms');
+                    Route::get('/send-notification', [NotificationController::class, 'sendNotification'])->name('notifications.sendNotification');
+                });
+
+                // settings routes
+                Route::group(['prefix' => 'settings',], function () {
+                    Route::get('', [SettingController::class, 'index'])->name('settings.index');
+                    Route::put('/update', [SettingController::class, 'update'])->name('settings.update');
+                });
+
+                // admins routes
+                Route::resource('admins', RoleController::class);
+
+                // roles routes
+                Route::resource('roles', RoleController::class);
+
+                // users routes
+                Route::resource('users', UserController::class);
+
             });
-
-            // settings routes
-
-            Route::group(['prefix'     => 'settings',], function () {
-                Route::get('/settings'          , [SettingController::class, 'settings'])->name('settings');
-                Route::get('/settings/update'   , [SettingController::class, 'update'])->name('settings.update');
-            });
-
-            // admins routes
-            Route::resource('admins'      , RoleController::class);
-
-            // roles routes
-            Route::resource('roles'       , RoleController::class);
-
-            // users routes
-            Route::resource('users'       , UserController::class);
         });
     });
 

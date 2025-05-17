@@ -30,8 +30,12 @@ class AuthController extends Controller
     {
         $loginData = $this->loginService->login($request);
         return match ($loginData['status']) {
-            'blocked' => $this->respondBlocked(),
-            default   => $this->respondWithSuccess($loginData['message'], $loginData),
+            'validationError'   => $this->respondValidationErrors([
+                'email' => [__('admin/auth.wrong_credentials')],
+                'password' => [__('admin/auth.wrong_credentials')],
+            ]),
+            'blocked'           => $this->respondBlocked(),
+            default             => $this->respondWithSuccess($loginData['message'], $loginData),
         };
     }
 

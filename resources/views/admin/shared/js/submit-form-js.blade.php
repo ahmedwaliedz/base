@@ -42,6 +42,8 @@
               addValidationError(xhr.responseJSON.errors ,form)
             }else if(xhr.status === 423){
               fireBlockAction(xhr.responseJSON.message)
+            }else if(xhr.status === 400){
+                fireUnAuthorizedAction(xhr.responseJSON.message)
             }
         }
 
@@ -125,6 +127,15 @@
                 icon: 'error',
                 position: 'top-start',
                 text: message,
+                showConfirmButton: false,
+                timer: 2000
+            })
+        }
+        function fireUnAuthorizedAction(message) {
+            Swal.fire({
+                icon: 'error',
+                position: 'center',
+                text: message ,
                 showConfirmButton: false,
                 timer: 2000
             })

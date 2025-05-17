@@ -9,7 +9,7 @@ trait AuthResponseTrait
     /* @param string|null $message
          * @return JsonResponse
     */
-    public function respondUnauthorized(string $message = null): JsonResponse
+    public function respondUnAuthorized(string $message = null): JsonResponse
     {
         //  This method is used to respond with an unauthorized error message.
         return $this->respondWithFail($message ?? __('response.unauthorized'), [] ,  Response::HTTP_BAD_REQUEST);

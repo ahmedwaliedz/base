@@ -8,6 +8,7 @@ use Database\Seeders\Admin\{
 use Database\Seeders\Country\{
     CitySeeder,CountrySeeder,DistrictSeeder,RegionSeeder
 };
+use Database\Seeders\Setting\SettingSeeder;
 use Database\Seeders\MorePage\{
     FaqSeeder,IntroPageSeeder,PageSeeder,SliderSeeder,SocialSeeder
 };
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            SettingSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
             AdminSeeder::class,

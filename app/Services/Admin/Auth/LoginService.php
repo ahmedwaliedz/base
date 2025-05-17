@@ -36,10 +36,7 @@ class LoginService
             // increment rate limiter on failed login
             $this->limiterService->increment($key); // Increment rate limiter on failed login
             // Respond with validation errors if login fails
-            return $this->respondValidationErrors([
-                'email' => [__('admin/auth.wrong_credentials')],
-                'password' => [__('admin/auth.wrong_credentials')],
-            ]);
+            return ['status' => 'validationError'];
         }
         // check if the user is blocked
         $checkBlockStatus =  $this->checkStatusService->checkBlockStatus(auth('admin'));

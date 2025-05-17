@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Admin>
@@ -19,49 +20,22 @@ class AdminFactory extends Factory
             'name'               => $this->faker->name,
             'phone'              => $this->faker->unique()->regexify('\+05[0-9]{8}'),
             'country_code'       => $this->faker->countryCode,
-            'email'              => $this->faker->unique()->safeEmail,
-            'password'           => $this->faker->password,
-            'is_blocked'         => $this->faker->boolean,
             'is_notify'          => $this->faker->boolean,
-            'type'               => $this->faker->randomElement(array_column(AdminType::cases(), 'value')),
-            'role_id'            => $this->faker->numberBetween(1, Role::count()),
         ];
     }
-    public function withSequencedType()
+    public function withSequencedAttributes(): self
     {
-        return $this->state(new \Illuminate\Database\Eloquent\Factories\Sequence(
-            fn ($sequence) => ['type' => $sequence->index === 0 ? AdminType::SUPER_ADMIN : AdminType::ADMIN]
+        return $this->state(new Sequence(
+            function (Sequence $sequence) {
+                $isFirst = $sequence->index === 0;
+                return [
+                    'type'          => $isFirst ? AdminType::SUPER_ADMIN  : AdminType::ADMIN,
+                    'is_blocked'    => $isFirst ? 0 : $this->faker->boolean(),
+                    'role_id'       => $isFirst ? null : Role::inRandomOrder()->value('id'),
+                    'email'         => $isFirst ? env('DASHBOARDEMAIL', 'aait@info.com') : $this->faker->unique()->safeEmail(),
+                    'password'      => $isFirst ? '123456' : 'password',
+                ];
+            }
         ));
     }
-
-    public function withSequencedRole()
-    {
-        return $this->state(new \Illuminate\Database\Eloquent\Factories\Sequence(
-            fn ($sequence) => ['role_id' => $sequence->index === 0 ? null : rand(1, Role::count())]
-        ));
-    }
-
-    public function withSequencedEmail()
-    {
-        $faker = \Faker\Factory::create('ar_SA');
-        return $this->state(new \Illuminate\Database\Eloquent\Factories\Sequence(
-            fn ($sequence) => ['email' => $sequence->index === 0 ? env('DASHBOARDEMAIL' , 'aait@info.com') : $faker->unique()->safeEmail()]
-        ));
-    }
-
-    public function withSequencedPassword()
-    {
-        return $this->state(new \Illuminate\Database\Eloquent\Factories\Sequence(
-            fn ($sequence) => ['password' => $sequence->index === 0 ? '123456' : 'password']
-        ));
-    }
-
-    public function configure()
-    {
-        return $this->afterCreating(function (Admin $admin) {
-        });
-    }
-
-
-
 }
