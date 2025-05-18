@@ -33,7 +33,10 @@
                         setTimeout(() => {
                              window.location.reload();
                         }, 1000);
-                    }
+                    },
+                    error: (xhr) => {
+                        handelErrorByStatus(xhr)
+                    },
                 });
             }
         })

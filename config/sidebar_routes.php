@@ -31,12 +31,7 @@ return [
     'roles' => [
         'has_child'     => true,
         'icon'          => '<i class="ti ti-eye-cog me-2"></i>',
-        'childes'       => [
-            'create' => [
-                'title'          => 'create',
-                'is_sub_route'  => true,
-            ],
-        ],
+        'childes'       => [],
     ],
 
 
