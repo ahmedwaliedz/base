@@ -6,12 +6,12 @@
         </label>
 
         <div class="select2-success col-md-8">
-            <div class="mb-2">
-                <button  type="button"  class="btn btn-sm btn-link select-all"  data-target="#select2Permissions_{{ $groupKey }}"  >
+            <div class="mb-2 ">
+                <button  type="button"  class="btn btn-label-primary waves-effect btn-sm  select-all"  data-target="#select2Permissions_{{ $groupKey }}"  >
                     {{ __('admin/main.select_all') }}
                 </button>
                 |
-                <button type="button" class="btn btn-sm btn-link unselect-all" data-target="#select2Permissions_{{ $groupKey }}">
+                <button type="button" class="btn btn-label-danger waves-effect  btn-sm unselect-all" data-target="#select2Permissions_{{ $groupKey }}">
                     {{ __('admin/main.unselect_all') }}
                 </button>
             </div>

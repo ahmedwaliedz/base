@@ -11,7 +11,6 @@
             <div class="content-wrapper">
                 <div class="container-xxl flex-grow-1 container-p-y">
                     {!!   \App\Traits\Breadcrumb\BreadcrumbTrait::buildBreadcrumbsFromConfig() !!}
-
                     @yield('content')
                 </div>
                 @include('admin.layouts.footer')

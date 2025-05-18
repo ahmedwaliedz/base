@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Session;
 if (!function_exists('adminLang')) {
     function adminLang() : ?string
     {
-        return Session::get('admin-lang');
+        return Session::get('admin-lang') ?? defaultLang();
     }
 }
 
