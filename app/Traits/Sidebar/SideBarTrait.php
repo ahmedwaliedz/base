@@ -7,24 +7,27 @@ use Illuminate\Contracts\View\View;
 
 trait SideBarTrait
 {
-    use RouteTrait , MainMethodsTrait , BuildSimpleRoutesTrait , BuildUngroupedRoutesTrait , BuildGroupedRoutesTrait;
+    use RouteTrait  , BuildSimpleRoutesTrait , BuildDropDownRoutesTrait , BuildGroupRoutesTrait;
 
-    public static function getGroupedAdminRoutes(): View
+    public static function getSideBarRoutes(): View
     {
-        $routeNames   = self::getAdminRouteNames();
+        $routeNames = self::getAdminRouteNames();
         $routesConfig = config('sidebar_routes', []);
         $groupsConfig = config('sidebar_groups', []);
 
-        $menu = [];
-        // 1) simple
-        $menu += self::buildSimpleRoutes($routeNames, $routesConfig);
-        // 2) ungrouped with has_child
-        $menu += self::buildUngroupedRoutes($routeNames, $routesConfig);
-        // 3) grouped
-        $menu += self::buildGroupedRoutes($routeNames, $routesConfig, $groupsConfig);
-
-        return view('admin.layouts.sidebar.links', [
-            'routes' => $menu,
+        $routesList = [] ;
+        foreach ($routesConfig as $key => $route) {
+            if (empty($route['group'] ?? null) && empty($route['has_child'])  && in_array($key, $routeNames) ) {
+                $routesList = array_merge($routesList, self::buildSimpleRoute($key , $route));
+            }elseif (empty($route['group'] ?? null) && ! empty($route['has_child'])) {
+                $routesList = array_merge($routesList, self::buildDropDownRoute($route, $key, $routeNames));
+            }elseif(!empty($route['group'] ?? null)){
+                $routesList = array_merge($routesList, self::buildGroupRoute($route, $key, $routeNames , $groupsConfig, $routesList));
+            }
+        }
+        return view('admin.layouts.sidebar.routes-container', [
+            'routes' => $routesList,
         ]);
     }
+
 }

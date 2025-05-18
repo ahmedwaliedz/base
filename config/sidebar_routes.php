@@ -6,33 +6,40 @@ return [
         'has_child' => false,
     ],
     'notifications' => [
-        'icon' => '<i class="ti ti-mail me-2"></i>',
+        'icon'      => '<i class="ti ti-mail me-2"x></i>',
         'has_child' => true,
-        'childs'        => [],
+        'childes'   => [],
     ],
     'settings' => [
-        'icon' => '<i class="ti ti-settings me-2"></i>',
+        'icon'      => '<i class="ti ti-settings me-2"></i>',
         'has_child' => true,
-        'childs'        => [],
+        'childes'   => [],
+    ],
+    'admins' => [
+        'group'        => 'admin_roles_management',
+        'has_child'    => true,
+        'icon'         => '<i class="ti ti-users-group me-2"></i>',
+        'childes'      => [
+        ],
+    ],
+    'users' => [
+        'group'        => 'admin_roles_management',
+        'has_child'    => true,
+        'icon'         => '<i class="ti ti-users me-2"></i>',
+        'childes'      => [],
     ],
     'roles' => [
         'has_child'     => true,
         'icon'          => '<i class="ti ti-eye-cog me-2"></i>',
-        'childs'        => [],
+        'childes'       => [
+            'create' => [
+                'title'          => 'create',
+                'is_sub_route'  => true,
+            ],
+        ],
     ],
 
-    'admins' => [
-        'group'        => 'admin_roles_management',
-        'has_child'     => true,
-        'icon'          => '<i class="ti ti-users-group me-2"></i>',
-        'childs'        => [],
-    ],
-    'users' => [
-        'group'        => 'admin_roles_management',
-        'has_child'     => true,
-        'icon'          => '<i class="ti ti-users me-2"></i>',
-        'childs'        => [],
-    ],
+
 
 
 ];

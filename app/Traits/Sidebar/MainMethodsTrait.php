@@ -8,4 +8,9 @@ trait MainMethodsTrait
     {
         return $group['childs'][$action]['is_sub_route'] ?? false;
     }
+
+    private static function isRouteActive($route): bool
+    {
+        return request()->routeIs('admin.'.$route);
+    }
 }
