@@ -1,30 +1,26 @@
 @foreach($permissionsByGroup as $groupKey => $routes)
-
-    <div class="col-md-6 mb-4 row">
-        <label for="select2Permissions_{{ $groupKey }}" class="col-md-4 col-form-label" >
-            {{ \App\Traits\Role\RoleTrait::translateRouteName('admin.' . $groupKey) }}
-        </label>
-
-        <div class="select2-success col-md-8">
-            <div class="mb-2 ">
-                <button  type="button"  class="btn btn-label-primary waves-effect btn-sm  select-all"  data-target="#select2Permissions_{{ $groupKey }}"  >
-                    {{ __('admin/main.select_all') }}
-                </button>
-                |
-                <button type="button" class="btn btn-label-danger waves-effect  btn-sm unselect-all" data-target="#select2Permissions_{{ $groupKey }}">
-                    {{ __('admin/main.unselect_all') }}
-                </button>
-            </div>
-
-            <select id="select2Permissions_{{ $groupKey }}" name="permissions[]" class="select2 form-select" multiple >
-                @foreach($routes as $route)
-                    <option value="{{ $route['name'] }}" {{ isset($permissions) &&  in_array($route['name'], $permissions) ? 'selected' : '' }} >
-                        {{ $route['label'] }}
-                    </option>
-                @endforeach
-            </select>
-
-        </div>
+    <div class="col-md-6 mb-4">
+        <label for="selectpickerSelectDeselect_{{ $groupKey }}" class="form-label">{{ \App\Traits\Role\RoleTrait::translateRouteName('admin.' . $groupKey) }}</label>
+        <select
+            placeholder="{{__('admin/main.select_any_thing')}}"
+            name="permissions[]"
+            id="selectpickerSelectDeselect_{{ $groupKey }}"
+            class="selectpicker w-100"
+            data-style="btn-default"
+            multiple
+            data-actions-box="true"
+            data-live-search="true"
+            data-actions-box="true"
+            data-select-all-text="{{ __('admin/main.select_all') }}"
+            data-deselect-all-text="{{ __('admin/main.unselect_all') }}"
+        >
+            @foreach($routes as $route)
+                <option value="{{ $route['name'] }}" {{ isset($permissions) &&  in_array($route['name'], $permissions) ? 'selected' : '' }} >
+                    {{ $route['label'] }}
+                </option>
+            @endforeach
+        </select>
         <div class="help-block"></div>
     </div>
 @endforeach
+
