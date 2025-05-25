@@ -2,23 +2,17 @@
 @push('css')
     <link rel="stylesheet" href="{{asset('style/admin/validation/form-validation.css')}}"/>
     <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/sweetalert2/sweetalert2.css')}}"/>
-    <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/select2/select2.css')}}"/>
+    <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/bootstrap-select/bootstrap-select.css')}}"/>
+    <link rel="stylesheet" href="{{asset('style/admin/css/custom-select.css')}}"/>
 @endpush
 @section('content')
     <div class="card h-100">
         <div class="row h-100">
-            <form class="mb-3 validated-form form card-body" action="{{route('admin.roles.update' , $role->id )}}" method="POST" novalidate>
-                @csrf
-                @method('PUT')
-                <div class="row g-3">
-                    <x-form.text name="name" :value="$role->getTranslationsArray('name')"  class="col-md-6"  :is-required="true" is-multi-language="true"   />
-                    {!! $html !!}
-                </div>
-                <div class="pt-4 d-flex justify-content-center mt-3">
-                    <button type="submit"   class="btn btn-primary me-sm-3 me-1 waves-effect waves-light submit-button">{{ __('admin/main.edit') }}</button>
-                    <a class="btn btn-label-dribbble waves-effect" href="{{ url()->previous() }}">{{ __('admin/main.back') }}</a>
-                </div>
-            </form>
+            @include('admin.roles.parts.buttons')
+            @include('admin.roles.parts.loader')
+            <div class="append-form">
+              {{-- form  will append here --}}
+            </div>
         </div>
     </div>
 @endsection
@@ -26,25 +20,14 @@
     <script src="{{asset('style/admin/vendor/libs/sweetalert2/sweetalert2.js')}}"></script>
     <script src="{{asset('style/admin/js/extended-ui-sweetalert2.js')}}"></script>
     <script src="{{asset('style/admin/validation/jqBootstrapValidation.js')}}"></script>
-    <script src="{{asset('style/admin/vendor/libs/select2/select2.js')}}"></script>
-    @include('admin.shared.js.submit-form-js')
+    <script src="{{asset('style/admin/custom-js/submit-form.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/handel-error.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-validation-on-inputs.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-block.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-un-authorize.js')}}"></script>
+    <script src="{{asset('style/admin/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
     <script>
-        $('.select2').select2({
-            placeholder: "{{ __('admin/main.select_permissions') }}",
-            allowClear: true,
-            width: '100%',
-        });
-        // Select All
-        $(document).on('click', '.select-all', function() {
-            const target = $(this).data('target');
-            $(target).find('option').prop('selected', true);
-            $(target).trigger('change');
-        });
-
-        // Unselect All
-        $(document).on('click', '.unselect-all', function() {
-            const target = $(this).data('target');
-            $(target).val(null).trigger('change');
-        });
+        var formRoute = "{{ route('admin.roles.getForm' , [ 'id' => $role->id ]) }}"
     </script>
+    <script src="{{asset('style/admin/js/select-unselect-all.js')}}"></script>
 @endpush

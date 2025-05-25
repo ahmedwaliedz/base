@@ -62,6 +62,7 @@ use App\Http\Controllers\Admin\{
                 Route::resource('admins', RoleController::class);
 
                 // roles routes
+                Route::get('roles/form/{id?}', [RoleController::class, 'getForm'])->name('roles.getForm');
                 Route::resource('roles', RoleController::class);
 
                 // users routes
@@ -70,7 +71,3 @@ use App\Http\Controllers\Admin\{
             });
         });
     });
-
-
-
-
