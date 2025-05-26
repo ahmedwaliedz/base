@@ -27,8 +27,7 @@ class RoleController extends Controller
 
     public function create()
     {
-        $viewData = $this->roleService->getFormViewData();
-        return view('admin.roles.create', $viewData);
+        return view('admin.roles.create');
     }
 
     public function store(Store $request)

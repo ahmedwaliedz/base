@@ -12,22 +12,11 @@ class RoleService
 {
     use RoleTrait;
 
-    /**
-     * Get all roles with their admins
-     *
-     * @return Collection
-     */
     public function getAllRoles(): Collection
     {
         return Role::with('admins')->get();
     }
 
-    /**
-     * Get a role by ID
-     *
-     * @param int $id
-     * @return Role
-     */
     public function getRoleById(int $id): Role
     {
         return Role::findOrFail($id);
@@ -52,13 +41,6 @@ class RoleService
         return $role;
     }
 
-    /**
-     * Update a role with permissions
-     *
-     * @param int $id
-     * @param array $data
-     * @return Role
-     */
     public function updateRole(int $id, array $data): Role
     {
         $role = $this->getRoleById($id);
@@ -72,24 +54,12 @@ class RoleService
         return $role;
     }
 
-    /**
-     * Delete a role
-     *
-     * @param int $id
-     * @return bool
-     */
     public function deleteRole(int $id): bool
     {
         $role = $this->getRoleById($id);
         return $role->delete();
     }
 
-    /**
-     * Get permission IDs from permission names
-     *
-     * @param array $permissionNames
-     * @return array
-     */
     private function getPermissionIds(array $permissionNames): array
     {
         return collect($permissionNames)
@@ -100,29 +70,16 @@ class RoleService
             })->toArray();
     }
 
-    /**
-     * Get role permissions
-     *
-     * @param Role $role
-     * @return array
-     */
     public function getRolePermissions(Role $role): array
     {
         return $role->permissions()->pluck('permission')->toArray();
     }
 
-    /**
-     * Get view data for role form
-     *
-     * @param Role|null $role
-     * @return array
-     */
     public function getFormViewData(?Role $role = null): array
     {
         $data = [
             'permissionsByGroup' => $this->getAdminRoutesGrouped(),
         ];
-
         if ($role) {
             $permissions = $this->getRolePermissions($role);
             $data['role'] = $role;
