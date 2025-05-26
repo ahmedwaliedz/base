@@ -56,4 +56,9 @@ trait RouteTrait
     {
         return isset($parts[0]) && $parts[0] === 'home';
     }
+
+    public static function exceptedRoutesFromRoles(): array
+    {
+        return ['logout', 'lang.change', 'loginPage', 'login' , 'profile','roles.getForm'];
+    }
 }

@@ -1,0 +1,44 @@
+.light-style{
+    & .bootstrap-select .dropdown-menu.inner a[aria-selected=true]{
+        color:#000 !important;
+    }
+    &
+    .bs-actionsbox{
+        & .btn-group{
+            display: flex;
+            gap:10px;
+            & .actions-btn{
+                color:#000 !important;
+            }
+        }
+    }
+}
+.bs-actionsbox{
+    & .btn-group{
+        display: flex;
+        gap:10px;
+        & .actions-btn{
+            background: transparent;
+            border-radius: 3px !important;
+        }
+    }
+}
+.bootstrap-select .dropdown-menu.inner a[aria-selected=true]{
+    background: transparent !important;
+}
+/* Make the select all button in bootstrap-select primary */
+.bs-actionsbox .bs-select-all {
+    color: #fff !important;
+    border-color: #7367f0 !important;
+}
+.bs-actionsbox .bs-select-all:hover {
+    border-color: #0a58ca !important;
+}
+/* Make the unselect all button in bootstrap-select danger */
+.bs-actionsbox .bs-deselect-all {
+    color: #fff !important;
+    border-color: #dc3545 !important;
+}
+.bs-actionsbox .bs-deselect-all:hover {
+    border-color: #b02a37 !important;
+}

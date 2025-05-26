@@ -36,8 +36,12 @@ trait AuthGaurdFirstRouteTrait
             // grab the first segment → “notifications”
             $key = explode('.', $tail, 2);
             // if that key exists in your sidebar config, we’ve got a match
-            if (isset($sidebar[$key[0]]) && $key[1] === 'index') {
-                return route($perm);
+            if (isset($sidebar[$key[0]]) ) {
+                if (! isset($key[1])){
+                    return route($perm);
+                }elseif($key[1] === 'index'){
+                    return route($perm);
+                }
             }
         }
         return static::fallbackAdminFirstRoute() ;

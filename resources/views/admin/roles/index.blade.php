@@ -57,4 +57,7 @@
     <script src="{{asset('style/admin/vendor/libs/sweetalert2/sweetalert2.js')}}"></script>
     <script src="{{asset('style/admin/js/extended-ui-sweetalert2.js')}}"></script>
     @include('admin.shared.js.delete-row')
+    <script src="{{asset('style/admin/custom-js/handel-error.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-block.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-un-authorize.js')}}"></script>
 @endpush
