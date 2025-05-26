@@ -38,9 +38,6 @@ use App\Http\Controllers\Admin\{
                 // logout route
             Route::any('/logout', [AuthController::class, 'logout'])->name('logout');
             Route::middleware([CheckRolePermission::class])->group(function () {
-                // roles routes
-                Route::get('roles/form/{id?}', [RoleController::class, 'getForm'])->name('roles.getForm');
-                Route::resource('roles', RoleController::class);
 
                 // home page route
                 Route::get('/home', [HomeController::class, 'home'])->name('home');
@@ -67,6 +64,10 @@ use App\Http\Controllers\Admin\{
 
                 // users routes
                 Route::resource('users', UserController::class);
+
+                // roles routes
+                Route::get('roles/form/{id?}', [RoleController::class, 'getForm'])->name('roles.getForm');
+                Route::resource('roles', RoleController::class);
 
             });
         });

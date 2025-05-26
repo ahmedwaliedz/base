@@ -29,7 +29,7 @@ $(document).ready(function() {
         let allSelected = true;
         let noneSelected = true;
 
-        $(document).find('.selectpicker').each(function() {
+        $('.selectpicker').each(function() {
             const totalOptions = $(this).find('option').length;
             const selectedOptions = $(this).find('option:selected').length;
 
@@ -51,19 +51,30 @@ $(document).ready(function() {
         }
     }
 
-    $(document).find('.selectpicker').on('changed.bs.select', function() {
+    $(document).on('changed.bs.select', '.selectpicker', function(e, clickedIndex, isSelected) {
         updateButtonStates();
+        const $select = $(this);
+        const firstOptionValue = $select.find('option:first').val();
+        const selectedValues = $select.val() || [];
+
+        // If any option other than the first one is selected
+        // and the first option is not already selected
+        if (selectedValues.length > 0 && !selectedValues.includes(firstOptionValue)) {
+            // Add the first option to selection
+            selectedValues.unshift(firstOptionValue);
+            $select.selectpicker('val', selectedValues);
+        }
     });
 
     $selectAllBtn.on('click', function() {
-        $(document).find('.selectpicker').each(function() {
+        $('.selectpicker').each(function() {
             $(this).selectpicker('selectAll');
         });
         updateButtonStates();
     });
 
     $unselectAllBtn.on('click', function() {
-        $(document).find('.selectpicker').each(function() {
+        $('.selectpicker').each(function() {
             $(this).selectpicker('deselectAll');
         });
         updateButtonStates();
