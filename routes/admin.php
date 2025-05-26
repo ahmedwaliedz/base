@@ -36,7 +36,7 @@ use App\Http\Controllers\Admin\{
         // authenticated routes
         Route::middleware('auth:admin')->group(function () {
                 // logout route
-                Route::any('/logout', [AuthController::class, 'logout'])->name('logout');
+            Route::any('/logout', [AuthController::class, 'logout'])->name('logout');
             Route::middleware([CheckRolePermission::class])->group(function () {
 
                 // home page route
@@ -61,16 +61,14 @@ use App\Http\Controllers\Admin\{
                 // admins routes
                 Route::resource('admins', RoleController::class);
 
-                // roles routes
-                Route::resource('roles', RoleController::class);
 
                 // users routes
                 Route::resource('users', UserController::class);
 
+                // roles routes
+                Route::get('roles/form/{id?}', [RoleController::class, 'getForm'])->name('roles.getForm');
+                Route::resource('roles', RoleController::class);
+
             });
         });
     });
-
-
-
-
