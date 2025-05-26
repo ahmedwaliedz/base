@@ -62,6 +62,7 @@ use App\Http\Controllers\Admin\{
                 Route::resource('admins', RoleController::class);
 
 
+
                 // users routes
                 Route::resource('users', UserController::class);
 
