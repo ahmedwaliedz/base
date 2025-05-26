@@ -31,43 +31,55 @@ function addValidationError(errors, formSelector) {
     $.each(errors, function(key, messages) {
         const fieldName = resolveFieldName(formSelector, key);
         const $field    = $form.find(`[name="${fieldName}"]`);
-        if (!$field.length) return; // no matching input
+        const swFields = ['permissions[]'];
+        if (swFields.includes(fieldName)) {
+            Swal.fire({
+                icon: 'error',
+                position: 'center',
+                text:  messages,
+                showConfirmButton: false,
+                timer: 2000
+            })
+        }else{
 
-        // 3) Mark its .form-group
-        const $group = $field.closest('.form-group').addClass('issue');
+            if (!$field.length) return; // no matching input
 
-        // 4) Determine which .help-block to use
-        let $help;
-        if ($field.is('select') && $field.hasClass('select2-hidden-accessible')) {
-            // For Select2: mark visible box and find inner help-block
-            const data       = $field.data('select2');
-            const $container = data.$container;
-            $container.find('.select2-selection').addClass('is-invalid');
+            // 3) Mark its .form-group
+            const $group = $field.closest('.form-group').addClass('issue');
 
-            // your <select> is wrapped by <div class="select2-success">,
-            // which has an inner <div class="help-block"> immediately after the dropdown span
-            $help = $field.closest('.select2-success').find('> .help-block');
-        } else {
-            // Regular input
-            $field.addClass('is-invalid');
-            $help = $group.find('.help-block').first();
+            // 4) Determine which .help-block to use
+            let $help;
+            if ($field.is('select') && $field.hasClass('select2-hidden-accessible')) {
+                // For Select2: mark visible box and find inner help-block
+                const data       = $field.data('select2');
+                const $container = data.$container;
+                $container.find('.select2-selection').addClass('is-invalid');
+
+                // your <select> is wrapped by <div class="select2-success">,
+                // which has an inner <div class="help-block"> immediately after the dropdown span
+                $help = $field.closest('.select2-success').find('> .help-block');
+            } else {
+                // Regular input
+                $field.addClass('is-invalid');
+                $help = $group.find('.help-block').first();
+            }
+
+            // 5) Ensure the help-block exists
+            if (!$help.length) {
+                $help = $('<div class="help-block"></div>').appendTo(
+                    $field.is('select.select2-hidden-accessible')
+                        ? $field.closest('.select2-success')
+                        : $group
+                );
+            }
+
+            // 6) Append each message as its own <li>
+            const $ul = $('<ul role="alert"></ul>');
+            const arr = Array.isArray(messages) ? messages : [messages];
+            arr.forEach(msg => {
+                $ul.append($('<li class="text-danger"></li>').text(msg));
+            });
+            $help.append($ul);
         }
-
-        // 5) Ensure the help-block exists
-        if (!$help.length) {
-            $help = $('<div class="help-block"></div>').appendTo(
-                $field.is('select.select2-hidden-accessible')
-                    ? $field.closest('.select2-success')
-                    : $group
-            );
-        }
-
-        // 6) Append each message as its own <li>
-        const $ul = $('<ul role="alert"></ul>');
-        const arr = Array.isArray(messages) ? messages : [messages];
-        arr.forEach(msg => {
-            $ul.append($('<li class="text-danger"></li>').text(msg));
-        });
-        $help.append($ul);
     });
 }
