@@ -1,5 +1,5 @@
 <?php
 return [
-    'login_page' => 'صفحة تسجيل الدخول',
+    'login_page' => 'Login Page',
     'welcome_to' => 'welcome to  :site_name 👋',
 ];

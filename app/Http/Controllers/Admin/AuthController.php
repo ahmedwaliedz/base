@@ -6,10 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Auth\LoginRequest;
 use App\Services\Admin\Auth\LoginService;
 use App\Traits\Response\ResponseTrait;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Support\Facades\RateLimiter;
 class AuthController extends Controller
 {
     use ResponseTrait ;
@@ -39,7 +36,7 @@ class AuthController extends Controller
         };
     }
 
-    public function logout(Request $request) : \Illuminate\Http\RedirectResponse
+    public function logout() : \Illuminate\Http\RedirectResponse
     {
         auth('admin')->logout();
         return redirect()->route('admin.loginPage');

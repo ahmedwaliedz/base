@@ -1,40 +1,29 @@
 <?php
 namespace App\Traits\Role;
-use App\Traits\RouteTrait;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
+use App\Traits\Route\RouteTrait;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
+
 trait RoleTrait
 {
     use RouteTrait;
     public static function translateRouteName(string $fullRouteName): string
 {
     $key    = Str::after($fullRouteName, 'admin.');
-    $exact = "admin/routes.{$key}";
+    $exact = "admin/routes.admin.{$key}";
     if (Lang::has($exact)) {
         $val = Lang::get($exact);
         if (is_string($val)) {
             return $val;
         }
     }
-    return __('admin/routes.' . $key. '.index');
+    return __('admin/routes.admin.' . $key. '.index');
 }
 
     public static function getAdminRoutesGrouped(): array
     {
-        $except = self::exceptedRoutesFromRoles();
-        $all = collect(Route::getRoutes())
-            ->filter(fn($route) => $route->getName() !== null)
-            ->filter(fn($route) => Str::startsWith($route->getName(), 'admin.'))
-            ->filter(fn($route) => in_array('auth:admin', $route->gatherMiddleware()))
-            ->map(fn($route) => $route->getName())
-            ->filter(function(string $fullName) use ($except) {
-                $key = Str::after($fullName, 'admin.');
-                return ! in_array($key, $except, true);
-            })
-            ->values();
-
+        $all = self::getAllRouteListFromFile();
         $grouped = $all->groupBy(fn(string $fullName) => explode(
             '.', Str::after($fullName, 'admin.')
         )[0]);

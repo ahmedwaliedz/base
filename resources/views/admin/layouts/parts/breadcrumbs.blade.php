@@ -1,13 +1,13 @@
-<div dir="rtl" class="mb-5">
+<div class="mb-5 ">
     @foreach($crumbs as $crumb)
         {{-- render the crumb --}}
         @if($crumb['active'])
             <a style="text-decoration:none;color:#999;cursor:default;" href="#">
-                {!! $crumb['icon'] !!} {{ __('admin/routes.'.$crumb['title']) }}
+                {!! $crumb['icon'] !!} {{ __('admin/routes.admin.'.$crumb['title']) }}
             </a>
         @else
             <a href="{{ $crumb['url'] }}">
-                {!! $crumb['icon'] !!} {{ __('admin/routes.'.$crumb['title']) }}
+                {!! $crumb['icon'] !!} {{ __('admin/routes.admin.'.$crumb['title']) }}
             </a>
         @endif
 

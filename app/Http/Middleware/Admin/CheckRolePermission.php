@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware\Admin;
 
+use App\Traits\Route\RouteTrait;
 use Closure;
 use App\Enums\AdminType;
 use Illuminate\Support\Str;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckRolePermission
 {
-    use AuthResponseTrait;
+    use AuthResponseTrait ,RouteTrait;
     public function handle(Request $request, Closure $next): Response
     {
         $role = auth('admin')->user()?->role;
@@ -31,10 +32,10 @@ class CheckRolePermission
 
     public function checkThatIsAuthorized($currentRouteName , $permissionsList , Closure $next , Request $request)
     {
+       if (!in_array($currentRouteName, $permissionsList) && !in_array($currentRouteName, self::exceptedRoutesFromRoles())) {
         if($request->ajax()){
             return $this->respondUnAuthorized(__('response.unauthorized'));
         }
-       if (!in_array($currentRouteName, $permissionsList)) {
             return self::abortUnauthorized();
         }
         return $next($request) ;
