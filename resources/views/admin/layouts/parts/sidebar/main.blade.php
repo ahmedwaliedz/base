@@ -14,6 +14,6 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-        {!!   \App\Traits\Sidebar\SideBarTrait::getSideBarRoutes() !!}
+        {!!   \App\Builders\Sidebar\SidebarBuilder::buildFromConfig() !!}
     </ul>
 </aside>

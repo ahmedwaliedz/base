@@ -12,11 +12,10 @@ class RoleController extends Controller
 {
     use ResponseTrait;
 
-    protected $roleService;
+    public function __construct(
+        protected RoleService $roleService
+    ) {
 
-    public function __construct(RoleService $roleService)
-    {
-        $this->roleService = $roleService;
     }
 
     public function index()

@@ -2,9 +2,9 @@
     <a href="{{route('admin.'. $route['route'])}}" class="menu-link ">
         {!!  $route['icon']!!}
         @if(isset($parent))
-            <div>{{ __("admin/routes.{$parent['title']}.{$route['title']}") }} </div>
+            <div>{{ __("admin/routes.admin.{$parent['title']}.{$route['title']}") }} </div>
         @else
-            <div>{{ __("admin/routes.{$route['title']}") }} </div>
+            <div>{{ __("admin/routes.admin.{$route['title']}") }} </div>
         @endif
     </a>
 </li>

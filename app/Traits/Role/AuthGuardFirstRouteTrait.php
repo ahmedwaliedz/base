@@ -5,7 +5,7 @@ use App\Enums\AdminType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
-trait AuthGaurdFirstRouteTrait
+trait AuthGuardFirstRouteTrait
 {
     public static function firstAdminRoute()
     {
@@ -29,19 +29,15 @@ trait AuthGaurdFirstRouteTrait
     private static function getNormalAdminFirstRoute($admin): string
     {
         $permissions = $admin->role->permissions->pluck('permission')->filter(fn($p) => Str::startsWith($p, 'admin.'))->toArray();
-        $sidebar = config('sidebar_routes', []);
+        $sidebar = config('sidebar_routes', [])['admin'] ?? [];
         foreach ($permissions as $perm) {
-            // strip “admin.” → “notifications.sendEmail”
+            // strip "admin." → "notifications.sendEmail"
             $tail = Str::after($perm, 'admin.');
-            // grab the first segment → “notifications”
+            // grab the first segment → "notifications"
             $key = explode('.', $tail, 2);
-            // if that key exists in your sidebar config, we’ve got a match
-            if (isset($sidebar[$key[0]]) ) {
-                if (! isset($key[1])){
-                    return route($perm);
-                }elseif($key[1] === 'index'){
-                    return route($perm);
-                }
+            // if that key exists in your sidebar config, we've got a match
+            if (isset($sidebar[$key[0]]) && (count($key) < 2 || $key[1] === 'index')) {
+                return route($perm);
             }
         }
         return static::fallbackAdminFirstRoute() ;

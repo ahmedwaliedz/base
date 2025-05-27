@@ -3,11 +3,11 @@
 namespace App\Services\Admin\Auth;
 use App\Services\Admin\Auth\LoginRateLimiter;
 use App\Traits\Response\ValidationResponseTrait;
-use App\Traits\Role\AuthGaurdFirstRouteTrait;
+use App\Traits\Role\AuthGuardFirstRouteTrait;
 use Illuminate\Support\Facades\Auth;
 class LoginService
 {
-    use ValidationResponseTrait , AuthGaurdFirstRouteTrait;
+    use ValidationResponseTrait , AuthGuardFirstRouteTrait;
     protected LoginRateLimiter $limiterService;
     protected CheckStatus $checkStatusService;
 
@@ -65,5 +65,3 @@ class LoginService
         ], $remember);
     }
 }
-
-

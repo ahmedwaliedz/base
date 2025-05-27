@@ -11,7 +11,7 @@ if (!function_exists('adminLang')) {
 if (!function_exists('adminDirection')) {
     function adminDirection() : ?string
     {
-        return Session::get('admin-lang') == 'ar' ? 'rtl' : 'ltr' ;
+        return adminLang() == 'ar' ? 'rtl' : 'ltr' ;
     }
 }
 
@@ -31,22 +31,10 @@ if (!function_exists('languages')) {
     }
 }
 
-if (!function_exists('getProjectName')) {
-    function getProjectName() : string
-    {
-        if (app()->getLocale() == 'ar') {
-            return 'مشروع';
-        }else{
-            return 'Project';
-        }
-    }
-}
-
-
 if (!function_exists('currentRouteNameWithoutAdmin')) {
     function currentRouteNameWithoutAdmin() : string
     {
         $currentRouteName = request()->route()->getName();
-        return __('admin/routes.'.str_replace('admin.', '', $currentRouteName));
+        return __('admin/routes.admin.'.str_replace('admin.', '', $currentRouteName));
     }
 }

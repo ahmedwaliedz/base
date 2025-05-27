@@ -1,4 +1,3 @@
-<!-- Style Switcher -->
 <li class="nav-item dropdown-style-switcher dropdown me-2 me-xl-0">
     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
         <i class="ti ti-md"></i>
@@ -21,4 +20,3 @@
         </li>
     </ul>
 </li>
-<!-- / Style Switcher-->
