@@ -616,3 +616,12 @@ if (typeof $ !== 'undefined') {
     }
   });
 }
+
+// Page Loader
+// Hide the loader when the page is fully loaded
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    document.getElementById('page-loader').style.display = 'none';
+  }, 1500);
+});
+

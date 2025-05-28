@@ -2,6 +2,31 @@
 * demo.css
 * File include item demo only specific css only
 ******************************************************************************/
+.light-style #page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.85);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dark-style #page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .light-style .menu .app-brand.demo {
   height: 64px;
@@ -127,3 +152,6 @@
   text-align: center;
   margin-top: 1rem;
 }
+
+/* Page Loader */
+
