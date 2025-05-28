@@ -8,6 +8,7 @@
 <script src="{{asset('style/admin/vendor/js/menu.js')}}"></script>
 <script src="{{asset('style/admin/vendor/libs/block-ui/block-ui.js')}}"></script>
 <script src="{{asset('style/admin/vendor/libs/sortablejs/sortable.js')}}"></script>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 <script src="{{asset('style/admin/js/main.js')}}"></script>
 <script>
     $.ajaxSetup({
