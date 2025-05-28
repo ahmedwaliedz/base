@@ -8,14 +8,28 @@ use Illuminate\Contracts\View\View;
 class SidebarBuilder extends BaseBuilder
 {
     /**
-     * Check if the current route matches the given route
-     *
-     * @param string $route The route to check
-     * @return bool Whether the route is active
+     * @var SimpleRouteBuilder
      */
-    private static function isRouteActive(string $route): bool
+    protected SimpleRouteBuilder $simpleRouteBuilder;
+
+    /**
+     * @var DropdownRouteBuilder
+     */
+    protected DropdownRouteBuilder $dropdownRouteBuilder;
+
+    /**
+     * @var GroupRouteBuilder
+     */
+    protected GroupRouteBuilder $groupRouteBuilder;
+
+    /**
+     * SidebarBuilder constructor.
+     */
+    public function __construct()
     {
-        return request()->routeIs('admin.'.$route);
+        $this->simpleRouteBuilder = new SimpleRouteBuilder();
+        $this->dropdownRouteBuilder = new DropdownRouteBuilder();
+        $this->groupRouteBuilder = new GroupRouteBuilder();
     }
 
     /**
@@ -55,13 +69,8 @@ class SidebarBuilder extends BaseBuilder
      */
     public function addSimpleRoute(string $key, array $route): self
     {
-        return $this->addItem([
-            'is_active' => self::isRouteActive($key),
-            'title'     => $route['title'] ?? $key,
-            'icon'      => $route['icon'] ?? '',
-            'route'     => $key,
-            'children'  => [],
-        ], $key);
+        $item = $this->simpleRouteBuilder->build($key, $route);
+        return $this->addItem($item, $key);
     }
 
     /**
@@ -74,35 +83,10 @@ class SidebarBuilder extends BaseBuilder
      */
     public function addDropDownRoute(array $route, string $key, array $names): self
     {
-        $children = [];
-        foreach ($route['childes'] as $act => $opts) {
-            $full = "{$key}.{$act}";
-            if (in_array('admin.'.$full, $names) && !empty($opts['is_sub_route'])) {
-                $children[] = [
-                    'is_active' => self::isRouteActive($full),
-                    'title'     => $opts['title'] ?? $act,
-                    'icon'      => $opts['icon'] ?? '',
-                    'route'     => $full,
-                    'children'  => [],
-                ];
-            }
+        $item = $this->dropdownRouteBuilder->build($route, $key, $names);
+        if ($item) {
+            $this->addItem($item, $key);
         }
-
-        if ($children) {
-            // dropdown
-            $this->addItem([
-                'is_active' => array_reduce($children, function ($carry, $item) {
-                    return $carry || $item['is_active'];
-                }, false),
-                'title'     => $route['title'] ?? $key,
-                'icon'      => $route['icon'] ?? '',
-                'route'     => "{$key}.index",
-                'children'  => $children,
-            ], $key);
-        } elseif (in_array("admin.{$key}.index", $names)) {
-            $this->addSimpleRoute("{$key}.index", $route);
-        }
-
         return $this;
     }
 
@@ -117,41 +101,14 @@ class SidebarBuilder extends BaseBuilder
      */
     public function addGroupRoute(array $route, string $key, array $names, array $groups): self
     {
-        $group = $groups[$route['group']];
-        $child = [];
-
-        if (empty($route['has_child']) && in_array($key, $names)) {
-            // Create a temporary builder to get the simple route
-            $tempBuilder = new self();
-            $tempBuilder->addSimpleRoute($key, $route);
-            $child[] = $tempBuilder->getItems()[$key];
-        } elseif (!empty($route['has_child'])) {
-            // Create a temporary builder to get the dropdown route
-            $tempBuilder = new self();
-            $tempBuilder->addDropDownRoute($route, $key, $names);
-            $tempRoutes = $tempBuilder->getItems();
-            if (!empty($tempRoutes)) {
-                $child[] = reset($tempRoutes);
-            }
-        }
-
         // Get existing children for this group if any
         $items = $this->getItems();
         $existingChildren = $items[$route['group']]['children'] ?? [];
-        $children = array_merge($existingChildren, $child);
 
-        if (!empty($children)) {
-            $this->addItem([
-                'is_active' => array_reduce($children, function ($carry, $item) {
-                    return $carry || $item['is_active'];
-                }, false),
-                'title'     => $group['title'] ?? $route['group'],
-                'icon'      => $group['icon'] ?? '',
-                'route'     => null,
-                'children'  => $children,
-            ], $route['group']);
+        $item = $this->groupRouteBuilder->build($route, $key, $names, $groups, $existingChildren);
+        if ($item) {
+            $this->addItem($item, $route['group']);
         }
-
         return $this;
     }
 

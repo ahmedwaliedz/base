@@ -9,6 +9,9 @@
 >
 @include('admin.layouts.header-links')
 <body>
+<div id="page-loader">
+    <lottie-player src="{{ asset('storage/uploads/settings/loader.json') }}" background="transparent" speed="1" style="width: 500px; height: 500px;" loop autoplay></lottie-player>
+</div>
 @yield('content')
 @include('admin.layouts.footer-links')
 </body>

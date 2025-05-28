@@ -8,6 +8,42 @@ use Illuminate\Support\Facades\Route;
 class BreadcrumbBuilder extends BaseBuilder
 {
     /**
+     * @var UrlGenerator
+     */
+    protected UrlGenerator $urlGenerator;
+
+    /**
+     * @var SimpleCrumbBuilder
+     */
+    protected SimpleCrumbBuilder $simpleCrumbBuilder;
+
+    /**
+     * @var ParentCrumbBuilder
+     */
+    protected ParentCrumbBuilder $parentCrumbBuilder;
+
+    /**
+     * @var ChildCrumbBuilder
+     */
+    protected ChildCrumbBuilder $childCrumbBuilder;
+
+    /**
+     * @var GroupCrumbBuilder
+     */
+    protected GroupCrumbBuilder $groupCrumbBuilder;
+
+    /**
+     * BreadcrumbBuilder constructor.
+     */
+    public function __construct()
+    {
+        $this->urlGenerator = new UrlGenerator();
+        $this->simpleCrumbBuilder = new SimpleCrumbBuilder($this->urlGenerator);
+        $this->parentCrumbBuilder = new ParentCrumbBuilder($this->urlGenerator);
+        $this->childCrumbBuilder = new ChildCrumbBuilder($this->urlGenerator);
+        $this->groupCrumbBuilder = new GroupCrumbBuilder($this->urlGenerator);
+    }
+    /**
      * Build breadcrumbs based on the current route and sidebar configuration
      *
      * @return string Rendered breadcrumbs HTML
@@ -145,19 +181,8 @@ class BreadcrumbBuilder extends BaseBuilder
      */
     public function addSimpleCrumb(bool $active = false, string $key = 'home', array $routesList = []): self
     {
-        $icon = '';
-        if (isset($routesList[$key]) && !empty($routesList[$key]['icon'])) {
-            $icon = $routesList[$key]['icon'];
-        }
-
-        $url = $this->generateUrl($key);
-
-        return $this->addCrumb(
-            title: $key,
-            url: $url,
-            icon: $icon,
-            active: $active
-        );
+        $crumb = $this->simpleCrumbBuilder->build($active, $key, $routesList);
+        return $this->addItem($crumb);
     }
 
     /**
@@ -170,16 +195,8 @@ class BreadcrumbBuilder extends BaseBuilder
      */
     public function addParentCrumb(string $parentKey, array $parentData, bool $active): self
     {
-        $title = $parentKey;
-        $url = $this->generateParentUrl($parentKey, $title);
-        $icon = $parentData['icon'] ?? '';
-
-        return $this->addCrumb(
-            title: $title,
-            url: $url,
-            icon: $icon,
-            active: $active
-        );
+        $crumb = $this->parentCrumbBuilder->build($parentKey, $parentData, $active);
+        return $this->addItem($crumb);
     }
 
     /**
@@ -192,23 +209,8 @@ class BreadcrumbBuilder extends BaseBuilder
      */
     public function addChildCrumb(string $parentKey, string $childKey, array $parentData): self
     {
-        // Use 'childes' consistently as per sidebar_routes.php configuration
-        $childrenData = $parentData['childes'][$childKey] ?? [];
-        $title = "{$parentKey}.{$childKey}";
-        $icon = $childrenData['icon'] ?? '<i class="ti ti-unlink"></i>';
-
-        try {
-            $url = route("admin.{$parentKey}.{$childKey}", self::getRouteParams());
-        } catch (\Exception $e) {
-            $url = '#';
-        }
-
-        return $this->addCrumb(
-            title: $title,
-            url: $url,
-            icon: $icon,
-            active: true
-        );
+        $crumb = $this->childCrumbBuilder->build($parentKey, $childKey, $parentData);
+        return $this->addItem($crumb);
     }
 
     /**
@@ -220,53 +222,10 @@ class BreadcrumbBuilder extends BaseBuilder
      */
     public function addGroupCrumb(string $groupKey = '', array $routesList = []): self
     {
-        $group = $routesList[$groupKey] ?? [];
-        $title = $groupKey . '.index';
-        $icon = $group['icon'] ?? '';
-
-        return $this->addCrumb(
-            title: $title,
-            url: '#',
-            icon: $icon,
-            active: false
-        );
+        $crumb = $this->groupCrumbBuilder->build($groupKey, $routesList);
+        return $this->addItem($crumb);
     }
 
-    /**
-     * Generate URL for a parent route
-     *
-     * @param string $parentKey The parent route key
-     * @param string &$title The title reference to update if needed
-     * @return string The generated URL
-     */
-    protected function generateParentUrl(string $parentKey, string &$title): string
-    {
-        if (Route::has("admin.{$parentKey}")) {
-            return route("admin.{$parentKey}");
-        }
-
-        if (Route::has("admin.{$parentKey}.index")) {
-            $title = $parentKey . '.index';
-            return route("admin.{$parentKey}.index");
-        }
-
-        return '#';
-    }
-
-    /**
-     * Generate URL for a route key
-     *
-     * @param string $key The route key
-     * @return string The generated URL
-     */
-    protected function generateUrl(string $key): string
-    {
-        try {
-            return route('admin.' . $key);
-        } catch (\Exception $e) {
-            return '#';
-        }
-    }
 
     /**
      * Get the built breadcrumbs

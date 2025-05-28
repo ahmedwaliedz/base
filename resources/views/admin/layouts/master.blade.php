@@ -10,7 +10,7 @@
 <body>
 <!-- Page Loader -->
 <div id="page-loader">
-    <lottie-player src="{{ asset('storage/uploads/settings/loader.json') }}" background="transparent" speed="1" style="width: 500px; height: 500px;" loop autoplay></lottie-player>
+    <lottie-player src="{{ asset('storage/uploads/settings/loader.json') }}" background="transparent" speed="1.5" style="width: 500px; height: 500px;" loop autoplay></lottie-player>
 </div>
 
 <div class="layout-wrapper layout-content-navbar">
