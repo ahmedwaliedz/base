@@ -1,6 +1,4 @@
 @extends('admin.layouts.master')
-@push('css')
-@endpush
 @section('content')
     <div class="card mb-4">
         <div class="card-body">
@@ -58,10 +56,6 @@
                     <a class="btn btn-label-dribbble waves-effect" href="{{ url()->previous() }}">{{ __('admin/main.back') }}</a>
                 </div>
             </div>
-
         </div>
     </div>
 @endsection
-@push('js')
-    @include('admin.shared.js.submit-form-js')
-@endpush
