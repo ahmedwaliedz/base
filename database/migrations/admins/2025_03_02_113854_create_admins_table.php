@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('full_phone')->unique()->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->boolean('is_blocked');
-            $table->boolean('is_notify');
-            $table->string('type')->nullable();
+            $table->boolean('is_blocked')->index();
+            $table->boolean('is_notify')->index();
+            $table->string('type')->nullable()->index();
             $table->foreignId('role_id')->nullable()->constrained()->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();

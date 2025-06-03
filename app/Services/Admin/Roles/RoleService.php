@@ -19,7 +19,7 @@ class RoleService
 
     public function getRoleById(int $id): Role
     {
-        return Role::findOrFail($id);
+        return Role::with('permissions')->findOrFail($id);
     }
 
     /**

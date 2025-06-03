@@ -10,7 +10,18 @@ class FaqSeeder extends Seeder
 {
     public function run(): void
     {
-        $faqs = [
+        $faqs = $this->getUserFaqs();
+        $this->createFaqs($faqs);
+    }
+
+    /**
+     * Get user FAQs data
+     *
+     * @return array
+     */
+    private function getUserFaqs(): array
+    {
+        return [
             [
                 "type" => FaqType::USER,
                 "en"   => [
@@ -121,6 +132,17 @@ class FaqSeeder extends Seeder
                     "answer"   => "يمكنك إلغاء اشتراكك من خلال لوحة تحكم حسابك."
                 ]
             ],
+        ];
+    }
+
+    /**
+     * Get additional user FAQs data
+     *
+     * @return array
+     */
+    private function getAdditionalUserFaqs(): array
+    {
+        return [
             [
                 "type" => FaqType::USER,
                 "en"   => [
@@ -232,10 +254,21 @@ class FaqSeeder extends Seeder
                 ]
             ]
         ];
+    }
+
+    /**
+     * Create FAQ records from the provided data
+     *
+     * @param array $faqs
+     * @return void
+     */
+    private function createFaqs(array $faqs): void
+    {
+        // Merge with additional FAQs
+        $faqs = array_merge($faqs, $this->getAdditionalUserFaqs());
 
         foreach ($faqs as $faqData) {
             Faq::create($faqData);
         }
-
     }
 }

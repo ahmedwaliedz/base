@@ -622,6 +622,5 @@ if (typeof $ !== 'undefined') {
 window.addEventListener('load', function() {
   setTimeout(function() {
     document.getElementById('page-loader').style.display = 'none';
-  }, 1500);
+  }, 3000);
 });
-

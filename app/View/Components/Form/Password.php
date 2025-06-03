@@ -8,6 +8,12 @@ use Illuminate\View\Component;
 
 class Password extends Component
 {
+    private const ADMIN_INPUTS_PREFIX = 'admin/inputs.';
+    private const DEFAULT_CLASS = 'form-control';
+    private const VALIDATION_REQUIRED = 'admin/validation.required_input';
+    public const VALIDATION_MAX_LENGTH = 'admin/validation.max_length';
+    public const VALIDATION_MIN_LENGTH = 'admin/validation.min_length';
+
     public string $name;
     public ?string $label;
     public ?string $class;
@@ -16,31 +22,18 @@ class Password extends Component
     public bool $isRequired;
     public ?string $requiredMessage;
     public ?string $minLengthMessage;
-    public ?string $maxLengthMessage;
     public bool $autofocus;
 
-    public function __construct(
-        string $name,
-        ?string $label = null,
-        ?string $class = 'form-control',
-        ?int $maxLength = null,
-        ?int $minLength = null,
-        bool $isRequired = false,
-        ?string $requiredMessage = null,
-        ?string $maxLengthMessage = null,
-        ?string $minLengthMessage = null,
-        bool $autofocus = false,
-    ) {
-        $this->name = $name;
-        $this->label = $label ?? __('admin/inputs.' . $name);
-        $this->class = $class;
-        $this->maxLength = $maxLength;
-        $this->minLength = $minLength;
-        $this->isRequired = $isRequired;
-        $this->requiredMessage = $requiredMessage ?? __('admin/validation.required_input', ['attribute' => $this->label]);
-        $this->maxLengthMessage = $maxLengthMessage ?? __('admin/validation.max_length', ['attribute' => $this->label, 'max' => $this->maxLength]);
-        $this->minLengthMessage = $minLengthMessage ?? __('admin/validation.min_length', ['attribute' => $this->label, 'min' => $this->minLength]);
-        $this->autofocus = $autofocus;
+    public function __construct(array $options) {
+        $this->name                 = $options['name'];
+        $this->label                = isset($options['label']) ? __(self::ADMIN_INPUTS_PREFIX . $options['label']) : __(self::ADMIN_INPUTS_PREFIX . $this->name);
+        $this->class                = $options['class'] ?? self::DEFAULT_CLASS;
+        $this->maxLength            = $options['maxLength'] ?? null;
+        $this->minLength            = $options['minLength'] ?? null;
+        $this->isRequired           = $options['isRequired'] ?? false;
+        $this->requiredMessage      = $options['requiredMessage'] ?? __(self::VALIDATION_REQUIRED, ['attribute' => $this->label]);
+        $this->minLengthMessage     =  __(self::VALIDATION_MIN_LENGTH, ['attribute' => $this->label, 'min' => $this->minLength]);
+        $this->autofocus            = $options['autofocus'] ?? false;
     }
 
     public function render(): View|Closure|string

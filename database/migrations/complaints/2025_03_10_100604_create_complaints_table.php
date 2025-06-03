@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('complaints', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('email')->nullable();
+            $table->string('phone')->nullable()->index();
+            $table->string('email')->nullable()->index();
             $table->string('subject')->nullable();
             $table->longText('complaint');
-            $table->string('type')->nullable();
-            $table->string('status')->nullable();
+            $table->string('type')->nullable()->index();
+            $table->string('status')->nullable()->index();
             $table->morphs('complaiantable');
             $table->timestamps();
         });
