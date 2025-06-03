@@ -46,13 +46,10 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = $this->roleService->getRoleById($id);
-        $permissions = $this->roleService->getRolePermissions($role);
-        $permissionsByGroup = $this->roleService->getAdminRoutesGrouped();
+        $viewData = $this->roleService->getFormViewData($role);
 
         return view('admin.roles.show', [
             'role' => $role,
-            'permissions' => $permissions,
-            'permissionsByGroup' => $permissionsByGroup,
         ]);
     }
 

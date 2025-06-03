@@ -14,8 +14,8 @@
     </ul>
     <div class="tab-content">
         @include('admin.settings.parts.tab-forms.main')
-        @include('admin.settings.parts.tab-forms.notification')
         @include('admin.settings.parts.tab-forms.images')
+        @include('admin.settings.parts.tab-forms.notification')
     </div>
 </div>
 @endsection
@@ -25,5 +25,10 @@
     <script src="{{asset('style/admin/js/extended-ui-sweetalert2.js')}}"></script>
     <script src="{{asset('style/admin/validation/jqBootstrapValidation.js')}}"></script>
     <script src="{{asset('style/admin/js/single-upload.js')}}"></script>
-    @include('admin.shared.js.submit-form-js')
+    <script src="{{asset('style/admin/custom-js/submit-form.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/handel-error.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-validation-on-inputs.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-block.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-un-authorize.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/settings-tab-persistence.js')}}"></script>
 @endpush

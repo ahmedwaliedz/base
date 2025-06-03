@@ -3,18 +3,18 @@
         @csrf
         @method('put')
         <div class="row g-3">
-            <x-form.image
-                name="logo"
-                label="logo"
-                class="col-md-6"
-                value="{{ isset($settings['logo'] ) ? $settings['logo'] : '' }}"
-            />
-            <x-form.image
-                name="no_data_image"
-                label="no_data_image"
-                class="col-md-6"
-                value="{{ isset($settings['no_data_image'] ) ? $settings['no_data_image'] : '' }}"
-            />
+            <x-form.image :options="[
+                'name' => 'logo',
+                'label' => 'logo',
+                'class' => 'col-md-6',
+                'value' => isset($settings['logo']) ? $settings['logo'] : ''
+            ]" />
+            <x-form.image :options="[
+                'name' => 'no_data_image',
+                'label' => 'no_data_image',
+                'class' => 'col-md-6',
+                'value' => isset($settings['no_data_image']) ? $settings['no_data_image'] : ''
+            ]" />
 
 
         </div>

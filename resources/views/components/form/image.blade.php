@@ -20,7 +20,6 @@
             name="{{ $name }}"
             {{ $isRequired ? 'required' : '' }}
             @if($isRequired && $requiredMessage) data-validation-required-message="{{  $requiredMessage }}" @endif
-            id="busineness-license"
             class="file-upload form-control"
             type="file"
             accept="{{$accept}}"
@@ -33,4 +32,3 @@
 
     </div>
 </div>
-

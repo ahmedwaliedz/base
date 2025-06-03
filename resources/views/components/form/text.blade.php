@@ -2,7 +2,7 @@
     @foreach(languages() as $lang)
         <div class="mb-3 form-group {{ $class }}">
             <label class="form-label" for="{{ $name }}_{{ $lang }}">
-                {{ __('admin/inputs.' . $label ) }} {{ __('admin/inputs.'.$lang) }}
+                {{ $label }} {{ __('admin/inputs.'.$lang) }}
                 @if($isRequired)
                     <span class="text-danger">*</span>
                 @else
@@ -13,14 +13,12 @@
                 type="text"
                 name="{{ $lang }}[{{ $name }}]"
                 value="{{ $value && isset($value[$lang]['name']) ? $value[$lang]['name'] : '' }}"
-                placeholder="{{__('admin/inputs.enter')}} {{ __('admin/inputs.' . $placeholder ) }} {{ __('admin/inputs.'.$lang) }}"
+                placeholder="{{__('admin/inputs.enter')}} {{ $placeholder  }} {{ __('admin/inputs.'.$lang) }}"
                 class="form-control"
                 {{ $isRequired ? 'required' : '' }}
                 {{ $disabled ? 'disabled' : '' }}
                 @if($isRequired && $requiredMessage)
-                    data-validation-required-message="{{  $requiredMessage }} "
-                @elseif($isRequired)
-                    data-validation-required-message="{{  __('admin/validation.required_input', ['attribute' => __('admin/inputs.' . $label ) . __('admin/inputs.'.$lang) ]) }}"
+                    data-validation-required-message="{{  $requiredMessage . __('admin/inputs.'.$lang)  }} "
                 @endif
                 @if($isRequired) required  @endif
                 @if($minLength) minlength="{{ $minLength }}" @endif
@@ -31,7 +29,7 @@
 @else
     <div class="mb-3 form-group {{ $class }}">
         <label class="form-label" for="{{ $name }}">
-            {{ __('admin/inputs.' . $label ) }}
+            {{ $label }}
             @if($isRequired)
                 <span class="text-danger">*</span>
             @else
@@ -42,18 +40,20 @@
             type="text"
             name="{{ $name }}"
             value="{{ $value }}"
-            placeholder="{{__('admin/inputs.enter')}}{{ __('admin/inputs.' . $placeholder ) }}"
+            placeholder="{{__('admin/inputs.enter')}}{{ $placeholder }}"
             class="form-control"
             {{ $isRequired ? 'required' : '' }}
             {{ $disabled ? 'disabled' : '' }}
-            @if($isRequired && $requiredMessage)
-                data-validation-required-message="{{  $requiredMessage }} "
-            @elseif($isRequired)
-                data-validation-required-message="{{  __('admin/validation.required_input', ['attribute' => __('admin/inputs.' . $label )]) }}"
+            @if($isRequired)
+                required
             @endif
-            @if($isRequired) required  @endif
-            @if($minLength) minlength="{{ $minLength }}" @endif
-            @if($maxLength) maxlength="{{ $maxLength }}" @endif
+            @if($isRequired && $requiredMessage)
+                data-validation-required-message="{{  $requiredMessage }}"
+            @endif
+
+            @if($minLength) minLength="{{ $minLength }}" @endif
+{{--            @if($minLengthMessage) data-validation-minLength-message="{{  $minLengthMessage }}" @endif--}}
+
         />
     </div>
 @endif

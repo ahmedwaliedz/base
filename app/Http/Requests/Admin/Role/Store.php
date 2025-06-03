@@ -6,15 +6,17 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class Store extends FormRequest
 {
+    private const MAX_STRING_LENGTH = 'max:255';
+
     public function rules(): array
     {
         return [
             'ar' => [ 'required', 'array'],
-            'ar.name' => [ 'required', 'string', 'max:255','min:3'],
+            'ar.name' => [ 'required', 'string', self::MAX_STRING_LENGTH,'min:3'],
             'en' => [ 'required', 'array'],
-            'en.name' => [ 'required', 'string', 'max:255','min:3'],
+            'en.name' => [ 'required', 'string', self::MAX_STRING_LENGTH,'min:3'],
             'permissions' => [ 'required', 'array'],
-            'permissions.*' => [ 'required', 'string', 'max:255'],
+            'permissions.*' => [ 'required', 'string', self::MAX_STRING_LENGTH],
         ];
     }
 

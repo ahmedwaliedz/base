@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('complaint_images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('complaint_id')->constrained()->cascadeOnDelete();
-            $table->string('file_type');
+            $table->string('file_type')->index();
             $table->string('file_name');
             $table->timestamps();
         });

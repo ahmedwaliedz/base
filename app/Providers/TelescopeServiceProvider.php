@@ -14,14 +14,20 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     public function register(): void
     {
-        // Telescope::night();
-
         $this->hideSensitiveRequestDetails();
 
-        $isLocal = false ;
-
         Telescope::filter(function (IncomingEntry $entry) {
-            return true; // Show all requests in the dashboard
+            // Filter out health check requests and other non-essential entries
+            if ($entry->type === 'request' && $entry->content['uri'] === '/health-check') {
+                return false;
+            }
+
+            // Filter out specific routes or entry types that don't need monitoring
+            if ($entry->type === 'query' && str_contains($entry->content['query'] ?? '', 'telescope_')) {
+                return false;
+            }
+
+            return true; // Show all other requests in the dashboard
         });
 
         // Make sure to call the parent register method to register the Telescope migrations
@@ -54,7 +60,17 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
     protected function gate(): void
     {
         Gate::define('viewTelescope', function ($user) {
-            return true; // Allow all authenticated users to access Telescope
+            // Only allow users with specific email domains or admin users
+            if (in_array($user->email, config('telescope.allowed_emails', []))) {
+                return true;
+            }
+
+            // Check for admin role or specific permission
+            if (method_exists($user, 'hasRole') && $user->hasRole('admin')) {
+                return true;
+            }
+
+            return false; // Deny access to other users
         });
     }
 }

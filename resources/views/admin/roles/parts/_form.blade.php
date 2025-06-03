@@ -6,13 +6,13 @@
     @csrf
     @if(isset($role)) @method('PUT') @endif
     <div class="row g-3">
-        <x-form.text
-            name="name"
-            :value="isset($role) ? $role->getTranslationsArray('name') : null"
-            class="col-md-6"
-            :is-required="true"
-            is-multi-language="true"
-        />
+        <x-form.text :options="[
+            'name' => 'name',
+            'value' => isset($role) ? $role->getTranslationsArray('name') : null,
+            'class' => 'col-md-6',
+            'isRequired' => true,
+            'isMultiLanguage' => true
+        ]" />
 
         <div class="w-100 d-flex justify-content-center">
             <div class="divider w-75 align-self-center">

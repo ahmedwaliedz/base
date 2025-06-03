@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\SettingTypeEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class Setting extends Model
@@ -18,23 +19,23 @@ class Setting extends Model
     {
         return match ($this->type) {
             SettingTypeEnum::JSON->value       => json_decode($value, true),
-            SettingTypeEnum::INTEGER->value    => (int) $value,
-            SettingTypeEnum::BOOLEAN ->value   => (bool) $value,
-            SettingTypeEnum::IMAGE ->value     => (string) $this->handleImagePath($value),
-            default => $value,
+            SettingTypeEnum::ARRAY->value      => (array)   $value,
+            SettingTypeEnum::INTEGER->value    => (int)     $value,
+            SettingTypeEnum::BOOLEAN ->value   => (bool)    $value,
+            SettingTypeEnum::IMAGE ->value     => (string)  $this->handleImagePath($value),
+            default                            => $value,
         };
     }
-    public function setValueAttribute($value)
+    public function setValueAttribute($value): void
     {
-        return match (gettype($value)) {
-            SettingTypeEnum::ARRAY->value       => json_encode($value, true),
+        $this->attributes['value'] = match (gettype($value)) {
+            SettingTypeEnum::ARRAY->value      => json_encode($value, true),
             SettingTypeEnum::INTEGER->value    => (int) $value,
-            SettingTypeEnum::BOOLEAN ->value   => (bool) $value,
-            SettingTypeEnum::IMAGE ->value     => (string) $this->handleImagePath($value),
+            SettingTypeEnum::BOOLEAN->value    => (bool) $value,
+            SettingTypeEnum::IMAGE->value      => (string) $this->handleImagePath($value),
             default => $value,
         };
     }
-
 
     private function handleImagePath(?string $value): ?string
     {
@@ -46,6 +47,4 @@ class Setting extends Model
         }
         return Storage::disk('public')->url('uploads/settings/default.png');
     }
-
-
 }

@@ -12,7 +12,31 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        $categories = [
+        $categories = array_merge(
+            $this->getMainCategories(),
+            $this->getElectronicsSubcategories(),
+            $this->getFashionSubcategories(),
+            $this->getHomeDecorSubcategories(),
+            $this->getSportsSubcategories(),
+            $this->getBooksSubcategories(),
+            $this->getBeautySubcategories(),
+            $this->getAutomotiveSubcategories(),
+            $this->getGroceriesSubcategories()
+        );
+
+        foreach ($categories as $data) {
+            Category::create($data);
+        }
+    }
+
+    /**
+     * Get main categories data
+     *
+     * @return array
+     */
+    private function getMainCategories(): array
+    {
+        return [
             [
                 "slug"       => "electronics",
                 "icon"       => "electronics.png",
@@ -77,8 +101,17 @@ class CategorySeeder extends Seeder
                 "en"         => ["name" => "Groceries"],
                 "ar"         => ["name" => "البقالة"],
             ],
+        ];
+    }
 
-            // Subcategories for Electronics (parent_id = 1)
+    /**
+     * Get Electronics subcategories data
+     *
+     * @return array
+     */
+    private function getElectronicsSubcategories(): array
+    {
+        return [
             [
                 "slug"       => "smartphones",
                 "icon"       => "smartphones.png",
@@ -103,8 +136,17 @@ class CategorySeeder extends Seeder
                 "en"         => ["name" => "Cameras"],
                 "ar"         => ["name" => "الكاميرات"],
             ],
+        ];
+    }
 
-            // Subcategories for Fashion (parent_id = 2)
+    /**
+     * Get Fashion subcategories data
+     *
+     * @return array
+     */
+    private function getFashionSubcategories(): array
+    {
+        return [
             [
                 "slug"       => "male-clothes",
                 "icon"       => "male-clothes.png",
@@ -129,8 +171,17 @@ class CategorySeeder extends Seeder
                 "en"         => ["name" => "Kids Fashion"],
                 "ar"         => ["name" => "أزياء الأطفال"],
             ],
+        ];
+    }
 
-            // Subcategories for Home Decor (parent_id = 3)
+    /**
+     * Get Home Decor subcategories data
+     *
+     * @return array
+     */
+    private function getHomeDecorSubcategories(): array
+    {
+        return [
             [
                 "slug"       => "furniture",
                 "icon"       => "furniture.png",
@@ -155,8 +206,17 @@ class CategorySeeder extends Seeder
                 "en"         => ["name" => "Decor Accessories"],
                 "ar"         => ["name" => "اكسسوارات الديكور"],
             ],
+        ];
+    }
 
-            // Subcategories for Sports (parent_id = 4)
+    /**
+     * Get Sports subcategories data
+     *
+     * @return array
+     */
+    private function getSportsSubcategories(): array
+    {
+        return [
             [
                 "slug"       => "fitness",
                 "icon"       => "fitness.png",
@@ -181,8 +241,17 @@ class CategorySeeder extends Seeder
                 "en"         => ["name" => "Team Sports"],
                 "ar"         => ["name" => "الرياضات الجماعية"],
             ],
+        ];
+    }
 
-            // Subcategories for Books (parent_id = 5)
+    /**
+     * Get Books subcategories data
+     *
+     * @return array
+     */
+    private function getBooksSubcategories(): array
+    {
+        return [
             [
                 "slug"       => "fiction",
                 "icon"       => "fiction.png",
@@ -207,8 +276,17 @@ class CategorySeeder extends Seeder
                 "en"         => ["name" => "Comics"],
                 "ar"         => ["name" => "القصص المصورة"],
             ],
+        ];
+    }
 
-            // Subcategories for Beauty (parent_id = 6)
+    /**
+     * Get Beauty subcategories data
+     *
+     * @return array
+     */
+    private function getBeautySubcategories(): array
+    {
+        return [
             [
                 "slug"       => "skincare",
                 "icon"       => "skincare.png",
@@ -233,8 +311,17 @@ class CategorySeeder extends Seeder
                 "en"         => ["name" => "Haircare"],
                 "ar"         => ["name" => "العناية بالشعر"],
             ],
+        ];
+    }
 
-            // Subcategories for Automotive (parent_id = 7)
+    /**
+     * Get Automotive subcategories data
+     *
+     * @return array
+     */
+    private function getAutomotiveSubcategories(): array
+    {
+        return [
             [
                 "slug"       => "car-accessories",
                 "icon"       => "car-accessories.png",
@@ -259,8 +346,17 @@ class CategorySeeder extends Seeder
                 "en"         => ["name" => "Motorcycles"],
                 "ar"         => ["name" => "الدراجات النارية"],
             ],
+        ];
+    }
 
-            // Subcategories for Groceries (parent_id = 8)
+    /**
+     * Get Groceries subcategories data
+     *
+     * @return array
+     */
+    private function getGroceriesSubcategories(): array
+    {
+        return [
             [
                 "slug"       => "fresh-produce",
                 "icon"       => "fresh-produce.png",
@@ -284,12 +380,7 @@ class CategorySeeder extends Seeder
                 "parent_id"  => 8,
                 "en"         => ["name" => "Snacks"],
                 "ar"         => ["name" => "الوجبات الخفيفة"],
-            ]
+            ],
         ];
-
-        foreach ($categories as $data) {
-            Category::create($data);
-        }
-
     }
 }

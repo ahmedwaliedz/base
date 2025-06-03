@@ -2,8 +2,8 @@
 <form class="mb-3 validated-form form" action="{{route('admin.login')}}" method="POST" novalidate>
     @csrf
     <div class="row">
-        <x-form.email name="email"  class="col-md-12"  :is-required="true"  />
-        <x-form.password name="password"  minLength="6"  maxLength="20"  class="col-md-12"  :is-required="true"  />
+        <x-form.email :options="['name' => 'email', 'class' => 'col-md-12', 'isRequired' => true]" />
+        <x-form.password :options="['name' => 'password', 'class' => 'col-md-12', 'isRequired' => true,'minLength' => 3, 'maxLength' => 10  ]" />
     </div>
 
     <div class="mb-3">
@@ -15,4 +15,3 @@
 
     <button type="submit" class="btn btn-primary d-grid w-100">{{__('admin/auth.login')}}</button>
 </form>
-

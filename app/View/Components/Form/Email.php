@@ -23,30 +23,19 @@ class Email extends Component
     public bool $disabled;
     public bool $autofocus;
 
-    public function __construct(
-        string $name,
-        ?string $value = null,
-        ?string $label = null,
-        ?string $placeholder = null,
-        ?string $class = self::DEFAULT_CLASS,
-        ?int $maxLength = null,
-        ?int $minLength = null,
-        bool $isRequired = false,
-        ?string $requiredMessage = null,
-        bool $disabled = false,
-        bool $autofocus = false,
-    ) {
-        $this->value = $value;
-        $this->name = $name;
-        $this->label = $label ?  __(self::ADMIN_INPUTS_PREFIX . $label) : __(self::ADMIN_INPUTS_PREFIX . $name);
-        $this->placeholder = $placeholder ? __(self::ADMIN_INPUTS_PREFIX . $placeholder) : __(self::ADMIN_INPUTS_PREFIX . $name);
-        $this->class = $class;
-        $this->maxLength = $maxLength;
-        $this->minLength = $minLength;
-        $this->isRequired = $isRequired;
-        $this->requiredMessage = $requiredMessage ?? __(self::VALIDATION_REQUIRED, ['attribute' => $this->label]);
-        $this->disabled = $disabled;
-        $this->autofocus = $autofocus;
+    public function __construct(array $options)
+    {
+        $this->name = $options['name'];
+        $this->value = $options['value'] ?? null;
+        $this->label = isset($options['label']) ? __(self::ADMIN_INPUTS_PREFIX . $options['label']) : __(self::ADMIN_INPUTS_PREFIX . $options['name']);
+        $this->placeholder = isset($options['placeholder']) ? __(self::ADMIN_INPUTS_PREFIX . $options['placeholder']) : __(self::ADMIN_INPUTS_PREFIX . $this->name);
+        $this->class = $options['class'] ?? self::DEFAULT_CLASS;
+        $this->maxLength = $options['maxLength'] ?? null;
+        $this->minLength = $options['minLength'] ?? null;
+        $this->isRequired = $options['isRequired'] ?? false;
+        $this->requiredMessage = $options['requiredMessage'] ?? __(self::VALIDATION_REQUIRED, ['attribute' => $this->label]);
+        $this->disabled = $options['disabled'] ?? false;
+        $this->autofocus = $options['autofocus'] ?? false;
     }
 
     public function render(): View|Closure|string

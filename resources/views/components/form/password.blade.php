@@ -23,7 +23,6 @@
             @if($minLengthMessage) data-validation-minlength-message="{{  $minLengthMessage }}" @endif
 
             @if($maxLength) maxlength="{{ $maxLength }}" @endif
-            @if($maxLengthMessage) data-validation-maxLength-message="{{  $maxLengthMessage }}" @endif
 
         />
         <span class="input-group-text cursor-pointer" id="basic-default-password4"><i class="ti ti-eye-off"></i></span>

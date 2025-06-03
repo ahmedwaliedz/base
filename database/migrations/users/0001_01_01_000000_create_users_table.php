@@ -21,10 +21,10 @@ return new class extends Migration
             $table->string('country_code', 5);
             $table->string('full_phone')->unique()->nullable();
             $table->string('password');
-            $table->boolean('is_blocked');
-            $table->boolean('is_notify');
-            $table->boolean('is_active');
-            $table->boolean('is_completed');
+            $table->boolean('is_blocked')->index();
+            $table->boolean('is_notify')->index();
+            $table->boolean('is_active')->index();
+            $table->boolean('is_completed')->index();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->unique(['country_code', 'phone']);

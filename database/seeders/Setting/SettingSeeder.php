@@ -25,11 +25,11 @@ class SettingSeeder extends Seeder
                 'type'  => SettingTypeEnum::STRING,
             ],[
                 'key'   => 'whatsapp',
-                'value' => '+966555184424',
+                'value' => '0966555184424',
                 'type'  => SettingTypeEnum::STRING,
             ],[
                 'key'   => 'phone',
-                'value' => '+966555184424',
+                'value' => '0966555184424',
                 'type'  => SettingTypeEnum::STRING,
             ],[
                 'key'   => 'logo',
