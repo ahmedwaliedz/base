@@ -7,53 +7,82 @@ use App\Http\Requests\Admin\Role\Store;
 use App\Http\Requests\Admin\Role\Update;
 use App\Services\Admin\Roles\RoleService;
 use App\Traits\Response\ResponseTrait;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class RoleController extends Controller
 {
     use ResponseTrait;
 
-    public function __construct(
-        protected RoleService $roleService
-    ) {
-
+    /**
+     * @param RoleService $roleService
+     */
+    public function __construct(protected RoleService $roleService)
+    {
     }
 
-    public function index()
+    /**
+     * Display a listing of the roles
+     *
+     * @return View
+     */
+    public function index(): View
     {
         $roles = $this->roleService->getAllRoles();
         return view('admin.roles.index', compact('roles'));
     }
 
-    public function create()
+    /**
+     * Show the form for creating a new role
+     *
+     * @return View
+     */
+    public function create(): View
     {
         return view('admin.roles.create');
     }
 
-    public function store(Store $request)
+    /**
+     * Store a newly created role
+     *
+     * @param Store $request
+     * @return JsonResponse
+     */
+    public function store(Store $request): JsonResponse
     {
-        $data = [
-            'role' => $request->only(['ar', 'en']),
-            'permissions' => $request->input('permissions', [])
-        ];
-
-        $this->roleService->createRole($data);
+        $this->roleService->createRole($this->prepareRoleData($request));
 
         return $this->respondWithSuccess(__('admin/main.role_created'), [
             'route' => route('admin.roles.index'),
         ]);
     }
 
-    public function show($id)
+    /**
+     * Display the specified role
+     *
+     * @param int $id
+     * @return View
+     */
+    public function show(int $id): View
     {
         $role = $this->roleService->getRoleById($id);
         $viewData = $this->roleService->getFormViewData($role);
 
         return view('admin.roles.show', [
-            'role' => $role,
+            'role'                => $role,
+            'permissions'         => $viewData['permissions'],
+            'permissionsByGroup'  => $viewData['permissionsByGroup'],
         ]);
     }
 
-    public function edit($id)
+    /**
+     * Show the form for editing the specified role
+     *
+     * @param int $id
+     * @return View
+     */
+    public function edit(int $id): View
     {
         $role = $this->roleService->getRoleById($id);
         $viewData = $this->roleService->getFormViewData($role);
@@ -61,35 +90,60 @@ class RoleController extends Controller
         return view('admin.roles.edit', $viewData);
     }
 
-    public function update(Update $request, $id)
+    /**
+     * Update the specified role
+     *
+     * @param Update $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(Update $request, int $id): JsonResponse
     {
-        $data = [
-            'role' => $request->only(['ar', 'en']),
-            'permissions' => $request->input('permissions', [])
-        ];
-
-        $this->roleService->updateRole($id, $data);
+        $this->roleService->updateRole($id, $this->prepareRoleData($request));
 
         return $this->respondWithSuccess(__('admin/main.role_updated'), [
             'route' => route('admin.roles.index'),
         ]);
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified role
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function destroy(int $id): JsonResponse
     {
         $this->roleService->deleteRole($id);
+
         return $this->respondWithSuccess(__('admin/main.role_deleted'));
     }
 
-    public function getForm($id = null)
+    /**
+     * Get the role form partial
+     *
+     * @param int|null $id
+     * @return View
+     */
+    public function getForm(?int $id = null): View
     {
-        if ($id) {
-            $role = $this->roleService->getRoleById($id);
-            $viewData = $this->roleService->getFormViewData($role);
-        } else {
-            $viewData = $this->roleService->getFormViewData();
-        }
+        $role = $id ? $this->roleService->getRoleById($id) : null;
+        $viewData = $this->roleService->getFormViewData($role);
 
         return view('admin.roles.parts._form', $viewData);
+    }
+
+    /**
+     * Prepare role data from request
+     *
+     * @param Request $request
+     * @return array
+     */
+    private function prepareRoleData(Request $request): array
+    {
+        return [
+            'role' => $request->only(['ar', 'en']),
+            'permissions' => $request->input('permissions', [])
+        ];
     }
 }

@@ -55,4 +55,10 @@
         'session_expired' => 'Your session has expired',
         'too_many_requests' => 'Too Many Requests',
         'too_many_attempts' => 'Too many attempts. Please try again later',
+        'name_ar' => 'Arabic Name',
+        'name_en' => 'English Name',
+        'assigned_permissions' => 'Assigned Permissions',
+        'unassigned_permissions' => 'Unassigned Permissions',
+        'role_updated' => 'Role updated successfully',
+        'role_deleted' => 'Role deleted successfully',
     ];
