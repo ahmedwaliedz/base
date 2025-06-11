@@ -13,6 +13,9 @@ $(document).on('submit', '.validated-form', function(e) {
         dataType: 'json',
         processData: false,
         contentType: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         beforeSend: function() {
             submitButton.html(rotateIcon).attr('disabled', true);
         },
