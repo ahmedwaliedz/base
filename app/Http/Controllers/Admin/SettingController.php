@@ -14,7 +14,6 @@ class SettingController extends Controller
 
    public function __construct(protected SettingService $settingService)
    {
-
    }
 
     public function index()

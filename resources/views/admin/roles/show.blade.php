@@ -2,6 +2,23 @@
 @section('content')
     <div class="card mb-4">
         <div class="card-body">
+
+
+            <div class="d-flex justify-content-end gap-3 mb-5">
+                <div class="d-flex align-items-center">
+                            <span class="text-white rounded badge-center bg-primary me-2">
+                                <i class="ti ti-check"></i>
+                            </span>
+                    <span>{{__('admin/main.assigned_permissions')}}</span>
+                </div>
+                <div class="d-flex align-items-center">
+                            <span class="text-white rounded badge-center bg-secondary me-2">
+                                <i class="ti ti-x"></i>
+                            </span>
+                    <span>{{__('admin/main.unassigned_permissions')}}</span>
+                </div>
+            </div>
+
             <div class="row mb-4">
                 <div class="col-md-6">
                     <span class="fw-medium mx-2 text-heading"> {{__('admin/main.name_ar')}} :</span> <span>{{$role->translate('ar')->name}}</span>
@@ -11,26 +28,7 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
-                <div class="col-12">
-                    <div class="d-flex justify-content-center gap-3">
-                        <div class="d-flex align-items-center">
-                            <span class="badge bg-primary me-1">
-                                <i class="ti ti-eye-check"></i>
-                            </span>
-                            <span>{{__('admin/main.assigned_permissions')}}</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <span class="badge bg-secondary me-1">
-                                <i class="ti ti-eye-x"></i>
-                            </span>
-                            <span>{{__('admin/main.unassigned_permissions')}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="w-100 d-flex justify-content-center mb-4">
+            <div class="w-100 d-flex justify-content-center mb-2">
                 <div class="divider w-75 align-self-center">
                     <div class="divider-text">
                         {{__('admin/main.permissions')}}
@@ -46,7 +44,7 @@
                             @foreach($routes as $route)
                                 <span class="mb-2 badge {{ isset($permissions) &&  in_array($route['name'], $permissions) ? 'bg-primary' : 'bg-secondary' }}" >
                                     {{ $route['label'] }}
-                                    <i class="ti  {{ isset($permissions) &&  in_array($route['name'], $permissions) ? 'ti-eye-check' : 'ti-eye-x' }}"></i>
+{{--                                    <i class="ti  {{ isset($permissions) &&  in_array($route['name'], $permissions) ? 'ti-eye-check' : 'ti-eye-x' }}"></i>--}}
                                 </span>
                             @endforeach
                         </ul>

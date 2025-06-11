@@ -76,11 +76,11 @@ html:not([dir=rtl]) .bg-menu-theme.menu-horizontal .menu-inner > .menu-item > .m
 }
 
 body {
-  background: #f8f7fa;
+  background: #f2f2f2;
 }
 
 .bg-body {
-  background: #f8f7fa !important;
+  background: #f2f2f2 !important;
 }
 
 .text-primary {
@@ -1312,8 +1312,8 @@ li.ui-timepicker-selected,
 .layout-navbar-fixed .layout-page:before {
   backdrop-filter: saturate(200%) blur(10px);
   background: linear-gradient(180deg, rgba(248, 247, 250, 0.7) 44%, rgba(248, 247, 250, 0.43) 73%, rgba(248, 247, 250, 0));
-  -webkit-mask: linear-gradient(#f8f7fa, #f8f7fa 18%, transparent 100%);
-  mask: linear-gradient(#f8f7fa, #f8f7fa 18%, transparent 100%);
+  -webkit-mask: linear-gradient(#f2f2f2, #f2f2f2 18%, transparent 100%);
+  mask: linear-gradient(#f2f2f2, #f2f2f2 18%, transparent 100%);
 }
 
 .bg-menu-theme {
