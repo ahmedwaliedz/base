@@ -38,9 +38,9 @@
 
             <div class="row">
                 @foreach($permissionsByGroup as $groupKey => $routes)
-                    <div class="col-md-6 mb-4">
+                    <div class="col-md-6 mb-2">
                         <span class="fw-medium mx-2 text-heading d-block">{{ \App\Traits\Role\RoleTrait::translateRouteName('admin.' . $groupKey) }}:</span>
-                        <ul class="list-unstyled mb-4 mt-3 gap-2 d-flex flex-wrap">
+                        <ul class="list-unstyled  mt-3">
                             @foreach($routes as $route)
                                 <span class="mb-2 badge {{ isset($permissions) &&  in_array($route['name'], $permissions) ? 'bg-primary' : 'bg-secondary' }}" >
                                     {{ $route['label'] }}
