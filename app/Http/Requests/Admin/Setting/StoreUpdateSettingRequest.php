@@ -10,8 +10,7 @@ class StoreUpdateSettingRequest extends FormRequest
 
     public function rules(): array
     {
-        $requestKeys = array_keys($this->except(['_token', '_method']));
-        return $this->getRules(columns:  $requestKeys);
+        return $this->getRules(columns:  array_keys($this->except(['_token', '_method'])));
     }
 
     public function columnsRules(): array
@@ -29,9 +28,6 @@ class StoreUpdateSettingRequest extends FormRequest
 
    public function getRules(array $columns): array
     {
-        $allRules = $this->columnsRules();
-        return array_intersect_key($allRules, array_flip($columns));
+        return array_intersect_key($this->columnsRules(), array_flip($columns));
     }
-
-
 }

@@ -9,22 +9,11 @@ use Illuminate\Support\Facades\Log;
 
 class SettingService
 {
-    /**
-     * Get all settings from cache
-     *
-     * @return mixed
-     */
     public function getSettings(): mixed
     {
         return cache()->get('settings');
     }
 
-    /**
-     * Update settings in database and refresh cache
-     *
-     * @param array $data
-     * @return void
-     */
     public function updateSettings(array $data): void
     {
         collect($data)->each(function ($value, $key) {
@@ -34,7 +23,7 @@ class SettingService
         $this->refreshSettingsCache();
     }
 
-    public static function setTypeAttribute($value)
+    public static function setTypeAttribute($value): SettingTypeEnum
     {
         // Check if the value is an uploaded file and it's an image
         if ($value instanceof \Illuminate\Http\UploadedFile && $value->isValid()) {
@@ -56,11 +45,6 @@ class SettingService
         };
     }
 
-    /**
-     * Refresh settings cache
-     *
-     * @return void
-     */
     private function refreshSettingsCache(): void
     {
         cache()->forget('settings');
