@@ -15,7 +15,7 @@ class Setting extends Model implements HasMedia
 
     protected const UPLOAD_DIRECTORY = 'settings';
     protected const UPLOAD_COLLECTION = 'settings';
-    protected const UPLOAD_TYPE = 'media-library'; // or 'media-library' based on your implementation
+    protected const UPLOAD_TYPE = 'custom'; // or 'media-library' based on your implementation
 
     protected $fillable = [
         'key',
@@ -39,9 +39,9 @@ class Setting extends Model implements HasMedia
     {
         if ($value instanceof \Illuminate\Http\UploadedFile && $value->isValid()) {
             $this->attributes['value'] = $this->upload(
-                file : $value,
-                directory:  self::UPLOAD_DIRECTORY,
-                collection:  self::UPLOAD_COLLECTION,
+                file        : $value,
+                directory   : self::UPLOAD_DIRECTORY,
+                collection  : self::UPLOAD_COLLECTION,
                 uploadMethod: self::UPLOAD_TYPE
             );
             return;

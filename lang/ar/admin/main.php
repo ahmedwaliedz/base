@@ -62,4 +62,20 @@
         'unassigned_permissions' => 'الصلاحيات غير المسندة',
         'role_updated' => 'تم تحديث الصلاحية بنجاح',
         'role_deleted' => 'تم حذف الصلاحية بنجاح',
+
+        // SMTP Settings
+        'smtp_settings' => 'إعدادات SMTP',
+        'mail_mailer' => 'نوع المرسل',
+        'mail_host' => 'خادم البريد',
+        'mail_port' => 'منفذ البريد',
+        'mail_username' => 'اسم المستخدم',
+        'mail_password' => 'كلمة المرور',
+        'mail_encryption' => 'تشفير البريد',
+        'mail_from_address' => 'البريد المرسل',
+        'mail_from_name' => 'اسم المرسل',
+        'smtp_data' => 'بيانات SMTP',
+        'location' => 'الموقع',
+        'location_settings' => 'إعدادات الموقع',
+        'location_description' => 'وصف الموقع',
+        'location_on_map' => 'الموقع على الخريطة',
     ];

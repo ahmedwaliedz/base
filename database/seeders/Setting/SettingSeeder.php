@@ -14,7 +14,7 @@ class SettingSeeder extends Seeder
     {
         Setting::truncate();
         Cache::forget('settings');
-        $data = [
+        $mainData = [
             [
                 'key'   => 'name',
                 'value' => json_encode(['ar' => 'أوامر الشبكه', 'en' => 'Awamer Alshbakah']),
@@ -32,6 +32,28 @@ class SettingSeeder extends Seeder
                 'value' => '0966555184424',
                 'type'  => SettingTypeEnum::STRING,
             ],[
+                'key'   => 'is_production',
+                'value' => 0,
+                'type'  => SettingTypeEnum::BOOLEAN,
+            ],[
+                'key' => 'google_map_api_key',
+                'value' => 'AIzaSyA9S2ndLXNQAUC10JXWv9ajJljAxcVF-eM',
+                'type'  => SettingTypeEnum::STRING,
+            ]
+        ];
+        $pricingData = [
+            [
+                'key' => 'app_commission',
+                'value' => 0.15, // 15% commission
+                'type'  => SettingTypeEnum::STRING,
+            ],[
+                'key' => 'vat_ratio',
+                'value' => 0.15, // or 'fixed'
+                'type'  => SettingTypeEnum::STRING,
+            ],
+        ];
+        $images = [
+            [
                 'key'   => 'logo',
                 'value' => 'logo.png',
                 'type'  => SettingTypeEnum::IMAGE,
@@ -43,14 +65,59 @@ class SettingSeeder extends Seeder
                 'key'   => 'no_data_image',
                 'value' => 'no_data.gif',
                 'type'  => SettingTypeEnum::IMAGE,
-            ],[
-                'key'   => 'is_production',
-                'value' => 0,
-                'type'  => SettingTypeEnum::BOOLEAN,
-
             ],
         ];
-        Setting::insert($data);
+        $locationData=[
+          [
+              'key'   => 'map_desc',
+              'value' => json_encode(['ar' => 'الرياض - السعودية', 'en' => 'Riyadh - Saudi Arabia']),
+              'type'  => SettingTypeEnum::JSON,
+          ],[
+              'key'   => 'lat',
+              'value' => '24.7136',
+              'type'  => SettingTypeEnum::STRING,
+          ],[
+              'key'   => 'lng',
+              'value' => '46.6753',
+              'type'  => SettingTypeEnum::STRING,
+          ],
+        ];
+        $smtpData = [
+            [
+                'key'   => 'mail_mailer',
+                'value' => 'smtp',
+                'type'  => SettingTypeEnum::STRING,
+            ],[
+                'key'   => 'mail_host',
+                'value' => 'smtp.mailtrap.io',
+                'type'  => SettingTypeEnum::STRING,
+            ],[
+                'key'   => 'mail_port',
+                'value' => '2525',
+                'type'  => SettingTypeEnum::STRING,
+            ],[
+                'key'   => 'mail_username',
+                'value' => '',
+                'type'  => SettingTypeEnum::STRING,
+            ],[
+                'key'   => 'mail_password',
+                'value' => '',
+                'type'  => SettingTypeEnum::STRING,
+            ],[
+                'key'   => 'mail_encryption',
+                'value' => 'tls',
+                'type'  => SettingTypeEnum::STRING,
+            ],[
+                'key'   => 'mail_from_address',
+                'value' => 'info@example.com',
+                'type'  => SettingTypeEnum::STRING,
+            ],[
+                'key'   => 'mail_from_name',
+                'value' => 'Example',
+                'type'  => SettingTypeEnum::STRING,
+            ],
+        ];
+        Setting::insert(array_merge($mainData, $pricingData, $images, $locationData, $smtpData));
         Cache::rememberForever('settings', function () {
             return Setting::get()->pluck('value', 'key');
         });

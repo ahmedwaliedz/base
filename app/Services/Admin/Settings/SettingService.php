@@ -23,7 +23,7 @@ class SettingService
         $this->refreshSettingsCache();
     }
 
-    public static function setTypeAttribute($value): SettingTypeEnum
+    public static function setTypeAttribute($value): ?SettingTypeEnum
     {
         // Check if the value is an uploaded file and it's an image
         if ($value instanceof \Illuminate\Http\UploadedFile && $value->isValid()) {

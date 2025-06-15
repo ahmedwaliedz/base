@@ -61,4 +61,21 @@
         'unassigned_permissions' => 'Unassigned Permissions',
         'role_updated' => 'Role updated successfully',
         'role_deleted' => 'Role deleted successfully',
+
+        // SMTP Settings
+        'smtp_settings' => 'SMTP Settings',
+        'mail_mailer' => 'Mail Mailer',
+        'mail_host' => 'Mail Host',
+        'mail_port' => 'Mail Port',
+        'mail_username' => 'Mail Username',
+        'mail_password' => 'Mail Password',
+        'mail_encryption' => 'Mail Encryption',
+        'mail_from_address' => 'Mail From Address',
+        'mail_from_name' => 'Mail From Name',
+
+        // Location Settings
+        'location' => 'Location',
+        'location_settings' => 'Location Settings',
+        'location_description' => 'Location Description',
+        'location_on_map' => 'Location on Map',
     ];
