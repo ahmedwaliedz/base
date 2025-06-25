@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\{
     SettingController,
     RoleController,
     UserController,
+    AdminController,
 };
 
     // change lang routes
@@ -59,7 +60,8 @@ use App\Http\Controllers\Admin\{
                 });
 
                 // admins routes
-                Route::resource('admins', RoleController::class);
+                Route::resource('admins', AdminController::class)->except(['destroy']);
+                Route::post('admins/destroy-all', [AdminController::class , 'destroyAll'])->name('admins.destroyAll');
 
 
 

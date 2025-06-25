@@ -21,7 +21,9 @@ class RoleService
      */
     public function getAllRoles(): Collection
     {
-        return Role::with('admins')->get();
+        return Role::with(['admins' => function ($query) {
+            $query->limit(5);
+        }])->get();
     }
 
     /**

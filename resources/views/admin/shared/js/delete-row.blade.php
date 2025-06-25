@@ -2,8 +2,8 @@
     $(document).on('click', '.delete-row', function(e) {
         e.preventDefault()
         Swal.fire({
-            title: "{{ __('admin/main.are_you_sure') }}",
-            text: "{{ __('admin/main.are_you_sure_to_delete') }}",
+            title: window.translations.are_you_sure,
+            text: window.translations.are_you_sure_want_delete,
             type: 'warning',
             showDenyButton:   false,
             showCancelButton: true,

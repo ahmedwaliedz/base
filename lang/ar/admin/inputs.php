@@ -39,4 +39,11 @@ return [
     'search_location' => 'ابحث عن موقع',
     'latitude' => 'خط العرض',
     'longitude' => 'خط الطول',
+    'select' => 'اختر',
+    'role' => 'الصلاحية',
+    'status' => 'الحالة',
+    'order_by' => 'ترتيب حسب',
+    'end_date' => 'تاريخ الانتهاء',
+    'start_date' => 'تاريخ البدء',
+    'role_id' => 'الصلاحية',
 ];

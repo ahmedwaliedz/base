@@ -15,7 +15,7 @@ class AdminSeeder extends Seeder
     {
         Admin::factory()
             ->withSequencedAttributes()
-            ->count(5)
+            ->count(50)
             ->create()
         ;
     }
