@@ -21,6 +21,8 @@ class AdminFactory extends Factory
             'phone'              => $this->faker->unique()->regexify('\+05[0-9]{8}'),
             'country_code'       => $this->faker->countryCode,
             'is_notify'          => $this->faker->boolean,
+            'created_at'         => now()->subDays(rand(1, 30)),
+
         ];
     }
     public function withSequencedAttributes(): self

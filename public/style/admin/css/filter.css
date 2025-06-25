@@ -1,0 +1,16 @@
+.filter_div {
+    overflow: hidden;
+    transition: all 0.1s ease-in-out;
+    transform-origin: top;
+    opacity: 0;
+    display: none;
+}
+.filter_div.active {
+    opacity: 1;
+}
+.show_filter .ti-filter-plus {
+    transition: transform 0.1s ease;
+}
+.show_filter.active .ti-filter-plus {
+    transform: rotate(45deg);
+}
