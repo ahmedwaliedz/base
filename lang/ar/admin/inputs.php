@@ -46,4 +46,11 @@ return [
     'end_date' => 'تاريخ الانتهاء',
     'start_date' => 'تاريخ البدء',
     'role_id' => 'الصلاحية',
+    'image' => 'صورة',
+    'password_confirmation' => 'تأكيد كلمة المرور',
+    'new_password_confirmation' => 'تأكيد كلمة المرور  الجديدة ',
+    'new_password' => 'كلمة المرور جديدة',
+    'current_password' => ' كلمة المرور الحالية',
+    'country_code' => 'كود الدولة',
+    'is_notify' => 'تلقي الإشعارات',
 ];

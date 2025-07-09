@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\AdminType;
 use App\Models\Admin;
+use App\Models\Country;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,7 +20,7 @@ class AdminFactory extends Factory
         return [
             'name'               => $this->faker->name,
             'phone'              => $this->faker->unique()->regexify('\+05[0-9]{8}'),
-            'country_code'       => $this->faker->countryCode,
+            'country_code'       => $this->faker->randomElement(Country::get()->pluck('code')->toArray()),
             'is_notify'          => $this->faker->boolean,
             'created_at'         => now()->subDays(rand(1, 30)),
 
@@ -35,7 +36,7 @@ class AdminFactory extends Factory
                     'is_blocked'    => $isFirst ? 0 : $this->faker->boolean(),
                     'role_id'       => $isFirst ? null : Role::inRandomOrder()->value('id'),
                     'email'         => $isFirst ? env('DASHBOARDEMAIL', 'aait@info.com') : $this->faker->unique()->safeEmail(),
-                    'password'      => $isFirst ? '123456' : 'password',
+                    'password'      => $isFirst ? 'Admin@123' : 'Password@123',
                 ];
             }
         ));

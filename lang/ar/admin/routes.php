@@ -4,6 +4,7 @@ return [
     'admin' => [
         'loginPage'     => 'تسجيل الدخول',
         'home'          => 'الرئيسية',
+        'profile'          => 'الملف الشخصي',
         'settings'      => [
             'index'     => 'الإعدادات',
             'update'    => 'تحديث الإعدادات',
@@ -15,7 +16,7 @@ return [
             'sendNotification'  => 'إرسال إشعار',
         ],
         'admin_roles_management' => [
-            'index' => 'إدارة المشرفين',
+            'index' => 'إدارة المشرفين والصلاحيات ',
         ],
         'admins' => [
             'index'         => 'المشرفين',

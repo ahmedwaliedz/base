@@ -131,4 +131,10 @@
         'start_date_greater_than_end_date' => 'تاريخ البداية لا يمكن أن يكون أكبر من تاريخ النهاية',
         'end_date_smaller_than_start_date' => 'تاريخ النهاية لا يمكن أن يكون أصغر من تاريخ البداية',
         'admin_not_found' => 'المشرف غير موجود',
+        'change_password' => 'تغيير كلمة المرور' ,
+        'current_password_incorrect' => 'كلمة المرور الحالية غير صحيحة',
+        'yes' => 'نعم',
+        'no' => 'لا',
+        'password_updated_successfully' => 'تم تحديث كلمة المرور بنجاح',
+        'updated_successfully' => 'تم التحديث بنجاح',
     ];

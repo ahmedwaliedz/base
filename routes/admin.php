@@ -24,7 +24,6 @@ use App\Http\Controllers\Admin\{
 
     // route group to set admin lang middleware
     Route::middleware([AdminSetLocale::class , 'web'])->group(function () {
-
         // guest routes
         Route::middleware('guest:admin')->group(function () {
             // login page
@@ -32,19 +31,20 @@ use App\Http\Controllers\Admin\{
             // login request
             Route::post('/login', [AuthController::class, 'login'])->name('login');
         });
-
-
         // authenticated routes
         Route::middleware('auth:admin')->group(function () {
-                // logout route
+            // logout route
             Route::any('/logout', [AuthController::class, 'logout'])->name('logout');
-            Route::middleware([CheckRolePermission::class])->group(function () {
+            // profile routes
+            Route::group(['prefix' => 'profile',], function () {
+                Route::get('', [ProfileController::class, 'profile'])->name('profile');
+                Route::put('/update', [ProfileController::class, 'update'])->name('profile.update');
+                Route::put('/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
+            });
 
+            Route::middleware([CheckRolePermission::class])->group(function () {
                 // home page route
                 Route::get('/home', [HomeController::class, 'home'])->name('home');
-                // profile routes
-                Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
-
                 // notifications route
                 Route::group(['prefix' => 'notifications',], function () {
                     Route::get('', [NotificationController::class, 'index'])->name('notifications.index');

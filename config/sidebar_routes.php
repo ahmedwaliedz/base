@@ -16,6 +16,13 @@ return [
             'has_child' => true,
             'childes'   => [],
         ],
+        'users' => [
+            'has_child'    => true,
+            'icon'         => '<i class="ti ti-users me-2"></i>',
+            'childes'      => [
+
+            ],
+        ],
         'admins' => [
             'group'        => 'admin_roles_management',
             'has_child'    => true,
@@ -23,15 +30,9 @@ return [
             'childes'      => [
             ],
         ],
-        'users' => [
-            'group'        => 'admin_roles_management',
-            'has_child'    => true,
-            'icon'         => '<i class="ti ti-users me-2"></i>',
-            'childes'      => [
 
-            ],
-        ],
         'roles' => [
+            'group'        => 'admin_roles_management',
             'has_child'     => true,
             'icon'          => '<i class="ti ti-eye-cog me-2"></i>',
             'childes'       => [
