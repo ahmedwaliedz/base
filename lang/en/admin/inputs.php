@@ -25,4 +25,6 @@ return [
     'search_location' => 'Search for a location',
     'latitude' => 'Latitude',
     'longitude' => 'Longitude',
+    'country_code' => 'Country Code',
+    'is_notify' => 'Receive Notifications',
 ];

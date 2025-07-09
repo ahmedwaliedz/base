@@ -144,6 +144,7 @@ return [
     ],
     'starts_with' => 'حقل :attribute يجب ان يبدأ بأحد القيم التالية: :values.',
     'string' => 'يجب أن يكون حقل :attribute نصآ.',
+    'strong_password' => 'يجب أن يحتوي حقل :attribute على حرف كبير واحد على الأقل، وحرف صغير واحد، ورقم واحد، ورمز واحد.',
     'timezone' => 'يجب أن يكون حقل :attribute نطاقًا زمنيًا صحيحًا.',
     'unique' => 'قيمة الحقل :attribute مُستخدمة من قبل',
     'uploaded' => 'فشل في تحميل الـ :attribute.',

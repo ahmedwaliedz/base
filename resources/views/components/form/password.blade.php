@@ -20,7 +20,7 @@
             @if($isRequired && $requiredMessage) data-validation-required-message="{{  $requiredMessage }}" @endif
 
             @if($minLength) minlength="{{ $minLength }}" @endif
-            @if($minLengthMessage) data-validation-minlength-message="{{  $minLengthMessage }}" @endif
+            @if($minLength && $minLengthMessage) data-validation-minlength-message="{{  $minLengthMessage }}" @endif
 
             @if($maxLength) maxlength="{{ $maxLength }}" @endif
 

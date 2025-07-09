@@ -6,16 +6,22 @@ use App\Enums\AdminType;
 use App\Traits\Filters\FilterableTrait;
 use App\Traits\GeneralTrait;
 use App\Traits\HandleNumbersTrait;
+use App\Traits\Upload\UploadTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Admin extends Authenticatable
+class Admin extends Authenticatable implements HasMedia
 {
-    use HasFactory, Notifiable, SoftDeletes, GeneralTrait, HandleNumbersTrait, FilterableTrait;
+    use HasFactory, Notifiable, SoftDeletes, GeneralTrait, HandleNumbersTrait, FilterableTrait, UploadTrait, InteractsWithMedia;
 
-
+    protected const UPLOAD_DIRECTORY = 'admins';
+    protected const UPLOAD_COLLECTION = 'admins';
+    protected const UPLOAD_TYPE = 'custom'; // or 'media-library' based on your implementation
 
     protected $fillable = [
         'name',
@@ -35,8 +41,10 @@ class Admin extends Authenticatable
     ];
 
     protected $casts = [
-        'password' => 'hashed',
-        'type' => AdminType::class,
+        'password'      => 'hashed',
+        'type'          => AdminType::class,
+        'is_blocked'    => 'boolean',
+        'is_notify'     => 'boolean',
     ];
 
     protected $attributes = [
@@ -45,9 +53,19 @@ class Admin extends Authenticatable
         'image'             => 'default.png',
     ];
 
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->registerImageConversions($media);
+    }
+
     public function getImageUrlAttribute($value)
     {
-        return asset('uploads/admins/' . $this->attributes['image']);
+        return $this->handleImagePath(
+            file: $this->attributes['image'],
+            directory: self::UPLOAD_DIRECTORY,
+            collection: self::UPLOAD_COLLECTION,
+            uploadMethod: self::UPLOAD_TYPE
+        );
     }
 
     public function getRoleNameAttribute($value)
@@ -58,6 +76,21 @@ class Admin extends Authenticatable
     public function setFullPhoneAttribute(string $value): void
     {
         $this->attributes['full_phone'] = $this->attributes['country_code'] .$this->attributes['phone'] ;
+    }
+
+    public function setImageAttribute($value): void
+    {
+        if ($value instanceof \Illuminate\Http\UploadedFile && $value->isValid()) {
+            $this->attributes['image'] = $this->upload(
+                file: $value,
+                directory: self::UPLOAD_DIRECTORY,
+                collection: self::UPLOAD_COLLECTION,
+                uploadMethod: self::UPLOAD_TYPE
+            );
+            return;
+        }
+
+        $this->attributes['image'] = $value;
     }
 
     public function role()
