@@ -35,20 +35,20 @@ class SettingSeeder extends Seeder
                 'key'   => 'is_production',
                 'value' => 0,
                 'type'  => SettingTypeEnum::BOOLEAN,
-            ],[
-                'key' => 'google_map_api_key',
-                'value' => 'AIzaSyA9S2ndLXNQAUC10JXWv9ajJljAxcVF-eM',
-                'type'  => SettingTypeEnum::STRING,
             ]
         ];
         $pricingData = [
             [
                 'key' => 'app_commission',
-                'value' => 0.15, // 15% commission
+                'value' => 15, // 15% commission
                 'type'  => SettingTypeEnum::STRING,
             ],[
                 'key' => 'vat_ratio',
-                'value' => 0.15, // or 'fixed'
+                'value' => 15, // or 'fixed'
+                'type'  => SettingTypeEnum::STRING,
+            ],[
+                'key' => 'coupon_max_ratio',
+                'value' => 80,
                 'type'  => SettingTypeEnum::STRING,
             ],
         ];
@@ -80,7 +80,11 @@ class SettingSeeder extends Seeder
               'key'   => 'lng',
               'value' => '46.6753',
               'type'  => SettingTypeEnum::STRING,
-          ],
+          ],[
+                'key' => 'google_map_api_key',
+                'value' => 'AIzaSyA9S2ndLXNQAUC10JXWv9ajJljAxcVF-eM',
+                'type'  => SettingTypeEnum::STRING,
+            ]
         ];
         $smtpData = [
             [

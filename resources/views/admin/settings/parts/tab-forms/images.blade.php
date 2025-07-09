@@ -6,14 +6,21 @@
             <x-form.image :options="[
                 'name' => 'logo',
                 'label' => 'logo',
-                'class' => 'col-md-6',
+                'class' => 'col-md-4',
                 'value' => isset($settings['logo']) ? $settings['logo'] : ''
             ]" />
             <x-form.image :options="[
                 'name' => 'no_data_image',
                 'label' => 'no_data_image',
-                'class' => 'col-md-6',
+                'class' => 'col-md-4',
                 'value' => isset($settings['no_data_image']) ? $settings['no_data_image'] : ''
+            ]" />
+
+            <x-form.image :options="[
+                'name' => 'fav_icon',
+                'label' => 'fav_icon',
+                'class' => 'col-md-4',
+                'value' => isset($settings['fav_icon']) ? $settings['fav_icon'] : ''
             ]" />
 
 

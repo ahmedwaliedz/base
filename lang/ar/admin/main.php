@@ -137,4 +137,5 @@
         'no' => 'لا',
         'password_updated_successfully' => 'تم تحديث كلمة المرور بنجاح',
         'updated_successfully' => 'تم التحديث بنجاح',
+        'pricing' => 'التسعير',
     ];
