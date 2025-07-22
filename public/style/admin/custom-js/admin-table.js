@@ -21,7 +21,7 @@ function loadTable(filters) {
             'Accept': 'text/html'
         },
         beforeSend: ()=> {
-            showLoader();
+            showLoader(1500);
         },
         success: function(html) {
             setTimeout(() => {
@@ -79,25 +79,5 @@ function getFilters() {
 }
 
 $(document).ready(function() {
-    loadTable();
-});
-function toggleDeleteAllButton() {
-    const hasSelectedRows = $('tbody .dt-checkboxes:checked').length > 0;
-    if (hasSelectedRows) {
-        $('.delete-all-button').removeClass('d-none');
-    } else {
-        $('.delete-all-button').addClass('d-none');
-    }
-}
-
-$(document).on('click', 'thead .dt-checkboxes', function() {
-    const isChecked = $(this).prop('checked');
-    $('tbody .dt-checkboxes').prop('checked', isChecked);
-    toggleDeleteAllButton();
-});
-
-$(document).on('click', 'tbody .dt-checkboxes', function() {
-    const allChecked = $('tbody .dt-checkboxes:checked').length === $('tbody .dt-checkboxes').length;
-    $('thead .dt-checkboxes').prop('checked', allChecked);
-    toggleDeleteAllButton();
+    loadTable({'filters' : getFilters()});
 });

@@ -4,67 +4,75 @@
     <link rel="stylesheet" href="{{asset('style/admin/validation/form-validation.css')}}"/>
     <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/sweetalert2/sweetalert2.css')}}"/>
     <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/select2/select2.css')}}"/>
+    <link rel="stylesheet" href="{{asset('style/admin/css/single-upload.css')}}"/>
 @endpush
 
 @section('content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">{{ __('admin/main.create_admin') }}</h5>
-        <a href="{{ route('admin.admins.index') }}" class="btn btn-secondary">{{ __('admin/main.back') }}</a>
+    <div class="card">
+        <div class="card-body">
+            <form id="createAdminForm" class="mb-3 validated-form form" novalidate method="POST" action="{{ route('admin.admins.store') }}" enctype="multipart/form-data">
+                @csrf
+                <div class="row g-3">
+                    <x-form.image :options="['name' => 'image', 'label' => 'image', 'class' => 'col-md-12']" />
+
+                    <x-form.text :options="['name' => 'name', 'label' => 'name', 'class' => 'col-md-6', 'isRequired' => true]" />
+                    <x-form.number :options="['name' => 'phone', 'label' => 'phone', 'class' => 'col-md-4', 'isRequired' => true , 'minLength' => 9 , 'maxLength' => 15 ]" />
+                    <x-form.select  :options="['name' => 'country_code',    'label' => 'country_code',  'class' => 'col-md-2', 'isRequired' => true, 'options' => $countries]" />
+                    <x-form.email :options="['name' => 'email', 'label' => 'email', 'class' => 'col-md-6', 'isRequired' => true]" />
+                    <x-form.password :options="['name' => 'password', 'label' => 'password', 'class' => 'col-md-6', 'isRequired' => true]" />
+                    <x-form.select :options="['name' => 'type', 'label' => 'type', 'class' => 'col-md-4', 'isRequired' => true, 'options' => [
+                        ['id' => \App\Enums\AdminType::ADMIN->value, 'name' => \App\Enums\AdminType::ADMIN->label()],
+                        ['id' => \App\Enums\AdminType::SUPER_ADMIN->value, 'name' => \App\Enums\AdminType::SUPER_ADMIN->label()]
+                    ]]" />
+                    <x-form.select :options="['name' => 'role_id', 'label' => 'role', 'class' => 'col-md-4', 'options' => $roles , 'isRequired' => true]"  />
+                    <x-form.select :options="['name' => 'is_notify', 'value' => true, 'label' => 'receive_notifications' , 'class' => 'col-md-4', 'options' => [
+                        ['id' => 1, 'name' => __('admin/main.yes')],
+                        ['id' => 0, 'name' => __('admin/main.no')]
+                    ]]" />
+                </div>
+
+                <div class="pt-4 d-flex justify-content-center mt-3">
+                    <button type="submit" class="btn btn-primary me-sm-3 me-1 waves-effect waves-light submit-button">{{ __('admin/main.create') }}</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="card-body">
-        <form id="createAdminForm" class="needs-validation" novalidate method="POST" action="{{ route('admin.admins.store') }}">
-            @csrf
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="name" class="form-label">{{ __('admin/main.name') }}</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                    <div class="invalid-feedback">{{ __('admin/main.please_enter_name') }}</div>
-                </div>
-                <div class="col-md-6">
-                    <label for="email" class="form-label">{{ __('admin/main.email') }}</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                    <div class="invalid-feedback">{{ __('admin/main.please_enter_valid_email') }}</div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="password" class="form-label">{{ __('admin/main.password') }}</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
-                    <div class="invalid-feedback">{{ __('admin/main.please_enter_password') }}</div>
-                </div>
-                <div class="col-md-6">
-                    <label for="password_confirmation" class="form-label">{{ __('admin/main.confirm_password') }}</label>
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-                    <div class="invalid-feedback">{{ __('admin/main.please_confirm_password') }}</div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="role" class="form-label">{{ __('admin/main.role') }}</label>
-                    <select class="form-select" id="role" name="role_id" required>
-                        <option value="">{{ __('admin/main.select_role') }}</option>
-                        <!-- Roles will be populated here -->
-                    </select>
-                    <div class="invalid-feedback">{{ __('admin/main.please_select_role') }}</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">{{ __('admin/main.create') }}</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 @endsection
 
 @push('js')
     <script src="{{asset('style/admin/vendor/libs/sweetalert2/sweetalert2.js')}}"></script>
     <script src="{{asset('style/admin/js/extended-ui-sweetalert2.js')}}"></script>
     <script src="{{asset('style/admin/validation/jqBootstrapValidation.js')}}"></script>
-    <script src="{{asset('style/admin/vendor/libs/select2/select2.js')}}"></script>
+    <script src="{{asset('style/admin/js/single-upload.js')}}"></script>
     <script src="{{asset('style/admin/custom-js/submit-form.js')}}"></script>
     <script src="{{asset('style/admin/custom-js/handel-error.js')}}"></script>
     <script src="{{asset('style/admin/custom-js/error-handlers/show-validation-on-inputs.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-block.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-un-authorize.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+            // Function to handle role_id visibility and required attribute based on type selection
+            function handleRoleVisibility() {
+                const typeValue = $('select[name="type"]').val();
+                const roleContainer = $('select[name="role_id"]').parents('.form-group');
+                const roleSelect = $('select[name="role_id"]');
+
+                if (typeValue === 'super_admin') {
+                    roleContainer.fadeOut();
+                    roleSelect.prop('required', false);
+                } else {
+                    roleContainer.fadeIn();
+                    roleSelect.prop('required', true);
+                }
+            }
+
+            // Initial check on page load
+            handleRoleVisibility();
+
+            // Add event listener for type changes
+            $('select[name="type"]').on('change', function() {
+                handleRoleVisibility();
+            });
+        });
+    </script>
 @endpush

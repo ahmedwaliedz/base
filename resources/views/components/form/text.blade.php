@@ -52,7 +52,9 @@
             @endif
 
             @if($minLength) minLength="{{ $minLength }}" @endif
-{{--            @if($minLengthMessage) data-validation-minLength-message="{{  $minLengthMessage }}" @endif--}}
+            @if($maxLength) minLength="{{ $maxLength }}" @endif
+            @if($minLengthMessage) data-validation-minLength-message="{{  $minLengthMessage }} " @endif
+            @if($minLengthMessage) data-validation-maxLength-message="{{  $maxLengthMessage }} " @endif
 
         />
     </div>

@@ -130,4 +130,5 @@
         'no_data_description' => 'No data available to display',
         'start_date_greater_than_end_date' => 'Start date cannot be greater than end date',
         'end_date_smaller_than_start_date' => 'End date cannot be smaller than start date',
+        'no_roles_available' => 'No roles available. Please create a role first.',
     ];

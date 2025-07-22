@@ -26,6 +26,7 @@ class Text extends Component
     public bool $disabled;
     public bool $autofocus;
     public ?string $minLengthMessage;
+    public ?string $maxLengthMessage;
     public bool $isMultiLanguage;
     public function __construct(array $options) {
         $this->value = $options['value'] ?? null;
@@ -40,6 +41,7 @@ class Text extends Component
         $this->disabled = $options['disabled'] ?? false;
         $this->autofocus = $options['autofocus'] ?? false;
         $this->minLengthMessage =  __(self::VALIDATION_MIN_LENGTH, ['attribute' => $this->label, 'min' => $this->minLength]);
+        $this->maxLengthMessage =  __(self::VALIDATION_MAX_LENGTH, ['attribute' => $this->label, 'max' => $this->maxLength]);
         $this->isMultiLanguage = $options['isMultiLanguage'] ?? false;
     }
     public function render(): View|Closure|string

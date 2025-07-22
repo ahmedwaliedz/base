@@ -8,7 +8,7 @@
             <x-form.text    :options="['name' => 'phone',         'value' => $profile->phone,         'label' => 'phone',         'class' => 'col-md-5', 'isRequired' => true]" />
             <x-form.select  :options="['name' => 'country_code',  'value' => $profile->country_code,  'label' => 'country_code',  'class' => 'col-md-1', 'isRequired' => true, 'options' => $countries]" />
             <x-form.email   :options="['name' => 'email',         'value' => $profile->email,         'label' => 'email',         'class' => 'col-md-6', 'isRequired' => true]" />
-            <x-form.select  :options="['name' => 'is_notify',     'value' => $profile->is_notify,     'label' => 'is_notify',     'class' => 'col-md-6', 'options' => [['id' => 1, 'name' => __('admin/main.yes')], ['id' => 0, 'name' => __('admin/main.no')]]]" />
+            <x-form.select  :options="['name' => 'is_notify',     'value' => $profile->is_notify,     'label' => 'is_notify',     'class' => 'col-md-6', 'options' => [['id' => true, 'name' => __('admin/main.yes')], ['id' => false, 'name' => __('admin/main.no')]]]" />
         </div>
         <div class="pt-4 d-flex justify-content-center mt-3">
             <button type="submit" class="btn btn-primary me-sm-3 me-1 waves-effect waves-light submit-button">{{ __('admin/main.edit') }}</button>

@@ -10,6 +10,7 @@
         'system' => 'نظام',
         'redirecting' => 'جاري التحويل...',
         'super_admin' => 'مدير النظام',
+        'admin' => 'مدير',
         'settings' => 'الإعدادات',
         'profile' => 'الملف الشخصي',
         'total_admin_um' => 'إجمالي عدد :num مديرين',
@@ -138,4 +139,7 @@
         'password_updated_successfully' => 'تم تحديث كلمة المرور بنجاح',
         'updated_successfully' => 'تم التحديث بنجاح',
         'pricing' => 'التسعير',
+        'create_admin' => 'إنشاء مشرف جديد',
+        'admin_created' => 'تم إنشاء المشرف بنجاح',
+        'no_roles_available' => 'لا توجد صلاحيات متاحة. يرجى إنشاء صلاحية أولاً.',
     ];

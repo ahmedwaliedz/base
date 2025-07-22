@@ -3,11 +3,11 @@
         <thead class="border-top">
         <tr>
             @if($hasCheckbox)
-                <th class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></th>
+                <th class="dt-checkboxes-cell"><input type="checkbox"  class="dt-checkboxes form-check-input"></th>
             @endif
 
             @foreach($headers as $header)
-                <th>{{ $header }}</th>
+                <th class="align-center">{{ $header }}</th>
             @endforeach
 
             @if($hasActions)
@@ -30,5 +30,5 @@
         </div>
     @endif
 
-    {{$rows->links('admin.layouts.pagination')}}
 </div>
+{{$rows->links('admin.layouts.pagination')}}

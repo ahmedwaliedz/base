@@ -13,6 +13,7 @@ $(document).on('click', '.delete-all-button' , function(e) {
     });
     deleteWithSwl(deleteAllRoute, selected);
 });
+
 function deleteWithSwl(Route , selected) {
     Swal.fire({
         title: window.translations.are_you_sure,
@@ -59,6 +60,7 @@ function deleteWithSwl(Route , selected) {
         }
     });
 }
+
 function toggleDeleteAllButton() {
     const hasSelectedRows = $('.table-content .dt-checkboxes:checked').length > 0;
     if (hasSelectedRows) {
