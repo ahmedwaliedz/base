@@ -22,7 +22,7 @@
                 @endif
                 @if($isRequired) required  @endif
                 @if($minLength) minlength="{{ $minLength }}" @endif
-                @if($maxLength) maxlength="{{ $maxLength }}" @endif
+{{--                @if($maxLength) maxlength="{{ $maxLength }}" @endif--}}
             />
         </div>
     @endforeach
@@ -51,10 +51,7 @@
                 data-validation-required-message="{{  $requiredMessage }}"
             @endif
 
-            @if($minLength) minLength="{{ $minLength }}" @endif
-            @if($maxLength) minLength="{{ $maxLength }}" @endif
-            @if($minLengthMessage) data-validation-minLength-message="{{  $minLengthMessage }} " @endif
-            @if($minLengthMessage) data-validation-maxLength-message="{{  $maxLengthMessage }} " @endif
+{{--            @if($minLength) minlength="{{ $minLength }}" @endif--}}
 
         />
     </div>

@@ -2,6 +2,7 @@ $(document).on('click', '.delete-record', function(e) {
     e.preventDefault();
     let selected = [];
     selected.push($(this).data('id'));
+    const deleteAllRoute = $(this).data('route');
     deleteWithSwl(deleteAllRoute, selected);
 });
 
@@ -11,6 +12,7 @@ $(document).on('click', '.delete-all-button' , function(e) {
     $('.table-content .dt-checkboxes:checked').each(function() {
         selected.push($(this).data('id'));
     });
+    const deleteAllRoute = $(this).data('route');
     deleteWithSwl(deleteAllRoute, selected);
 });
 

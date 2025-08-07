@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Role\Store;
 use App\Http\Requests\Admin\Role\Update;
+use App\Models\Role;
 use App\Services\Admin\Roles\RoleService;
 use App\Traits\Response\ResponseTrait;
 use Illuminate\Http\JsonResponse;
@@ -27,10 +28,14 @@ class RoleController extends Controller
      *
      * @return View
      */
-    public function index(): View
+    public function index(Request $request)
     {
-        $roles = $this->roleService->getAllRoles();
-        return view('admin.roles.index', compact('roles'));
+        if ($request->ajax()) {
+//            $roles = $this->roleService->getAllRoles();
+            $roles = Role::search($request->filters)->paginate(9);
+            return view('admin.roles.parts.cards', compact('roles'))->render();
+        }
+        return view('admin.roles.index');
     }
 
     /**

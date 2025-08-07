@@ -14,3 +14,11 @@
 .show_filter.active .ti-filter-plus {
     transform: rotate(45deg);
 }
+.custom-icon{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}

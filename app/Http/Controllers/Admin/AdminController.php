@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Admin\StoreAdminRequest;
 use App\Http\Requests\Admin\Admin\StoreRequest;
 use App\Models\Admin;
 use App\Models\Country;
@@ -17,24 +16,17 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
+        $admins = Admin::has('role')->search($request->filters)->paginate($request->filters['per_page'] ?? 30);
+        $roles = Role::get();
         if ($request->ajax()) {
-            $admins = Admin::has('role')->search($request->filters)->paginate(30);
             return view('admin.admins.table', compact('admins'))->render();
         }
-        $roles = Role::get();
         return view('admin.admins.index', get_defined_vars());
     }
 
     public function create()
     {
-        $roles = Role::get();
-
-        // Check if there are any roles, if not redirect to create role page
-        if ($roles->isEmpty()) {
-            return redirect()->route('admin.roles.create')->with('warning', __('admin/main.no_roles_available'));
-        }
-
-        $roles = $roles->map(function($role) {
+        $roles = Role::get()->map(function($role) {
             return [
                 'id' => $role->id,
                 'name' => $role->name

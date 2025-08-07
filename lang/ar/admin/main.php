@@ -139,7 +139,11 @@
         'password_updated_successfully' => 'تم تحديث كلمة المرور بنجاح',
         'updated_successfully' => 'تم التحديث بنجاح',
         'pricing' => 'التسعير',
+        'add_new_role_not_exsits' => 'إضافة صلاحية جديدة غير موجودة',
         'create_admin' => 'إنشاء مشرف جديد',
         'admin_created' => 'تم إنشاء المشرف بنجاح',
         'no_roles_available' => 'لا توجد صلاحيات متاحة. يرجى إنشاء صلاحية أولاً.',
+        'per_page' => 'لكل صفحة',
+        'custom_value' => 'قيمة مخصصة',
+        'apply' => 'تطبيق',
     ];

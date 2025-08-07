@@ -4,28 +4,29 @@
     <link rel="stylesheet" href="{{asset('style/admin/css/filter.css')}}"/>
 @endpush
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <x-table.buttons
-                createRoute="{{ route('admin.admins.create') }}"
-                :hasNotification="true"
-                :hasEmail="true"
-                :hasDelete="true"
-                :hasReload="true"
-                :hasFilter="true"
-                :hasExport="true"
-                :exportPdf="true"
-                :exportExcel="true"
-                :exportCopy="true"
-            >
-            </x-table.buttons>
+    <x-table.buttons
+        createRoute="{{ route('admin.admins.create') }}"
+        :hasNotification="true"
+        :hasDeleteAll="true"
+        :deleteAllRoute="route('admin.admins.destroyAll')"
+        :hasEmail="true"
+        :hasReload="true"
+        :hasFilter="true"
+        :hasExport="true"
+        :exportPdf="true"
+        :exportExcel="true"
+        :exportCopy="true"
+        :hasPagination="true"
+        :perPage="1"
+    >
+    </x-table.buttons>
 
-            <x-table.filter
-                :mainCol="'col-md-3'"
-                :hasStartDate="true"
-                :hasEndDate="true"
-                :hasOrderBy="true"
-                :filters="[
+    <x-table.filter
+        :mainCol="'col-md-3'"
+        :hasStartDate="true"
+        :hasEndDate="true"
+        :hasOrderBy="true"
+        :filters="[
                     [
                         'type' => 'text',
                         'name' => 'name'
@@ -54,16 +55,17 @@
                         })->toArray()
                     ]
                 ]"
-            >
-            </x-table.filter>
-        </div>
-        <div id="table-container" style="min-height: 400px;">
-            <div class="card-datatable table-responsive table-content">
+    >
+    </x-table.filter>
+    <x-table.table :hasCheckbox="true" :hasActions="true" :rows="$admins" :headers="[
+            __('admin/main.name'),
+            __('admin/main.role'),
+            __('admin/main.status'),
+        ]"
+    >
 
-            </div>
-        </div>
+    </x-table.table>
 
-    </div>
     <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
             <div class="modal-content">
@@ -77,17 +79,22 @@
 
                         <div class="col-12 col-md-12">
                             <label class="form-label" for="modalAddressLastName">الرسالة بالعربية</label>
-                            <textarea name="" class="form-control" id="" cols="30" rows="5" style="resize: none;"></textarea>
+                            <textarea name="" class="form-control" id="" cols="30" rows="5"
+                                      style="resize: none;"></textarea>
                         </div>
 
                         <div class="col-12 col-md-12">
                             <label class="form-label" for="modalAddressLastName">الرسالة بالانجليزية</label>
-                            <textarea name="" class="form-control" id="" cols="30" rows="5" style="resize: none;"></textarea>
+                            <textarea name="" class="form-control" id="" cols="30" rows="5"
+                                      style="resize: none;"></textarea>
                         </div>
 
                         <div class="col-12 text-center mt-4">
-                            <button type="submit" class="btn btn-primary me-sm-3 me-1"><i class="fa fa-check-double me-1"></i>ارسال</button>
-                            <button type="reset" class="btn btn-label-danger me-sm-3 me-1" data-bs-dismiss="modal" aria-label="Close">
+                            <button type="submit" class="btn btn-primary me-sm-3 me-1"><i
+                                    class="fa fa-check-double me-1"></i>ارسال
+                            </button>
+                            <button type="reset" class="btn btn-label-danger me-sm-3 me-1" data-bs-dismiss="modal"
+                                    aria-label="Close">
                                 <i class="fa fa-x me-1"> </i>الغاء
                             </button>
                         </div>
@@ -103,26 +110,5 @@
     <script src="{{asset('style/admin/js/extended-ui-sweetalert2.js')}}"></script>
     <script src="{{asset('style/admin/custom-js/filter.js')}}"></script>
     <script src="{{asset('style/admin/custom-js/admin-table.js')}}"></script>
-    <script>
-        const deleteAllRoute = "{{ route('admin.admins.destroyAll') }}";
-        const loader = `
-            <div class="text-center p-5 table-loader">
-                <lottie-player src="{{ asset('storage/uploads/settings/Load.json') }}" background="transparent" speed="1" style="width: 350px; height: 350px; margin: 0 auto;" loop autoplay></lottie-player>
-            </div>
-        `;
-
-        window.translations = {
-            error_loading_data: "{{ __('admin/main.error_loading_data') }}",
-            retry: "{{ __('admin/main.retry') }}",
-            lotti: "{{ asset('storage/uploads/settings/fail.json') }}",
-            start_date_error: "{{ __('admin/main.start_date_greater_than_end_date') }}",
-            end_date_error: "{{ __('admin/main.end_date_smaller_than_start_date') }}",
-            are_you_sure : "{{ __('admin/main.are_you_sure') }}",
-            are_you_sure_want_delete : "{{ __('admin/main.are_you_sure_to_delete') }}",
-            confirmButtonText : '{{ __('admin/main.confirm') }}' ,
-            cancelButtonText : '{{ __('admin/main.cancel') }}',
-            deleted_successfully: "{{ __('admin/main.deleted_successfully') }}",
-        };
-    </script>
     <script src="{{asset('style/admin/custom-js/delete.js')}}"></script>
 @endpush

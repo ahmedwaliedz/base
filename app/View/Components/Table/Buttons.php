@@ -15,7 +15,8 @@ class Buttons extends Component
         public string $createRoute      = '',
         public bool $hasNotification    = false,
         public bool $hasEmail           = false,
-        public bool $hasDelete          = false,
+        public bool $hasDeleteAll       = false,
+        public bool $deleteAllRoute     = false,
         public bool $hasReload          = false,
         public bool $hasFilter          = false,
         public bool $hasExtraButtons    = false,
@@ -24,7 +25,9 @@ class Buttons extends Component
         public bool $exportExcel        = false,
         public bool $exportWord         = false,
         public bool $exportJson         = false,
-        public bool $exportCopy         = false
+        public bool $exportCopy         = false,
+        public bool $hasPagination      = false,
+        public int $perPage             = 30
     ) {
     }
 

@@ -8,7 +8,7 @@ trait OrderableTrait
     {
         $orderBy = $searchData['order_by'] ?? 'descending';
         $direction = $this->getOrderDirection($orderBy);
-        return $query->orderBy('created_at', $direction);
+        return $query->orderBy('id', $direction);
     }
 
     protected function getOrderDirection($orderBy): string
