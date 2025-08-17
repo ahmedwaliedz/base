@@ -1,5 +1,5 @@
 @foreach($roles as $key => $role)
-    <div class="col-xl-4 col-lg-6 col-md-6">
+    <div class="col-xl-4 col-lg-6 col-md-6 data-rows">
         <div class="card h-100">
             <div class="card-body">
 
@@ -26,7 +26,7 @@
     </div>
 @endforeach
 @if($roles->count() == 0)
-    <div class="text-center py-5 mt-5">
+    <div class="text-center py-5 mt-5 data-rows">
         <div class="d-flex justify-content-center align-items-center flex-column">
             <i class="ti ti-file-off text-secondary mb-2" style="font-size: 3rem;"></i>
             <h5 class="mb-1">{{__('admin/main.no_data_found')}}</h5>
@@ -34,4 +34,6 @@
         </div>
     </div>
 @endif
-{{$roles->links('admin.layouts.pagination')}}
+<div class="data-rows">
+    {{$roles->links('admin.layouts.pagination')}}
+</div>

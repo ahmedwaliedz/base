@@ -5,16 +5,19 @@ function showTableLoader() {
 }
 
 function hideTableLoader(html) {
-    $('.table-loader').fadeOut()
-    setTimeout(() => {
-        $('.append-page-content').append(html).fadeIn();
-    } , 500);
-
+    $('.table-loader').fadeOut('fast', function () {
+        const $newContent = $(html).hide();
+        $('.append-page-content').append($newContent);
+        $newContent.fadeIn('slow');
+    });
 }
 
 function loadTable(filters) {
     $.ajax({
-        url: window.adminDataUrl ? window.adminDataUrl : window.location.href, method: 'GET', data: filters, headers: {
+        url: window.adminDataUrl ? window.adminDataUrl : window.location.href,
+        method: 'GET',
+        data: filters,
+        headers: {
             'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html'
         }, beforeSend: () => {
             showTableLoader();

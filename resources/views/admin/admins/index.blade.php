@@ -17,7 +17,7 @@
         :exportExcel="true"
         :exportCopy="true"
         :hasPagination="true"
-        :perPage="1"
+        :perPage="20"
     >
     </x-table.buttons>
 
@@ -57,12 +57,14 @@
                 ]"
     >
     </x-table.filter>
+
     <x-table.table :hasCheckbox="true" :hasActions="true" :rows="$admins" :headers="[
             __('admin/main.name'),
             __('admin/main.role'),
             __('admin/main.status'),
         ]"
     >
+
 
     </x-table.table>
 

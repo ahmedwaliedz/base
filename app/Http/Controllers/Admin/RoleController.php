@@ -32,7 +32,7 @@ class RoleController extends Controller
     {
         if ($request->ajax()) {
 //            $roles = $this->roleService->getAllRoles();
-            $roles = Role::search($request->filters)->paginate(9);
+            $roles = Role::search($request->filters)->paginate($request->filters['per_page'] ?? 9);
             return view('admin.roles.parts.cards', compact('roles'))->render();
         }
         return view('admin.roles.index');

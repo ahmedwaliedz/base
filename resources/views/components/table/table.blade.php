@@ -1,7 +1,7 @@
 <div class="card mt-4">
     <div class="card-datatable table-responsive">
         <table class="datatables-products table">
-            <thead class="border-top">
+            <thead class= "border-top">
             <tr>
                 @if($hasCheckbox)
                     <th class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input">

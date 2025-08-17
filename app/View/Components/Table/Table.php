@@ -4,21 +4,14 @@ namespace App\View\Components\Table;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 
 class Table extends Component
 {
-    public ?bool $hasCheckbox;
-    public ?bool $hasActions;
-    public ?array $headers;
-    public  $rows;
-
-    public function __construct(bool $hasCheckbox = false, bool $hasActions = false, array $headers = [],  $rows = null)
+    public function __construct(public bool $hasCheckbox = false ,public bool $hasActions = false,public array $headers = [], public  $rows)
     {
-        $this->hasCheckbox = $hasCheckbox;
-        $this->hasActions = $hasActions;
-        $this->headers = $headers;
-        $this->rows = $rows ;
+
     }
 
     /**
