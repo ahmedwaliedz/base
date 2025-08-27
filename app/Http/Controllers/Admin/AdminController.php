@@ -16,6 +16,7 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
+
         $admins = Admin::has('role')->search($request->filters)->paginate($request->filters['per_page'] ?? 30);
         $roles = Role::get();
         if ($request->ajax()) {

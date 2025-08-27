@@ -1,8 +1,10 @@
 @extends('admin.layouts.master')
 @push('css')
+    <link rel="stylesheet" href="{{asset('style/admin/validation/form-validation.css')}}"/>
     <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/sweetalert2/sweetalert2.css')}}"/>
     <link rel="stylesheet" href="{{asset('style/admin/css/filter.css')}}"/>
 @endpush
+
 @section('content')
     <x-table.buttons
         createRoute="{{ route('admin.admins.create') }}"
@@ -62,49 +64,17 @@
             __('admin/main.name'),
             __('admin/main.role'),
             __('admin/main.status'),
-        ]"
-    >
-
-
+        ]" >
     </x-table.table>
 
-    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
-            <div class="modal-content">
-                <div class="modal-body p-0">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <div class="mb-4">
-                        <h3 class="address-title mb-2">ارسال اشعار</h3>
-                        <!-- <p class="text-muted address-subtitle">من فضلك ادخل رسالتك</p> -->
-                    </div>
-                    <form id="addNewAddressForm" class="row g-3" onsubmit="return false">
+    <x-model.notification :route="route('admin.notifications.sendNotifications')" :class="'App\Models\Admin'" >
+    </x-model.notification>
 
-                        <div class="col-12 col-md-12">
-                            <label class="form-label" for="modalAddressLastName">الرسالة بالعربية</label>
-                            <textarea name="" class="form-control" id="" cols="30" rows="5"
-                                      style="resize: none;"></textarea>
-                        </div>
+    <x-model.email>
+    </x-model.email>
 
-                        <div class="col-12 col-md-12">
-                            <label class="form-label" for="modalAddressLastName">الرسالة بالانجليزية</label>
-                            <textarea name="" class="form-control" id="" cols="30" rows="5"
-                                      style="resize: none;"></textarea>
-                        </div>
 
-                        <div class="col-12 text-center mt-4">
-                            <button type="submit" class="btn btn-primary me-sm-3 me-1"><i
-                                    class="fa fa-check-double me-1"></i>ارسال
-                            </button>
-                            <button type="reset" class="btn btn-label-danger me-sm-3 me-1" data-bs-dismiss="modal"
-                                    aria-label="Close">
-                                <i class="fa fa-x me-1"> </i>الغاء
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+
 @endsection
 
 @push('js')
@@ -113,4 +83,10 @@
     <script src="{{asset('style/admin/custom-js/filter.js')}}"></script>
     <script src="{{asset('style/admin/custom-js/admin-table.js')}}"></script>
     <script src="{{asset('style/admin/custom-js/delete.js')}}"></script>
+    <script src="{{asset('style/admin/validation/jqBootstrapValidation.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/submit-form.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/handel-error.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-validation-on-inputs.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-block.js')}}"></script>
+    <script src="{{asset('style/admin/custom-js/error-handlers/show-un-authorize.js')}}"></script>
 @endpush

@@ -28,7 +28,11 @@ $(document).on('submit', '.validated-form', function(e) {
                 showConfirmButton: false,
                 timer: 2000
             }).then((result) => {
-                window.location.replace(response.data.route)
+                if (response.data && response.data.route) {
+                    window.location.replace(response.data.route);
+                } else {
+                    window.location.reload();
+                }
             });
         },
         error: (xhr) => {

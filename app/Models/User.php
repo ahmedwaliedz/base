@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ModelNotificationType;
 use App\Traits\GeneralTrait;
 use App\Traits\HandleNumbersTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,15 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable , SoftDeletes , GeneralTrait , HandleNumbersTrait;
+
+    /**
+     * Available notification types for users
+     *
+     * @var array
+     */
+    protected static array $availableNotificationTypes = [
+        ModelNotificationType::ACTIVE,
+    ];
 
     protected $fillable = [
         'name',
@@ -57,6 +67,16 @@ class User extends Authenticatable
     public function setFullPhoneAttribute()
     {
         $this->attributes['full_phone'] = $this->fixPhone($this->attributes['country_code'])  . $this->fixPhone($this->attributes['phone']);
+    }
+
+    /**
+     * Get available notification types for users
+     *
+     * @return array
+     */
+    public static function getAvailableNotificationTypes(): array
+    {
+        return self::$availableNotificationTypes;
     }
 
 

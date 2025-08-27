@@ -134,4 +134,6 @@
         'per_page' => 'Per Page',
         'custom_value' => 'Custom Value',
         'apply' => 'Apply',
+        'notification_sent_successfully' => 'Notification sent successfully',
+        'failed_to_send_notification' => 'Failed to send notification',
     ];

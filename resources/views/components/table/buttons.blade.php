@@ -7,13 +7,13 @@
         @endif
 
         @if($hasNotification)
-            <button type="button" data-bs-toggle="modal" data-bs-target="#notificationModal" class="me-1 btn btn-outline-warning waves-effect">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#notificationModal" data-id="group" class="send-notification me-1 btn btn-outline-warning waves-effect">
                 <span class="ti-xs ti ti-bell-plus me-1"></span>{{ __('admin/main.send_notification') }}
             </button>
         @endif
 
         @if($hasEmail)
-            <button type="button" data-bs-toggle="modal" data-bs-target="#notificationModal" class="me-1 btn btn-outline-info waves-effect">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#emailModal" class="me-1 btn btn-outline-info waves-effect">
                 <span class="ti-xs ti ti-mail-plus me-1"></span>{{ __('admin/main.send_email') }}
             </button>
         @endif

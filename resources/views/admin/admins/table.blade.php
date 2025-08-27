@@ -39,7 +39,7 @@
                     <i class="text-info ti ti-eye-check"></i>
                 </a>
 
-                <a  data-bs-toggle="modal" data-bs-target="#notificationModal" class="btn btn-sm btn-icon shadow-none">
+                <a  data-bs-toggle="modal" data-bs-target="#notificationModal" data-id="{{$admin->id}}" class="send-notification btn btn-sm btn-icon shadow-none">
                     <i class="text-success ti ti-bell-star"></i>
                 </a>
 
