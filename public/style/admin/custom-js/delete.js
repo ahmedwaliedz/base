@@ -62,9 +62,9 @@ function deleteWithSwl(Route , selected) {
         }
     });
 }
-
+toggleDeleteAllButton()
 function toggleDeleteAllButton() {
-    const hasSelectedRows = $('.table-content .dt-checkboxes:checked').length > 0;
+    const hasSelectedRows = $('tbody .dt-checkboxes:checked').length > 0;
     if (hasSelectedRows) {
         $('.delete-all-button').removeClass('d-none');
     } else {

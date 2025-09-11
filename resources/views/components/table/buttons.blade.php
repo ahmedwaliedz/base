@@ -19,7 +19,7 @@
         @endif
 
         @if($hasDeleteAll)
-            <button data-route="{{$deleteAllRoute}}"  type="button" class="me-1 btn btn-outline-danger waves-effect delete-all-button d-none">
+            <button data-route="{{$deleteAllRoute}}"  type="button" class="me-1 btn btn-outline-danger waves-effect delete-all-button">
                 <span class="ti-xs ti ti-trash-off me-1 "></span>{{ __('admin/main.delete_selected') }}
             </button>
         @endif
