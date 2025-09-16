@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Traits;
+
+use Illuminate\Support\Str;
+
 trait GeneralTrait
 {
     public function languages() : array
@@ -26,6 +29,15 @@ trait GeneralTrait
             $str .= $chars[mt_rand(0, strlen($chars) - 1)];
         }
         return $str;
+    }
+
+    
+    public static function smallPluralName(): string {
+        return Str::plural(strtolower(class_basename(static::class)));
+    }
+
+    public static function smallSingularName(): string {
+        return strtolower(class_basename(static::class));
     }
 
 }
