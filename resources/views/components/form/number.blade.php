@@ -21,5 +21,7 @@
         @if($minLength) minlength="{{ $minLength }}" @endif
         @if($maxLength) maxlength="{{ $maxLength }}" @endif
         data-validation-number-mxessage="{{  __('admin/validation.number') }}"
+        @if($minLengthMessage) data-validation-minLength-message="{{  $minLengthMessage }} " @endif
+        @if($minLengthMessage) data-validation-maxLength-message="{{  $maxLengthMessage }} " @endif
     />
 </div>

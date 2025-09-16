@@ -16,5 +16,23 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    {{--const loader = `--}}
+    {{--        <div class="text-center p-5 table-loader">--}}
+    {{--            <lottie-player src="{{ asset('storage/uploads/settings/Load.json') }}" background="transparent" speed="1" style="width: 200px; height: 200px; margin: 0 auto;" loop autoplay></lottie-player>--}}
+    {{--        </div>--}}
+    {{--    `;--}}
+
+    window.translations = {
+        error_loading_data: "{{ __('admin/main.error_loading_data') }}",
+        retry: "{{ __('admin/main.retry') }}",
+        lotti: "{{ asset('storage/uploads/settings/fail.json') }}",
+        start_date_error: "{{ __('admin/main.start_date_greater_than_end_date') }}",
+        end_date_error: "{{ __('admin/main.end_date_smaller_than_start_date') }}",
+        are_you_sure: "{{ __('admin/main.are_you_sure') }}",
+        are_you_sure_want_delete: "{{ __('admin/main.are_you_sure_to_delete') }}",
+        confirmButtonText: '{{ __('admin/main.confirm') }}',
+        cancelButtonText: '{{ __('admin/main.cancel') }}',
+        deleted_successfully: "{{ __('admin/main.deleted_successfully') }}",
+    };
 </script>
 @stack('js')

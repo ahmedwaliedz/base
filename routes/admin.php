@@ -50,7 +50,7 @@ use App\Http\Controllers\Admin\{
                     Route::get('', [NotificationController::class, 'index'])->name('notifications.index');
                     Route::get('/send-email', [NotificationController::class, 'sendEmail'])->name('notifications.sendEmail');
                     Route::get('/send-sms', [NotificationController::class, 'sendSms'])->name('notifications.sendSms');
-                    Route::get('/send-notification', [NotificationController::class, 'sendNotification'])->name('notifications.sendNotification');
+                    Route::post('/send-notifications', [NotificationController::class, 'sendNotifications'])->name('notifications.sendNotifications');
                 });
 
                 // settings routes
