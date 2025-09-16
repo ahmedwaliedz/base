@@ -60,7 +60,7 @@
         @endforeach
         {{ $slot ?? '' }}
 
-        <div class="col-md-12 mt-3 text-end">
+        <div class="col-md-12 mt-3 text-end d-flex align-items-center justify-content-end flex-wrap gap-3">
             <button type="submit" class="btn btn-primary">
                 <i class="ti ti-search me-1"></i> {{ __('admin/main.search') }}
             </button>

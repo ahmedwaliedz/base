@@ -4,7 +4,7 @@
     <title> {{cache()->get('settings')['name'][adminLang()]}} | @stack('title' , currentRouteNameWithoutAdmin()) </title>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="description" content="" />
-    <link rel="icon" type="image/x-icon" href="{{asset('style/admin/img/favicon/favicon.ico')}}" />
+    <link rel="icon" type="image/x-icon" href="{{cache()->get('settings')['fav_icon']}}" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

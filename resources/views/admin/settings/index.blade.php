@@ -10,12 +10,14 @@
 <div class="nav-align-top mb-4">
     <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
         @include('admin.settings.parts.tab-buttons.main')
+        @include('admin.settings.parts.tab-buttons.pricing')
         @include('admin.settings.parts.tab-buttons.images')
         @include('admin.settings.parts.tab-buttons.smtp-data')
         @include('admin.settings.parts.tab-buttons.location')
     </ul>
     <div class="tab-content">
         @include('admin.settings.parts.tab-forms.main')
+        @include('admin.settings.parts.tab-forms.pricing')
         @include('admin.settings.parts.tab-forms.images')
         @include('admin.settings.parts.tab-forms.smtp-data')
         @include('admin.settings.parts.tab-forms.location')

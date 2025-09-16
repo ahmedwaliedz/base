@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\AdminType;
+use App\Enums\ModelNotificationType;
 use App\Traits\Filters\FilterableTrait;
 use App\Traits\GeneralTrait;
 use App\Traits\HandleNumbersTrait;
@@ -18,6 +19,16 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Admin extends Authenticatable implements HasMedia
 {
     use HasFactory, Notifiable, SoftDeletes, GeneralTrait, HandleNumbersTrait, FilterableTrait, UploadTrait, InteractsWithMedia;
+
+    /**
+     * Available notification types for admins
+     *
+     * @var array
+     */
+    protected static array $availableNotificationTypes = [
+        ModelNotificationType::BLOCKED,
+        ModelNotificationType::NOTBLOCKED,
+    ];
 
     protected const UPLOAD_DIRECTORY = 'admins';
     protected const UPLOAD_COLLECTION = 'admins';
@@ -115,4 +126,13 @@ class Admin extends Authenticatable implements HasMedia
         return $query;
     }
 
+    /**
+     * Get available notification types for admins
+     *
+     * @return array
+     */
+    public static function getAvailableNotificationTypes(): array
+    {
+        return self::$availableNotificationTypes;
+    }
 }

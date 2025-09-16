@@ -19,11 +19,11 @@ class RoleService
      *
      * @return Collection
      */
-    public function getAllRoles(): Collection
+    public function getAllRoles()
     {
         return Role::with(['admins' => function ($query) {
             $query->limit(5);
-        }])->get();
+        }])->paginate(9);
     }
 
     /**

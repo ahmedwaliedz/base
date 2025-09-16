@@ -12,3 +12,30 @@
         transform: rotate(360deg);
     }
 }
+
+.loader-rocket {
+    width: 300px;
+    height: 100%;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.ti-chevron-left, .ti-chevron-right {
+    transform: rotateY(-180deg);
+}
+
+#table-container {
+    min-height: 400px;
+}
+
+@media (max-width: 768px) {
+    .loader-rocket {
+        width: 200px;
+    }
+}
