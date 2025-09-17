@@ -2,20 +2,19 @@
 namespace App\Models;
 
 use App\Traits\GeneralTrait;
+use App\Traits\Upload\BaseFilesTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class BaseModel extends Model {
 
-    use GeneralTrait;
+    use GeneralTrait, BaseFilesTrait;
 
     public const FILES = [];
 
     public const PATH = null;
 
     public const CACHE_KEY = null;
-
-    public const RELATIONS = [];
 
     protected static function deleteModelCache() {
         if (defined(static::class . "::CACHE_KEY")) {
