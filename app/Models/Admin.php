@@ -3,20 +3,15 @@ namespace App\Models;
 
 use App\Enums\AdminType;
 use App\Enums\ModelNotificationType;
-use App\Traits\Filters\FilterableTrait;
-use App\Traits\GeneralTrait;
-use App\Traits\HandleNumbersTrait;
-use App\Traits\Upload\UploadTrait;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\Models\BaseAuthModelTrait;
+use App\Traits\Models\BaseModelTrait as ModelsBaseModelTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Admin extends Authenticatable implements HasMedia {
-    use HasFactory, Notifiable, SoftDeletes, GeneralTrait, HandleNumbersTrait, FilterableTrait, UploadTrait, InteractsWithMedia;
+
+    use ModelsBaseModelTrait, BaseAuthModelTrait;
 
     /**
      * Available notification types for admins
@@ -26,6 +21,10 @@ class Admin extends Authenticatable implements HasMedia {
     protected static array $availableNotificationTypes = [
         ModelNotificationType::BLOCKED,
         ModelNotificationType::NOTBLOCKED,
+    ];
+
+    protected const FILES = [
+        'image',
     ];
 
     protected const UPLOAD_DIRECTORY  = 'admins';
@@ -70,10 +69,6 @@ class Admin extends Authenticatable implements HasMedia {
         return $this->role_id ? $this->role->name : __('admin/main.super_admin');
     }
 
-    public function setFullPhoneAttribute(string $value): void {
-        $this->attributes['full_phone'] = $this->attributes['country_code'] . $this->attributes['phone'];
-    }
-
     public function role() {
         return $this->belongsTo(Role::class);
     }
@@ -83,15 +78,6 @@ class Admin extends Authenticatable implements HasMedia {
             'label' => $this->is_blocked ? __('admin/main.blocked') : __('admin/main.active'),
             'class' => $this->is_blocked ? 'bg-label-warning' : 'bg-label-success',
         ];
-    }
-
-    public function scopeStatus($query, $status) {
-        if ($status === 'active') {
-            return $query->where('is_blocked', false);
-        } elseif ($status === 'blocked') {
-            return $query->where('is_blocked', true);
-        }
-        return $query;
     }
 
     /**
