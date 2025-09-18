@@ -12,8 +12,7 @@ trait BaseModelTrait {
 
     use GeneralTrait, BaseFilesTrait, InteractsWithMedia,
     FilterableTrait, HasDynamicRelations,
-    HasTranslationsScope,
-    Translatable {
+    Translatable, HasTranslationsScope {
         Translatable::getAttribute insteadof BaseFilesTrait;
         BaseFilesTrait::getAttribute as filesGetAttribute;
 

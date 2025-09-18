@@ -5,9 +5,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\App;
 
 trait HasTranslationsScope {
-    public function scopeTranslations(Builder $query, array $fields) {
-        $table            = $this->getTable();             // countries
-        $translationTable = $this->getTranslationsTable(); // ييجي من Translatable
+    public function scopeSelectWithTrans(Builder $query, array $fields) {
+        $table            = $this->getTable();             // ex: roles
+        $translationTable = $this->getTranslationsTable(); // ex: role_translations
         $locale           = App::getLocale();
 
         $selects = [];
@@ -20,7 +20,7 @@ trait HasTranslationsScope {
             if (in_array($colName, $this->translatedAttributes ?? [])) {
                 $selects[] = $alias
                 ? "$translationTable.$colName as $alias"
-                : "$translationTable.$colName";
+                : "$translationTable.$colName as $colName";
             } else {
                 $selects[] = $alias
                 ? "$table.$colName as $alias"
@@ -29,6 +29,7 @@ trait HasTranslationsScope {
         }
 
         return $query
+            ->without('translations') // remove relation eager load
             ->join(
                 $translationTable,
                 "$table.id",
@@ -36,7 +37,9 @@ trait HasTranslationsScope {
                 "$translationTable.{$this->getForeignKey()}"
             )
             ->where("$translationTable.locale", $locale)
-            ->select($selects);
+            ->select($selects)
+            ->addSelect([])      // force only selected
+            ->setEagerLoads([]); // prevent auto eager loads
     }
 
 }

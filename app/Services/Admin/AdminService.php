@@ -2,6 +2,7 @@
 namespace App\Services\Admin;
 
 use App\Models\Admin;
+use App\Models\Country;
 use App\Models\Role;
 
 class AdminService extends AdminBaseService {
@@ -11,28 +12,16 @@ class AdminService extends AdminBaseService {
     }
 
     public function indexVars(): array {
+        dd(Role::selectWithTrans(['id as role_id' ,'name'])->get()->toArray());
         return [
-            'roles' => Role::get(),
+            'roles' => Role::selectWithTrans(['id' ,'name'])->get()->toArray(),
         ];
     }
 
-    $roles = Role::get()->map(function ($role) {
-        return [
-            'id'   => $role->id,
-            'name' => $role->name,
-        ];
-    })->toArray();
-    $countries = Country::where('is_active', true)->get()->map(function ($country) {
-        return [
-            'id'   => $country->code,
-            'name' => $country->code,
-        ];
-    })->toArray();
-
     public function createVars(): array {
         return [
-            'roles'     => Role::translations(['name'])->select('id', 'name')->get()->toArray(),
-            'countries' => Country::where('is_active', true)->translations(['name'])->select('id', 'name')->get()->toArray(),
+            'roles'     => Role::selectWithTrans(['id' ,'name'])->get(),
+            'countries' => Country::where('is_active', true)->selectWithTrans(['id' ,'name'])->get(),
         ];
     }
 }

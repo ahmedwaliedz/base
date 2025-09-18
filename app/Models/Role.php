@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model {
     use FilterableTrait, HasFactory, BaseModelTrait;
+    
     public $translatedAttributes = ['name'];
 
     public function admins() {
