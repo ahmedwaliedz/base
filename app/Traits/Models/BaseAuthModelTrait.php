@@ -1,7 +1,11 @@
 <?php
 namespace App\Traits\Models;
 
+use Illuminate\Notifications\Notifiable;
+
 trait BaseAuthModelTrait {
+
+    use Notifiable;
 
     public function scopeStatus($query, $status) {
         if ($status === 'active') {

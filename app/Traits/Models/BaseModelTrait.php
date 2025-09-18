@@ -9,13 +9,13 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 trait BaseModelTrait {
 
-    use GeneralTrait, BaseFilesTrait, InteractsWithMedia, FilterableTrait;
+    use GeneralTrait, BaseFilesTrait, InteractsWithMedia, FilterableTrait, HasDynamicRelations;
 
-    protected const FILES             = [];
-    protected const UPLOAD_DIRECTORY  = 'default';
-    protected const UPLOAD_COLLECTION = 'default';
-    protected const UPLOAD_TYPE       = 'custom'; // or 'media-library' based on your implementation
-    protected const CACHE_KEY         = null;
+    // protected const FILES             = [];
+    // protected const UPLOAD_DIRECTORY  = 'default';
+    // protected const UPLOAD_COLLECTION = 'default';
+    // protected const UPLOAD_TYPE       = 'custom'; // or 'media-library' based on your implementation
+    // protected const CACHE_KEY         = null;
 
     protected static function deleteModelCache() {
         if (defined(static::class . "::CACHE_KEY")) {
@@ -44,6 +44,5 @@ trait BaseModelTrait {
             self::deleteFiles($model);
         });
     }
-
 
 }

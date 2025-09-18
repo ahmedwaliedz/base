@@ -7,10 +7,10 @@ trait BaseFilesTrait {
 
     use UploadTrait;
 
-    protected const FILES             = [];
-    protected const UPLOAD_DIRECTORY  = 'default';
-    protected const UPLOAD_COLLECTION = 'default';
-    protected const UPLOAD_TYPE       = 'custom'; // or 'media-library' based on your implementation
+    // protected const FILES             = [];
+    // protected const UPLOAD_DIRECTORY  = 'default';
+    // protected const UPLOAD_COLLECTION = 'default';
+    // protected const UPLOAD_TYPE       = 'custom'; // or 'media-library' based on your implementation
 
     public static function deleteFiles($model) {
         foreach (static::FILES as $fileName) {
