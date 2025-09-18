@@ -4,18 +4,36 @@ namespace App\Traits\Models;
 use App\Traits\Filters\FilterableTrait;
 use App\Traits\GeneralTrait;
 use App\Traits\Upload\BaseFilesTrait;
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Support\Facades\Cache;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 trait BaseModelTrait {
 
-    use GeneralTrait, BaseFilesTrait, InteractsWithMedia, FilterableTrait, HasDynamicRelations;
+    use GeneralTrait, BaseFilesTrait, InteractsWithMedia,
+    FilterableTrait, HasDynamicRelations,
+    HasTranslationsScope,
+    Translatable {
+        Translatable::getAttribute insteadof BaseFilesTrait;
+        BaseFilesTrait::getAttribute as filesGetAttribute;
 
-    // protected const FILES             = [];
-    // protected const UPLOAD_DIRECTORY  = 'default';
-    // protected const UPLOAD_COLLECTION = 'default';
-    // protected const UPLOAD_TYPE       = 'custom'; // or 'media-library' based on your implementation
-    // protected const CACHE_KEY         = null;
+        Translatable::setAttribute insteadof BaseFilesTrait;
+        BaseFilesTrait::setAttribute as filesSetAttribute;
+    }
+
+    public function getAttribute($key) {
+        if (defined('static::FILES') && in_array($key, static::FILES ?? [], true)) {
+            return $this->filesGetAttribute($key);
+        }
+        return parent::getAttribute($key);
+    }
+
+    public function setAttribute($key, $value) {
+        if (defined('static::FILES') && in_array($key, static::FILES ?? [], true)) {
+            return $this->filesSetAttribute($key, $value);
+        }
+        return parent::setAttribute($key, $value);
+    }
 
     protected static function deleteModelCache() {
         if (defined(static::class . "::CACHE_KEY")) {

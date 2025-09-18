@@ -52,22 +52,6 @@ class AdminBaseController extends Controller {
         return view('admin.' . $this->smallPluralName . '.create', $vars);
     }
 
-    public function create() {
-        $roles = Role::get()->map(function ($role) {
-            return [
-                'id'   => $role->id,
-                'name' => $role->name,
-            ];
-        })->toArray();
-        $countries = Country::where('is_active', true)->get()->map(function ($country) {
-            return [
-                'id'   => $country->code,
-                'name' => $country->code,
-            ];
-        })->toArray();
-        return view('admin.admins.create', get_defined_vars());
-    }
-
     public function store(StoreRequest $request) {
         Admin::create($request->validated());
         return $this->respondWithSuccess(__('admin/main.admin_created'), [
