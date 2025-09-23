@@ -1,11 +1,13 @@
 <?php
 namespace App\Traits\Upload;
 
+use Spatie\MediaLibrary\InteractsWithMedia;
+
 // use App\Models\TempFile;
 
 trait BaseFilesTrait {
 
-    use UploadTrait;
+    use UploadTrait, InteractsWithMedia;
 
     // protected const FILES             = [];
     // protected const UPLOAD_DIRECTORY  = 'default';

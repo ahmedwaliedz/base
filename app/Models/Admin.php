@@ -4,14 +4,13 @@ namespace App\Models;
 use App\Enums\AdminType;
 use App\Enums\ModelNotificationType;
 use App\Traits\Models\BaseAuthModelTrait;
-use App\Traits\Models\BaseModelTrait as ModelsBaseModelTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Admin extends Authenticatable implements HasMedia {
 
-    use ModelsBaseModelTrait, BaseAuthModelTrait;
+    use BaseAuthModelTrait;
 
     /**
      * Available notification types for admins
@@ -57,9 +56,11 @@ class Admin extends Authenticatable implements HasMedia {
 
     protected $attributes = [
         'is_blocked' => false,
+
         'is_notify'  => true,
         'image'      => 'default.png',
     ];
+
 
     public function registerMediaConversions(?Media $media = null): void {
         $this->registerImageConversions($media);

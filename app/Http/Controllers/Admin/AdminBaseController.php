@@ -42,7 +42,7 @@ class AdminBaseController extends Controller {
             return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => ${$this->smallPluralName}])->render();
 
         }
-
+        
         return view('admin.' . $this->smallPluralName . '.index', $this->service->indexVars() + [ ...get_defined_vars()]);
     }
 

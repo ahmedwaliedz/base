@@ -18,7 +18,7 @@ class AdminBaseService {
         $this->lowerClassName = strtolower(class_basename($model));
     }
 
-    public function index($request, array $where = []) {
+    public function index($request, $where = []) {
         $query = $this->model::query()->where($where);
         // ->with($this->model::RELATIONS);
 

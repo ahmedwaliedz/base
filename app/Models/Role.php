@@ -2,13 +2,13 @@
 namespace App\Models;
 
 use App\Traits\Filters\FilterableTrait;
-use App\Traits\Models\BaseModelTrait;
+use App\Traits\Models\BaseFileWithTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model {
-    use FilterableTrait, HasFactory, BaseModelTrait;
-    
+    use FilterableTrait, HasFactory, BaseFileWithTranslations;
+
     public $translatedAttributes = ['name'];
 
     public function admins() {

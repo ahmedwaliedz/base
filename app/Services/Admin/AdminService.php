@@ -12,16 +12,15 @@ class AdminService extends AdminBaseService {
     }
 
     public function indexVars(): array {
-        dd(Role::selectWithTrans(['id as role_id' ,'name'])->get()->toArray());
         return [
-            'roles' => Role::selectWithTrans(['id' ,'name'])->get()->toArray(),
+            'roles' => Role::getForSelect(['id' ,'name'])->toArray(),
         ];
     }
 
     public function createVars(): array {
         return [
-            'roles'     => Role::selectWithTrans(['id' ,'name'])->get(),
-            'countries' => Country::where('is_active', true)->selectWithTrans(['id' ,'name'])->get(),
+            'roles'     => Role::getForSelect(['id' ,'name'])->toArray(),
+            'countries' => Country::where('is_active', true)->getForSelect(['id as country_id' ,'name'])->toArray(),
         ];
     }
 }

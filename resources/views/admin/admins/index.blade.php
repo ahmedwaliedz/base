@@ -38,16 +38,19 @@
             'options' => $roles,
         ],
     ]">
+    
     </x-table.filter>
 
     <x-table.table :hasCheckbox="true" :hasActions="true" :rows="$admins" :headers="[__('admin/main.name'), __('admin/main.role'), __('admin/main.status')]">
     </x-table.table>
 
+    
     <x-model.notification :route="route('admin.notifications.sendNotifications')" :class="'App\Models\Admin'">
     </x-model.notification>
 
     <x-model.email>
     </x-model.email>
+    
 @endsection
 
 @push('js')
