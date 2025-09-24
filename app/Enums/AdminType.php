@@ -1,7 +1,7 @@
 <?php
 namespace App\Enums;
 
-use App\Traits\GeneralEnumTrait;
+use App\Traits\Enums\GeneralEnumTrait;
 
 enum AdminType: string {
 

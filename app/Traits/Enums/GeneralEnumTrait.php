@@ -1,15 +1,15 @@
 <?php
-namespace App\Traits;
+namespace App\Traits\Enums;
 
 trait GeneralEnumTrait {
 
     /**
      *
      * this is the translation file path
-     *
+     * if you need to change the path, you can define the PATH constant in the enum class
     */
 
-    public const PATH = 'enums';
+    public const DEFAULT_PATH = 'enums';
 
     /**
      *
@@ -19,10 +19,8 @@ trait GeneralEnumTrait {
      *
      */
     public function label(?string $value = null): string {
-        if ($value !== null) {
-            return __(static::PATH . '.' . $value);
-        }
-        return __(static::PATH . '.' . $this->value);
+        $path = defined('static::PATH') ? static::PATH : self::DEFAULT_PATH;
+        return __($path . '.' . ($value ?? $this->value));
     }
 
     /**
