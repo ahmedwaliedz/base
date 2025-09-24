@@ -1,24 +1,16 @@
 <?php
-
 namespace App\Models;
 
 use App\Enums\AdminType;
 use App\Enums\ModelNotificationType;
-use App\Traits\Filters\FilterableTrait;
-use App\Traits\GeneralTrait;
-use App\Traits\HandleNumbersTrait;
-use App\Traits\Upload\UploadTrait;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\Models\BaseAuthModelTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Admin extends Authenticatable implements HasMedia
-{
-    use HasFactory, Notifiable, SoftDeletes, GeneralTrait, HandleNumbersTrait, FilterableTrait, UploadTrait, InteractsWithMedia;
+class Admin extends Authenticatable implements HasMedia {
+
+    use BaseAuthModelTrait;
 
     /**
      * Available notification types for admins
@@ -30,9 +22,13 @@ class Admin extends Authenticatable implements HasMedia
         ModelNotificationType::NOTBLOCKED,
     ];
 
-    protected const UPLOAD_DIRECTORY = 'admins';
+    protected const FILES = [
+        'image',
+    ];
+
+    protected const UPLOAD_DIRECTORY  = 'admins';
     protected const UPLOAD_COLLECTION = 'admins';
-    protected const UPLOAD_TYPE = 'custom'; // or 'media-library' based on your implementation
+    protected const UPLOAD_TYPE       = 'custom'; // or 'media-library' based on your implementation
 
     protected $fillable = [
         'name',
@@ -52,72 +48,21 @@ class Admin extends Authenticatable implements HasMedia
     ];
 
     protected $casts = [
-        'password'      => 'hashed',
-        'type'          => AdminType::class,
-        'is_blocked'    => 'boolean',
-        'is_notify'     => 'boolean',
+        'password'   => 'hashed',
+        'type'       => AdminType::class,
+        'is_blocked' => 'boolean',
+        'is_notify'  => 'boolean',
     ];
 
     protected $attributes = [
-        'is_blocked'        => false,
-        'is_notify'         => true,
-        'image'             => 'default.png',
+        'is_blocked' => false,
+
+        'is_notify'  => true,
+        'image'      => 'default.png',
     ];
 
-    public function registerMediaConversions(?Media $media = null): void
-    {
-        $this->registerImageConversions($media);
-    }
 
-    public function getImageUrlAttribute($value)
-    {
-        return $this->handleImagePath(
-            file: $this->attributes['image'],
-            directory: self::UPLOAD_DIRECTORY,
-            collection: self::UPLOAD_COLLECTION,
-            uploadMethod: self::UPLOAD_TYPE
-        );
-    }
-
-    public function getRoleNameAttribute($value)
-    {
-        return $this->role_id ? $this->role->name : __('admin/main.super_admin');
-    }
-
-    public function setFullPhoneAttribute(string $value): void
-    {
-        $this->attributes['full_phone'] = $this->attributes['country_code'] .$this->attributes['phone'] ;
-    }
-
-    public function setImageAttribute($value): void
-    {
-        if ($value instanceof \Illuminate\Http\UploadedFile && $value->isValid()) {
-            $this->attributes['image'] = $this->upload(
-                file: $value,
-                directory: self::UPLOAD_DIRECTORY,
-                collection: self::UPLOAD_COLLECTION,
-                uploadMethod: self::UPLOAD_TYPE
-            );
-            return;
-        }
-
-        $this->attributes['image'] = $value;
-    }
-
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
-
-    public function statusData(){
-        return [
-                'label' => $this->is_blocked ? __('admin/main.blocked') : __('admin/main.active'),
-                'class' => $this->is_blocked ? 'bg-label-warning' : 'bg-label-success',
-        ];
-    }
-
-    public function scopeStatus($query, $status)
-    {
+    public function scopeStatus($query, $status) {
         if ($status === 'active') {
             return $query->where('is_blocked', false);
         } elseif ($status === 'blocked') {
@@ -126,13 +71,31 @@ class Admin extends Authenticatable implements HasMedia
         return $query;
     }
 
+    public function registerMediaConversions(?Media $media = null): void {
+        $this->registerImageConversions($media);
+    }
+
+    public function getRoleNameAttribute($value) {
+        return $this->role_id ? $this->role->name : __('admin/main.super_admin');
+    }
+
+    public function role() {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function statusData() {
+        return [
+            'label' => $this->is_blocked ? __('admin/main.blocked') : __('admin/main.active'),
+            'class' => $this->is_blocked ? 'bg-label-warning' : 'bg-label-success',
+        ];
+    }
+
     /**
      * Get available notification types for admins
      *
      * @return array
      */
-    public static function getAvailableNotificationTypes(): array
-    {
+    public static function getAvailableNotificationTypes(): array {
         return self::$availableNotificationTypes;
     }
 }

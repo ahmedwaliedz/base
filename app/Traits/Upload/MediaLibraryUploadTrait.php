@@ -10,20 +10,28 @@ trait MediaLibraryUploadTrait
     use Helpers;
 
     /**
-     * Upload an image using Spatie Media Library
+     * Upload any file using Spatie Media Library
      *
      * @param UploadedFile $file
      * @param string $collection
      * @param string $disk
      * @return Media|null
      */
-    public function uploadImage(UploadedFile $file, string $collection = 'default', string $disk = 'uploads')
+    public function uploadFile(UploadedFile $file, string $collection = 'default', string $disk = 'uploads')
     {
         $uniqueFileName = $this->generateUniqueFileName($file);
 
         return $this->addMedia($file)
             ->usingFileName($uniqueFileName)
             ->toMediaCollection($collection, $disk)->id;
+    }
+
+    /**
+     * Backward-compatible alias for uploading images. Delegates to uploadFile.
+     */
+    public function uploadImage(UploadedFile $file, string $collection = 'default', string $disk = 'uploads')
+    {
+        return $this->uploadFile($file, $collection, $disk);
     }
 
     /**
@@ -44,5 +52,18 @@ trait MediaLibraryUploadTrait
         $this->addMediaConversion('small')
             ->width(300)
             ->nonQueued();
+    }
+
+    /**
+     * Delete a media item by its ID from Spatie Media Library.
+     */
+    public function deleteMediaLibraryFile(int $mediaId): bool
+    {
+        $media = Media::find($mediaId);
+        if (! $media) {
+            return false;
+        }
+        $media->delete();
+        return true;
     }
 }
