@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 class BaseModelService {
 
     public function storeRelations(Model $model, array $relations, array $validatedData): void {
+        dd($relations);
         DB::beginTransaction();
         try {
             foreach ($relations as $relation) {

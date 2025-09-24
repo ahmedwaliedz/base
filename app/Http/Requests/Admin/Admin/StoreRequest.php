@@ -15,7 +15,7 @@ class StoreRequest extends BaseAdminRequest
             'name'              => ['required', 'string', 'max:255'],
             'email'             => ['required', 'email', 'unique:admins,email'],
             'country_code'      => ['required', 'string' , 'exists:countries,code' ,'digits_between:3,5'],
-            'phone'             => ['required', 'numeric', 'unique:admins,phone' , 'regex:/^(\+?\d{1,3}[- ]?)?\d{10}$/' , 'digits_between:9,15'],
+            'phone'             => ['required', 'numeric', 'unique:admins,phone' /* , 'regex:/^(\+?\d{1,3}[- ]?)?\d{10}$/' */ , 'digits_between:9,15'],
             'password'          => ['required', Password::defaults()],
             'type'              => ['required', new Enum(AdminType::class)],
             'image'             => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],

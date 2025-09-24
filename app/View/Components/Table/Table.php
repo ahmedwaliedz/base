@@ -9,7 +9,7 @@ use Illuminate\View\Component;
 
 class Table extends Component
 {
-    public function __construct(public bool $hasCheckbox = false ,public bool $hasActions = false,public array $headers = [], public  $rows)
+    public function __construct(public bool $hasCheckbox = false ,public bool $hasActions = false,public array $headers = [])
     {
 
     }

@@ -40,29 +40,4 @@ trait BaseFileWithTranslations {
      *
     */
 
-    public function scopeGetForSelect($query, array $fields) {
-        return $query->get()->map(function ($item) use ($fields) {
-            $output = [];
-
-            foreach ($fields as $field) {
-                [$originalField, $alias] = array_pad(
-                    preg_split('/\s+as\s+/i', $field),
-                    2,
-                    null
-                );
-
-                $alias = $alias ?? $originalField;
-
-                if (
-                    in_array($originalField, $item->translatedAttributes)
-                ) {
-                    $output[$alias] = $item->translateOrDefault(app()->getLocale())?->$originalField;
-                } else {
-                    $output[$alias] = $item->{$originalField};
-                }
-            }
-
-            return $output;
-        });
-    }
 }

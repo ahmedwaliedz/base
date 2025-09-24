@@ -5,7 +5,7 @@ use App\Traits\Enums\GeneralEnumTrait;
 
 enum AdminType: string {
 
-    use GeneralEnumTrait;
+use GeneralEnumTrait;
 
     public const PATH = 'admin/main';
 

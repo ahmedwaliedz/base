@@ -2,10 +2,11 @@
 namespace App\Services\Admin;
 
 use App\Services\BaseModelService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class AdminBaseService {
+class CrudBaseService {
 
     protected $data;
     protected $model;
@@ -36,7 +37,9 @@ class AdminBaseService {
     public function store(Request $request) {
         $object = null;
         DB::transaction(function () use ($request, &$object) {
-            // $object = parent::store($request);
+            $object = $this->model::create($request->validated());
+            dd($object->getDefinedRelations());
+            // $this->modelService->storeRelations($object, $object->getDefinedRelations(), $request->validated());
             // ReportTrait::addToLog(__('log.added', ['id' => $object->id, 'model' => $this->lowerClassName, 'by' => auth('admin')->user()->name]));
         });
         return $object;

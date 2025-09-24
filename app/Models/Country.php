@@ -1,13 +1,15 @@
 <?php
 namespace App\Models;
 
+use App\Traits\GeneralTrait;
+use App\Traits\Models\BaseFileWithTranslations;
 use App\Traits\Models\BaseModelTrait;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model {
-    use HasFactory, Translatable, BaseModelTrait;
+    use HasFactory, BaseModelTrait ,BaseFileWithTranslations ,GeneralTrait;
 
     protected $fillable = [
         'code',

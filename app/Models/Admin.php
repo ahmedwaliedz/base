@@ -62,6 +62,15 @@ class Admin extends Authenticatable implements HasMedia {
     ];
 
 
+    public function scopeStatus($query, $status) {
+        if ($status === 'active') {
+            return $query->where('is_blocked', false);
+        } elseif ($status === 'blocked') {
+            return $query->where('is_blocked', true);
+        }
+        return $query;
+    }
+
     public function registerMediaConversions(?Media $media = null): void {
         $this->registerImageConversions($media);
     }

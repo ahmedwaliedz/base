@@ -41,7 +41,7 @@
     
     </x-table.filter>
 
-    <x-table.table :hasCheckbox="true" :hasActions="true" :rows="$admins" :headers="[__('admin/main.name'), __('admin/main.role'), __('admin/main.status')]">
+    <x-table.table :hasCheckbox="true" :hasActions="true"  :headers="[__('admin/main.name'), __('admin/main.role'), __('admin/main.status')]">
     </x-table.table>
 
     
