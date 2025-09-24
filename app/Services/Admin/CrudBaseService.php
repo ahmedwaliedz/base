@@ -2,7 +2,6 @@
 namespace App\Services\Admin;
 
 use App\Services\BaseModelService;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,12 +19,9 @@ class CrudBaseService {
     }
 
     public function index($request, $where = []) {
-        $query = $this->model::query()->where($where);
-        // ->with($this->model::RELATIONS);
-
-        if (method_exists($query, 'search') && $request->filters) {
-            $query = $query->search($request->filters);
-        }
+        $query = $this->model::query()->orderBy('id', 'desc')->when($request->filters, function ($query) use ($request) {
+            return $query->search($request->filters);
+        })->where($where);
 
         return $query;
     }
@@ -38,8 +34,7 @@ class CrudBaseService {
         $object = null;
         DB::transaction(function () use ($request, &$object) {
             $object = $this->model::create($request->validated());
-            dd($object->getDefinedRelations());
-            // $this->modelService->storeRelations($object, $object->getDefinedRelations(), $request->validated());
+            $this->modelService->storeRelations($object, $request->validated());
             // ReportTrait::addToLog(__('log.added', ['id' => $object->id, 'model' => $this->lowerClassName, 'by' => auth('admin')->user()->name]));
         });
         return $object;

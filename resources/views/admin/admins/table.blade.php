@@ -5,7 +5,7 @@
             <div class="d-flex product-name">
                 <div class="avatar-wrapper">
                     <div class="avatar avatar me-2 rounded-2 bg-label-secondary"><img
-                            src="{{$admin->image_url}}" alt="Product-9" class="rounded-2">
+                            src="{{$admin->image}}" alt="Product-9" class="rounded-2">
                     </div>
                 </div>
                 <div class="d-flex flex-column">

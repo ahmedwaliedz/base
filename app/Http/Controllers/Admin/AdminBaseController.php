@@ -55,7 +55,7 @@ class AdminBaseController extends Controller {
         try {
             $this->service->store($request);
             return $this->respondWithSuccess(__('admin/main.created_successfully'), [
-                'route' => route('admin.admins.index'),
+                'route' => route('admin.' . $this->smallPluralName . '.index'),
             ]);
         } catch (Exception $e) {
             dd(11);

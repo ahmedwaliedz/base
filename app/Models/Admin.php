@@ -4,13 +4,13 @@ namespace App\Models;
 use App\Enums\AdminType;
 use App\Enums\ModelNotificationType;
 use App\Traits\Models\BaseAuthModelTrait;
+use App\Traits\Upload\HasMediaLibrary;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Admin extends Authenticatable implements HasMedia {
+class Admin extends Authenticatable /* implements HasMedia */ {
 
-    use BaseAuthModelTrait;
+    use BaseAuthModelTrait /* , HasMediaLibrary */;
 
     /**
      * Available notification types for admins
@@ -21,15 +21,18 @@ class Admin extends Authenticatable implements HasMedia {
         ModelNotificationType::BLOCKED,
         ModelNotificationType::NOTBLOCKED,
     ];
+    
+    protected const UPLOAD_DIRECTORY  = 'admins';
 
     protected const FILES = [
         'image',
     ];
 
-    protected const UPLOAD_DIRECTORY  = 'admins';
-    protected const UPLOAD_COLLECTION = 'admins';
-    protected const UPLOAD_TYPE       = 'custom'; // or 'media-library' based on your implementation
+    public const RELATIONS = [
+        'role',
+    ];
 
+    
     protected $fillable = [
         'name',
         'phone',
@@ -56,10 +59,10 @@ class Admin extends Authenticatable implements HasMedia {
 
     protected $attributes = [
         'is_blocked' => false,
-
         'is_notify'  => true,
         'image'      => 'default.png',
     ];
+
 
 
     public function scopeStatus($query, $status) {
@@ -71,12 +74,8 @@ class Admin extends Authenticatable implements HasMedia {
         return $query;
     }
 
-    public function registerMediaConversions(?Media $media = null): void {
-        $this->registerImageConversions($media);
-    }
-
     public function getRoleNameAttribute($value) {
-        return $this->role_id ? $this->role->name : __('admin/main.super_admin');
+        return $this->role_id ? $this->role?->name : __('admin/main.super_admin');
     }
 
     public function role() {

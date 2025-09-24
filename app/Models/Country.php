@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Traits\Filters\FilterableTrait;
 use App\Traits\GeneralTrait;
 use App\Traits\Models\BaseFileWithTranslations;
 use App\Traits\Models\BaseModelTrait;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model {
-    use HasFactory, BaseModelTrait ,BaseFileWithTranslations ,GeneralTrait;
+    use HasFactory, BaseModelTrait ,FilterableTrait ,BaseFileWithTranslations ,GeneralTrait;
 
     protected $fillable = [
         'code',
