@@ -8,6 +8,12 @@ use Illuminate\Notifications\Notifiable;
 
 trait BaseAuthModelTrait {
 
-    use Notifiable, BaseFilesTrait, GeneralTrait ,FilterableTrait;
+    use Notifiable, BaseFilesTrait, GeneralTrait, FilterableTrait;
+
+    // public function setPasswordAttribute($value) {
+    //     if (! empty($value)) {
+    //         $this->attributes['password'] = bcrypt($value);
+    //     }
+    // }
 
 }

@@ -29,4 +29,16 @@ class AdminService extends CrudBaseService {
             ],
         ];
     }
+
+    public function editVars(): array {
+        return [
+            'roles'                       => Role::forSelect(['id', 'name'])->toArray(),
+            'countries'                   => Country::where('is_active', true)->forSelect(['code as id', 'code as name'])->toArray(),
+            'types'                       => AdminType::forSelect(),
+            'receiveNotificationsOptions' => [
+                ['id' => 1, 'name' => __('admin/main.yes')],
+                ['id' => 0, 'name' => __('admin/main.no')],
+            ],
+        ];
+    }
 }

@@ -32,15 +32,10 @@ class AdminBaseController extends Controller {
     }
 
     public function index(Request $request) {
-
         if (request()->ajax()) {
-
             ${$this->smallPluralName} = $this->service->index($request)->paginate($request->filters['per_page'] ?? 30);
-
             return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => ${$this->smallPluralName}])->render();
-
         }
-
         return view('admin.' . $this->smallPluralName . '.index', $this->service->indexVars() + [ ...get_defined_vars()]);
     }
 
@@ -58,23 +53,29 @@ class AdminBaseController extends Controller {
                 'route' => route('admin.' . $this->smallPluralName . '.index'),
             ]);
         } catch (Exception $e) {
-            dd(11);
+            return $this->respondWithFail($e->getMessage());
+        }
+    }
+
+    public function edit($id) {
+        $vars       = $this->service->edit($id);
+        return view('admin.' . $this->smallPluralName . '.edit', $vars);
+    }
+
+    public function update($id) {
+        $request = app($this->updateRequest);
+        try {
+            $this->service->update($request, $id);
+            return $this->respondWithSuccess(__('admin/main.updated_successfully'), [
+                'route' => route('admin.' . $this->smallPluralName . '.index'),
+            ]);
+        } catch (Exception $e) {
             return $this->respondWithFail($e->getMessage());
         }
     }
 
     public function show($id) {
-        return view('admin.admins.show', compact('id'));
-    }
-
-    public function edit($id) {
-        return view('admin.admins.edit', compact('id'));
-    }
-
-    public function update(Request $request, $id) {
-        return $this->respondWithSuccess(__('admin/main.admin_updated'), [
-            'route' => route('admin.admins.index'),
-        ]);
+        return view('admin.' . $this->smallPluralName . '.show', compact('id'));
     }
 
     public function destroyAll(Request $request) {

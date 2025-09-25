@@ -19,7 +19,7 @@ class CrudBaseService {
     }
 
     public function index($request, $where = []) {
-        $query = $this->model::query()->orderBy('id', 'desc')->when($request->filters, function ($query) use ($request) {
+        $query = $this->model::query()->when($request->filters, function ($query) use ($request) {
             return $query->search($request->filters);
         })->where($where);
 
@@ -40,9 +40,20 @@ class CrudBaseService {
         return $object;
     }
 
+    public function edit($id) {
+        return array_merge($this->editVars(), [
+            $this->lowerClassName => $this->model::findOrFail($id),
+            'id'                  => $id,
+        ]);
+    }
+
     public function update(Request $request, $id) {
-        // $object = parent::update($request, $id);
-        // ReportTrait::addToLog(__('log.updated', ['id' => $object->id, 'model' => $this->lowerClassName, 'by' => auth('admin')->user()->name]));
+        $object = $this->model::findOrFail($id);
+        DB::transaction(function () use ($request, &$object) {
+            $object->update($request->validated());
+            $this->modelService->updateRelations($object, $request->validated());
+            // ReportTrait::addToLog(__('log.updated', ['id' => $object->id, 'model' => $this->lowerClassName, 'by' => auth('admin')->user()->name]));
+        });
         return $object;
     }
 

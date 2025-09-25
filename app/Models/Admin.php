@@ -51,7 +51,6 @@ class Admin extends Authenticatable /* implements HasMedia */ {
     ];
 
     protected $casts = [
-        'password'   => 'hashed',
         'type'       => AdminType::class,
         'is_blocked' => 'boolean',
         'is_notify'  => 'boolean',
