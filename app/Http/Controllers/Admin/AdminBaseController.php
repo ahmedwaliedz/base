@@ -58,7 +58,7 @@ class AdminBaseController extends Controller {
     }
 
     public function edit($id) {
-        $vars       = $this->service->edit($id);
+        $vars = $this->service->edit($id);
         return view('admin.' . $this->smallPluralName . '.edit', $vars);
     }
 
@@ -75,7 +75,8 @@ class AdminBaseController extends Controller {
     }
 
     public function show($id) {
-        return view('admin.' . $this->smallPluralName . '.show', compact('id'));
+        $vars = $this->service->show($id);
+        return view('admin.' . $this->smallPluralName . '.show', $vars);
     }
 
     public function destroyAll(Request $request) {

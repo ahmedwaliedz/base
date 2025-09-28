@@ -34,5 +34,31 @@
         cancelButtonText: '{{ __('admin/main.cancel') }}',
         deleted_successfully: "{{ __('admin/main.deleted_successfully') }}",
     };
+
+    // Delegated image click preview (opt-out with .no-preview or data-no-preview="true")
+    $(document).on('click', 'img', function (e) {
+        var $img = $(this);
+        if ($img.hasClass('no-preview') || $img.data('no-preview') === true || $img.data('no-preview') === 'true') {
+            return;
+        }
+        var src = $img.attr('data-preview-src') || $img.attr('src');
+        if (!src) { return; }
+        var alt = $img.attr('alt') || '';
+
+        var $modal = $('#globalImagePreviewModal');
+        var $preview = $('#globalImagePreview');
+        var $caption = $('#globalImageCaption');
+
+        $preview.attr('src', src);
+
+        if (alt && alt.trim().length > 0) {
+            $caption.text(alt).removeClass('d-none');
+        } else {
+            $caption.addClass('d-none').text('');
+        }
+
+        var modal = new bootstrap.Modal($modal[0]);
+        modal.show();
+    });
 </script>
 @stack('js')
