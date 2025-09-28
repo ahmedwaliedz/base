@@ -56,7 +56,7 @@
                         <i class="text-success ti ti-mail-share"></i>
                     </a>
 
-                    <a data-id="{{ $admin->id }}" class="btn btn-sm btn-icon delete-record shadow-none">
+                    <a data-id="{{ $admin->id }}" data-route="{{ route('admin.admins.destroy', ['admin' => $admin]) }}" class="btn btn-sm btn-icon delete-record shadow-none">
                         <i class="text-danger ti ti-trash delete-record"></i>
                     </a>
 

@@ -60,7 +60,7 @@ use App\Http\Controllers\Admin\{
                 });
 
                 // admins routes
-                Route::resource('admins', AdminController::class)->except(['destroy']);
+                Route::resource('admins', AdminController::class);
                 Route::post('admins/destroy-all', [AdminController::class , 'destroyAll'])->name('admins.destroyAll');
 
 
