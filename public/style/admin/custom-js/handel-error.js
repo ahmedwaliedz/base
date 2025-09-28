@@ -5,6 +5,8 @@ function handelErrorByStatus(xhr , form) {
         fireBlockAction(xhr.responseJSON.message)
     }else if(xhr.status === 400){
         fireUnAuthorizedAction(xhr.responseJSON.message)
+    }else{
+        fireUnknownError(xhr.responseJSON.message)
     }
 }
 

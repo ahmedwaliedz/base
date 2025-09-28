@@ -13,25 +13,27 @@ trait BaseFileWithTranslations {
     */
 
     use BaseFilesTrait, Translatable {
-        Translatable::getAttribute insteadof BaseFilesTrait;
-        BaseFilesTrait::getAttribute as filesGetAttribute;
+        Translatable::getAttribute as protected translatableGetAttribute;
+        BaseFilesTrait::getAttribute as protected filesGetAttribute;
 
-        Translatable::setAttribute insteadof BaseFilesTrait;
-        BaseFilesTrait::setAttribute as filesSetAttribute;
+        Translatable::setAttribute as protected translatableSetAttribute;
+        BaseFilesTrait::setAttribute as protected filesSetAttribute;
     }
 
     public function getAttribute($key) {
         if (defined('static::FILES') && in_array($key, static::FILES ?? [], true)) {
             return $this->filesGetAttribute($key);
         }
-        return parent::getAttribute($key);
+
+        return $this->translatableGetAttribute($key);
     }
 
     public function setAttribute($key, $value) {
         if (defined('static::FILES') && in_array($key, static::FILES ?? [], true)) {
             return $this->filesSetAttribute($key, $value);
         }
-        return parent::setAttribute($key, $value);
+
+        return $this->translatableSetAttribute($key, $value);
     }
 
     /*

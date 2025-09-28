@@ -17,15 +17,17 @@
     >
         <option value="">{{ __('admin/inputs.select') }} {{ $placeholder }}</option>
         @foreach($options as $option)
-            @if(is_array($option))
-                <option value="{{ $option[$optionValueKey] }}" {{ $value == $option[$optionValueKey] ? 'selected' : '' }}>
-                    {{ $option[$optionTextKey] }}
-                </option>
-            @else
-                <option value="{{ $option->id }}" {{ $value == $option ? 'selected' : '' }}>
-                    {{ $option->name }}
-                </option>
-            @endif
+            @php
+                $optValue = is_array($option)
+                    ? ($option[$optionValueKey] ?? null)
+                    : data_get($option, $optionValueKey, null);
+                $optText = is_array($option)
+                    ? ($option[$optionTextKey] ?? null)
+                    : data_get($option, $optionTextKey, null);
+            @endphp
+            <option value="{{ $optValue }}" {{ (string)$value === (string)$optValue ? 'selected' : '' }}>
+                {{ $optText }}
+            </option>
         @endforeach
     </select>
 </div>

@@ -30,6 +30,8 @@
                     });
                 },
                 error: (xhr) => {
+                    console.log(234234234234);
+                    
                     removeValidationError(form ,submitButton,submitButtonHtml)
                     handelErrorByStatus(xhr , form)
                 },
@@ -44,6 +46,8 @@
               fireBlockAction(xhr.responseJSON.message)
             }else if(xhr.status === 400){
                 fireUnAuthorizedAction(xhr.responseJSON.message)
+            }else{
+                fireUnknownError(xhr.responseJSON.message)
             }
         }
 
@@ -131,7 +135,18 @@
                 timer: 2000
             })
         }
+        
         function fireUnAuthorizedAction(message) {
+            Swal.fire({
+                icon: 'error',
+                position: 'center',
+                text: message ,
+                showConfirmButton: false,
+                timer: 2000
+            })
+        }
+
+        function fireUnknownError(message) {
             Swal.fire({
                 icon: 'error',
                 position: 'center',

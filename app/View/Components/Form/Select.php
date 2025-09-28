@@ -18,7 +18,7 @@ class Select extends Component
     public ?string  $class;
     public bool     $isRequired;
     public ?string  $requiredMessage;
-    public ?string  $value;
+    public string|int|null  $value;
     public bool     $disabled;
     public array    $options;
     public ?string  $optionValueKey;
@@ -27,7 +27,11 @@ class Select extends Component
     public function __construct(array $options)
     {
         $this->name = $options['name'];
-        $this->value = $options['value'] ?? null;
+        $value = $options['value'] ?? null;
+        if ($value instanceof \BackedEnum) {
+            $value = $value->value;
+        }
+        $this->value = (is_string($value) || is_int($value) || is_null($value)) ? $value : (string) $value;
         $this->label = isset($options['label']) ? __(self::ADMIN_INPUTS_PREFIX . $options['label']) : __(self::ADMIN_INPUTS_PREFIX . $this->name);
         $this->placeholder = isset($options['placeholder']) ? __(self::ADMIN_INPUTS_PREFIX . $options['placeholder']) : $this->label;
         $this->class = $options['class'] ?? self::DEFAULT_CLASS;
