@@ -10,10 +10,10 @@ trait BaseAuthModelTrait {
 
     use Notifiable, BaseFilesTrait, GeneralTrait, FilterableTrait;
 
-    // public function setPasswordAttribute($value) {
-    //     if (! empty($value)) {
-    //         $this->attributes['password'] = bcrypt($value);
-    //     }
-    // }
+    public function setPasswordAttribute($value) {
+        if (! empty($value)) {
+            $this->attributes['password'] = bcrypt($value);
+        }
+    }
 
 }

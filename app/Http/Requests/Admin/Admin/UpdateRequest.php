@@ -7,6 +7,13 @@ use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Rules\Password;
 
 class UpdateRequest extends BaseAdminRequest {
+
+    public function prepareForValidation() {
+        $this->merge([
+            'is_notify' => boolval($this->is_notify),
+        ]);
+    }
+
     public function rules() {
         return [
             'name'         => ['required', 'string', 'max:255'],
