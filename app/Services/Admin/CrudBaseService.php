@@ -47,6 +47,14 @@ class CrudBaseService {
         ]);
     }
 
+    public function show($id) {
+        return array_merge($this->showVars(), [
+            $this->lowerClassName => $this->model::with($this->model::RELATIONS)->findOrFail($id),
+            'id'                  => $id,
+            'lowerClassName'      => $this->lowerClassName,
+        ]);
+    }
+
     public function update(Request $request, $id) {
         $object = $this->model::findOrFail($id);
         DB::transaction(function () use ($request, &$object) {
@@ -144,7 +152,7 @@ class CrudBaseService {
         return [];
     }
 
-    public function showVars($id): array {
+    public function showVars(): array {
         return [];
     }
 }

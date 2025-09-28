@@ -168,7 +168,7 @@
         'not_found_description'            => 'لم يتم العثور على العنصر المطلوب',
         'not_found_description_plural'     => 'لم يتم العثور على العناصر المطلوبة',
         'not_found_description_singular'   => 'لم يتم العثور على العنصر المطلوب',
-        ''                                 => '',
+        'admin_details'                    => 'تفاصيل المشرف',
         ''                                 => '',
         ''                                 => '',
         ''                                 => '',
