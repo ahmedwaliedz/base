@@ -34,7 +34,7 @@ function deleteWithSwl(Route , selected) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                type: "POST",
+                type: "delete",
                 url: Route,
                 data: {ids : selected},
                 dataType: "json",

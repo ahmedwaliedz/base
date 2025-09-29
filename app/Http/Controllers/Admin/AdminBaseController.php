@@ -32,15 +32,10 @@ class AdminBaseController extends Controller {
     }
 
     public function index(Request $request) {
-
         if (request()->ajax()) {
-
             ${$this->smallPluralName} = $this->service->index($request)->paginate($request->filters['per_page'] ?? 30);
-
             return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => ${$this->smallPluralName}])->render();
-
         }
-
         return view('admin.' . $this->smallPluralName . '.index', $this->service->indexVars() + [ ...get_defined_vars()]);
     }
 
@@ -55,37 +50,65 @@ class AdminBaseController extends Controller {
         try {
             $this->service->store($request);
             return $this->respondWithSuccess(__('admin/main.created_successfully'), [
-                'route' => route('admin.admins.index'),
+                'route' => route('admin.' . $this->smallPluralName . '.index'),
             ]);
         } catch (Exception $e) {
-            dd(11);
+            return $this->respondWithFail($e->getMessage());
+        }
+    }
+
+    public function edit($id) {
+        $vars = $this->service->edit($id);
+        return view('admin.' . $this->smallPluralName . '.edit', $vars);
+    }
+
+    public function update($id) {
+        $request = app($this->updateRequest);
+        try {
+            $this->service->update($request, $id);
+            return $this->respondWithSuccess(__('admin/main.updated_successfully'), [
+                'route' => route('admin.' . $this->smallPluralName . '.index'),
+            ]);
+        } catch (Exception $e) {
             return $this->respondWithFail($e->getMessage());
         }
     }
 
     public function show($id) {
-        return view('admin.admins.show', compact('id'));
+        $vars = $this->service->show($id);
+        return view('admin.' . $this->smallPluralName . '.show', $vars);
     }
 
-    public function edit($id) {
-        return view('admin.admins.edit', compact('id'));
-    }
-
-    public function update(Request $request, $id) {
-        return $this->respondWithSuccess(__('admin/main.admin_updated'), [
-            'route' => route('admin.admins.index'),
-        ]);
-    }
-
-    public function destroyAll(Request $request) {
-        if (is_array($request->ids)) {
-            $admins = Admin::has('role')->whereIn('id', $request->ids)->get();
-            $admins->each->delete();
-            return $this->respondWithSuccess(__('admin/main.admins_deleted'));
+    
+    public function destroy($id) {
+        try { 
+            $this->service->destroy($id);
+            return $this->respondWithSuccess(__('admin/main.deleted_successfully'));
+        } catch (Exception $e) {
+            return $this->respondWithFail($e->getMessage());
         }
-        return $this->respondWithFail(__('admin/main.admin_not_found'), [
-            'route' => route('admin.admins.index'),
-        ]);
     }
+
+    // public function destroy(Request $request) {
+    //     if (is_array($request->ids)) {
+    //         $admins = Admin::has('role')->whereIn('id', $request->ids)->get();
+    //         $admins->each->delete();
+    //         return $this->respondWithSuccess(__('admin/main.admins_deleted'));
+    //     }
+    //     return $this->respondWithFail(__('admin/main.admin_not_found'), [
+    //         'route' => route('admin.admins.index'),
+    //     ]);
+    // }
+
+    // public function destroyAll(Request $request) {
+    //     if (is_array($request->ids)) {
+    //         $admins = Admin::has('role')->whereIn('id', $request->ids)->get();
+    //         $admins->each->delete();
+    //         return $this->respondWithSuccess(__('admin/main.admins_deleted'));
+    //     }
+    //     return $this->respondWithFail(__('admin/main.admin_not_found'), [
+    //         'route' => route('admin.admins.index'),
+    //     ]);
+    // }
 
 }

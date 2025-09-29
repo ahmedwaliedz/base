@@ -30,6 +30,19 @@
     <div class="layout-overlay layout-menu-toggle"></div>
     <div class="drag-target"></div>
 </div>
+<!-- Global Image Preview Modal -->
+<div class="modal fade" id="globalImagePreviewModal" tabindex="-1" aria-labelledby="globalImagePreviewLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-transparent border-0 shadow-none">
+            <button type="button" class="btn-close ms-auto me-2 mt-2" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body text-center p-0">
+                <img id="globalImagePreview" src="" alt="" class="img-fluid rounded" style="max-height:80vh;object-fit:contain;">
+            </div>
+            <div id="globalImageCaption" class="text-center text-muted small py-2 d-none"></div>
+        </div>
+    </div>
+</div>
+
 @include('admin.layouts.footer-links')
 </body>
 </html>

@@ -1,70 +1,79 @@
-@extends('admin.layouts.master')
+@extends('admin.layouts.crud.edit')
 
-@push('css')
-    <link rel="stylesheet" href="{{asset('style/admin/validation/form-validation.css')}}"/>
-    <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/sweetalert2/sweetalert2.css')}}"/>
-    <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/select2/select2.css')}}"/>
-@endpush
+@push('content')
+    <form class="mb-3 validated-form form" novalidate method="POST" action="{{ route('admin.admins.update', $id) }}"
+        enctype="multipart/form-data">
+        @method('PUT')
+        @csrf
+        <div class="row g-3">
+            <x-form.image :options="['name' => 'image', 'label' => 'image', 'class' => 'col-md-12', 'value' => $admin->image]" />
 
-@section('content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">{{ __('admin/main.edit_admin') }}</h5>
-        <a href="{{ route('admin.admins.index') }}" class="btn btn-secondary">{{ __('admin/main.back') }}</a>
-    </div>
-    <div class="card-body">
-        <form id="editAdminForm" class="needs-validation" novalidate method="POST" action="{{ route('admin.admins.update', $id) }}">
-            @csrf
-            @method('PUT')
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="name" class="form-label">{{ __('admin/main.name') }}</label>
-                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $admin->name ?? '') }}" required>
-                    <div class="invalid-feedback">{{ __('admin/main.please_enter_name') }}</div>
-                </div>
-                <div class="col-md-6">
-                    <label for="email" class="form-label">{{ __('admin/main.email') }}</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $admin->email ?? '') }}" required>
-                    <div class="invalid-feedback">{{ __('admin/main.please_enter_valid_email') }}</div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="password" class="form-label">{{ __('admin/main.password') }}</label>
-                    <input type="password" class="form-control" id="password" name="password">
-                    <small class="text-muted">{{ __('admin/main.leave_empty_to_keep_current_password') }}</small>
-                </div>
-                <div class="col-md-6">
-                    <label for="password_confirmation" class="form-label">{{ __('admin/main.confirm_password') }}</label>
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="role" class="form-label">{{ __('admin/main.role') }}</label>
-                    <select class="form-select" id="role" name="role_id" required>
-                        <option value="">{{ __('admin/main.select_role') }}</option>
-                        <!-- Roles will be populated here with the current role selected -->
-                    </select>
-                    <div class="invalid-feedback">{{ __('admin/main.please_select_role') }}</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">{{ __('admin/main.update') }}</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-@endsection
+            <x-form.text :options="[
+                'name' => 'name',
+                'label' => 'name',
+                'class' => 'col-md-6',
+                'isRequired' => true,
+                'value' => $admin->name,
+            ]" />
+            <x-form.number :options="[
+                'name' => 'phone',
+                'label' => 'phone',
+                'class' => 'col-md-4',
+                'isRequired' => true,
+                'minLength' => 9,
+                'maxLength' => 15,
+                'value' => $admin->phone,
+            ]" />
+            <x-form.select :options="[
+                'name' => 'country_code',
+                'label' => 'country_code',
+                'class' => 'col-md-2',
+                'isRequired' => true,
+                'options' => $countries,
+                'value' => $admin->country_code,
+            ]" />
+            <x-form.email :options="[
+                'name' => 'email',
+                'label' => 'email',
+                'class' => 'col-md-6',
+                'isRequired' => true,
+                'value' => $admin->email,
+            ]" />
+            <x-form.password :options="[
+                'name' => 'password',
+                'label' => 'password',
+                'class' => 'col-md-6',
+                'isRequired' => false,
+            ]" />
+            <x-form.select :options="[
+                'name' => 'type',
+                'label' => 'type',
+                'class' => 'col-md-4',
+                'isRequired' => true,
+                'options' => $types,
+                'value' => $admin->type,
+            ]" />
+            <x-form.select :options="[
+                'name' => 'role_id',
+                'label' => 'role',
+                'class' => 'col-md-4',
+                'options' => $roles,
+                'isRequired' => true,
+                'value' => $admin->role_id,
+            ]" />
+            <x-form.select :options="[
+                'name' => 'is_notify',
+                'value' => true,
+                'label' => 'receive_notifications',
+                'class' => 'col-md-4',
+                'options' => $receiveNotificationsOptions,
+                'value' => $admin->is_notify,
+            ]" />
+        </div>
 
-@push('js')
-    <script src="{{asset('style/admin/vendor/libs/sweetalert2/sweetalert2.js')}}"></script>
-    <script src="{{asset('style/admin/js/extended-ui-sweetalert2.js')}}"></script>
-    <script src="{{asset('style/admin/validation/jqBootstrapValidation.js')}}"></script>
-    <script src="{{asset('style/admin/vendor/libs/select2/select2.js')}}"></script>
-    <script src="{{asset('style/admin/custom-js/submit-form.js')}}"></script>
-    <script src="{{asset('style/admin/custom-js/handel-error.js')}}"></script>
-    <script src="{{asset('style/admin/custom-js/error-handlers/show-validation-on-inputs.js')}}"></script>
+        <div class="pt-4 d-flex justify-content-center mt-3">
+            <button type="submit"
+                class="btn btn-success me-sm-3 me-1 waves-effect waves-light submit-button">{{ __('admin/main.edit') }}</button>
+        </div>
+    </form>
 @endpush

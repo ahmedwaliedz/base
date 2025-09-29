@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class BaseModelService {
 
-    public function storeRelations(Model $model, array $relations, array $validatedData): void {
-        dd($relations);
+    public function storeRelations(Model $model, array $validatedData): void {
+        $relations = defined($model::class . '::RELATIONS') ? $model::RELATIONS : [];
         DB::beginTransaction();
         try {
             foreach ($relations as $relation) {
@@ -32,7 +32,8 @@ class BaseModelService {
         DB::commit();
     }
 
-    public function updateRelations(Model $model, array $relations, array $validatedData): void {
+    public function updateRelations(Model $model, array $validatedData): void {
+        $relations = defined($model::class . '::RELATIONS') ? $model::RELATIONS : [];
         DB::transaction(function () use ($model, $relations, $validatedData) {
             foreach ($relations as $relation) {
                 if (! isset($validatedData[$relation])) {

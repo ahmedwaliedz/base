@@ -4,11 +4,12 @@ namespace App\Models;
 use App\Traits\Filters\FilterableTrait;
 use App\Traits\GeneralTrait;
 use App\Traits\HandleNumbersTrait;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
-class AuthBaseModel extends BaseModel {
+class AuthBaseModel extends Authenticatable {
 
     use HasFactory, Notifiable, SoftDeletes, GeneralTrait, HandleNumbersTrait, FilterableTrait;
 

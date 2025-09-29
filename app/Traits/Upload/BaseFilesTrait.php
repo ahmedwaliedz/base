@@ -7,7 +7,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 trait BaseFilesTrait {
 
-    use UploadTrait, InteractsWithMedia;
+    use UploadTrait;
 
     // protected const FILES             = [];
     // protected const UPLOAD_DIRECTORY  = 'default';
@@ -23,6 +23,11 @@ trait BaseFilesTrait {
     }
 
     public function getAttribute($key) {
+
+        $uploadDirectory  = defined(static::class . '::UPLOAD_DIRECTORY') ? constant(static::class . '::UPLOAD_DIRECTORY') : 'default';
+        $uploadCollection = defined(static::class . '::UPLOAD_COLLECTION') ? constant(static::class . '::UPLOAD_COLLECTION') : 'default';
+        $uploadType       = defined(static::class . '::UPLOAD_TYPE') ? constant(static::class . '::UPLOAD_TYPE') : 'custom';
+
         if (
             in_array($key, static::FILES, true) &&
             ! $this->hasGetMutator($key) &&
@@ -30,7 +35,7 @@ trait BaseFilesTrait {
             ! method_exists($this, $key)
         ) {
             if (! empty($this->attributes[$key])) {
-                return $this->handleImagePath($this->attributes[$key], self::UPLOAD_DIRECTORY, self::UPLOAD_COLLECTION, self::UPLOAD_TYPE);
+                return $this->handleImagePath($this->attributes[$key], $uploadDirectory, $uploadCollection, $uploadType);
             }
 
             return asset('site/imgs/default.webp');
@@ -54,11 +59,16 @@ trait BaseFilesTrait {
     }
 
     protected function handleFileAssignment($key, $value) {
+        
+        $uploadDirectory  = defined(static::class . '::UPLOAD_DIRECTORY') ? constant(static::class . '::UPLOAD_DIRECTORY') : 'default';
+        $uploadCollection = defined(static::class . '::UPLOAD_COLLECTION') ? constant(static::class . '::UPLOAD_COLLECTION') : 'default';
+        $uploadType       = defined(static::class . '::UPLOAD_TYPE') ? constant(static::class . '::UPLOAD_TYPE') : 'custom';
+
         if ($value instanceof \Illuminate\Http\UploadedFile  && $value->isValid()) {
             if (isset($this->attributes[$key])) {
-                $this->deleteFile($this->attributes[$key], self::UPLOAD_DIRECTORY);
+                $this->deleteFile($this->attributes[$key], $uploadDirectory);
             }
-            $this->attributes[$key] = $this->upload($value, self::UPLOAD_DIRECTORY, self::UPLOAD_COLLECTION, self::UPLOAD_TYPE);
+            $this->attributes[$key] = $this->upload($value, $uploadDirectory, $uploadCollection, $uploadType);
         }
         // elseif ($value instanceof TempFile) {
 
