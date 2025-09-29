@@ -1,5 +1,5 @@
 <div class="card mt-4">
-    <div class="card-datatable table-responsive">
+    <div class="card-datatable table-responsive table-content">
         <table class="datatables-products table">
             <thead class= "border-top">
             <tr>

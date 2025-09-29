@@ -4,7 +4,7 @@
 @section('table')
     @foreach ($admins as $admin)
         <tr class="data-rows">
-            <td class="dt-checkboxes-cell"><input type="checkbox" data-id="{{ $admin->id }}"
+            <td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $admin->id }}" data-id="{{ $admin->id }}"
                     class="dt-checkboxes form-check-input"></td>
             <td class="sorting_1">
                 <div class="d-flex product-name">

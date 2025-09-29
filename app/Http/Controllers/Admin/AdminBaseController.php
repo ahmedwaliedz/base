@@ -89,7 +89,7 @@ class AdminBaseController extends Controller {
     
     public function destroyAll(Request $request) {
         try { 
-            $this->service->destroyAll($request);
+            $this->service->destroyAll($request->ids);
             return $this->respondWithSuccess(__('admin/main.delete_selected_successfully'));
         } catch (Exception $e) {
             return $this->respondWithFail($e->getMessage());

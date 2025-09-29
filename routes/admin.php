@@ -60,8 +60,8 @@ use App\Http\Controllers\Admin\{
                 });
 
                 // admins routes
+                Route::delete('admins/destroy-all', [AdminController::class , 'destroyAll'])->name('admins.destroyAll');
                 Route::resource('admins', AdminController::class);
-                Route::post('admins/destroy-all', [AdminController::class , 'destroyAll'])->name('admins.destroyAll');
 
 
 

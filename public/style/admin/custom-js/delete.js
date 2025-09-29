@@ -10,8 +10,12 @@ $(document).on('click', '.delete-all-button' , function(e) {
     e.preventDefault();
     let selected = [];
     $('.table-content .dt-checkboxes:checked').each(function() {
-        selected.push($(this).data('id'));
+        const id = $(this).val() ?? $(this).data('id');
+        if (id !== undefined && id !== null && id !== '') {
+            selected.push(id);
+        }
     });
+    console.log(selected);
     const deleteAllRoute = $(this).data('route');
     deleteWithSwl(deleteAllRoute, selected);
 });
@@ -34,10 +38,13 @@ function deleteWithSwl(Route , selected) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                type: "delete",
+                type: "POST",
                 url: Route,
-                data: {ids : selected},
+                data: { ids: selected, _method: 'DELETE' },
                 dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: (response) => {
                     Swal.fire({
                         denyButtonClass: 'd-none',

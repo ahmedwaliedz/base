@@ -81,13 +81,10 @@ class CrudBaseService {
     public function destroyAll($ids, $function = null) {
         $objects     = $this->model::whereIn('id', $ids)->get();
         $objectsCopy = clone $objects;
-        dd(111);
         DB::transaction(function () use (&$objects, &$function) {
-
             if ($function) {
                 call_user_func($function, $objects);
             }
-
             $objects->each->delete();
         });
         return $objectsCopy;

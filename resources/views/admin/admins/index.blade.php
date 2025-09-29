@@ -1,5 +1,4 @@
 @extends('admin.layouts.crud.index')
-
 @push('content')
     <x-table.buttons createRoute="{{ route('admin.admins.create') }}" :hasNotification="true" :hasDeleteAll="true" :deleteAllRoute="route('admin.admins.destroyAll')"
         :hasEmail="true" :hasReload="true" :hasFilter="true" :hasExport="true" :exportPdf="true" :exportExcel="true"
@@ -9,7 +8,7 @@
     <x-table.filter :mainCol="'col-md-3'" :hasStartDate="true" :hasEndDate="true" :hasOrderBy="true" :filters="[
         [
             'type' => 'text',
-            'name' => 'name',
+            'name' => 'name',                              
         ],
         [
             'type' => 'text',
