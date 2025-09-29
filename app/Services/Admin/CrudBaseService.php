@@ -47,6 +47,14 @@ class CrudBaseService {
         ]);
     }
 
+    public function show($id) {
+        return array_merge($this->showVars(), [
+            $this->lowerClassName => $this->model::with($this->model::RELATIONS)->findOrFail($id),
+            'id'                  => $id,
+            'lowerClassName'      => $this->lowerClassName,
+        ]);
+    }
+
     public function update(Request $request, $id) {
         $object = $this->model::findOrFail($id);
         DB::transaction(function () use ($request, &$object) {
@@ -58,9 +66,16 @@ class CrudBaseService {
     }
 
     public function destroy($id, $function = null) {
-        // $object = parent::destroy($id, $function);
-        // ReportTrait::addToLog(__('log.deleted', ['id' => $object->id, 'model' => $this->lowerClassName, 'by' => auth('admin')->user()->name]));
-        return $object;
+        $object     = $this->model::findOrFail($id);
+        $objectCopy = clone $object;
+        DB::transaction(function () use (&$object, &$function) {
+            if ($function) {
+                call_user_func($function, $object);
+            }
+            $object->delete();
+            // ReportTrait::addToLog(__('log.deleted', ['id' => $object->id, 'model' => $this->lowerClassName, 'by' => auth('admin')->user()->name]));
+        });
+        return $objectCopy;
     }
 
     public function destroyAll($ids, $function = null) {
@@ -144,7 +159,7 @@ class CrudBaseService {
         return [];
     }
 
-    public function showVars($id): array {
+    public function showVars(): array {
         return [];
     }
 }

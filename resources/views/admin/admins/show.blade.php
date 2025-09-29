@@ -1,67 +1,59 @@
-@extends('admin.layouts.master')
+@extends('admin.layouts.crud.show')
 
-@push('css')
-    <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/sweetalert2/sweetalert2.css')}}"/>
+@push('header')
+    <h5 class="mb-0">{{ __('admin/main.admin_details') }}</h5>
+    <div>
+        <a href="{{ route('admin.admins.edit', $id) }}" class="btn btn-success me-2">{{ __('admin/main.edit') }}</a>
+        <a href="{{ route('admin.admins.index') }}" class="btn btn-secondary">{{ __('admin/main.back') }}</a>
+    </div>
 @endpush
 
-@section('content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">{{ __('admin/main.admin_details') }}</h5>
-        <div>
-            <a href="{{ route('admin.admins.edit', $id) }}" class="btn btn-primary me-2">{{ __('admin/main.edit') }}</a>
-            <a href="{{ route('admin.admins.index') }}" class="btn btn-secondary">{{ __('admin/main.back') }}</a>
-        </div>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <h6 class="fw-semibold">{{ __('admin/main.id') }}:</h6>
-                <p>{{ $admin->id ?? $id }}</p>
-            </div>
-            <div class="col-md-6 mb-3">
-                <h6 class="fw-semibold">{{ __('admin/main.name') }}:</h6>
-                <p>{{ $admin->name ?? '' }}</p>
+@push('content')
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-12 mb-3">
+            <div class="border rounded p-4 text-center shadow-sm h-100">
+                <img src="{{ $admin->image }}" class="rounded-circle border mb-3" style="width: 140px; height: 140px; object-fit: cover;" alt="{{ $admin->name }}" />
+                <h5 class="mb-1">{{ $admin->name }}</h5>
+                <div class="text-muted mb-3">{{ $admin->email }}</div>
+                <div class="d-flex justify-content-center gap-2">
+                    <span class="badge {{ $admin->statusData()['class'] }}">{{ $admin->statusData()['label'] }}</span>
+                    @if($admin->type)
+                        <span class="badge bg-label-primary">{{ $admin->type->label() }}</span>
+                    @endif
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <h6 class="fw-semibold">{{ __('admin/main.email') }}:</h6>
-                <p>{{ $admin->email ?? '' }}</p>
-            </div>
-            <div class="col-md-6 mb-3">
-                <h6 class="fw-semibold">{{ __('admin/main.role') }}:</h6>
-                <p>{{ $admin->role->name ?? '' }}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <h6 class="fw-semibold">{{ __('admin/main.created_at') }}:</h6>
-                <p>{{ $admin->created_at ?? '' }}</p>
-            </div>
-            <div class="col-md-6 mb-3">
-                <h6 class="fw-semibold">{{ __('admin/main.updated_at') }}:</h6>
-                <p>{{ $admin->updated_at ?? '' }}</p>
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-12">
-                <form id="deleteAdminForm" method="POST" action="{{ route('admin.admins.destroy', $id) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('{{ __('admin/main.confirm_delete') }}')">
-                        {{ __('admin/main.delete') }}
-                    </button>
-                </form>
+        <div class="col-md-12">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <small class="text-muted d-block mb-1">{{ __('admin/main.name') }}</small>
+                    <div class="fw-semibold">{{ $admin->name }}</div>
+                </div>
+                <div class="col-md-6">
+                    <small class="text-muted d-block mb-1">{{ __('admin/main.email') }}</small>
+                    <div class="fw-semibold">{{ $admin->email }}</div>
+                </div>
+                <div class="col-md-6">
+                    <small class="text-muted d-block mb-1">{{ __('admin/inputs.phone') }}</small>
+                    <div class="fw-semibold">{{ $admin->full_phone ?? ('+' . $admin->country_code . ' ' . $admin->phone) }}</div>
+                </div>
+                <div class="col-md-6">
+                    <small class="text-muted d-block mb-1">{{ __('admin/inputs.country_code') }}</small>
+                    <div class="fw-semibold">{{ $admin->country_code }}</div>
+                </div>
+                <div class="col-md-6">
+                    <small class="text-muted d-block mb-1">{{ __('admin/main.type') }}</small>
+                    <div class="fw-semibold">{{ $admin->type?->label() }}</div>
+                </div>
+                <div class="col-md-6">
+                    <small class="text-muted d-block mb-1">{{ __('admin/main.role') }}</small>
+                    <div class="fw-semibold">{{ $admin->role_name }}</div>
+                </div>
+                <div class="col-md-6">
+                    <small class="text-muted d-block mb-1">{{ __('admin/inputs.is_notify') }}</small>
+                    <div class="fw-semibold">{{ $admin->is_notify ? __('admin/main.yes') : __('admin/main.no') }}</div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-@endsection
-
-@push('js')
-    <script src="{{asset('style/admin/vendor/libs/sweetalert2/sweetalert2.js')}}"></script>
-    <script src="{{asset('style/admin/js/extended-ui-sweetalert2.js')}}"></script>
-    <script src="{{asset('style/admin/custom-js/submit-form.js')}}"></script>
-    <script src="{{asset('style/admin/custom-js/handel-error.js')}}"></script>
 @endpush
