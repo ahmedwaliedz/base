@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Http\Resources\Api\V1;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Traits\Response\PaginationTrait;
+
+class CountryCollection extends ResourceCollection
+{
+    use PaginationTrait;
+
+    /**
+     * Transform the resource collection into an array.
+     *
+     * @return array<int|string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'data' => CountryResource::collection($this->collection),
+            'pagination' => $this->formatPaginationData($this->resource)
+        ];
+    }
+}

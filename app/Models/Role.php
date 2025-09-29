@@ -1,29 +1,26 @@
 <?php
-
 namespace App\Models;
 
 use App\Traits\Filters\FilterableTrait;
-use Astrotomic\Translatable\Translatable;
+use App\Traits\Models\BaseFileWithTranslations;
+use App\Traits\GeneralTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
-{
-    use  FilterableTrait,HasFactory , Translatable;
+class Role extends Model {
+    use FilterableTrait, HasFactory, BaseFileWithTranslations ,GeneralTrait;
+
     public $translatedAttributes = ['name'];
 
-    public function admins()
-    {
+    public function admins() {
         return $this->hasMany(Admin::class);
     }
 
-    public function permissions()
-    {
+    public function permissions() {
         return $this->belongsToMany(Permission::class, 'permission_role');
     }
 
-    public function scopeName($query, $value)
-    {
+    public function scopeName($query, $value) {
         return $query->whereTranslationLike('name', '%' . $value . '%');
     }
 }

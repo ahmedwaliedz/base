@@ -1,0 +1,91 @@
+<?php
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Admin;
+use App\Traits\Response\ResponseTrait;
+use Exception;
+use Illuminate\Http\Request;
+
+class AdminBaseController extends Controller {
+    use ResponseTrait;
+
+    protected $model;
+    protected $service;
+    protected $smallPluralName;
+    protected $smallSingularName;
+    protected $createRequest;
+    protected $updateRequest;
+    protected $modelBaseName;
+
+    public $inputs = [];
+
+    public function __construct($service) {
+        $this->service           = $service;
+        $this->model             = $service->getModel();
+        $this->smallPluralName   = $this->model::smallPluralName();
+        $this->smallSingularName = $this->model::smallSingularName();
+        $this->modelBaseName     = class_basename($this->model);
+
+        $this->createRequest = "App\\Http\\Requests\\Admin\\" . $this->modelBaseName . "\\StoreRequest";
+        $this->updateRequest = "App\\Http\\Requests\\Admin\\" . $this->modelBaseName . "\\UpdateRequest";
+    }
+
+    public function index(Request $request) {
+
+        if (request()->ajax()) {
+
+            ${$this->smallPluralName} = $this->service->index($request)->paginate($request->filters['per_page'] ?? 30);
+
+            return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => ${$this->smallPluralName}])->render();
+
+        }
+
+        return view('admin.' . $this->smallPluralName . '.index', $this->service->indexVars() + [ ...get_defined_vars()]);
+    }
+
+    public function create() {
+        $vars           = $this->service->create();
+        $vars['inputs'] = $this->inputs;
+        return view('admin.' . $this->smallPluralName . '.create', $vars);
+    }
+
+    public function store() {
+        $request = app($this->createRequest);
+        try {
+            $this->service->store($request);
+            return $this->respondWithSuccess(__('admin/main.created_successfully'), [
+                'route' => route('admin.admins.index'),
+            ]);
+        } catch (Exception $e) {
+            dd(11);
+            return $this->respondWithFail($e->getMessage());
+        }
+    }
+
+    public function show($id) {
+        return view('admin.admins.show', compact('id'));
+    }
+
+    public function edit($id) {
+        return view('admin.admins.edit', compact('id'));
+    }
+
+    public function update(Request $request, $id) {
+        return $this->respondWithSuccess(__('admin/main.admin_updated'), [
+            'route' => route('admin.admins.index'),
+        ]);
+    }
+
+    public function destroyAll(Request $request) {
+        if (is_array($request->ids)) {
+            $admins = Admin::has('role')->whereIn('id', $request->ids)->get();
+            $admins->each->delete();
+            return $this->respondWithSuccess(__('admin/main.admins_deleted'));
+        }
+        return $this->respondWithFail(__('admin/main.admin_not_found'), [
+            'route' => route('admin.admins.index'),
+        ]);
+    }
+
+}

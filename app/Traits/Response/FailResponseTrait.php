@@ -14,7 +14,7 @@ trait FailResponseTrait
      * @param int $statusCode
      * @return JsonResponse
      */
-    protected function respondWithFail(string $message = null , array  $data = [] , int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR ): JsonResponse
+    protected function respondWithFail(string|null $message = null , array  $data = [] , int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR ): JsonResponse
     {
         // This method is used to respond with a JSON response for failure.
         return $this->mainRespond([
