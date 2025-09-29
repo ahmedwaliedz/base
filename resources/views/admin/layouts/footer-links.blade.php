@@ -10,7 +10,12 @@
 <script src="{{asset('style/admin/vendor/libs/sortablejs/sortable.js')}}"></script>
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 <script src="{{asset('style/admin/js/main.js')}}"></script>
+<script src="{{ asset('style/admin/custom-js/error-handlers/show-exception-dev.js') }}"></script>
 <script>
+    // Expose environment flags for frontend logic
+    window.APP_DEBUG = @json(config('app.debug'));
+    window.APP_ENV = @json(app()->environment());
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -60,5 +65,7 @@
         var modal = new bootstrap.Modal($modal[0]);
         modal.show();
     });
+
+    // Global AJAX exception handler moved to show-exception-dev.js
 </script>
 @stack('js')
