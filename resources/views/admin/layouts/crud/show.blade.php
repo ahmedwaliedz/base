@@ -11,8 +11,8 @@
         </div>
         <div class="card-body">
             <div class="row">
-                
-                @stack('content')   
+
+                @stack('content')
 
             </div>
         </div>
@@ -20,6 +20,7 @@
 @endsection
 
 @push('js')
+    <script src="{{ asset('style/admin/custom-js/delete.js') }}"></script>
     <script src="{{ asset('style/admin/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
     <script src="{{ asset('style/admin/js/extended-ui-sweetalert2.js') }}"></script>
     <script src="{{ asset('style/admin/custom-js/submit-form.js') }}"></script>

@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Admin;
+namespace App\Services\Admin\Base;
 
 use App\Services\BaseModelService;
 use Illuminate\Http\Request;
@@ -79,19 +79,18 @@ class CrudBaseService {
     }
 
     public function destroyAll($ids, $function = null) {
-        DB::beginTransaction();
-        try {
-            // $result = parent::destroyAll($ids, $function);
-            if ($result) {
-                // ReportTrait::addToLog(__('log.bulk_deleted', ['ids' => implode(',', $ids), 'model' => $this->lowerClassName, 'by' => auth('admin')->user()->name]));
+        $objects     = $this->model::whereIn('id', $ids)->get();
+        $objectsCopy = clone $objects;
+        dd(111);
+        DB::transaction(function () use (&$objects, &$function) {
+
+            if ($function) {
+                call_user_func($function, $objects);
             }
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            info('error at the admin base service destroy all function : ' . $e->getMessage());
-            throw $e;
-        }
-        return $result;
+
+            $objects->each->delete();
+        });
+        return $objectsCopy;
     }
 
     public function switchActive($id) {

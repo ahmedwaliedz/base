@@ -177,7 +177,7 @@ function sanitizeForSrcDoc(html) {
                 if (!window.APP_DEBUG) { return; }
                 if (!xhr) { return; }
                 var ct = (xhr.getResponseHeader && xhr.getResponseHeader('Content-Type')) || '';
-                var isServerError = (xhr.status >= 500);
+                var isServerError = (xhr.status >= 404);
                 var isHtmlError = ct.indexOf('text/html') !== -1;
                 if (isServerError || isHtmlError) {
                     fireDevAjaxExceptionModal(xhr, settings);
