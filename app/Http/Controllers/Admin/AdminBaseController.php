@@ -31,6 +31,11 @@ class AdminBaseController extends Controller {
     }
 
     public function index(Request $request) {
+        // Export full filtered dataset (no pagination)
+        if ($request->has('export')) {
+            return $this->service->export($request);
+        }
+
         if (request()->ajax()) {
             ${$this->smallPluralName} = $this->service->index($request)->paginate($request->filters['per_page'] ?? 30);
             return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => ${$this->smallPluralName}])->render();

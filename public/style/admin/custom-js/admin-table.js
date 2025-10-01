@@ -125,3 +125,122 @@ $(document).ready(function () {
     const filters = getFilters();
     loadTable({'filters': filters});
 });
+
+// Export handlers
+$(document).on('click', '.export-action', function (e) {
+    e.preventDefault();
+    const format = $(this).data('format');
+    const filters = getFilters();
+    const selectedIds = getSelectedIds();
+    showExportLoader();
+
+    if (format === 'copy') {
+        // request JSON then copy to clipboard as plain text
+        triggerExport('json', filters, false, selectedIds).then(({blob}) => {
+            blob.text().then(text => {
+                navigator.clipboard.writeText(text).then(() => {
+                    hideExportLoader();
+                });
+            });
+        });
+        return;
+    }
+
+    if (format === 'pdf' || format === 'docx') {
+        hideExportLoader();
+        // Unsupported notice (no backend yet)
+        if (window.Swal) {
+            Swal.fire({ icon: 'info', text: 'Export to ' + format.toUpperCase() + ' is not available yet.' });
+        }
+        return;
+    }
+
+    const downloadFormat = format === 'csv' ? 'csv' : 'json';
+    triggerExport(downloadFormat, filters, false, selectedIds)
+        .then(({blob}) => {
+            downloadBlob(blob, buildFileName(downloadFormat));
+        })
+        .catch((err) => {
+            if (window.Swal) {
+                Swal.fire({ icon: 'error', text: err?.message || 'Export failed' });
+            }
+        })
+        .finally(() => hideExportLoader());
+});
+
+function triggerExport(format, filters, download = false, selectedIds = []) {
+    const url = buildExportUrl(format, filters, selectedIds);
+    return fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+        .then(res => {
+            if (!res.ok) {
+                return res.text().then(text => {
+                    let msg = 'Export failed';
+                    try { const j = JSON.parse(text); if (j?.message) msg = j.message; } catch (_) { if (text) msg = text; }
+                    throw new Error(msg);
+                });
+            }
+            return res.blob();
+        })
+        .then(blob => ({blob}));
+}
+
+function buildExportUrl(format, filters, selectedIds = []) {
+    const baseUrl = (window.adminDataUrl ? window.adminDataUrl : window.location.href).split('?')[0];
+    const params = new URLSearchParams();
+    params.set('export', format);
+    Object.keys(filters || {}).forEach(key => {
+        if (filters[key] !== undefined && filters[key] !== null && filters[key] !== '') {
+            params.append(`filters[${key}]`, filters[key]);
+        }
+    });
+    if (selectedIds && selectedIds.length) {
+        selectedIds.forEach(id => params.append('ids[]', id));
+    }
+    return baseUrl + '?' + params.toString();
+}
+
+function getSelectedIds() {
+    const ids = [];
+    $('.table-content .dt-checkboxes:checked').each(function() {
+        const id = $(this).val() ?? $(this).data('id');
+        if (id !== undefined && id !== null && id !== '') {
+            ids.push(id);
+        }
+    });
+    return ids;
+}
+
+// Export loader helpers
+function showExportLoader() {
+    const $loader = $('#page-loader');
+    if ($loader.length) {
+        if ($loader.is(':visible')) return;
+        $loader.css('display', 'flex').hide().fadeIn('fast');
+    }
+}
+
+function hideExportLoader() {
+    const $loader = $('#page-loader');
+    if ($loader.length) {
+        $loader.fadeOut('fast');
+    }
+}
+
+function downloadBlob(blob, filename) {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+}
+
+function buildFileName(format) {
+    const path = (window.location.pathname || '').split('/').filter(Boolean);
+    const resource = path[path.length - 1] || 'export';
+    const ts = new Date().toISOString().replace(/[:.]/g, '-');
+    const ext = format === 'csv' ? 'csv' : 'json';
+    return resource + '-' + ts + '.' + ext;
+}
