@@ -5,12 +5,13 @@ use App\Enums\AdminType;
 use App\Enums\ModelNotificationType;
 use App\Traits\Models\BaseAuthModelTrait;
 use App\Traits\Upload\HasMediaLibrary;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\MediaLibrary\HasMedia;
 
 class Admin extends Authenticatable /* implements HasMedia */ {
 
-    use BaseAuthModelTrait /* , HasMediaLibrary */;
+    use BaseAuthModelTrait ,HasFactory /* , HasMediaLibrary */;
 
     /**
      * Available notification types for admins
@@ -21,7 +22,7 @@ class Admin extends Authenticatable /* implements HasMedia */ {
         ModelNotificationType::BLOCKED,
         ModelNotificationType::NOTBLOCKED,
     ];
-    
+
     protected const UPLOAD_DIRECTORY  = 'admins';
 
     protected const FILES = [
@@ -32,7 +33,7 @@ class Admin extends Authenticatable /* implements HasMedia */ {
         'role',
     ];
 
-    
+
     protected $fillable = [
         'name',
         'phone',
