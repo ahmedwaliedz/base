@@ -35,29 +35,26 @@
             </td>
 
             <td>
-                <div class="d-inline-block text-nowrap">
+                <div class="d-flex align-items-center gap-2 flex-nowrap">
 
-                    <a href="{{ route('admin.admins.edit', ['admin' => $admin]) }}"
-                        class="btn btn-sm btn-icon shadow-none">
-                        <i class="text-primary ti ti-edit"></i>
+                    <a href="{{ route('admin.admins.edit', ['admin' => $admin]) }}" class="bg-success text-white custom-icon">
+                        <i class="ti ti-pencil"></i>
                     </a>
 
-                    <a href="{{ route('admin.admins.show', ['admin' => $admin]) }}"
-                        class="btn btn-sm btn-icon shadow-none">
-                        <i class="text-info ti ti-eye-check"></i>
+                    <a href="{{ route('admin.admins.show', ['admin' => $admin]) }}" class="bg-primary text-white custom-icon">
+                        <i class="ti ti-eye"></i>
                     </a>
 
-                    <a data-bs-toggle="modal" data-bs-target="#notificationModal" data-id="{{ $admin->id }}"
-                        class="send-notification btn btn-sm btn-icon shadow-none">
-                        <i class="text-success ti ti-bell-star"></i>
+                    <a data-bs-toggle="modal" data-bs-target="#notificationModal" data-id="{{ $admin->id }}" class="send-notification bg-warning text-white custom-icon">
+                        <i class="ti ti-bell-plus"></i>
                     </a>
 
-                    <a data-bs-toggle="modal" data-bs-target="#notificationModal" class="btn btn-sm btn-icon shadow-none">
-                        <i class="text-success ti ti-mail-share"></i>
+                    <a data-bs-toggle="modal" data-bs-target="#emailModal" class="bg-info text-white custom-icon">
+                        <i class="ti ti-mail-plus"></i>
                     </a>
 
-                    <a data-id="{{ $admin->id }}" data-route="{{ route('admin.admins.destroy', ['admin' => $admin]) }}" class="btn btn-sm btn-icon delete-record shadow-none">
-                        <i class="text-danger ti ti-trash delete-record"></i>
+                    <a href="javascript:void(0);" data-id="{{ $admin->id }}" data-route="{{ route('admin.admins.destroy', ['admin' => $admin]) }}" class="bg-danger text-white custom-icon delete-row">
+                        <i class="ti ti-trash "></i>
                     </a>
 
                 </div>
