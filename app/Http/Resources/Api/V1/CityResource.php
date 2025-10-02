@@ -16,21 +16,8 @@ class CityResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name, // Translated name
-            'country_id' => $this->country_id,
+            'name' => $this->name, 
             'region_id' => $this->region_id,
-            'is_active' => $this->is_active,
-            'country' => $this->whenLoaded('country', function () {
-                return [
-                    'id' => $this->country->id,
-                    'name' => $this->country->name,
-                    'code' => $this->country->code,
-                    'flag' => $this->country->flag,
-                    'is_active' => $this->country->is_active,
-                ];
-            }),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }

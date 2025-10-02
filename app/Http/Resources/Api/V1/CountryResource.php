@@ -14,12 +14,10 @@ class CountryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // Get the translated name (fallback handled by model)
-        
         return [
             'id' => $this->id,
-            'name' => $this->name,
             'code' => $this->code,
+            'name' => $this->name,
             'flag' => $this->flag,
             'regions' => $this->whenLoaded('regions', function () {
                 return RegionResource::collection($this->regions);
