@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Admin;
+namespace App\Services\Admin\Base;
 
 class AuthenticatableBaseService extends CrudBaseService {
 

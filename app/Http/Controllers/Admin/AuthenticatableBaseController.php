@@ -7,5 +7,5 @@ class AuthenticatableBaseController extends AdminBaseController {
         parent::__construct($service);
     }
 
-    
+   
 }

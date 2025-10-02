@@ -1,9 +1,10 @@
 <?php
-namespace App\Services\Admin;
+namespace App\Services\Admin\Base;
 
 use App\Services\BaseModelService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CrudBaseService {
 
@@ -79,19 +80,15 @@ class CrudBaseService {
     }
 
     public function destroyAll($ids, $function = null) {
-        DB::beginTransaction();
-        try {
-            // $result = parent::destroyAll($ids, $function);
-            if ($result) {
-                // ReportTrait::addToLog(__('log.bulk_deleted', ['ids' => implode(',', $ids), 'model' => $this->lowerClassName, 'by' => auth('admin')->user()->name]));
+        $objects     = $this->model::whereIn('id', $ids)->get();
+        $objectsCopy = clone $objects;
+        DB::transaction(function () use (&$objects, &$function) {
+            if ($function) {
+                call_user_func($function, $objects);
             }
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            info('error at the admin base service destroy all function : ' . $e->getMessage());
-            throw $e;
-        }
-        return $result;
+            $objects->each->delete();
+        });
+        return $objectsCopy;
     }
 
     public function switchActive($id) {
@@ -143,6 +140,55 @@ class CrudBaseService {
 
     public function getModel() {
         return $this->model;
+    }
+
+    public function export(Request $request) {
+        $format = strtolower($request->get('export', 'csv'));
+        $query = $this->index($request);
+        if ($request->filled('ids')) {
+            $ids = is_array($request->ids) ? $request->ids : [$request->ids];
+            $query->whereIn('id', $ids);
+        }
+        // Get all filtered data (no pagination)
+        $rows = $query->get();
+
+        if ($format === 'json') {
+            return response()->json($rows);
+        }
+
+        // Default to CSV (Excel-compatible). Add UTF-8 BOM for Arabic/English
+        $filename = strtolower(class_basename($this->model)) . '-' . now()->format('Ymd-His') . '.csv';
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        $callback = function () use ($rows) {
+            $output = fopen('php://output', 'w');
+            // UTF-8 BOM
+            fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+            // Determine columns from first row
+            $first = $rows->first();
+            if ($first) {
+                $array = $first->toArray();
+                fputcsv($output, array_keys($array));
+                foreach ($rows as $row) {
+                    $data = $row->toArray();
+                    // Flatten nested arrays/objects to JSON strings
+                    foreach ($data as $key => $value) {
+                        if (is_array($value) || is_object($value)) {
+                            $data[$key] = json_encode($value, JSON_UNESCAPED_UNICODE);
+                        }
+                    }
+                    fputcsv($output, $data);
+                }
+            }
+
+            fclose($output);
+        };
+
+        return new StreamedResponse($callback, 200, $headers);
     }
 
     // * common variables for views

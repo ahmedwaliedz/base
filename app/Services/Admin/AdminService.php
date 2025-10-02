@@ -5,9 +5,10 @@ use App\Enums\AdminType;
 use App\Models\Admin;
 use App\Models\Country;
 use App\Models\Role;
+use App\Services\Admin\Base\AuthenticatableBaseService;
 use Exception;
 
-class AdminService extends CrudBaseService {
+class AdminService extends AuthenticatableBaseService {
 
     public function __construct() {
         parent::__construct(Admin::class);
@@ -45,10 +46,10 @@ class AdminService extends CrudBaseService {
 
     public function destroy($id, $function = null) {
         return parent::destroy($id, function ($object) {
-            dd($object);
             if ($object->id == 1) {
                 throw new Exception(__('admin/main.you_cannot_delete_the_super_admin'));
             }
         });
     }
+
 }

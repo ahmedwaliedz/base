@@ -17,7 +17,6 @@ class AdminBaseController extends Controller {
     protected $createRequest;
     protected $updateRequest;
     protected $modelBaseName;
-
     public $inputs = [];
 
     public function __construct($service) {
@@ -32,6 +31,11 @@ class AdminBaseController extends Controller {
     }
 
     public function index(Request $request) {
+        // Export full filtered dataset (no pagination)
+        if ($request->has('export')) {
+            return $this->service->export($request);
+        }
+
         if (request()->ajax()) {
             ${$this->smallPluralName} = $this->service->index($request)->paginate($request->filters['per_page'] ?? 30);
             return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => ${$this->smallPluralName}])->render();
@@ -79,7 +83,6 @@ class AdminBaseController extends Controller {
         return view('admin.' . $this->smallPluralName . '.show', $vars);
     }
 
-    
     public function destroy($id) {
         try { 
             $this->service->destroy($id);
@@ -88,27 +91,14 @@ class AdminBaseController extends Controller {
             return $this->respondWithFail($e->getMessage());
         }
     }
-
-    // public function destroy(Request $request) {
-    //     if (is_array($request->ids)) {
-    //         $admins = Admin::has('role')->whereIn('id', $request->ids)->get();
-    //         $admins->each->delete();
-    //         return $this->respondWithSuccess(__('admin/main.admins_deleted'));
-    //     }
-    //     return $this->respondWithFail(__('admin/main.admin_not_found'), [
-    //         'route' => route('admin.admins.index'),
-    //     ]);
-    // }
-
-    // public function destroyAll(Request $request) {
-    //     if (is_array($request->ids)) {
-    //         $admins = Admin::has('role')->whereIn('id', $request->ids)->get();
-    //         $admins->each->delete();
-    //         return $this->respondWithSuccess(__('admin/main.admins_deleted'));
-    //     }
-    //     return $this->respondWithFail(__('admin/main.admin_not_found'), [
-    //         'route' => route('admin.admins.index'),
-    //     ]);
-    // }
+    
+    public function destroyAll(Request $request) {
+        try { 
+            $this->service->destroyAll($request->ids);
+            return $this->respondWithSuccess(__('admin/main.delete_selected_successfully'));
+        } catch (Exception $e) {
+            return $this->respondWithFail($e->getMessage());
+        }
+    }
 
 }
