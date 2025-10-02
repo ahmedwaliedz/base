@@ -126,11 +126,13 @@ function applyCustomPerPage(buttonElement) {
 }
 
 $(document).ready(function() {
-    const filters = getFilters();
-    loadTable({ 'filters': filters });
+    if ($('.append-page-content').length) {
+        const filters = getFilters();
+        loadTable({ 'filters': filters });
+    }
 });
 
-// Switch block/unblock admin (show alert only, do not alter table UI)
+// Switch block/unblock admin (handles both table and show pages)
 $(document).on('change', '.switch-block', function () {
     var $switch = $(this);
     var url = $switch.data('route');
@@ -138,10 +140,25 @@ $(document).on('change', '.switch-block', function () {
         type: 'PUT',
         url: url,
         dataType: 'json',
-        success: function () {
-            // Revert the switch to keep the current table state unchanged
+        success: function (resp) {
+            var isBlocked = resp && resp.data ? resp.data.is_blocked : $switch.prop('checked');
+            var $badge = $('.status-badge');
+            if ($badge.length) {
+                // Show page behavior: update switch and badge, no table reload
+                $switch.prop('checked', isBlocked);
+                var CLASS_ACTIVE = 'bg-label-success';
+                var CLASS_BLOCKED = 'bg-label-warning';
+                $badge.removeClass(CLASS_ACTIVE + ' ' + CLASS_BLOCKED)
+                      .addClass(isBlocked ? CLASS_BLOCKED : CLASS_ACTIVE);
+                var activeLabel = $badge.data('active-label');
+                var blockedLabel = $badge.data('blocked-label');
+                if (activeLabel && blockedLabel) {
+                    $badge.text(isBlocked ? blockedLabel : activeLabel);
+                }
+                return;
+            }
+            // Table behavior: revert switch and refresh table
             $switch.prop('checked', !$switch.prop('checked'));
-            // Show loader and refresh table with current filters
             try { showTableLoader(); } catch (_) {}
             try {
                 var filters = getFilters();

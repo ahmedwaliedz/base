@@ -21,8 +21,18 @@
                     </div>
                     <h5 class="mb-1">{{ $admin->name }}</h5>
                     <div class="text-muted mb-3">{{ $admin->email }}</div>
-                    <div class="d-flex justify-content-center flex-wrap gap-2">
-                        <span class="badge {{ $admin->statusData()['class'] }}">{{ $admin->statusData()['label'] }}</span>
+                    <div class="d-flex justify-content-center flex-wrap gap-2 align-items-center">
+                        <span class="badge status-badge {{ $admin->statusData()['class'] }}"
+                              data-active-label="{{ __('admin/main.active') }}"
+                              data-blocked-label="{{ __('admin/main.blocked') }}">{{ $admin->statusData()['label'] }}</span>
+                        <div class="form-check form-switch m-0">
+                            <input class="form-check-input switch-block" type="checkbox" role="switch"
+                                   data-id="{{ $admin->id }}"
+                                   data-route="{{ route('admin.admins.switchBlock', ['id' => $admin->id]) }}"
+                                   {{ $admin->is_blocked ? 'checked' : '' }}
+                                   title="{{ __('admin/main.blocked') }}" />
+                            {{-- <label class="form-check-label ms-2">{{ __('admin/main.blocked') }}</label> --}}
+                        </div>
                         @if($admin->type)
                             <span class="badge bg-label-primary">{{ $admin->type->label() }}</span>
                         @endif
@@ -69,10 +79,5 @@
 @endpush
 
 @push('js')
-    <script>
-        if (typeof loadTable !== 'function') {
-            window.getFilters = function() { return {}; };
-            window.loadTable = function() { window.location.href = "{{ route('admin.admins.index') }}"; };
-        }
-    </script>
+    <script src="{{ asset('style/admin/custom-js/admin-table.js') }}"></script>
 @endpush
