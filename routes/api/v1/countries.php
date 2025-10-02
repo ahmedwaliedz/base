@@ -17,13 +17,6 @@ Route::prefix('countries')->group(function () {
     Route::get('/', [CountriesController::class, 'countries']);
     Route::get('/limited', [CountriesController::class, 'countriesLimited']);
     Route::get('/with-regions', [CountriesController::class, 'countriesWithRegions']);
-});
-
-Route::prefix('cities')->group(function () {
-    Route::get('/', [CountriesController::class, 'cities']);
-    Route::get('/with-regions', [CountriesController::class, 'citiesWithRegions']);
-});
-
-Route::prefix('regions')->group(function () {
-    Route::get('/', [CountriesController::class, 'regions']);
+    Route::get('/with-regions-and-cities', [CountriesController::class, 'countriesWithRegionsAndCities']);
+    Route::get('/codes', [CountriesController::class, 'countryCodes']);
 });

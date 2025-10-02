@@ -17,4 +17,6 @@ Route::prefix('regions')->group(function () {
     Route::get('/', [RegionController::class, 'regions']);
     Route::get('/limited', [RegionController::class, 'regionsLimited']);
     Route::get('/with-cities', [RegionController::class, 'regionsWithCities']);
+    Route::get('/by-country/{countryId}', [RegionController::class, 'regionsByCountry']);
+    Route::get('/by-country/{countryId}/limited', [RegionController::class, 'regionsByCountryLimited']);
 });

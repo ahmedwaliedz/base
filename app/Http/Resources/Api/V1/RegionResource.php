@@ -18,6 +18,9 @@ class RegionResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name, 
             'country_id' => $this->country_id,
+            'cities' => $this->whenLoaded('cities', function () {
+                return CityResource::collection($this->cities);
+            }),
         ];
     }
 }

@@ -15,7 +15,7 @@ class AuthController extends Controller
      * User login
      */
     public function login(Request $request)
-    {س
+    {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
@@ -106,7 +106,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $guard = Auth::guard('admin')->check() ? 'admin' : 'web';
-        
+
         if ($guard === 'admin') {
             Auth::guard('admin')->logout();
         } else {
@@ -125,7 +125,7 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         $user = Auth::user();
-        
+
         if (!$user) {
             return response()->json([
                 'status' => 'error',
@@ -145,7 +145,7 @@ class AuthController extends Controller
     public function admin(Request $request)
     {
         $admin = Auth::guard('admin')->user();
-        
+
         if (!$admin) {
             return response()->json([
                 'status' => 'error',
