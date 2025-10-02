@@ -130,6 +130,34 @@ $(document).ready(function() {
     loadTable({ 'filters': filters });
 });
 
+// Switch block/unblock admin (show alert only, do not alter table UI)
+$(document).on('change', '.switch-block', function () {
+    var $switch = $(this);
+    var url = $switch.data('route');
+    $.ajax({
+        type: 'PUT',
+        url: url,
+        dataType: 'json',
+        success: function () {
+            // Revert the switch to keep the current table state unchanged
+            $switch.prop('checked', !$switch.prop('checked'));
+            // Show loader and refresh table with current filters
+            try { showTableLoader(); } catch (_) {}
+            try {
+                var filters = getFilters();
+                loadTable({ 'filters': filters });
+            } catch (_) {}
+        },
+        error: function (xhr) {
+            // Revert UI on error
+            $switch.prop('checked', !$switch.prop('checked'));
+            if (typeof handelErrorByStatus === 'function') {
+                handelErrorByStatus(xhr);
+            }
+        }
+    });
+});
+
 // Export handlers
 $(document).on('click', '.export-action', function(e) {
     e.preventDefault();

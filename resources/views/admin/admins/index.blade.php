@@ -46,3 +46,6 @@
     </x-model.email>
     
 @endpush
+
+@push('js')
+@endpush

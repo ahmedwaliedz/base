@@ -30,8 +30,17 @@
             </td>
 
             <td class="sorting_1">
-                <span class="badge  {{ $admin->statusData()['class'] }} "
-                    text-capitalized="">{{ $admin->statusData()['label'] }}</span>
+                <div class="d-flex align-items-center gap-2 flex-nowrap">
+                    <span class="badge  {{ $admin->statusData()['class'] }} status-badge"
+                        text-capitalized="">{{ $admin->statusData()['label'] }}</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input switch-block" type="checkbox" role="switch"
+                               data-id="{{ $admin->id }}"
+                               data-route="{{ route('admin.admins.switchBlock', ['id' => $admin->id]) }}"
+                               {{ $admin->is_blocked ? 'checked' : '' }}
+                               title="{{ __('admin/main.blocked') }}" />
+                    </div>
+                </div>
             </td>
 
             <td>
