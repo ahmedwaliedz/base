@@ -133,23 +133,23 @@ $(document).ready(function() {
 });
 
 // Switch block/unblock admin (handles both table and show pages)
-$(document).on('change', '.switch-block', function () {
+$(document).on('change', '.switch-block', function() {
     var $switch = $(this);
     var url = $switch.data('route');
     $.ajax({
         type: 'PUT',
         url: url,
         dataType: 'json',
-        success: function (resp) {
+        success: function(resp) {
             var isBlocked = resp && resp.data ? resp.data.is_blocked : $switch.prop('checked');
             var $badge = $('.status-badge');
             if ($badge.length) {
                 // Show page behavior: update switch and badge, no table reload
-                $switch.prop('checked', isBlocked);
+                $switch.prop('checked', !isBlocked);
                 var CLASS_ACTIVE = 'bg-label-success';
                 var CLASS_BLOCKED = 'bg-label-warning';
                 $badge.removeClass(CLASS_ACTIVE + ' ' + CLASS_BLOCKED)
-                      .addClass(isBlocked ? CLASS_BLOCKED : CLASS_ACTIVE);
+                    .addClass(isBlocked ? CLASS_BLOCKED : CLASS_ACTIVE);
                 var activeLabel = $badge.data('active-label');
                 var blockedLabel = $badge.data('blocked-label');
                 if (activeLabel && blockedLabel) {
@@ -165,7 +165,7 @@ $(document).on('change', '.switch-block', function () {
                 loadTable({ 'filters': filters });
             } catch (_) {}
         },
-        error: function (xhr) {
+        error: function(xhr) {
             // Revert UI on error
             $switch.prop('checked', !$switch.prop('checked'));
             if (typeof handelErrorByStatus === 'function') {

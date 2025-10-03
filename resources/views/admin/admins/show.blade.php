@@ -29,7 +29,7 @@
                             <input class="form-check-input switch-block" type="checkbox" role="switch"
                                    data-id="{{ $admin->id }}"
                                    data-route="{{ route('admin.admins.switchBlock', ['id' => $admin->id]) }}"
-                                   {{ $admin->is_blocked ? 'checked' : '' }}
+                                   {{ !$admin->is_blocked ? 'checked' : '' }}
                                    title="{{ __('admin/main.blocked') }}" />
                             {{-- <label class="form-check-label ms-2">{{ __('admin/main.blocked') }}</label> --}}
                         </div>
