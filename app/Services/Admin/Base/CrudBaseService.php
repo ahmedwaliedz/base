@@ -2,6 +2,7 @@
 namespace App\Services\Admin\Base;
 
 use App\Services\BaseModelService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -140,6 +141,18 @@ class CrudBaseService {
 
     public function getModel() {
         return $this->model;
+    }
+
+    public function getIsRetreivable() {
+        $is_retreivable = false;
+
+        try {
+            $is_retreivable = $this->model::is_retreivable();
+        } catch (Exception $e) {
+            $is_retreivable = false;
+        }
+
+        return $is_retreivable;
     }
 
     public function export(Request $request) {

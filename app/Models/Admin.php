@@ -4,14 +4,14 @@ namespace App\Models;
 use App\Enums\AdminType;
 use App\Enums\ModelNotificationType;
 use App\Traits\Models\BaseAuthModelTrait;
-use App\Traits\Upload\HasMediaLibrary;
+use App\Traits\Models\CanRetrieve;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\MediaLibrary\HasMedia;
 
-class Admin extends Authenticatable /* implements HasMedia */ {
+class Admin extends Authenticatable/* implements HasMedia */{
 
-    use BaseAuthModelTrait ,HasFactory /* , HasMediaLibrary */;
+    use BaseAuthModelTrait, HasFactory, SoftDeletes, CanRetrieve/* , HasMediaLibrary */;
 
     /**
      * Available notification types for admins
@@ -23,7 +23,7 @@ class Admin extends Authenticatable /* implements HasMedia */ {
         ModelNotificationType::NOTBLOCKED,
     ];
 
-    protected const UPLOAD_DIRECTORY  = 'admins';
+    protected const UPLOAD_DIRECTORY = 'admins';
 
     protected const FILES = [
         'image',
@@ -32,7 +32,6 @@ class Admin extends Authenticatable /* implements HasMedia */ {
     public const RELATIONS = [
         'role',
     ];
-
 
     protected $fillable = [
         'name',
@@ -62,8 +61,6 @@ class Admin extends Authenticatable /* implements HasMedia */ {
         'is_notify'  => true,
         'image'      => 'default.png',
     ];
-
-
 
     public function scopeStatus($query, $status) {
         if ($status === 'active') {
