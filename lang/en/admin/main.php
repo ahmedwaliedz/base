@@ -28,6 +28,8 @@
         'confirm' => 'Confirm',
         'cancel' => 'Cancel',
         'deleted_successfully' => 'Deleted successfully',
+        'restored_successfully' => 'Restored successfully',
+        'are_you_sure_to_restore' => 'Are you sure you want to restore this item?',
         'main_data' => 'Main Data',
         'notifications_data' => 'Notification Data',
         'settings_updated' => 'Settings updated successfully',
@@ -81,6 +83,7 @@
 
         'send_notification' => 'Send Notification',
         'send_email' => 'Send Email',
+        'restore' => 'Restore',
         'delete_selected' => 'Delete Selected',
         'reload' => 'Reload',
         'create' => 'Create',

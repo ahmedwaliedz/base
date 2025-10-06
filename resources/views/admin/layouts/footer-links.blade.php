@@ -38,6 +38,8 @@
         confirmButtonText: '{{ __('admin/main.confirm') }}',
         cancelButtonText: '{{ __('admin/main.cancel') }}',
         deleted_successfully: "{{ __('admin/main.deleted_successfully') }}",
+        are_you_sure_want_restore: "{{ __('admin/main.are_you_sure_to_restore') }}",
+        restored_successfully: "{{ __('admin/main.restored_successfully') }}",
     };
 
     // Delegated image click preview (opt-out with .no-preview or data-no-preview="true")

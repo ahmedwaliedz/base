@@ -102,4 +102,13 @@ class AdminBaseController extends Controller {
         }
     }
 
+    public function restore($id) {
+        try {
+            $this->service->restore($id);
+            return $this->respondWithSuccess(__('admin/main.restored_successfully'));
+        } catch (Exception $e) {
+            return $this->respondWithFail($e->getMessage());
+        }
+    }
+
 }

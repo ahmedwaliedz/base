@@ -1,12 +1,18 @@
-@extends('admin.layouts.crud.show')
+@extends('admin.layouts.crud.show' , ['model' => $admin])
 
 @push('header')
     <h5 class="mb-0">{{ __('admin/main.admin_details') }}</h5>
     <div>
-        <a href="{{ route('admin.admins.edit', $id) }}" class="btn btn-success me-2"><i class="ti ti-edit me-1"></i>{{ __('admin/main.edit') }}</a>
-        <a href="#" data-id="{{ $admin->id }}" data-route="{{ route('admin.admins.destroy', ['admin' => $admin]) }}" class="btn btn-danger me-2 delete-record" title="Delete">
-            <i class="ti ti-trash "></i> {{ __('admin/main.delete') }}
-        </a>
+        @if($admin->deleted_at)
+            <a href="#" data-id="{{ $admin->id }}" data-route="{{ route('admin.admins.restore', ['id' => $admin->id]) }}" class="btn btn-success me-2 restore-row" title="{{ __('admin/main.restore') }}">
+                <i class="ti ti-arrow-back-up me-1"></i>{{ __('admin/main.restore') }}
+            </a>
+        @else
+            <a href="{{ route('admin.admins.edit', $id) }}" class="btn btn-success me-2"><i class="ti ti-edit me-1"></i>{{ __('admin/main.edit') }}</a>
+            <a href="#" data-id="{{ $admin->id }}" data-route="{{ route('admin.admins.destroy', ['admin' => $admin]) }}" class="btn btn-danger me-2 delete-record" title="Delete">
+                <i class="ti ti-trash "></i> {{ __('admin/main.delete') }}
+            </a>
+        @endif
         <a href="{{ route('admin.admins.index') }}" class="btn btn-secondary"><i class="ti ti-arrow-left me-1"></i>{{ __('admin/main.back') }}</a>
     </div>
 @endpush

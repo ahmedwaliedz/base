@@ -62,6 +62,7 @@ use App\Http\Controllers\Admin\{
                 // admins routes
                 Route::delete('admins/destroy-all', [AdminController::class , 'destroyAll'])->name('admins.destroyAll');
                 Route::put('admins/{id}/switch-block', [AdminController::class, 'switchBlock'])->name('admins.switchBlock');
+                Route::put('admins/{id}/restore', [AdminController::class, 'restore'])->name('admins.restore');
                 Route::resource('admins', AdminController::class);
 
 

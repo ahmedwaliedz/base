@@ -50,8 +50,13 @@ class CrudBaseService {
     }
 
     public function show($id) {
+        $query = $this->model::with($this->model::RELATIONS);
+        // If model supports retrieval (SoftDeletes + CanRetrieve), allow viewing trashed records
+        if ($this->getIsRetreivable()) {
+            $query = $query->withTrashed();
+        }
         return array_merge($this->showVars(), [
-            $this->lowerClassName => $this->model::with($this->model::RELATIONS)->findOrFail($id),
+            $this->lowerClassName => $query->findOrFail($id),
             'id'                  => $id,
             'lowerClassName'      => $this->lowerClassName,
         ]);
@@ -90,6 +95,22 @@ class CrudBaseService {
             $objects->each->delete();
         });
         return $objectsCopy;
+    }
+
+    public function restore($id) {
+        $object = $this->model::withTrashed()->findOrFail($id);
+        if (! method_exists($object, 'restore')) {
+            throw new Exception('This model does not support restore.');
+        }
+        DB::transaction(function () use (&$object) {
+            // If model uses CanRetrieve trait, prefer retrieve to restore relations as well
+            if (method_exists($object, 'retrieve')) {
+                $object->retrieve();
+            } else {
+                $object->restore();
+            }
+        });
+        return $object;
     }
 
     public function switchActive($id) {
