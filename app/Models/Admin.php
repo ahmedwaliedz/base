@@ -33,6 +33,16 @@ class Admin extends Authenticatable/* implements HasMedia */{
         'role',
     ];
 
+    /**
+     * Export columns schema to be used for CSV/Excel/Print/PDF.
+     * Labels are translation keys and will be translated at runtime.
+     */
+    public const EXPORT_COLUMNS = [
+        [ 'key' => 'name',          'label' => 'admin/main.name' ],
+        [ 'key' => 'role_name',     'label' => 'admin/main.role' ],
+        [ 'key' => 'status_label',  'label' => 'admin/main.status' ],
+    ];
+
     protected $fillable = [
         'name',
         'phone',
@@ -84,6 +94,11 @@ class Admin extends Authenticatable/* implements HasMedia */{
             'label' => $this->is_blocked ? __('admin/main.blocked') : __('admin/main.active'),
             'class' => $this->is_blocked ? 'bg-label-warning' : 'bg-label-success',
         ];
+    }
+
+    // Accessor used by export to get a plain status label
+    public function getStatusLabelAttribute() {
+        return $this->statusData()['label'] ?? null;
     }
 
     /**

@@ -214,16 +214,11 @@ $(document).on('click', '.export-action', function(e) {
         return;
     }
 
-    if (format === 'print') {
+    if (format === 'print' || format === 'pdf') {
         hideExportLoader();
-        printCurrentTable();
-        return;
-    }
-
-    if (format === 'pdf') {
-        // Use print dialog to allow saving as PDF
-        hideExportLoader();
-        printCurrentTable();
+        const url = buildExportUrl('html', filters, selectedIds);
+        const w = window.open(url + '&_print=' + format, '_blank');
+        if (w) { w.focus(); }
         return;
     }
     if (format === 'docx') {
