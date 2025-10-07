@@ -1,7 +1,7 @@
 @extends('admin.layouts.crud.index')
 @push('content')
     <x-table.buttons createRoute="{{ route('admin.admins.create') }}" :hasNotification="true" :hasDeleteAll="true" :deleteAllRoute="route('admin.admins.destroyAll')"
-        :hasEmail="true" :hasReload="true" :hasFilter="true" :hasExport="true" :exportPdf="true" :exportExcel="true"
+        :hasEmail="true" :hasReload="true" :hasFilter="true" :hasExport="true" :exportCopy="true" :exportPdf="true" :exportExcel="true"
         :exportCopy="true" :hasPagination="true" :perPage="20">
     </x-table.buttons>
 

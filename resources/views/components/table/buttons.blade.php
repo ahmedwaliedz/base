@@ -30,12 +30,15 @@
             </button>
         @endif
 
-        @if($hasExport && ($exportPdf || $exportExcel || $exportWord || $exportJson || $exportCopy))
+        @if($hasExport && ($exportPrint || $exportPdf || $exportExcel || $exportWord || $exportJson || $exportCopy))
             <div class="btn-group me-1">
                 <button type="button" class="btn btn-outline-primary dropdown-toggle waves-effect" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="ti-xs ti ti-file-export me-1"></span>{{ __('admin/main.export') }}
                 </button>
                 <ul class="dropdown-menu">
+                    @if($exportPrint)
+                    <li><a class="dropdown-item export-action" data-format="print" href="javascript:void(0);"><i class="ti ti-printer me-1"></i>{{ __('admin/main.print') }}</a></li>
+                    @endif
                     @if($exportPdf)
                     <li><a class="dropdown-item export-action" data-format="pdf" href="javascript:void(0);"><i class="ti ti-pdf me-1"></i>{{ __('admin/main.export_pdf') }}</a></li>
                     @endif

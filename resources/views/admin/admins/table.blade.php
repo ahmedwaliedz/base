@@ -75,15 +75,13 @@
                         <i class="ti ti-trash "></i>
                     </a>
 
-                    @if($admin->deleted_at)
-                    
-                    <a href="javascript:void(0);" data-id="{{ $admin->id }}"
-                        data-route="{{ route('admin.admins.restore', ['id' => $admin->id]) }}"
-                        class="bg-success text-white custom-icon restore-row" data-bs-toggle="tooltip" data-placement="top"
-                        title="@lang('admin/main.restore')">
-                        <i class="ti ti-arrow-back-up "></i>
-                    </a>
-
+                    @if ($admin->deleted_at)
+                        <a href="javascript:void(0);" data-id="{{ $admin->id }}"
+                            data-route="{{ route('admin.admins.restore', ['id' => $admin->id]) }}"
+                            class="bg-success text-white custom-icon restore-row" data-bs-toggle="tooltip"
+                            data-placement="top" title="@lang('admin/main.restore')">
+                            <i class="ti ti-arrow-back-up "></i>
+                        </a>
                     @endif
 
                 </div>
