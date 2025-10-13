@@ -38,9 +38,10 @@ class Admin extends Authenticatable/* implements HasMedia */{
      * Labels are translation keys and will be translated at runtime.
      */
     public const EXPORT_COLUMNS = [
-        [ 'key' => 'name',          'label' => 'admin/main.name' ],
-        [ 'key' => 'role_name',     'label' => 'admin/main.role' ],
-        [ 'key' => 'status_label',  'label' => 'admin/main.status' ],
+        ['key' => 'id', 'label' => 'admin/main.id'],
+        ['key' => 'name', 'label' => 'admin/main.name'],
+        ['key' => 'role_name', 'label' => 'admin/main.role'],
+        ['key' => 'status_label', 'label' => 'admin/main.status'],
     ];
 
     protected $fillable = [
