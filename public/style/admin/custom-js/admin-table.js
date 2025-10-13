@@ -221,15 +221,9 @@ $(document).on('click', '.export-action', function(e) {
         if (w) { w.focus(); }
         return;
     }
-    if (format === 'docx') {
-        hideExportLoader();
-        if (window.Swal) {
-            Swal.fire({ icon: 'info', text: 'Export to DOCX is not available yet.' });
-        }
-        return;
-    }
+    // allow docx to proceed as a direct download like csv/json
 
-    const downloadFormat = format === 'csv' ? 'csv' : 'json';
+    const downloadFormat = (format === 'csv' ? 'csv' : (format === 'docx' ? 'docx' : 'json'));
     triggerExport(downloadFormat, filters, false, selectedIds)
         .then(({ blob }) => {
             downloadBlob(blob, buildFileName(downloadFormat));
@@ -344,7 +338,7 @@ function buildFileName(format) {
     const path = (window.location.pathname || '').split('/').filter(Boolean);
     const resource = path[path.length - 1] || 'export';
     const ts = new Date().toISOString().replace(/[:.]/g, '-');
-    const ext = format === 'csv' ? 'csv' : 'json';
+    const ext = (format === 'csv' ? 'csv' : (format === 'docx' ? 'docx' : 'json'));
     return resource + '-' + ts + '.' + ext;
 }
 
