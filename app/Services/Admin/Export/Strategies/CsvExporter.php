@@ -2,57 +2,74 @@
 namespace App\Services\Admin\Export\Strategies;
 
 use App\Services\Admin\Export\Contracts\ExporterInterface;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Str;
 
 class CsvExporter implements ExporterInterface {
     public function export($query, array $options = []) {
-        $rows     = $query->get();
-        $columns  = $options['columns'] ?? $this->getDefaultColumns($rows);
-        $filename = strtolower(class_basename($options['model'] ?? 'data')) . '-' . now()->format('Ymd-His') . '.csv';
+        $rows = $query->get();
+        $columns = $options['columns'] ?? $this->getDefaultColumns($rows);
 
-        $headers = [
-            'Content-Type'        => 'text/csv; charset=UTF-8',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-        ];
+        // Prepare filename
+        $baseName = strtolower(class_basename($options['model'] ?? 'data'));
+        $filename = $baseName . '-' . now()->format('Ymd-His') . '.csv';
 
+        // Streamed response to avoid memory spikes on large datasets
         $callback = function () use ($rows, $columns) {
             $output = fopen('php://output', 'w');
-            fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
-            // العناوين
-            $header = array_map(function ($col) {
-                $label = $col['label'] ?? '';
-                return is_string($label) ? __($label) : $label;
-            }, $columns);
-            fputcsv($output, $header);
+            // Add UTF-8 BOM so Excel correctly detects encoding for Arabic/English
+            fwrite($output, "\xEF\xBB\xBF");
 
-            // الصفوف
-            foreach ($rows as $row) {
-                $line = [];
-                foreach ($columns as $col) {
-                    $val = isset($col['value']) && is_callable($col['value'])
-                        ? call_user_func($col['value'], $row)
-                        : data_get($row, $col['key'] ?? '');
-                    if (is_array($val) || is_object($val)) {
-                        $val = json_encode($val, JSON_UNESCAPED_UNICODE);
-                    }
-                    $line[] = $val;
+            // Header row (translated when label is a trans key)
+            $headers = [];
+            foreach ($columns as $col) {
+                if (is_array($col)) {
+                    $label = $col['label'] ?? $col['key'] ?? '';
+                    $headers[] = is_string($label) ? __(strval($label)) : $label;
+                } else {
+                    $headers[] = ucfirst(strval($col));
                 }
-                fputcsv($output, $line);
+            }
+            fputcsv($output, $headers);
+
+            // Data rows
+            foreach ($rows as $row) {
+                $rowArray = [];
+                foreach ($columns as $col) {
+                    $key = is_array($col) ? ($col['key'] ?? null) : $col;
+                    $value = $this->extractValue($row, $key);
+                    // Normalize line breaks and ensure scalar string
+                    if (is_array($value) || is_object($value)) {
+                        $value = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                    }
+                    $value = str_replace(["\r\n", "\r"], "\n", (string) $value);
+                    $rowArray[] = $value;
+                }
+                fputcsv($output, $rowArray);
             }
 
             fclose($output);
         };
 
-        return new StreamedResponse($callback, 200, $headers);
+        return response()->streamDownload($callback, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
     }
 
     protected function getDefaultColumns($rows) {
         if ($rows->isEmpty()) {
             return [];
         }
-
         $first = (array) $rows->first();
         return collect($first)->keys()->map(fn($key) => ['key' => $key, 'label' => ucfirst($key)])->toArray();
     }
+
+    protected function extractValue($row, $key) {
+        if ($key === null) return '';
+        // Support Eloquent attribute access and dot notation
+        $value = data_get($row, $key);
+        return $value;
+    }
 }
+
+

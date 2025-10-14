@@ -43,7 +43,8 @@
                     <li><a class="dropdown-item export-action" data-format="pdf" href="javascript:void(0);"><i class="ti ti-pdf me-1"></i>{{ __('admin/main.export_pdf') }}</a></li>
                     @endif
                     @if($exportExcel)
-                    <li><a class="dropdown-item export-action" data-format="csv" href="javascript:void(0);"><i class="ti ti-file me-1"></i>{{ __('admin/main.export_excel') }}</a></li>
+                    <li><a class="dropdown-item export-action" data-format="xlsx" href="javascript:void(0);"><i class="ti ti-file-spreadsheet me-1"></i>{{ __('admin/main.export_excel') }}</a></li>
+                    <li><a class="dropdown-item export-action" data-format="csv" href="javascript:void(0);"><i class="ti ti-file me-1"></i>{{ __('admin/main.export_csv') }}</a></li>
                     @endif
                     @if($exportWord)
                     <li><a class="dropdown-item export-action" data-format="docx" href="javascript:void(0);"><i class="ti ti-file-text me-1"></i>{{ __('admin/main.export_word') }}</a></li>
