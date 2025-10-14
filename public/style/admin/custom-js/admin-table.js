@@ -144,28 +144,33 @@ $(document).on('change', '.switch-block', function() {
         dataType: 'json',
         success: function(resp) {
             var isBlocked = resp && resp.data ? resp.data.is_blocked : $switch.prop('checked');
-            var $badge = $('.status-badge');
-            if ($badge.length) {
-                // Show page behavior: update switch and badge, no table reload
-                $switch.prop('checked', !isBlocked);
-                var CLASS_ACTIVE = 'bg-label-success';
-                var CLASS_BLOCKED = 'bg-label-warning';
-                $badge.removeClass(CLASS_ACTIVE + ' ' + CLASS_BLOCKED)
-                    .addClass(isBlocked ? CLASS_BLOCKED : CLASS_ACTIVE);
-                var activeLabel = $badge.data('active-label');
-                var blockedLabel = $badge.data('blocked-label');
-                if (activeLabel && blockedLabel) {
-                    $badge.text(isBlocked ? blockedLabel : activeLabel);
-                }
+            var $rowBadge = $switch.closest('.d-flex').find('.status-badge').first();
+            var inTable = $switch.closest('tr').length > 0;
+
+            if (inTable) {
+                // Table behavior: revert switch and refresh table with current filters
+                $switch.prop('checked', !$switch.prop('checked'));
+                try { showTableLoader(); } catch (_) {}
+                try {
+                    var filters = getFilters();
+                    loadTable({ 'filters': filters });
+                } catch (_) {}
                 return;
             }
-            // Table behavior: revert switch and refresh table
-            $switch.prop('checked', !$switch.prop('checked'));
-            try { showTableLoader(); } catch (_) {}
-            try {
-                var filters = getFilters();
-                loadTable({ 'filters': filters });
-            } catch (_) {}
+
+            // Show page behavior: update switch and local badge, no table reload
+            $switch.prop('checked', !isBlocked);
+            if ($rowBadge.length) {
+                var CLASS_ACTIVE = 'bg-label-success';
+                var CLASS_BLOCKED = 'bg-label-warning';
+                $rowBadge.removeClass(CLASS_ACTIVE + ' ' + CLASS_BLOCKED)
+                    .addClass(isBlocked ? CLASS_BLOCKED : CLASS_ACTIVE);
+                var activeLabel = $rowBadge.data('active-label');
+                var blockedLabel = $rowBadge.data('blocked-label');
+                if (activeLabel && blockedLabel) {
+                    $rowBadge.text(isBlocked ? blockedLabel : activeLabel);
+                }
+            }
         },
         error: function(xhr) {
             // Revert UI on error
@@ -191,9 +196,15 @@ $(document).on('click', '.export-action', function(e) {
             .then(({ blob }) => {
                 blob.text().then(text => {
                     copyTextToClipboard(text)
-                        .then(() => {
-                            hideExportLoader();
-                        })
+                                .then(() => {
+                                    hideExportLoader();
+                                    var msg = (window.translations && window.translations.copied_to_clipboard) ? window.translations.copied_to_clipboard : 'Copied to clipboard';
+                                    try { showTopToast(msg); } catch (_) {
+                                        if (window.Swal) {
+                                            Swal.fire({ toast: true, position: 'top-end', icon: 'success', text: msg, showConfirmButton: false, timer: 1500, timerProgressBar: true });
+                                        }
+                                    }
+                                })
                         .catch((err) => {
                             hideExportLoader();
                             // Fallback: download the content if copy is unavailable
@@ -294,6 +305,50 @@ function hideExportLoader() {
     if ($loader.length) {
         $loader.fadeOut('fast');
     }
+}
+
+// Small toast helper for top notifications
+function showTopToast(message, icon = 'success') {
+    try {
+        if (window.Swal) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: icon,
+                text: message,
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true
+            });
+            return;
+        }
+    } catch (_) {}
+
+    // Fallback minimal toast
+    try {
+        const existing = document.getElementById('simple-top-toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.id = 'simple-top-toast';
+        toast.textContent = message || 'Done';
+        toast.style.position = 'fixed';
+        toast.style.top = '12px';
+        toast.style.right = '12px';
+        toast.style.zIndex = '2147483647';
+        toast.style.padding = '10px 14px';
+        toast.style.borderRadius = '8px';
+        toast.style.background = icon === 'error' ? '#d9534f' : (icon === 'warning' ? '#f0ad4e' : '#28a745');
+        toast.style.color = '#fff';
+        toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 150ms ease';
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => { toast.style.opacity = '1'; });
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => { try { toast.remove(); } catch (_) {} }, 180);
+        }, 1600);
+    } catch (_) {}
 }
 
 function copyTextToClipboard(text) {

@@ -139,4 +139,5 @@
         'apply' => 'Apply',
         'notification_sent_successfully' => 'Notification sent successfully',
         'failed_to_send_notification' => 'Failed to send notification',
+        'copied_to_clipboard' => 'Copied to clipboard',
     ];

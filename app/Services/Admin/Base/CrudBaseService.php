@@ -1,8 +1,8 @@
 <?php
 namespace App\Services\Admin\Base;
 
-use App\Services\BaseModelService;
 use App\Services\Admin\Export\ExportService;
+use App\Services\BaseModelService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -43,18 +43,26 @@ class CrudBaseService {
     }
 
     public function edit($id) {
+
+        $query = $this->model::with($this->model::RELATIONS);
+
+        if ($this->getIsRetreivable()) {
+            $query = $query->withTrashed();
+        }
+
         return array_merge($this->editVars(), [
-            $this->lowerClassName => $this->model::findOrFail($id),
+            $this->lowerClassName => $query->findOrFail($id),
             'id'                  => $id,
         ]);
     }
 
     public function show($id) {
         $query = $this->model::with($this->model::RELATIONS);
-        // If model supports retrieval (SoftDeletes + CanRetrieve), allow viewing trashed records
+
         if ($this->getIsRetreivable()) {
             $query = $query->withTrashed();
         }
+
         return array_merge($this->showVars(), [
             $this->lowerClassName => $query->findOrFail($id),
             'id'                  => $id,
@@ -63,7 +71,14 @@ class CrudBaseService {
     }
 
     public function update(Request $request, $id) {
-        $object = $this->model::findOrFail($id);
+        $query = $this->model::with($this->model::RELATIONS);
+
+        if ($this->getIsRetreivable()) {
+            $query = $query->withTrashed();
+        }
+
+        $object = $query->findOrFail($id);
+
         DB::transaction(function () use ($request, &$object) {
             $object->update($request->validated());
             $this->modelService->updateRelations($object, $request->validated());
@@ -148,7 +163,6 @@ class CrudBaseService {
 
     public function getIsRetreivable() {
         $is_retreivable = false;
-
         try {
             $is_retreivable = $this->model::is_retreivable();
         } catch (Exception $e) {
@@ -159,7 +173,7 @@ class CrudBaseService {
     }
 
     public function export(Request $request) {
-        $query         = $this->index($request);
+        $query = $this->index($request);
         // Prefer normalized/translated columns via hook
         $columns       = $this->getExportColumns() ?? (defined($this->model . '::EXPORT_COLUMNS') ? $this->model::EXPORT_COLUMNS : []);
         $exportService = new ExportService();

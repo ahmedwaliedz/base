@@ -1,19 +1,12 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\AuthenticatableBaseController;
+use App\Services\Admin\UserService;
 
-class UserController extends Controller
-{
-    public function index()
-    {
-        return view('admin.users.index');
-    }
+class UserController extends AuthenticatableBaseController {
 
-    public function create()
-    {
-        return view('admin.users.create');
+    public function __construct(UserService $userService) {
+        parent::__construct($userService);
     }
 }

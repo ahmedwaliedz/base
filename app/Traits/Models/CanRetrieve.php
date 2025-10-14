@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits\Models;
 
+use App\Traits\Models\CanRetrieveRegistry;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -13,10 +14,18 @@ trait CanRetrieve {
     protected static array $retrievableState = [];
 
     public static function bootCanRetrieve(): void {
+        // Validate on boot so the retrievable state is set even before any retrieval happens
+        if (! CanRetrieveRegistry::isValidated(static::class)) {
+            static::validateModelAndRelations();
+            CanRetrieveRegistry::markValidated(static::class);
+        }
+
         static::retrieved(function (Model $model) {
-            if (! isset(static::$validatedModels[static::class])) {
+            $class = get_class($model);
+
+            if (! CanRetrieveRegistry::isValidated($class)) {
                 static::validateModelAndRelations();
-                static::$validatedModels[static::class] = true;
+                CanRetrieveRegistry::markValidated($class);
             }
         });
     }
@@ -31,7 +40,7 @@ trait CanRetrieve {
             ));
         }
 
-        $relations = defined(static::class . '::RELATIONS') ? static::RELATIONS : [];
+        $relations = defined(static::class . '::RELATIONS') ? constant(static::class . '::RELATIONS') : [];
 
         $instance = new static();
 
@@ -68,6 +77,10 @@ trait CanRetrieve {
     }
 
     public static function is_retreivable(): bool {
+        if (! array_key_exists(static::class, static::$retrievableState)) {
+            // Ensure validation runs even if the model hasn't been retrieved/booted in this request
+            static::validateModelAndRelations();
+        }
         return static::$retrievableState[static::class] ?? false;
     }
 
@@ -95,7 +108,7 @@ trait CanRetrieve {
     }
 
     protected function restoreRelationsRecursively(): void {
-        $relations = defined(static::class . '::RELATIONS') ? static::RELATIONS : [];
+        $relations = defined(static::class . '::RELATIONS') ? constant(static::class . '::RELATIONS') : [];
 
         foreach ($relations as $relation) {
             if (! method_exists($this, $relation)) {

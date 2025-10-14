@@ -1,4 +1,4 @@
-<div class="mb-3 form-group {{ $class }}">
+<div class="mb-3 form-group  d-flex align-items-end {{ $class }}">
     <div class="form-check">
         <input
             class="form-check-input"

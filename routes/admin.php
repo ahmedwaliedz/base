@@ -68,6 +68,9 @@ use App\Http\Controllers\Admin\{
 
 
                 // users routes
+                Route::delete('users/destroy-all', [UserController::class , 'destroyAll'])->name('users.destroyAll');
+                Route::put('users/{id}/switch-block', [UserController::class, 'switchBlock'])->name('users.switchBlock');
+                Route::put('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
                 Route::resource('users', UserController::class);
 
                 // roles routes
