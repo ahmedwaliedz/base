@@ -67,6 +67,15 @@ function deleteWithSwl(Route , selected) {
                         showConfirmButton: false,
                         timer: 1000
                     });
+                    // Clear selections and hide the bulk delete button immediately
+                    try {
+                        $('thead .dt-checkboxes, tbody .dt-checkboxes').prop('checked', false);
+                        if (typeof toggleDeleteAllButton === 'function') {
+                            toggleDeleteAllButton();
+                        } else {
+                            $('.delete-all-button').addClass('d-none');
+                        }
+                    } catch (_) {}
                     try {
                         // If we're on a list page, refresh the table; otherwise reload the page (show page)
                         if ($ && $('.append-page-content').length && typeof loadTable === 'function') {

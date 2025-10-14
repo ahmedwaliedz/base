@@ -9,6 +9,8 @@ function hideTableLoader(html) {
         const $newContent = $(html).hide();
         $('.append-page-content').append($newContent);
         $newContent.fadeIn('slow');
+        // Ensure bulk delete button visibility reflects current selection after content update
+        try { if (typeof toggleDeleteAllButton === 'function') { toggleDeleteAllButton(); } } catch (_) {}
     });
 }
 
