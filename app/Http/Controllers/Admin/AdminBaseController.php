@@ -2,7 +2,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
 use App\Traits\Response\ResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
@@ -17,7 +16,6 @@ class AdminBaseController extends Controller {
     protected $createRequest;
     protected $updateRequest;
     protected $modelBaseName;
-
     public $inputs = [];
 
     public function __construct($service) {
@@ -32,9 +30,16 @@ class AdminBaseController extends Controller {
     }
 
     public function index(Request $request) {
+        // Export full filtered dataset (no pagination)
+        if ($request->has('export')) {
+            return $this->service->export($request);
+        }
+
+        $is_retreivable = $this->service->getIsRetreivable();
+
         if (request()->ajax()) {
             ${$this->smallPluralName} = $this->service->index($request)->paginate($request->filters['per_page'] ?? 30);
-            return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => ${$this->smallPluralName}])->render();
+            return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => ${$this->smallPluralName}, 'is_retreivable' => $is_retreivable])->render();
         }
         return view('admin.' . $this->smallPluralName . '.index', $this->service->indexVars() + [ ...get_defined_vars()]);
     }
@@ -79,9 +84,8 @@ class AdminBaseController extends Controller {
         return view('admin.' . $this->smallPluralName . '.show', $vars);
     }
 
-    
     public function destroy($id) {
-        try { 
+        try {
             $this->service->destroy($id);
             return $this->respondWithSuccess(__('admin/main.deleted_successfully'));
         } catch (Exception $e) {
@@ -89,26 +93,22 @@ class AdminBaseController extends Controller {
         }
     }
 
-    // public function destroy(Request $request) {
-    //     if (is_array($request->ids)) {
-    //         $admins = Admin::has('role')->whereIn('id', $request->ids)->get();
-    //         $admins->each->delete();
-    //         return $this->respondWithSuccess(__('admin/main.admins_deleted'));
-    //     }
-    //     return $this->respondWithFail(__('admin/main.admin_not_found'), [
-    //         'route' => route('admin.admins.index'),
-    //     ]);
-    // }
+    public function destroyAll(Request $request) {
+        try {
+            $this->service->destroyAll($request->ids);
+            return $this->respondWithSuccess(__('admin/main.delete_selected_successfully'));
+        } catch (Exception $e) {
+            return $this->respondWithFail($e->getMessage());
+        }
+    }
 
-    // public function destroyAll(Request $request) {
-    //     if (is_array($request->ids)) {
-    //         $admins = Admin::has('role')->whereIn('id', $request->ids)->get();
-    //         $admins->each->delete();
-    //         return $this->respondWithSuccess(__('admin/main.admins_deleted'));
-    //     }
-    //     return $this->respondWithFail(__('admin/main.admin_not_found'), [
-    //         'route' => route('admin.admins.index'),
-    //     ]);
-    // }
+    public function restore($id) {
+        try {
+            $this->service->restore($id);
+            return $this->respondWithSuccess(__('admin/main.restored_successfully'));
+        } catch (Exception $e) {
+            return $this->respondWithFail($e->getMessage());
+        }
+    }
 
 }

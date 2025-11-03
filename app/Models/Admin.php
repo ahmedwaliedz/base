@@ -4,13 +4,14 @@ namespace App\Models;
 use App\Enums\AdminType;
 use App\Enums\ModelNotificationType;
 use App\Traits\Models\BaseAuthModelTrait;
-use App\Traits\Upload\HasMediaLibrary;
+use App\Traits\Models\CanRetrieve;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\MediaLibrary\HasMedia;
 
-class Admin extends Authenticatable /* implements HasMedia */ {
+class Admin extends Authenticatable/* implements HasMedia */{
 
-    use BaseAuthModelTrait /* , HasMediaLibrary */;
+    use BaseAuthModelTrait, HasFactory, SoftDeletes, CanRetrieve/* , HasMediaLibrary */;
 
     /**
      * Available notification types for admins
@@ -21,8 +22,8 @@ class Admin extends Authenticatable /* implements HasMedia */ {
         ModelNotificationType::BLOCKED,
         ModelNotificationType::NOTBLOCKED,
     ];
-    
-    protected const UPLOAD_DIRECTORY  = 'admins';
+
+    protected const UPLOAD_DIRECTORY = 'admins';
 
     protected const FILES = [
         'image',
@@ -32,7 +33,17 @@ class Admin extends Authenticatable /* implements HasMedia */ {
         'role',
     ];
 
-    
+    /**
+     * Export columns schema to be used for CSV/Excel/Print/PDF.
+     * Labels are translation keys and will be translated at runtime.
+     */
+    public const EXPORT_COLUMNS = [
+        ['key' => 'id', 'label' => 'admin/main.id'],
+        ['key' => 'name', 'label' => 'admin/main.name'],
+        ['key' => 'role_name', 'label' => 'admin/main.role'],
+        ['key' => 'status_label', 'label' => 'admin/main.status'],
+    ];
+
     protected $fillable = [
         'name',
         'phone',
@@ -62,8 +73,6 @@ class Admin extends Authenticatable /* implements HasMedia */ {
         'image'      => 'default.png',
     ];
 
-
-
     public function scopeStatus($query, $status) {
         if ($status === 'active') {
             return $query->where('is_blocked', false);
@@ -79,13 +88,6 @@ class Admin extends Authenticatable /* implements HasMedia */ {
 
     public function role() {
         return $this->belongsTo(Role::class);
-    }
-
-    public function statusData() {
-        return [
-            'label' => $this->is_blocked ? __('admin/main.blocked') : __('admin/main.active'),
-            'class' => $this->is_blocked ? 'bg-label-warning' : 'bg-label-success',
-        ];
     }
 
     /**

@@ -6,12 +6,29 @@ $(document).on('click', '.delete-record', function(e) {
     deleteWithSwl(deleteAllRoute, selected);
 });
 
+// Handle per-row delete action inside tables (anchors with class .delete-row)
+$(document).on('click', '.delete-row', function(e) {
+    e.preventDefault();
+    let selected = [];
+    const id = $(this).data('id');
+    if (id !== undefined && id !== null && id !== '') {
+        selected.push(id);
+    }
+    const route = $(this).data('route');
+    if (!route) { return; }
+    deleteWithSwl(route, selected);
+});
+
 $(document).on('click', '.delete-all-button' , function(e) {
     e.preventDefault();
     let selected = [];
     $('.table-content .dt-checkboxes:checked').each(function() {
-        selected.push($(this).data('id'));
+        const id = $(this).val() ?? $(this).data('id');
+        if (id !== undefined && id !== null && id !== '') {
+            selected.push(id);
+        }
     });
+    console.log(selected);
     const deleteAllRoute = $(this).data('route');
     deleteWithSwl(deleteAllRoute, selected);
 });
@@ -34,10 +51,13 @@ function deleteWithSwl(Route , selected) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                type: "delete",
+                type: "POST",
                 url: Route,
-                data: {ids : selected},
+                data: { ids: selected, _method: 'DELETE' },
                 dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: (response) => {
                     Swal.fire({
                         denyButtonClass: 'd-none',
@@ -45,9 +65,28 @@ function deleteWithSwl(Route , selected) {
                         position: 'top-start',
                         text: window.translations.deleted_successfully,
                         showConfirmButton: false,
-                        timer: 2000
+                        timer: 1000
                     });
-                    loadTable({'filters': getFilters()});
+                    // Clear selections and hide the bulk delete button immediately
+                    try {
+                        $('thead .dt-checkboxes, tbody .dt-checkboxes').prop('checked', false);
+                        if (typeof toggleDeleteAllButton === 'function') {
+                            toggleDeleteAllButton();
+                        } else {
+                            $('.delete-all-button').addClass('d-none');
+                        }
+                    } catch (_) {}
+                    try {
+                        // If we're on a list page, refresh the table; otherwise reload the page (show page)
+                        if ($ && $('.append-page-content').length && typeof loadTable === 'function') {
+                            const filters = (typeof getFilters === 'function') ? getFilters() : {};
+                            loadTable({'filters': filters});
+                        } else {
+                            setTimeout(() => { window.location.reload(); }, 300);
+                        }
+                    } catch (_) {
+                        setTimeout(() => { window.location.reload(); }, 300);
+                    }
                 },
                 error: (xhr) => {
                     Swal.fire({

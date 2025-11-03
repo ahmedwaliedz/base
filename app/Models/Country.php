@@ -25,6 +25,11 @@ class Country extends Model {
     protected $attributes = [
         'is_active' => true,
     ];
+    protected const UPLOAD_DIRECTORY  = 'countries';
+
+    protected const FILES = [
+        'flag',
+    ];
 
     public $translatedAttributes = ['name'];
 

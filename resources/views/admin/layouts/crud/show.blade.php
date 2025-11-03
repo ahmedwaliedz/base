@@ -5,14 +5,28 @@
 @endpush
 
 @section('content')
+    @if ($model->deleted_at)
+        <div class="card mb-2" style="background-color: #96111c5b; border-color: #f5c6cb;">
+            <div class="card-body text-center">
+                <div class="row ">
+
+                    <div>
+                        <i class="fa fa-trash"></i> {{ __('admin/main.deleted') }}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             @stack('header')
         </div>
         <div class="card-body">
             <div class="row">
-                
-                @stack('content')   
+
+                @stack('content')
 
             </div>
         </div>
@@ -20,6 +34,8 @@
 @endsection
 
 @push('js')
+    <script src="{{ asset('style/admin/custom-js/delete.js') }}"></script>
+    <script src="{{ asset('style/admin/custom-js/restore.js') }}"></script>
     <script src="{{ asset('style/admin/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
     <script src="{{ asset('style/admin/js/extended-ui-sweetalert2.js') }}"></script>
     <script src="{{ asset('style/admin/custom-js/submit-form.js') }}"></script>
