@@ -1,12 +1,18 @@
-@extends('admin.layouts.crud.show')
+@extends('admin.layouts.crud.show' , ['model' => $admin])
 
 @push('header')
     <h5 class="mb-0">{{ __('admin/main.admin_details') }}</h5>
     <div>
-        <a href="{{ route('admin.admins.edit', $id) }}" class="btn btn-success me-2"><i class="ti ti-edit me-1"></i>{{ __('admin/main.edit') }}</a>
-        <a href="#" data-id="{{ $admin->id }}" data-route="{{ route('admin.admins.destroy', ['admin' => $admin]) }}" class="btn btn-danger me-2 delete-record" title="Delete">
-            <i class="ti ti-trash "></i> {{ __('admin/main.delete') }}
-        </a>
+        @if($admin->deleted_at)
+            <a href="#" data-id="{{ $admin->id }}" data-route="{{ route('admin.admins.restore', ['id' => $admin->id]) }}" class="btn btn-success me-2 restore-row" title="{{ __('admin/main.restore') }}">
+                <i class="ti ti-arrow-back-up me-1"></i>{{ __('admin/main.restore') }}
+            </a>
+        @else
+            <a href="{{ route('admin.admins.edit', $id) }}" class="btn btn-success me-2"><i class="ti ti-edit me-1"></i>{{ __('admin/main.edit') }}</a>
+            <a href="#" data-id="{{ $admin->id }}" data-route="{{ route('admin.admins.destroy', ['admin' => $admin]) }}" class="btn btn-danger me-2 delete-record" title="Delete">
+                <i class="ti ti-trash "></i> {{ __('admin/main.delete') }}
+            </a>
+        @endif
         <a href="{{ route('admin.admins.index') }}" class="btn btn-secondary"><i class="ti ti-arrow-left me-1"></i>{{ __('admin/main.back') }}</a>
     </div>
 @endpush
@@ -21,8 +27,18 @@
                     </div>
                     <h5 class="mb-1">{{ $admin->name }}</h5>
                     <div class="text-muted mb-3">{{ $admin->email }}</div>
-                    <div class="d-flex justify-content-center flex-wrap gap-2">
-                        <span class="badge {{ $admin->statusData()['class'] }}">{{ $admin->statusData()['label'] }}</span>
+                    <div class="d-flex justify-content-center flex-wrap gap-2 align-items-center">
+                        <span class="badge status-badge {{ $admin->statusData()['class'] }}"
+                              data-active-label="{{ __('admin/main.active') }}"
+                              data-blocked-label="{{ __('admin/main.blocked') }}">{{ $admin->statusData()['label'] }}</span>
+                        <div class="form-check form-switch m-0">
+                            <input class="form-check-input switch-block" type="checkbox" role="switch"
+                                   data-id="{{ $admin->id }}"
+                                   data-route="{{ route('admin.admins.switchBlock', ['id' => $admin->id]) }}"
+                                   {{ !$admin->is_blocked ? 'checked' : '' }}
+                                   title="{{ __('admin/main.blocked') }}" />
+                            {{-- <label class="form-check-label ms-2">{{ __('admin/main.blocked') }}</label> --}}
+                        </div>
                         @if($admin->type)
                             <span class="badge bg-label-primary">{{ $admin->type->label() }}</span>
                         @endif
@@ -69,10 +85,5 @@
 @endpush
 
 @push('js')
-    <script>
-        if (typeof loadTable !== 'function') {
-            window.getFilters = function() { return {}; };
-            window.loadTable = function() { window.location.href = "{{ route('admin.admins.index') }}"; };
-        }
-    </script>
+    <script src="{{ asset('style/admin/custom-js/admin-table.js') }}"></script>
 @endpush

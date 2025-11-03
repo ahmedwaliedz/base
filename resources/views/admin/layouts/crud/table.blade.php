@@ -1,14 +1,14 @@
 @yield('table')
 
-@if($admins->count() > 0)
+@if($rows->count() > 0)
     <tr class="data-rows">
         <td colspan="5" >
-            {{$admins->links('admin.layouts.pagination')}}
+            {{$rows->links('admin.layouts.pagination')}}
         </td>
     </tr>
 @endif
 
-@if($admins->count() == 0)
+@if($rows->count() == 0)
     <tr class="data-rows">
         <td colspan="5">
             <div class="text-center py-5 mt-5">

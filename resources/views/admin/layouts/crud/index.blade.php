@@ -17,6 +17,7 @@
     <script src="{{ asset('style/admin/custom-js/filter.js') }}"></script>
     <script src="{{ asset('style/admin/custom-js/admin-table.js') }}"></script>
     <script src="{{ asset('style/admin/custom-js/delete.js') }}"></script>
+    <script src="{{ asset('style/admin/custom-js/restore.js') }}"></script>
     <script src="{{ asset('style/admin/validation/jqBootstrapValidation.js') }}"></script>
     <script src="{{ asset('style/admin/custom-js/submit-form.js') }}"></script>
     <script src="{{ asset('style/admin/custom-js/handel-error.js') }}"></script>

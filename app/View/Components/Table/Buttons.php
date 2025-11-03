@@ -19,6 +19,7 @@ class Buttons extends Component {
         public bool $hasFilter = false,
         public bool $hasExtraButtons = false,
         public bool $hasExport = false,
+        public bool $exportPrint = false,
         public bool $exportPdf = false,
         public bool $exportExcel = false,
         public bool $exportWord = false,

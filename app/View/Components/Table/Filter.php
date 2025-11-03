@@ -1,11 +1,9 @@
 <?php
-
 namespace App\View\Components\Table;
 
 use Illuminate\View\Component;
 
-class Filter extends Component
-{
+class Filter extends Component {
     /**
      * Create a new component instance.
      *
@@ -13,6 +11,7 @@ class Filter extends Component
      * @param bool $hasStartDate
      * @param bool $hasEndDate
      * @param bool $hasOrderBy
+     * @param bool $hasRetrieve
      * @param string $mainCol
      * @return void
      */
@@ -22,6 +21,7 @@ class Filter extends Component
         public bool $hasEndDate = false,
         public bool $hasOrderBy = false,
         public string $mainCol = 'col-md-2',
+        public bool $hasRetrieve = false,
     ) {
     }
 
@@ -30,8 +30,7 @@ class Filter extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render()
-    {
+    public function render() {
         return view('components.table.filter');
     }
 }

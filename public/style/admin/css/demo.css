@@ -192,3 +192,8 @@
 .dark-style #page-loader lottie-player {
     animation: moveFromBottomToTop 2s ease-in-out;
 }
+
+
+.deleted-table-row{
+    background-color: #bd36412a!important;
+}

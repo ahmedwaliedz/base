@@ -1,10 +1,11 @@
 <?php
 namespace App\Services\Admin\Base;
 
+use App\Services\Admin\Export\ExportService;
 use App\Services\BaseModelService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CrudBaseService {
 
@@ -42,22 +43,42 @@ class CrudBaseService {
     }
 
     public function edit($id) {
+
+        $query = $this->model::with($this->model::RELATIONS);
+
+        if ($this->getIsRetreivable()) {
+            $query = $query->withTrashed();
+        }
+
         return array_merge($this->editVars(), [
-            $this->lowerClassName => $this->model::findOrFail($id),
+            $this->lowerClassName => $query->findOrFail($id),
             'id'                  => $id,
         ]);
     }
 
     public function show($id) {
+        $query = $this->model::with($this->model::RELATIONS);
+
+        if ($this->getIsRetreivable()) {
+            $query = $query->withTrashed();
+        }
+
         return array_merge($this->showVars(), [
-            $this->lowerClassName => $this->model::with($this->model::RELATIONS)->findOrFail($id),
+            $this->lowerClassName => $query->findOrFail($id),
             'id'                  => $id,
             'lowerClassName'      => $this->lowerClassName,
         ]);
     }
 
     public function update(Request $request, $id) {
-        $object = $this->model::findOrFail($id);
+        $query = $this->model::with($this->model::RELATIONS);
+
+        if ($this->getIsRetreivable()) {
+            $query = $query->withTrashed();
+        }
+
+        $object = $query->findOrFail($id);
+
         DB::transaction(function () use ($request, &$object) {
             $object->update($request->validated());
             $this->modelService->updateRelations($object, $request->validated());
@@ -91,6 +112,22 @@ class CrudBaseService {
         return $objectsCopy;
     }
 
+    public function restore($id) {
+        $object = $this->model::withTrashed()->findOrFail($id);
+        if (! method_exists($object, 'restore')) {
+            throw new Exception('This model does not support restore.');
+        }
+        DB::transaction(function () use (&$object) {
+            // If model uses CanRetrieve trait, prefer retrieve to restore relations as well
+            if (method_exists($object, 'retrieve')) {
+                $object->retrieve();
+            } else {
+                $object->restore();
+            }
+        });
+        return $object;
+    }
+
     public function switchActive($id) {
         $object = $this->model::findOrFail($id);
         $object->update(['is_active' => ! $object->is_active]);
@@ -112,26 +149,8 @@ class CrudBaseService {
         }
     }
 
-    // public function indexWithRelations(array $where = []) {
-    //     $this->data = $this->index($where)->with($this->model::RELATIONS);
-    //     return $this;
-    // }
-
-    public function with(array $relations) {
-        $this->data = $this->data->with($relations);
-        return $this;
-    }
-
     public function paginate($paginationNumber = 0) {
         return $this->data->paginate($paginationNumber);
-    }
-
-    public function get() {
-        return $this->data->get();
-    }
-
-    public function find($id) {
-        return $this->model::findOrFail($id);
     }
 
     public function findWithRelations($id, array $relations = []) {
@@ -142,53 +161,26 @@ class CrudBaseService {
         return $this->model;
     }
 
+    public function getIsRetreivable() {
+        $is_retreivable = false;
+        try {
+            $is_retreivable = $this->model::is_retreivable();
+        } catch (Exception $e) {
+            $is_retreivable = false;
+        }
+
+        return $is_retreivable;
+    }
+
     public function export(Request $request) {
-        $format = strtolower($request->get('export', 'csv'));
         $query = $this->index($request);
-        if ($request->filled('ids')) {
-            $ids = is_array($request->ids) ? $request->ids : [$request->ids];
-            $query->whereIn('id', $ids);
-        }
-        // Get all filtered data (no pagination)
-        $rows = $query->get();
-
-        if ($format === 'json') {
-            return response()->json($rows);
-        }
-
-        // Default to CSV (Excel-compatible). Add UTF-8 BOM for Arabic/English
-        $filename = strtolower(class_basename($this->model)) . '-' . now()->format('Ymd-His') . '.csv';
-        $headers = [
-            'Content-Type' => 'text/csv; charset=UTF-8',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-        ];
-
-        $callback = function () use ($rows) {
-            $output = fopen('php://output', 'w');
-            // UTF-8 BOM
-            fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
-
-            // Determine columns from first row
-            $first = $rows->first();
-            if ($first) {
-                $array = $first->toArray();
-                fputcsv($output, array_keys($array));
-                foreach ($rows as $row) {
-                    $data = $row->toArray();
-                    // Flatten nested arrays/objects to JSON strings
-                    foreach ($data as $key => $value) {
-                        if (is_array($value) || is_object($value)) {
-                            $data[$key] = json_encode($value, JSON_UNESCAPED_UNICODE);
-                        }
-                    }
-                    fputcsv($output, $data);
-                }
-            }
-
-            fclose($output);
-        };
-
-        return new StreamedResponse($callback, 200, $headers);
+        // Prefer normalized/translated columns via hook
+        $columns       = $this->getExportColumns() ?? (defined($this->model . '::EXPORT_COLUMNS') ? $this->model::EXPORT_COLUMNS : []);
+        $exportService = new ExportService();
+        return $exportService->handle($request, $query, [
+            'columns' => $columns,
+            'model'   => $this->model,
+        ]);
     }
 
     // * common variables for views
@@ -207,5 +199,45 @@ class CrudBaseService {
 
     public function showVars(): array {
         return [];
+    }
+
+    /**
+     * Default export columns schema hook. Prefer model-provided schema.
+     * Expected shape: [ ['key'=>string, 'label'=>string, 'value'?:callable($row):mixed], ... ]
+     */
+    protected function getExportColumns(): ?array {
+        $modelClass = $this->model;
+        // Prefer constant EXPORT_COLUMNS on model
+        if (is_string($modelClass) && defined($modelClass . '::EXPORT_COLUMNS')) {
+            $raw = constant($modelClass . '::EXPORT_COLUMNS');
+            if (is_array($raw) && count($raw)) {
+                $normalized = [];
+                foreach ($raw as $col) {
+                    if (is_string($col)) {
+                        $normalized[] = ['key' => $col, 'label' => ucfirst(str_replace('_', ' ', $col))];
+                    } elseif (is_array($col)) {
+                        $key = $col['key'] ?? null;
+                        if ($key) {
+                            $label = $col['label'] ?? ucfirst(str_replace('_', ' ', $key));
+                            // Translate if provided as a translation key
+                            $label        = is_string($label) && str_contains($label, '/') ? __($label) : $label;
+                            $normalized[] = ['key' => $key, 'label' => $label];
+                        }
+                    }
+                }
+                if (count($normalized)) {
+                    return $normalized;
+                }
+
+            }
+        }
+        // Fallback: static method on model exportColumns()
+        if (is_string($modelClass) && is_callable([$modelClass, 'exportColumns'])) {
+            $cols = call_user_func([$modelClass, 'exportColumns']);
+            if (is_array($cols) && count($cols)) {
+                return $cols;
+            }
+        }
+        return null;
     }
 }
