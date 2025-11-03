@@ -49,14 +49,14 @@ $app = Application::configure(basePath: dirname(__DIR__))
                     }
                 }
                 
-                // API fallback route
-                Route::fallback(function () {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'API endpoint not found',
-                        'code' => 404
-                    ], 404);
-                });
+                // // API fallback route
+                // Route::fallback(function () {
+                //     return response()->json([
+                //         'status' => 'error',
+                //         'message' => 'API endpoint not found',
+                //         'code' => 404
+                //     ], 404);
+                // });
             });
             
             // Load admin routes
@@ -87,6 +87,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin.api' => \App\Http\Middleware\AdminApiMiddleware::class,
             'api.lang' => \App\Http\Middleware\ApiLangMiddleware::class,
+            'complete.info' => \App\Http\Middleware\CheckCompleteInfo::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

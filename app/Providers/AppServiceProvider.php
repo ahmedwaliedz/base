@@ -14,7 +14,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Auth service bindings
+        $this->app->bind(
+            \App\Contracts\AuthServiceInterface::class,
+            \App\Services\AuthService::class
+        );
+
+        $this->app->bind(
+            \App\Contracts\UserRepositoryInterface::class,
+            \App\Repositories\UserRepository::class
+        );
+
+        $this->app->bind(
+            \App\Contracts\CodeSenderInterface::class,
+            \App\Services\CodeSender\LogCodeSender::class
+        );
     }
 
     /**
@@ -24,6 +38,15 @@ class AppServiceProvider extends ServiceProvider
     {
         RateLimiter::for('admin.login', function ($request) {
             return Limit::perMinute(5)->by($request->email . $request->ip());
+        });
+
+        // Rate limiter for request-code endpoint
+        RateLimiter::for('request-code', function ($request) {
+            $maxAttempts = config('auth_codes.rate_limit.max_attempts', 3);
+            $decayMinutes = config('auth_codes.rate_limit.decay_minutes', 1);
+            
+            return Limit::perMinutes($decayMinutes, $maxAttempts)
+                ->by($request->ip() . ':' . ($request->input('phone') ?? 'unknown'));
         });
 
         $this->loadMigrationsFrom(
