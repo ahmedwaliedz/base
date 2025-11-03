@@ -16,4 +16,15 @@ trait BaseAuthModelTrait {
         }
     }
 
+    public function statusData() {
+        return [
+            'label' => $this->is_blocked ? __('admin/main.blocked') : __('admin/main.active'),
+            'class' => $this->is_blocked ? 'bg-label-warning' : 'bg-label-success',
+        ];
+    }
+
+    // Accessor used by export to get a plain status label
+    public function getStatusLabelAttribute() {
+        return $this->statusData()['label'] ?? null;
+    }
 }

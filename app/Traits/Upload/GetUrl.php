@@ -1,12 +1,10 @@
 <?php
-
 namespace App\Traits\Upload;
 
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as MediaModel;
 
-trait GetUrl
-{
+trait GetUrl {
     /**
      * Get the URL for a custom uploaded file
      *
@@ -15,17 +13,18 @@ trait GetUrl
      * @param string $defaultImage
      * @return string|null
      */
-    public function getCustomUploadUrl(?string $fileName, string $directory, string $defaultImage = 'default.png'): ?string
-    {
-        if (!$fileName) {
-            return Storage::disk('public')->url("uploads/{$directory}/{$defaultImage}");
+    public function getCustomUploadUrl(?string $fileName, string $directory, string $defaultImage = 'default.png'): ?string {
+        if ($fileName !== null && File::exists(public_path('/storage/uploads/' . $directory . '/' . $fileName))) {
+            return asset('storage/uploads/' . $directory) . '/' . $fileName;
+        } elseif ($fileName !== null && File::exists(public_path('/defaults/' . $directory . '/' . $fileName))) {
+            return asset('defaults/' . $directory) . '/' . $fileName;
+        } elseif (File::exists(public_path('/defaults/' . $directory . '/' . $fileName))) {
+            return asset('defaults/' . $directory) . '/' . $fileName;
+        } elseif (File::exists(public_path('/defaults/' . $directory . '/default.png'))) {
+            return asset('defaults/' . $directory) . '/default.png';
+        } else {
+            return asset('defaults') . '/default.png';
         }
-
-        if (Storage::disk('public')->exists("uploads/{$directory}/{$fileName}")) {
-            return Storage::disk('public')->url("uploads/{$directory}/{$fileName}");
-        }
-
-        return Storage::disk('public')->url("uploads/{$directory}/{$defaultImage}");
     }
 
     /**
@@ -36,8 +35,7 @@ trait GetUrl
      * @param string $conversion
      * @return string|null
      */
-    public function getMediaLibraryUrl(?int $mediaId, string $collection = 'default', string $conversion = ''): ?string
-    {
+    public function getMediaLibraryUrl(?int $mediaId, string $collection = 'default', string $conversion = ''): ?string {
         if ($mediaId) {
             $media = MediaModel::find($mediaId);
             if ($media) {

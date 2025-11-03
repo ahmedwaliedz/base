@@ -9,6 +9,8 @@ function hideTableLoader(html) {
         const $newContent = $(html).hide();
         $('.append-page-content').append($newContent);
         $newContent.fadeIn('slow');
+        // Ensure bulk delete button visibility reflects current selection after content update
+        try { if (typeof toggleDeleteAllButton === 'function') { toggleDeleteAllButton(); } } catch (_) {}
     });
 }
 
@@ -126,8 +128,58 @@ function applyCustomPerPage(buttonElement) {
 }
 
 $(document).ready(function() {
-    const filters = getFilters();
-    loadTable({ 'filters': filters });
+    if ($('.append-page-content').length) {
+        const filters = getFilters();
+        loadTable({ 'filters': filters });
+    }
+});
+
+// Switch block/unblock admin (handles both table and show pages)
+$(document).on('change', '.switch-block', function() {
+    var $switch = $(this);
+    var url = $switch.data('route');
+    $.ajax({
+        type: 'PUT',
+        url: url,
+        dataType: 'json',
+        success: function(resp) {
+            var isBlocked = resp && resp.data ? resp.data.is_blocked : $switch.prop('checked');
+            var $rowBadge = $switch.closest('.d-flex').find('.status-badge').first();
+            var inTable = $switch.closest('tr').length > 0;
+
+            if (inTable) {
+                // Table behavior: revert switch and refresh table with current filters
+                $switch.prop('checked', !$switch.prop('checked'));
+                try { showTableLoader(); } catch (_) {}
+                try {
+                    var filters = getFilters();
+                    loadTable({ 'filters': filters });
+                } catch (_) {}
+                return;
+            }
+
+            // Show page behavior: update switch and local badge, no table reload
+            $switch.prop('checked', !isBlocked);
+            if ($rowBadge.length) {
+                var CLASS_ACTIVE = 'bg-label-success';
+                var CLASS_BLOCKED = 'bg-label-warning';
+                $rowBadge.removeClass(CLASS_ACTIVE + ' ' + CLASS_BLOCKED)
+                    .addClass(isBlocked ? CLASS_BLOCKED : CLASS_ACTIVE);
+                var activeLabel = $rowBadge.data('active-label');
+                var blockedLabel = $rowBadge.data('blocked-label');
+                if (activeLabel && blockedLabel) {
+                    $rowBadge.text(isBlocked ? blockedLabel : activeLabel);
+                }
+            }
+        },
+        error: function(xhr) {
+            // Revert UI on error
+            $switch.prop('checked', !$switch.prop('checked'));
+            if (typeof handelErrorByStatus === 'function') {
+                handelErrorByStatus(xhr);
+            }
+        }
+    });
 });
 
 // Export handlers
@@ -144,9 +196,15 @@ $(document).on('click', '.export-action', function(e) {
             .then(({ blob }) => {
                 blob.text().then(text => {
                     copyTextToClipboard(text)
-                        .then(() => {
-                            hideExportLoader();
-                        })
+                                .then(() => {
+                                    hideExportLoader();
+                                    var msg = (window.translations && window.translations.copied_to_clipboard) ? window.translations.copied_to_clipboard : 'Copied to clipboard';
+                                    try { showTopToast(msg); } catch (_) {
+                                        if (window.Swal) {
+                                            Swal.fire({ toast: true, position: 'top-end', icon: 'success', text: msg, showConfirmButton: false, timer: 1500, timerProgressBar: true });
+                                        }
+                                    }
+                                })
                         .catch((err) => {
                             hideExportLoader();
                             // Fallback: download the content if copy is unavailable
@@ -169,27 +227,16 @@ $(document).on('click', '.export-action', function(e) {
         return;
     }
 
-    if (format === 'print') {
+    if (format === 'print' || format === 'pdf') {
         hideExportLoader();
-        printCurrentTable();
+        const url = buildExportUrl('html', filters, selectedIds);
+        const w = window.open(url + '&_print=' + format, '_blank');
+        if (w) { w.focus(); }
         return;
     }
+    // allow docx/xlsx/csv to proceed as direct downloads
 
-    if (format === 'pdf') {
-        // Use print dialog to allow saving as PDF
-        hideExportLoader();
-        printCurrentTable();
-        return;
-    }
-    if (format === 'docx') {
-        hideExportLoader();
-        if (window.Swal) {
-            Swal.fire({ icon: 'info', text: 'Export to DOCX is not available yet.' });
-        }
-        return;
-    }
-
-    const downloadFormat = format === 'csv' ? 'csv' : 'json';
+    const downloadFormat = (format === 'csv' ? 'csv' : (format === 'docx' ? 'docx' : (format === 'xlsx' ? 'xlsx' : 'json')));
     triggerExport(downloadFormat, filters, false, selectedIds)
         .then(({ blob }) => {
             downloadBlob(blob, buildFileName(downloadFormat));
@@ -260,6 +307,50 @@ function hideExportLoader() {
     }
 }
 
+// Small toast helper for top notifications
+function showTopToast(message, icon = 'success') {
+    try {
+        if (window.Swal) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: icon,
+                text: message,
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true
+            });
+            return;
+        }
+    } catch (_) {}
+
+    // Fallback minimal toast
+    try {
+        const existing = document.getElementById('simple-top-toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.id = 'simple-top-toast';
+        toast.textContent = message || 'Done';
+        toast.style.position = 'fixed';
+        toast.style.top = '12px';
+        toast.style.right = '12px';
+        toast.style.zIndex = '2147483647';
+        toast.style.padding = '10px 14px';
+        toast.style.borderRadius = '8px';
+        toast.style.background = icon === 'error' ? '#d9534f' : (icon === 'warning' ? '#f0ad4e' : '#28a745');
+        toast.style.color = '#fff';
+        toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 150ms ease';
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => { toast.style.opacity = '1'; });
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => { try { toast.remove(); } catch (_) {} }, 180);
+        }, 1600);
+    } catch (_) {}
+}
+
 function copyTextToClipboard(text) {
     return new Promise((resolve, reject) => {
         try {
@@ -304,7 +395,7 @@ function buildFileName(format) {
     const path = (window.location.pathname || '').split('/').filter(Boolean);
     const resource = path[path.length - 1] || 'export';
     const ts = new Date().toISOString().replace(/[:.]/g, '-');
-    const ext = format === 'csv' ? 'csv' : 'json';
+    const ext = (format === 'csv' ? 'csv' : (format === 'docx' ? 'docx' : (format === 'xlsx' ? 'xlsx' : 'json')));
     return resource + '-' + ts + '.' + ext;
 }
 
