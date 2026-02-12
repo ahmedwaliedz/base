@@ -12,7 +12,7 @@ trait SuccessResponseTrait
      * @return JsonResponse
      */
     use BaseResponseTrait;
-    protected function respondWithSuccess(string $message = null , array $data = [] ): JsonResponse
+    protected function respondWithSuccess(string $message = null ,  $data ): JsonResponse
     {
         // This method is used to respond with a JSON response for success.
         return $this->mainRespond(

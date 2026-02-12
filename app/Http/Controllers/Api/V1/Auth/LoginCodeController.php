@@ -17,13 +17,13 @@ class LoginCodeController extends Controller
 
     public function __construct(  private readonly AuthServiceInterface $authService)
     {
- 
+
     }
 
     public function loginCode(CodeLoginRequest $request): JsonResponse
     {
         $result = $this->authService->loginWithCode($request->validated());
-        
+
         return $this->respondWithSuccess(__('responses.logged_in_successfully'), [
             'token' => $result['token'],
             'user' => new UserResource($result['user'])

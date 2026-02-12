@@ -16,10 +16,12 @@ trait FailResponseTrait
      */
     protected function respondWithFail(string|null $message = null , array  $data = [] , int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR ): JsonResponse
     {
-        // This method is used to respond with a JSON response for failure.
-        return $this->mainRespond([
-            'message' => $message,
-            'data' => $data
-        ], $statusCode);
+        $response = ['message' => $message];
+
+        if (!empty($data)) {
+            $response['data'] = $data;
+        }
+
+        return $this->mainRespond($response, $statusCode);
     }
 }

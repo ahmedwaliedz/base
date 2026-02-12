@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('code');
             $table->string('flag');
             $table->boolean('is_active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -5,12 +5,12 @@ use App\Traits\Filters\FilterableTrait;
 use App\Traits\GeneralTrait;
 use App\Traits\Models\BaseFileWithTranslations;
 use App\Traits\Models\BaseModelTrait;
-use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Country extends Model {
-    use HasFactory, BaseModelTrait ,FilterableTrait ,BaseFileWithTranslations ,GeneralTrait;
+    use HasFactory, BaseModelTrait ,FilterableTrait ,BaseFileWithTranslations ,GeneralTrait , SoftDeletes;
 
     protected $fillable = [
         'code',
@@ -24,6 +24,7 @@ class Country extends Model {
 
     protected $attributes = [
         'is_active' => true,
+        'flag'      => 'default.png',
     ];
     protected const UPLOAD_DIRECTORY  = 'countries';
 

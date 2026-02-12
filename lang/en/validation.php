@@ -194,4 +194,6 @@ return [
 
     'attributes' => [],
 
+    'invalid_data' => 'The given data was invalid.',
+
 ];

@@ -13,13 +13,13 @@ return [
     */
 
     // Length of activation code (number of digits)
-    'length' => env('AUTH_CODE_LENGTH', 6),
+    'length' => env('AUTH_CODE_LENGTH', 4),
 
     // Time to live in minutes
-    'ttl_minutes' => env('AUTH_CODE_TTL_MINUTES', 10),
+    'ttl_minutes' => env('AUTH_CODE_TTL_MINUTES', 1),
 
     // Maximum number of attempts before lockout
-    'max_attempts' => env('AUTH_CODE_MAX_ATTEMPTS', 5),
+    'max_attempts' => env('AUTH_CODE_MAX_ATTEMPTS', 3),
 
     // Cooldown period in seconds before requesting new code
     'resend_cooldown_seconds' => env('AUTH_CODE_RESEND_COOLDOWN', 60),

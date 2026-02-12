@@ -5,6 +5,8 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use App\Traits\Response\ValidationResponseTrait;
 
 $app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -24,7 +26,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
                         }
                     }
                 };
-                
+
                 // Dynamically discover API versions from folder names
                 $apiRoutesPath = base_path('routes/api');
                 $apiVersions = [];
@@ -38,7 +40,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
                     }
                     sort($apiVersions); // Sort versions (v1, v2, v3, etc.)
                 }
-                
+
                 foreach ($apiVersions as $version) {
                     $versionPath = base_path("routes/api/{$version}");
                     if (is_dir($versionPath)) {
@@ -48,7 +50,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
                         });
                     }
                 }
-                
+
                 // // API fallback route
                 // Route::fallback(function () {
                 //     return response()->json([
@@ -58,7 +60,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
                 //     ], 404);
                 // });
             });
-            
+
             // Load admin routes
             Route::prefix('admin')
                 ->name('admin.')
@@ -91,7 +93,23 @@ $app = Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+    $exceptions->render(function (\Throwable $e, Request $request) {
+        if ($request->is('api/*')) {
+            $statusCode = 500;
+
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface) {
+                $statusCode = $e->getStatusCode();
+            } elseif ($e instanceof \Illuminate\Auth\AuthenticationException) {
+                $statusCode = 401;
+            } elseif ($e instanceof \Illuminate\Validation\ValidationException) {
+                return (new class { use ValidationResponseTrait; })
+                    ->renderValidationErrors($e->errors(), $e->getMessage());
+            }
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], $statusCode, ['Content-Language' => 'ar']);
+        }
+    });
     })->create();
 
     require_once app_path('Helpers/MainHelper.php');

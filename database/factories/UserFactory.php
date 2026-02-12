@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Country;
+use App\Support\PhoneNormalizer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -25,11 +27,11 @@ class UserFactory extends Factory
     {
         return [
             'name'                  => fake()->name(),
-            'phone'                 => $this->faker->unique()->regexify('\+05[0-9]{8}'),
-            'country_code'          => $this->faker->countryCode,
-            'email'                 => fake()->unique()->safeEmail(),
+            'phone'                 => PhoneNormalizer::normalize($this->faker->unique()->regexify('\05[0-9]{8}')),
+            'country_code'          => Country::inRandomOrder()->first()->code,
+            'email'                 => fake()->unique()->userName() . '@gmail.com',
             'email_verified_at'     => now(),
-            'password'              => static::$password ??= Hash::make('password'),
+            'password'              => 'password',
             'remember_token'        => Str::random(10),
         ];
     }

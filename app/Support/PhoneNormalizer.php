@@ -12,19 +12,14 @@ class PhoneNormalizer
      * @param string $phone
      * @return string
      */
-    public static function normalize(string $phone): string
+    public static function normalize(?string $phone): string
     {
-        // Remove all non-digit characters except +
-        $phone = preg_replace('/[^\d+]/', '', $phone);
-        
-        // Remove leading zeros
-        $phone = ltrim($phone, '0');
-        
-        // If phone doesn't start with +, add it for international format
-        if (!str_starts_with($phone, '+')) {
-            $phone = '+' . $phone;
+        if (empty($phone)) {
+            return '';
         }
-        
+        $phone = preg_replace('/[^\d]/', '', $phone);
+        $phone = ltrim($phone, '0');
+
         return $phone;
     }
 
@@ -37,7 +32,7 @@ class PhoneNormalizer
     public static function isValid(string $phone): bool
     {
         $normalized = self::normalize($phone);
-        
+
         // Basic validation: starts with +, followed by country code and number
         return preg_match('/^\+[1-9]\d{6,14}$/', $normalized) === 1;
     }
@@ -51,11 +46,11 @@ class PhoneNormalizer
     public static function getCountryCode(string $phone): ?string
     {
         $normalized = self::normalize($phone);
-        
+
         if (!str_starts_with($normalized, '+')) {
             return null;
         }
-        
+
         // Common country codes (simplified)
         $countryCodes = [
             '+1' => 'US/CA',
@@ -80,13 +75,13 @@ class PhoneNormalizer
             '+216' => 'TN',
             '+218' => 'LY',
         ];
-        
+
         foreach ($countryCodes as $code => $country) {
             if (str_starts_with($normalized, $code)) {
                 return $code;
             }
         }
-        
+
         return null;
     }
 }

@@ -15,19 +15,23 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('image')->nullable();
-            $table->string('lang2')->nullable();
             $table->string('email')->unique();
             $table->string('phone')->unique();
-            $table->string('country_code', 5);
-            $table->string('full_phone')->unique()->nullable();
-            $table->string('password');
+            $table->string('phone_normalized')->unique()->nullable();
+            $table->string('country_code', 5)->nullable();
+            $table->string('password')->nullable();
+
+            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('phone_verified_at')->nullable();
+            $table->timestamp('last_activation_requested_at')->nullable();
+            $table->unique(['country_code', 'phone']);
+
             $table->boolean('is_blocked')->index();
             $table->boolean('is_notify')->index();
             $table->boolean('is_active')->index();
-            $table->boolean('is_completed')->index();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->timestamp('phone_verified_at')->nullable();
-            $table->unique(['country_code', 'phone']);
+            $table->boolean('is_complete_info')->index();
+
+
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

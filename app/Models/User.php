@@ -7,9 +7,10 @@ use App\Traits\Models\CanRetrieve;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable {
-    use BaseAuthModelTrait, HasFactory, SoftDeletes, CanRetrieve;
+    use BaseAuthModelTrait, HasFactory, SoftDeletes, CanRetrieve, HasApiTokens;
 
     /**
      * Available notification types for users
@@ -23,46 +24,36 @@ class User extends Authenticatable {
     protected $fillable = [
         'name',
         'image',
-        'lang2',
-        'email',
         'phone',
         'phone_normalized',
-        'activation_code',
-        'activation_expires_at',
-        'activation_attempts',
         'last_activation_requested_at',
         'country_code',
-        'full_phone',
         'password',
         'is_blocked',
         'is_notify',
         'is_active',
         'is_complete_info',
-        'is_completed',
         'email_verified_at',
         'phone_verified_at',
     ];
 
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'phone_verified_at' => 'datetime',
-        'activation_expires_at' => 'datetime',
-        'last_activation_requested_at' => 'datetime',
-        'password'          => 'hashed',
-        'is_blocked'        => 'boolean',
-        'is_notify'         => 'boolean',
-        'is_active'         => 'boolean',
-        'is_complete_info'  => 'boolean',
-        'is_completed'      => 'boolean',
+        'email_verified_at'             => 'datetime',
+        'phone_verified_at'             => 'datetime',
+        'last_activation_requested_at'  => 'datetime',
+        'password'                      => 'hashed',
+        'is_blocked'                    => 'boolean',
+        'is_notify'                     => 'boolean',
+        'is_active'                     => 'boolean',
+        'is_complete_info'              => 'boolean',
     ];
 
     protected $attributes = [
-        'is_blocked'   => false,
-        'is_notify'    => true,
-        'is_active'    => true,
-        'is_completed' => true,
-        'image'        => 'default.png',
-        'lang2'        => 'ar',
+        'is_blocked'        => false,
+        'is_notify'         => true,
+        'is_active'         => true,
+        'is_complete_info'  => true,
+        'image'             => 'default.png',
     ];
 
     protected $hidden = [
@@ -96,17 +87,9 @@ class User extends Authenticatable {
         ['key' => 'phone_verified_at', 'label' => 'admin/main.phone_verified_at'],
     ];
 
-    public function setFullPhoneAttribute() {
-        $this->attributes['full_phone'] = $this->fixPhone($this->attributes['country_code']) . $this->fixPhone($this->attributes['phone']);
+    public function setPhoneNormalizedAttribute() {
+        $this->attributes['phone_normalized'] = $this->fixPhone($this->attributes['country_code']) . $this->fixPhone($this->attributes['phone']);
     }
-
-    public function getFullPhoneAttribute() {
-        if (! empty($this->full_phone)) {
-            return $this->full_phone;
-        }
-        return $this->attributes['country_code'] . $this->attributes['phone'];
-    }
-
     /**
      * Get available notification types for users
      *
@@ -114,6 +97,13 @@ class User extends Authenticatable {
      */
     public static function getAvailableNotificationTypes(): array {
         return self::$availableNotificationTypes;
+    }
+
+    /**
+     * Get the OTPs for the user.
+     */
+    public function otps() {
+        return $this->morphMany(Otp::class, 'otpable');
     }
 
 }
