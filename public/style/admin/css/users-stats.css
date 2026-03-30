@@ -1,0 +1,257 @@
+/* Theme-aware tokens for statistics section */
+:root {
+  --users-stats-bg: #fbfcff;
+  --users-stats-bg2: #ffffff;
+  --users-stats-border: rgba(0, 0, 0, 0.06);
+  --users-stats-title: rgba(15, 23, 42, 0.92);
+  --users-stats-subtitle: rgba(15, 23, 42, 0.55);
+
+  --users-stats-card-bg: rgba(255, 255, 255, 0.96);
+  --users-stats-card-border: rgba(0, 0, 0, 0.06);
+  --users-stats-label: rgba(15, 23, 42, 0.72);
+  --users-stats-value: rgba(15, 23, 42, 0.92);
+
+  --users-stats-toggle-bg: rgba(105, 108, 255, 0.08);
+  --users-stats-toggle-bg-hover: rgba(105, 108, 255, 0.14);
+  --users-stats-toggle-border: rgba(105, 108, 255, 0.45);
+  --users-stats-toggle-border-hover: rgba(105, 108, 255, 0.7);
+  --users-stats-toggle-color: rgba(33, 37, 41, 0.85);
+  --users-stats-toggle-color-hover: rgba(33, 37, 41, 0.95);
+  --users-stats-toggle-shadow: rgba(105, 108, 255, 0.18);
+}
+
+/* Dark mode can be applied either via data-theme or a root class (dark-style) */
+html[data-theme='dark'],
+html[data-theme='theme-dark'],
+html[data-theme*='dark'],
+html.dark-style,
+body.dark-style,
+.dark-style {
+  --users-stats-bg: #1f2430;
+  --users-stats-bg2: #202636;
+  --users-stats-border: rgba(255, 255, 255, 0.06);
+  --users-stats-title: rgba(255, 255, 255, 0.92);
+  --users-stats-subtitle: rgba(255, 255, 255, 0.55);
+
+  --users-stats-card-bg: #202636;
+  --users-stats-card-border: rgba(255, 255, 255, 0.06);
+  --users-stats-label: rgba(255, 255, 255, 0.75);
+  --users-stats-value: rgba(255, 255, 255, 0.95);
+
+  --users-stats-toggle-border: rgba(105, 108, 255, 0.55);
+  --users-stats-toggle-color: #b6b8ff;
+  --users-stats-toggle-color-hover: #d7d8ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-theme='system'] {
+    --users-stats-bg: #1f2430;
+    --users-stats-bg2: #202636;
+    --users-stats-border: rgba(255, 255, 255, 0.06);
+    --users-stats-title: rgba(255, 255, 255, 0.92);
+    --users-stats-subtitle: rgba(255, 255, 255, 0.55);
+    --users-stats-card-bg: #202636;
+    --users-stats-card-border: rgba(255, 255, 255, 0.06);
+    --users-stats-label: rgba(255, 255, 255, 0.75);
+    --users-stats-value: rgba(255, 255, 255, 0.95);
+    --users-stats-toggle-border: rgba(105, 108, 255, 0.55);
+    --users-stats-toggle-color: #b6b8ff;
+    --users-stats-toggle-color-hover: #d7d8ff;
+  }
+}
+
+.users-stats {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(1100px 260px at 12% -10%, rgba(105, 108, 255, 0.26), transparent 60%),
+    radial-gradient(900px 240px at 88% 0%, rgba(0, 207, 232, 0.18), transparent 58%),
+    radial-gradient(700px 260px at 55% 110%, rgba(40, 199, 111, 0.12), transparent 60%),
+    linear-gradient(135deg, color-mix(in srgb, var(--users-stats-bg) 92%, rgba(105, 108, 255, 0.08)), var(--users-stats-bg2));
+  border: 1px solid var(--users-stats-border);
+  border-radius: 14px;
+  padding: 18px;
+  background-size: 160% 160%;
+  animation: usersStatsGradient 18s ease-in-out infinite;
+}
+
+/* Dark mode background tuned to match screenshot */
+html[data-theme='dark'] .users-stats,
+html[data-theme='theme-dark'] .users-stats,
+html[data-theme*='dark'] .users-stats,
+.dark-style .users-stats {
+  background:
+    radial-gradient(circle at 12% 28%, rgba(115, 103, 240, 0.18), transparent 55%),
+    radial-gradient(circle at 84% 20%, rgba(0, 207, 232, 0.14), transparent 55%),
+    radial-gradient(circle at 64% 84%, rgba(234, 84, 85, 0.1), transparent 55%);
+  background-size: 160% 160%;
+}
+
+.users-stats::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.34) 0%,
+    rgba(255, 255, 255, 0.14) 22%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  opacity: 1;
+}
+
+.users-stats::after {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  pointer-events: none;
+  background:
+    radial-gradient(closest-side, rgba(105, 108, 255, 0.22), transparent 70%),
+    radial-gradient(closest-side, rgba(0, 207, 232, 0.16), transparent 72%),
+    radial-gradient(closest-side, rgba(40, 199, 111, 0.12), transparent 75%);
+  filter: blur(10px);
+  opacity: 0.9;
+  transform: translate3d(-10%, -8%, 0) rotate(0deg);
+  animation: usersStatsGlow 12s ease-in-out infinite;
+}
+
+@keyframes usersStatsGlow {
+  0% {
+    transform: translate3d(-10%, -8%, 0) rotate(0deg);
+    opacity: 0.75;
+  }
+  40% {
+    transform: translate3d(6%, -4%, 0) rotate(8deg);
+    opacity: 0.95;
+  }
+  70% {
+    transform: translate3d(10%, 6%, 0) rotate(-6deg);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate3d(-10%, -8%, 0) rotate(0deg);
+    opacity: 0.75;
+  }
+}
+
+@keyframes usersStatsGradient {
+  0% {
+    background-position: 0% 20%;
+  }
+  50% {
+    background-position: 100% 80%;
+  }
+  100% {
+    background-position: 0% 20%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .users-stats,
+  .users-stats::after {
+    animation: none !important;
+  }
+}
+
+html[data-theme='dark'] .users-stats::before,
+html[data-theme='theme-dark'] .users-stats::before,
+html[data-theme*='dark'] .users-stats::before,
+.dark-style .users-stats::before {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 22%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  opacity: 1;
+}
+
+.users-stats > * {
+  position: relative;
+  z-index: 1;
+}
+
+.users-stats__title {
+  color: var(--users-stats-title);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.users-stats__subtitle {
+  color: var(--users-stats-subtitle);
+  font-size: 0.875rem;
+  margin-top: 2px;
+}
+
+.users-stats__card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--users-stats-card-border);
+  border-radius: 12px;
+  padding: 14px 14px;
+  height: 100%;
+}
+
+.users-stats__label {
+  color: var(--users-stats-label);
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.users-stats__value {
+  color: var(--users-stats-value);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.users-stats__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(105, 108, 255, 0.14);
+  color: #696cff;
+}
+
+.users-stats__icon i {
+  font-size: 1.2rem;
+}
+
+.users-stats__toggle {
+  border: 1px solid var(--users-stats-toggle-border);
+  background: var(--users-stats-toggle-bg);
+  color: var(--users-stats-toggle-color);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.users-stats__toggle:hover,
+.users-stats__toggle:focus {
+  color: var(--users-stats-toggle-color-hover);
+  background: var(--users-stats-toggle-bg-hover);
+  border-color: var(--users-stats-toggle-border-hover);
+}
+
+.users-stats__toggle:focus {
+  box-shadow: 0 0 0 0.15rem var(--users-stats-toggle-shadow);
+}
+
+.users-stats__toggle i {
+  font-size: 1.1rem;
+}
+
+.users-stats__toggle .users-stats__chev {
+  transition: transform 180ms ease;
+}
+
+.users-stats__toggle[aria-expanded='true'] .users-stats__chev {
+  transform: rotate(180deg);
+}
+

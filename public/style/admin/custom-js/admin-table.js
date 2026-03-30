@@ -15,6 +15,10 @@ function hideTableLoader(html) {
 }
 
 function loadTable(filters) {
+    if (typeof loadStats === 'function') {
+        var statsFilters = filters && filters.filters ? filters.filters : null;
+        loadStats(statsFilters);
+    }
     $.ajax({
         url: window.adminDataUrl ? window.adminDataUrl : window.location.href,
         method: 'GET',
@@ -24,6 +28,7 @@ function loadTable(filters) {
             'Accept': 'text/html'
         },
         beforeSend: () => {
+
             showTableLoader();
         },
         success: function(html) {

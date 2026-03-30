@@ -4,7 +4,7 @@
 @section('table')
     @foreach ($admins as $admin)
         <tr class="data-rows {{ $admin->deleted_at ? 'deleted-table-row' : '' }}">
-            
+
             @if(!$admin->deleted_at)
                 <td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $admin->id }}" data-id="{{ $admin->id }}"
                         class="dt-checkboxes form-check-input"></td>

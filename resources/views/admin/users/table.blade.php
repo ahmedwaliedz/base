@@ -18,18 +18,13 @@
                     </div>
                     <div class="d-flex flex-column">
                         <h6 class="text-body text-nowrap mb-2">{{ $user->name }}</h6>
-                        <span class="text-muted text-truncate d-block mb-1">
-                            <i class="ti ti-phone"></i> : {{ $user->phone }}
-                        </span>
-                        <span class="text-muted text-truncate d-block">
-                            <i class="ti ti-mail"></i> : {{ $user->email }}
-                        </span>
+
                     </div>
                 </div>
             </td>
 
             <td>
-                {{ $user->full_phone }}
+                {{ $user->phone }}
             </td>
 
             <td>

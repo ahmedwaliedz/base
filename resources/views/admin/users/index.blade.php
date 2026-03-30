@@ -1,5 +1,9 @@
 @extends('admin.layouts.crud.index')
+
 @push('content')
+    <x-table.statistics :loaderCards="4">
+    </x-table.statistics>
+
     <x-table.buttons createRoute="{{ route('admin.users.create') }}" :hasNotification="true" :hasDeleteAll="true" :deleteAllRoute="route('admin.users.destroyAll')"
         :hasEmail="true" :hasReload="true" :hasFilter="true" :hasExport="true" :exportCopy="true" :exportPdf="true" :exportExcel="true"
         :exportWord="true"
@@ -35,7 +39,12 @@
 
     <x-model.email>
     </x-model.email>
+
 @endpush
 
 @push('js')
+        <script>
+            var statsUrl = "{{ route('admin.users.statistics') }}";
+        </script>
+        <script src="{{ asset('style/admin/custom-js/stats.js') }}"></script>
 @endpush

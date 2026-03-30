@@ -3,16 +3,19 @@
     <link rel="stylesheet" href="{{ asset('style/admin/validation/form-validation.css') }}" />
     <link rel="stylesheet" href="{{ asset('style/admin/vendor/libs/sweetalert2/sweetalert2.css') }}" />
     <link rel="stylesheet" href="{{ asset('style/admin/css/filter.css') }}" />
+    <link rel="stylesheet" href="{{ asset('style/admin/css/crud-stats.css') }}" />
+    <link rel="stylesheet" href="{{ asset('style/admin/vendor/libs/apex-charts/apex-charts.css') }}" />
 @endpush
 
 @section('content')
-    
+
     @stack('content')
-    
+
 @endsection
 
 @push('js')
     <script src="{{ asset('style/admin/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
+    <script src="{{ asset('style/admin/vendor/libs/apex-charts/apexcharts.js') }}"></script>
     <script src="{{ asset('style/admin/js/extended-ui-sweetalert2.js') }}"></script>
     <script src="{{ asset('style/admin/custom-js/filter.js') }}"></script>
     <script src="{{ asset('style/admin/custom-js/admin-table.js') }}"></script>
