@@ -2,7 +2,7 @@
 
 @section('table')
     @foreach ($users as $user)
-        <tr class="data-rows {{ $user->deleted_at ? 'deleted-table-row' : '' }}">
+        <tr class="data-rows users-table-row {{ $user->deleted_at ? 'deleted-table-row' : '' }}">
             @if (!$user->deleted_at)
                 <td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $user->id }}" data-id="{{ $user->id }}"
                         class="dt-checkboxes form-check-input"></td>
@@ -33,8 +33,8 @@
 
 
 
-            <td class="sorting_1">
-                <div class="d-flex align-items-center gap-2 flex-nowrap">
+            <td class="sorting_1 users-status-cell">
+                <div class="d-flex align-items-center gap-2 flex-nowrap users-status-wrap">
                     <span class="badge  {{ $user->statusData()['class'] }} status-badge"
                         text-capitalized="">{{ $user->statusData()['label'] }}</span>
                     <div class="form-check form-switch m-0">
@@ -48,26 +48,29 @@
 
 
 
-            <td>
-                <div class="d-flex align-items-center gap-2 flex-nowrap">
+            <td class="users-actions-cell">
+                <div class="d-flex align-items-center gap-2 flex-nowrap users-row-actions">
 
-                    <a href="{{ route('admin.users.edit', ['user' => $user]) }}" class="bg-success text-white custom-icon"
+                    <a href="{{ route('admin.users.edit', ['user' => $user]) }}"
+                        class="custom-icon users-action-btn users-action-edit"
                         data-bs-toggle="tooltip" data-placement="top" title="@lang('admin/main.edit')">
                         <i class="ti ti-pencil"></i>
                     </a>
 
-                    <a href="{{ route('admin.users.show', ['user' => $user]) }}" class="bg-primary text-white custom-icon"
+                    <a href="{{ route('admin.users.show', ['user' => $user]) }}"
+                        class="custom-icon users-action-btn users-action-view"
                         data-bs-toggle="tooltip" data-placement="top" title="@lang('admin/main.show')">
                         <i class="ti ti-eye"></i>
                     </a>
 
                     <a data-bs-toggle="modal" data-bs-target="#notificationModal" data-id="{{ $user->id }}"
-                        class="send-notification bg-warning text-white custom-icon" data-bs-toggle="tooltip"
+                        class="send-notification custom-icon users-action-btn users-action-notify" data-bs-toggle="tooltip"
                         data-placement="top" title="@lang('admin/main.send_notification')">
                         <i class="ti ti-bell-plus"></i>
                     </a>
 
-                    <a data-bs-toggle="modal" data-bs-target="#emailModal" class="bg-info text-white custom-icon"
+                    <a data-bs-toggle="modal" data-bs-target="#emailModal"
+                        class="custom-icon users-action-btn users-action-email"
                         data-bs-toggle="tooltip" data-placement="top" title="@lang('admin/main.send_email')">
                         <i class="ti ti-mail-plus"></i>
                     </a>
@@ -77,14 +80,14 @@
                     @if ($user->deleted_at)
                         <a href="javascript:void(0);" data-id="{{ $user->id }}"
                             data-route="{{ route('admin.users.restore', ['id' => $user->id]) }}"
-                            class="bg-success text-white custom-icon restore-row" data-bs-toggle="tooltip"
+                            class="custom-icon users-action-btn users-action-restore restore-row" data-bs-toggle="tooltip"
                             data-placement="top" title="@lang('admin/main.restore')">
                             <i class="ti ti-arrow-back-up "></i>
                         </a>
                     @else
                         <a href="javascript:void(0);" data-id="{{ $user->id }}"
                             data-route="{{ route('admin.users.destroy', ['user' => $user]) }}"
-                            class="bg-danger text-white custom-icon delete-row" data-bs-toggle="tooltip"
+                            class="custom-icon users-action-btn users-action-delete delete-row" data-bs-toggle="tooltip"
                             data-placement="top" title="@lang('admin/main.delete')">
                             <i class="ti ti-trash "></i>
                         </a>

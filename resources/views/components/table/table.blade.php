@@ -52,9 +52,11 @@
 
                                         @if($hasActions)
                                             <td class="skel-cell skel-actions">
-                                                <span class="skel-dot"></span>
-                                                <span class="skel-dot"></span>
-                                                <span class="skel-dot"></span>
+                                                <span class="skel-dot" aria-hidden="true"></span>
+                                                <span class="skel-dot" aria-hidden="true"></span>
+                                                <span class="skel-dot" aria-hidden="true"></span>
+                                                <span class="skel-dot" aria-hidden="true"></span>
+                                                <span class="skel-dot" aria-hidden="true"></span>
                                             </td>
                                         @endif
                                     </tr>
