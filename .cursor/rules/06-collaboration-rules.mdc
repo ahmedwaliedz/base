@@ -1,0 +1,33 @@
+---
+alwaysApply: true
+---
+
+# Collaboration Rules
+
+## Working with existing code
+
+- Read surrounding code before editing; match style in that directory.
+- Do not rename, move, or refactor unrelated code without strong justification.
+- Make the **smallest safe change** that satisfies the task; avoid bulk formatting-only diffs.
+- Do not refactor, rename, or restructure unrelated code.
+- Avoid large-scale changes unless explicitly required.
+
+## Where to place new code
+
+- **Admin features:** `app/Http/Controllers/Admin/`, `app/Services/Admin/`, `app/Http/Requests/Admin/`, views under `resources/views/admin/`.
+- **API features:** `app/Http/Controllers/Api/V1/`, `app/Http/Requests/Api/`, `app/Http/Resources/Api/V1/`.
+- **Shared domain logic:** `app/Services/`, `app/Repositories/`, `app/Models/`, `app/Contracts/` as appropriate.
+
+## Navigation and config
+
+- When adding admin sidebar entries, align with **`config/sidebar_routes.php`** and existing **named routes** (`admin.*`) so links and permissions stay coherent.
+
+## Communication through code
+
+- Prefer explicit, readable structure over hidden side effects.
+- New files should live where contributors already look for that layer (see `.cursor/context/project-context.md`).
+
+## Reuse and Consistency
+
+- Always follow existing patterns in the project.
+- Do not introduce alternative implementations for the same functionality.خلين

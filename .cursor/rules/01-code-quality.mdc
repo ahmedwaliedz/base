@@ -1,0 +1,34 @@
+---
+alwaysApply: true
+---
+
+# Code Quality Rules
+
+## Readability
+
+- Write code that is easy to read and reason about.
+- Prefer small, focused methods over large multi-purpose ones.
+- Use descriptive names for classes, methods, properties, and Blade variables.
+- Avoid deeply nested logic where flattening improves clarity.
+
+## Maintainability (PHP / Laravel)
+
+- Prefer **constructor dependency injection** and **typed properties** / return types (PHP 8.2+).
+- Use **`App\Enums`** (or new enums alongside existing ones) for fixed sets of values; use **`readonly`** where immutability fits.
+- Extract repeated logic into services, traits, or helpers already used in the same feature area — not into anonymous duplicates.
+
+## Composition
+
+- Prefer composition over duplication; add comments only for non-obvious decisions or domain constraints.
+
+## Safety
+
+- Handle expected failures explicitly; do not swallow exceptions without logging or rethrowing where appropriate.
+- Validate at the right layer (Form Requests for HTTP input).
+- Treat **authorization** as mandatory for both admin and API actions that mutate or expose data.
+- Log via Laravel’s logging facilities; never log passwords, tokens, or other secrets.
+
+## Consistency
+
+- Follow **PSR-12** and **Laravel Pint** formatting for PHP.
+- Match existing **namespace layout** (`App\Http`, `App\Services`, `App\Models`, etc.) and naming in the directory you touch.

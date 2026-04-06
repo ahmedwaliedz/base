@@ -1,0 +1,38 @@
+---
+alwaysApply: true
+---
+
+# Database Rules
+
+## Migrations
+
+- Place schema changes in `database/migrations/` using Laravel conventions.
+- Prefer **additive** migrations and backward-compatible deploys; avoid destructive changes without a data migration or rollout plan.
+
+## Schema design
+
+- Prefer normalized schemas unless denormalization is justified.
+- Model relationships with **foreign keys** and appropriate **indexes** on lookup and filter columns.
+- Use clear table and column names; choose column types that match domain meaning.
+
+## Translations (Astrotomic)
+
+- For translatable entities, follow the existing pattern: main model plus `*Translation` model/table and package configuration used elsewhere in `app/Models/`.
+- Consider `app/Console/Commands/MakeTranslationMigration.php` when introducing new translation tables consistent with project practice.
+
+## Media (Spatie Media Library)
+
+- Prefer Spatie media collections and existing **`app/Traits/Upload`** patterns over ad-hoc file path columns unless the domain explicitly requires raw paths.
+
+## Data integrity
+
+- Add constraints (unique, foreign key, not null) where they protect correctness.
+- Use nullable columns only when absence is valid.
+- Use **soft deletes** only when aligned with sibling models and product expectations.
+- Avoid redundant stored data except for performance or audit history with a clear rationale.
+- Separate transactional data from derived or aggregated values.
+- Do not store calculated values unless necessary for performance or auditing.
+
+## Evolvability
+
+- Design tables so future changes can be applied safely; keep schema aligned with real domain needs.

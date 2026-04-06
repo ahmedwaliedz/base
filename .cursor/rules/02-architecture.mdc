@@ -1,0 +1,49 @@
+---
+alwaysApply: true
+---
+
+# Architecture Rules
+
+## Layers (this codebase)
+
+- **HTTP:** Controllers stay thin; validate with **Form Requests** (`app/Http/Requests/Admin/`, `app/Http/Requests/Api/`).
+- **API output:** use **JsonResource** classes under `app/Http/Resources/Api/V1/` where the project already exposes structured JSON.
+- **Domain / persistence:** **Services** (`app/Services/`, `app/Services/Admin/`) and **Repositories** (`app/Repositories/`) with **Contracts** (`app/Contracts/`) when behavior is swappable or shared.
+- **Models:** `app/Models/`; translations via Astrotomic (main model + `*Translation`); media via Spatie conventions and `app/Traits/Upload`.
+- Controllers must remain thin and only coordinate request flow.
+- Do not implement complex business workflows inside controllers.
+
+## Admin vs API
+
+- **Admin:** controllers under `app/Http/Controllers/Admin/`; extend existing bases (`AdminBaseController`, `AuthenticatableBaseController`) unless there is a strong reason not to. Routes: `routes/admin.php`, name prefix `admin.`.
+- **API:** controllers under `app/Http/Controllers/Api/V1/` (and future versions); routes loaded from `routes/api/v1/*.php` under prefix `api/v1` with `api.lang` middleware (see `bootstrap/app.php`).
+
+## Separation of concerns
+
+- Keep data access, business rules, validation, and presentation clearly separated.
+- Keep heavy logic out of Blade; use component classes, services, or view models as the project already does.
+- Keep UI rendering separate from data transformation where practical (Resources for API; services/helpers for admin).
+- Blade templates must not contain business logic, database queries, or service calls.
+- Blades are strictly for presentation and simple rendering logic.
+- All non-trivial business logic must be implemented in Service classes.
+
+## Reusability
+
+- Prefer existing **View Components** (`<x-form.*>`, `<x-table.*>`), traits, and admin **CrudBaseService** only when the feature matches existing CRUD patterns — do not force CRUD for one-off flows.
+- Avoid tight coupling between unrelated modules.
+- Always check for existing services, components, or helpers before creating new ones.
+- Do not create duplicate patterns for similar problems.
+
+## Scalability
+
+- Design for change: prefer additive behavior and clear extension points.
+- Keep design proportional to the need; avoid over-engineering.
+
+## CRUD Consistency
+
+- Any new CRUD feature must follow the same architectural pattern used in the project:
+  - Form Request for validation
+  - Service class for business logic
+  - Thin controller
+  - Consistent Blade or API structure
+- Do not introduce one-off CRUD implementations.

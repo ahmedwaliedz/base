@@ -1,0 +1,43 @@
+---
+alwaysApply: true
+---
+
+# Global Rules
+
+## Project stack
+
+- Laravel 11, PHP 8.2+, **admin (Blade)** and **versioned API** (`api/v1/…`). Details, paths, and packages: **`.cursor/context/project-context.md`** — read or update it when versions or entrypoints change.
+- Key packages: Sanctum, Astrotomic Transl
+atable, Spatie Media Library (see project-context).
+
+## General principles
+
+- Prefer clean, maintainable, production-ready code.
+- Understand existing structure before adding code; preserve consistency unless a clear improvement is required.
+- Avoid unnecessary complexity; prefer explicit, readable code over clever shortcuts.
+- Do not duplicate logic when reusable abstractions already exist; keep modules easy to extend.
+- Reuse existing patterns and abstractions before introducing new ones.
+- Prefer consistency with the current codebase over introducing alternative approaches.
+
+## Internationalization
+
+- User-facing strings belong in `lang/ar/` and `lang/en/` (including admin copy under `lang/*/admin/`) following existing file layout and keys.
+
+## Before writing code
+
+- Analyze the task and impacted files, modules, and layers.
+- Reuse patterns under `App\Http`, `App\Services`, `App\Http\Requests`, etc. (see project-context table).
+- Do not introduce new architecture patterns without justification in this codebase.
+- If assumptions are required, choose the safest, most maintainable option.
+
+## Tooling
+
+- When changing PHP, align with **Laravel Pint** / PSR-12 style used in the repo.
+- Respect `composer.json` scripts (e.g. `composer dev` for local stack).
+
+## Output expectations
+
+- Generate complete, directly usable code; preserve unrelated behavior on edits.
+- Make minimal necessary changes; use clear names for files, classes, methods, and variables.
+- Always make the smallest safe change required to solve the task.
+- Do not modify unrelated parts of the system.
