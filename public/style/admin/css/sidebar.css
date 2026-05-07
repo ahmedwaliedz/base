@@ -1,131 +1,86 @@
 /**
- * Admin sidebar — minimal pro (scoped to #layout-menu)
+ * Admin sidebar — token-based, GPU-light
+ *  - All colors source from tokens.css
+ *  - No infinite animations (was 4: aura, brand-pulse, bar-glow, icon-glow)
+ *  - One dark-mode rule (was 3-4 duplicated blocks)
+ *  - Simple, fast hover transitions
  */
 
+/* ═══════════════════════════════════════
+   LIGHT MODE (default)
+═══════════════════════════════════════ */
 #layout-menu {
-    --sb-bg: #ffffff;
-    --sb-bg-2: #f9f9fb;
-    --sb-border: rgba(115, 103, 240, .12);
-    --sb-text: #6f6b7d;
-    --sb-text-strong: #2f2b3d;
-    --sb-muted: #b8b6c2;
-    --sb-hover-bg: rgba(115, 103, 240, .08);
-    --sb-active-bg: rgba(115, 103, 240, .12);
-    --sb-accent: #7367f0;
-    --sb-accent-2: #00cfe8;
-    --sb-accent-soft: rgba(115, 103, 240, .55);
-    --sb-divider: rgba(115, 103, 240, .12);
-    --sb-radius: 8px;
-    --sb-search-bg: #f4f4f7;
-    --sb-search-bg-focus: #ffffff;
-    --sb-tooltip-bg: #2f2b3d;
-    --sb-tooltip-text: #fff;
-    --sb-shadow: 4px 0 24px rgba(115, 103, 240, .04);
+    --sb-bg:               var(--surface-base);
+    --sb-bg-2:             var(--surface-raised);
+    --sb-border:           var(--surface-border);
+    --sb-text:             var(--text-body);
+    --sb-text-strong:      var(--text-strong);
+    --sb-muted:            var(--text-muted);
+    --sb-hover-bg:         var(--surface-overlay);
+    --sb-active-bg:        rgba(var(--color-brand-primary-rgb), 0.12);
+    --sb-accent:           var(--color-brand-primary);
+    --sb-accent-2:         var(--color-brand-secondary);
+    --sb-accent-soft:      rgba(var(--color-brand-primary-rgb), 0.55);
+    --sb-divider:          var(--surface-border);
+    --sb-radius:           var(--radius-md);
+    --sb-search-bg:        var(--surface-canvas);
+    --sb-search-bg-focus:  var(--surface-base);
+    --sb-tooltip-bg:       var(--text-strong);
+    --sb-tooltip-text:     #fff;
+    --sb-shadow:           4px 0 18px rgba(var(--color-brand-primary-rgb), 0.04);
 
-    /* Do NOT set position here — #layout-menu beats .layout-menu-fixed .layout-menu (fixed) and breaks layout */
     isolation: isolate;
-
-    background:
-        radial-gradient(120% 18% at 50% 0%, rgba(115, 103, 240, .04), transparent 70%),
-        var(--sb-bg) !important;
+    background: var(--sb-bg) !important;
     border-inline-end: 1px solid var(--sb-border);
     box-shadow: var(--sb-shadow);
     font-family: inherit;
 }
 
-/* Soft animated glow above the menu */
-#layout-menu::before {
-    content: '';
-    position: absolute;
-    z-index: 0;
-    inset-inline: 0;
-    top: 0;
-    height: 44%;
-    background: radial-gradient(ellipse 92% 125% at 50% -38%, rgba(115, 103, 240, 0.12), transparent 70%);
-    pointer-events: none;
-    opacity: 0.45;
-    animation: sbSidebarAuraLight 22s ease-in-out infinite alternate;
-}
-
-.dark-style #layout-menu::before,
-html[data-theme='dark'] #layout-menu::before,
-html[data-theme='theme-dark'] #layout-menu::before,
-html[data-theme*='dark'] #layout-menu::before {
-    background: radial-gradient(ellipse 92% 125% at 50% -35%, rgba(115, 103, 240, 0.22), transparent 68%),
-        radial-gradient(ellipse 70% 60% at 100% 18%, rgba(0, 207, 232, 0.08), transparent 55%);
-    animation-name: sbSidebarAuraDark;
-    animation-duration: 18s;
-}
-
-#layout-menu > .app-brand,
-#layout-menu > .menu-inner-shadow,
-#layout-menu > .sidebar-search,
-#layout-menu > ul.menu-inner {
-    position: relative;
-    z-index: 1;
-}
-
-.dark-style #layout-menu,
-html[data-theme='dark'] #layout-menu,
-html[data-theme='theme-dark'] #layout-menu,
-html[data-theme*='dark'] #layout-menu {
-    /* Softer than near-black — less «قاتم» */
-    --sb-bg: #2e3348;
-    --sb-bg-2: #363c55;
-    --sb-border: rgba(255, 255, 255, .08);
-    --sb-text: rgba(225, 228, 248, .82);
-    --sb-text-strong: #f7f8ff;
-    --sb-muted: rgba(200, 204, 232, .5);
-    --sb-hover-bg: rgba(255, 255, 255, .07);
-    --sb-active-bg: linear-gradient(135deg, rgba(115, 103, 240, .3), rgba(0, 207, 232, .16));
-    --sb-accent-soft: rgba(177, 168, 255, .72);
-    --sb-divider: rgba(255, 255, 255, .09);
-    --sb-search-bg: rgba(255, 255, 255, .06);
-    --sb-search-bg-focus: rgba(255, 255, 255, .1);
-    --sb-tooltip-bg: #f3f4ff;
-    --sb-tooltip-text: #2e3348;
-    --sb-shadow: 4px 0 28px rgba(0, 0, 0, .2);
-
-    background:
-        radial-gradient(120% 24% at 50% 0%, rgba(115, 103, 240, .16), transparent 72%),
-        radial-gradient(85% 32% at 92% 100%, rgba(0, 207, 232, .09), transparent 54%),
-        radial-gradient(70% 28% at 12% 75%, rgba(255, 184, 108, .06), transparent 52%),
-        var(--sb-bg) !important;
+/* ═══════════════════════════════════════
+   DARK MODE — single rule (was 3-4 dupes)
+═══════════════════════════════════════ */
+[data-theme*='dark'] #layout-menu,
+.dark-style #layout-menu {
+    --sb-bg:               #2e3348;
+    --sb-bg-2:             #363c55;
+    --sb-border:           rgba(255, 255, 255, 0.08);
+    --sb-text:             rgba(225, 228, 248, 0.82);
+    --sb-text-strong:      #f7f8ff;
+    --sb-muted:            rgba(200, 204, 232, 0.55);
+    --sb-hover-bg:         rgba(255, 255, 255, 0.06);
+    --sb-active-bg:        rgba(var(--color-brand-primary-rgb), 0.20);
+    --sb-accent-soft:      rgba(177, 168, 255, 0.72);
+    --sb-divider:          rgba(255, 255, 255, 0.08);
+    --sb-search-bg:        rgba(255, 255, 255, 0.05);
+    --sb-search-bg-focus:  rgba(255, 255, 255, 0.10);
+    --sb-tooltip-bg:       #f3f4ff;
+    --sb-tooltip-text:     #2e3348;
+    --sb-shadow:           4px 0 22px rgba(0, 0, 0, 0.18);
 }
 
 @media (prefers-color-scheme: dark) {
     html[data-theme='system'] #layout-menu {
-        --sb-bg: #2e3348;
-        --sb-bg-2: #363c55;
-        --sb-border: rgba(255, 255, 255, .08);
-        --sb-text: rgba(225, 228, 248, .82);
-        --sb-text-strong: #f7f8ff;
-        --sb-muted: rgba(200, 204, 232, .5);
-        --sb-hover-bg: rgba(255, 255, 255, .07);
-        --sb-active-bg: linear-gradient(135deg, rgba(115, 103, 240, .3), rgba(0, 207, 232, .16));
-        --sb-accent-soft: rgba(177, 168, 255, .72);
-        --sb-divider: rgba(255, 255, 255, .09);
-        --sb-search-bg: rgba(255, 255, 255, .06);
-        --sb-search-bg-focus: rgba(255, 255, 255, .1);
-        --sb-tooltip-bg: #f3f4ff;
-        --sb-tooltip-text: #2e3348;
-
-        background:
-            radial-gradient(120% 24% at 50% 0%, rgba(115, 103, 240, .16), transparent 72%),
-            radial-gradient(85% 32% at 92% 100%, rgba(0, 207, 232, .09), transparent 54%),
-            radial-gradient(70% 28% at 12% 75%, rgba(255, 184, 108, .06), transparent 52%),
-            var(--sb-bg) !important;
-    }
-
-    html[data-theme='system'] #layout-menu::before {
-        background: radial-gradient(ellipse 92% 125% at 50% -35%, rgba(115, 103, 240, 0.22), transparent 68%),
-            radial-gradient(ellipse 70% 60% at 100% 18%, rgba(0, 207, 232, 0.08), transparent 55%);
-        animation-name: sbSidebarAuraDark;
-        animation-duration: 18s;
+        --sb-bg:               #2e3348;
+        --sb-bg-2:             #363c55;
+        --sb-border:           rgba(255, 255, 255, 0.08);
+        --sb-text:             rgba(225, 228, 248, 0.82);
+        --sb-text-strong:      #f7f8ff;
+        --sb-muted:            rgba(200, 204, 232, 0.55);
+        --sb-hover-bg:         rgba(255, 255, 255, 0.06);
+        --sb-active-bg:        rgba(var(--color-brand-primary-rgb), 0.20);
+        --sb-accent-soft:      rgba(177, 168, 255, 0.72);
+        --sb-divider:          rgba(255, 255, 255, 0.08);
+        --sb-search-bg:        rgba(255, 255, 255, 0.05);
+        --sb-search-bg-focus:  rgba(255, 255, 255, 0.10);
+        --sb-tooltip-bg:       #f3f4ff;
+        --sb-tooltip-text:     #2e3348;
+        --sb-shadow:           4px 0 22px rgba(0, 0, 0, 0.18);
     }
 }
 
-/* Brand */
+/* ═══════════════════════════════════════
+   BRAND
+═══════════════════════════════════════ */
 #layout-menu .app-brand.demo {
     position: relative;
     margin-top: 0.65rem !important;
@@ -134,6 +89,7 @@ html[data-theme*='dark'] #layout-menu {
     border-bottom: 1px solid var(--sb-divider);
 }
 
+/* Static gradient underline (was sbBrandPulse animation) */
 #layout-menu .app-brand.demo::after {
     content: '';
     position: absolute;
@@ -141,23 +97,28 @@ html[data-theme*='dark'] #layout-menu {
     bottom: -1px;
     height: 2px;
     border-radius: 2px;
-    background: linear-gradient(90deg, transparent, rgba(115, 103, 240, .35), rgba(0, 207, 232, .3), transparent);
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(var(--color-brand-primary-rgb), 0.35),
+        rgba(var(--color-brand-secondary-rgb), 0.30),
+        transparent);
     opacity: 0.85;
     pointer-events: none;
-    animation: sbBrandPulse 10s ease-in-out infinite;
 }
 
 #layout-menu .app-brand-link img {
     max-height: 2rem;
 }
 
-/* Menu inner shadow (top fade) — match our custom bg */
+/* Menu inner shadow (top fade) */
 #layout-menu .menu-inner-shadow,
 #layout-menu.bg-menu-theme .menu-inner-shadow {
     background: linear-gradient(var(--sb-bg) 41%, transparent 95%) !important;
 }
 
-/* Search */
+/* ═══════════════════════════════════════
+   SEARCH
+═══════════════════════════════════════ */
 #layout-menu .sidebar-search {
     position: relative;
     z-index: 3;
@@ -191,7 +152,8 @@ html[data-theme*='dark'] #layout-menu {
     color: var(--sb-text-strong);
     font-size: 0.8125rem;
     font-weight: 500;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    transition: border-color var(--duration-fast) var(--ease-smooth),
+                background    var(--duration-fast) var(--ease-smooth);
 }
 
 #layout-menu .sidebar-search-input::placeholder {
@@ -201,7 +163,7 @@ html[data-theme*='dark'] #layout-menu {
 #layout-menu .sidebar-search-input:focus {
     border-color: var(--sb-accent);
     background: var(--sb-search-bg-focus);
-    box-shadow: 0 0 0 3px rgba(115, 103, 240, .18);
+    box-shadow: 0 0 0 3px rgba(var(--color-brand-primary-rgb), 0.18);
     outline: none;
     color: var(--sb-text-strong);
 }
@@ -216,10 +178,11 @@ html[data-theme*='dark'] #layout-menu {
     height: 2rem;
     padding: 0;
     border: none;
-    border-radius: 8px;
+    border-radius: var(--sb-radius);
     background: transparent;
     color: var(--sb-muted);
-    transition: color 0.15s ease, background 0.15s ease;
+    transition: color var(--duration-fast) var(--ease-smooth),
+                background var(--duration-fast) var(--ease-smooth);
 }
 
 #layout-menu .sidebar-search-clear:hover {
@@ -235,7 +198,11 @@ html[data-theme*='dark'] #layout-menu {
     text-align: center;
 }
 
-/* Top-level section dividers (nested .menu-inner structure) */
+/* ═══════════════════════════════════════
+   MENU LINKS
+═══════════════════════════════════════ */
+
+/* Top-level section dividers */
 #layout-menu > ul.menu-inner > ul.menu-inner > .menu-item:not(:first-child)::before {
     content: '';
     display: block;
@@ -253,7 +220,6 @@ html[data-theme*='dark'] #layout-menu {
     padding-bottom: 0.35rem !important;
 }
 
-/* Menu links — typography & rhythm (compact) */
 #layout-menu .menu-item .menu-link {
     position: relative;
     border-radius: var(--sb-radius);
@@ -263,7 +229,9 @@ html[data-theme*='dark'] #layout-menu {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--sb-text);
-    transition: background 0.25s cubic-bezier(0.34, 1.2, 0.64, 1), color 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.2, 0.64, 1), box-shadow 0.25s ease;
+    /* Light transitions only — no transform/box-shadow on hover */
+    transition: background var(--duration-fast) var(--ease-smooth),
+                color      var(--duration-fast) var(--ease-smooth);
 }
 
 #layout-menu .menu-item .menu-link > div {
@@ -273,15 +241,6 @@ html[data-theme*='dark'] #layout-menu {
 #layout-menu .menu-item:not(.active) > .menu-link:hover {
     background: var(--sb-hover-bg);
     color: var(--sb-text-strong);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(115, 103, 240, 0.12);
-}
-
-.dark-style #layout-menu .menu-item:not(.active) > .menu-link:hover,
-html[data-theme='dark'] #layout-menu .menu-item:not(.active) > .menu-link:hover,
-html[data-theme='theme-dark'] #layout-menu .menu-item:not(.active) > .menu-link:hover,
-html[data-theme*='dark'] #layout-menu .menu-item:not(.active) > .menu-link:hover {
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(115, 103, 240, 0.12);
 }
 
 #layout-menu .menu-item .menu-link i.ti,
@@ -289,7 +248,7 @@ html[data-theme*='dark'] #layout-menu .menu-item:not(.active) > .menu-link:hover
     margin-inline-end: 0.4rem;
     font-size: 1.05rem;
     color: var(--sb-muted);
-    transition: color 0.2s ease, filter 0.2s ease, transform 0.2s ease;
+    transition: color var(--duration-fast) var(--ease-smooth);
     flex-shrink: 0;
 }
 
@@ -302,10 +261,9 @@ html[data-theme*='dark'] #layout-menu .menu-item:not(.active) > .menu-link:hover
 #layout-menu .menu-item:not(.active) > .menu-link:hover i.ti,
 #layout-menu .menu-item:not(.active) > .menu-link:hover i[class^='ti-'] {
     color: var(--sb-text-strong);
-    animation: sbIconNudge 0.55s cubic-bezier(0.34, 1.35, 0.64, 1) both;
 }
 
-/* Active — gradient bar + glow (vertical bar: top-level items only) */
+/* Active — gradient bar (static, was sbActiveBarGlow infinite) */
 #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link,
 #layout-menu .menu-item.active > .menu-link,
 #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link.menu-toggle,
@@ -321,16 +279,17 @@ html[data-theme*='dark'] #layout-menu .menu-item:not(.active) > .menu-link:hover
     color: var(--sb-text-strong) !important;
 }
 
-/* Hover override (Sneat's bg-menu-theme uses a fixed value otherwise) */
 html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-item:not(.active) .menu-link:hover,
 .layout-menu-hover.layout-menu-collapsed #layout-menu.bg-menu-theme .menu-inner .menu-item:not(.active) .menu-link:hover {
     background: var(--sb-hover-bg) !important;
 }
 
+/* Static box-shadow on top-level active item (was a transition-based hover) */
 #layout-menu .menu-inner > ul.menu-inner > .menu-item.active > .menu-link {
-    box-shadow: 0 4px 18px rgba(115, 103, 240, 0.18), inset 0 0 0 1px rgba(115, 103, 240, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(var(--color-brand-primary-rgb), 0.16);
 }
 
+/* Vertical accent bar on active top-level item — STATIC (no glow animation) */
 #layout-menu > ul.menu-inner > ul.menu-inner > .menu-item.active > .menu-link::before {
     content: '';
     position: absolute;
@@ -342,28 +301,28 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
     min-height: 1.1rem;
     border-radius: 3px;
     background: linear-gradient(180deg, var(--sb-accent), var(--sb-accent-2));
-    box-shadow: 0 0 12px rgba(115, 103, 240, .45);
-    animation: sbActiveBarGlow 4.5s ease-in-out infinite;
+    /* Static glow — no infinite animation */
+    box-shadow: 0 0 8px rgba(var(--color-brand-primary-rgb), 0.40);
 }
 
+/* Active icon — static color (was sbActiveIconGlow filter:drop-shadow loop) */
 #layout-menu .menu-item.active > .menu-link i.ti,
 #layout-menu .menu-item.active > .menu-link i[class^='ti-'] {
     color: var(--sb-accent);
-    filter: drop-shadow(0 0 6px rgba(115, 103, 240, .45));
-    animation: sbActiveIconGlow 3.2s ease-in-out infinite;
 }
 
 #layout-menu .menu-item.open > .menu-link.menu-toggle:not(.active) {
     color: var(--sb-text-strong);
 }
 
-/* Open submenu parent — subtle emphasis */
 #layout-menu .menu-item.open > .menu-link.menu-toggle:not(.active) i.ti,
 #layout-menu .menu-item.open > .menu-link.menu-toggle:not(.active) i[class^='ti-'] {
     color: var(--sb-accent);
 }
 
-/* Submenu — refine Sneat's native connector + dots (no extra pseudo-elements) */
+/* ═══════════════════════════════════════
+   SUBMENU
+═══════════════════════════════════════ */
 #layout-menu .menu-sub {
     margin-top: 0.15rem;
     margin-bottom: 0.25rem;
@@ -375,15 +334,13 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
     font-size: 0.8125rem;
 }
 
-/* Sneat draws a vertical connector via .menu-sub::before — recolor it */
 #layout-menu .menu-inner > .menu-item.open > .menu-sub::before,
 #layout-menu .menu-inner .menu-item.open > .menu-sub::before {
     border-color: var(--sb-divider) !important;
 }
 
-/* Sneat draws sub-link dots via .menu-link::before (rendered as text color) */
 #layout-menu .menu-sub .menu-link::before {
-    transition: color 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
+    transition: color var(--duration-fast) var(--ease-smooth);
 }
 
 #layout-menu .menu-sub .menu-item:not(.active) > .menu-link::before {
@@ -392,20 +349,19 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
 
 #layout-menu .menu-sub .menu-item:not(.active) > .menu-link:hover::before {
     color: var(--sb-accent) !important;
-    transform: scale(1.2);
 }
 
 #layout-menu .menu-sub .menu-item.active > .menu-link::before {
     color: var(--sb-accent) !important;
-    text-shadow: 0 0 8px rgba(115, 103, 240, 0.6);
 }
 
-/* Filter: hide non-matching items */
+/* ═══════════════════════════════════════
+   FILTER & SCROLLBAR
+═══════════════════════════════════════ */
 #layout-menu .menu-item.menu-search-hidden {
     display: none !important;
 }
 
-/* Perfect Scrollbar */
 #layout-menu .ps__rail-y {
     opacity: 0.45;
     width: 6px !important;
@@ -423,7 +379,8 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
     border-radius: 10px;
     background: linear-gradient(180deg, var(--sb-accent), var(--sb-accent-2)) !important;
     opacity: 0.55;
-    transition: width 0.15s ease, opacity 0.15s ease;
+    transition: width var(--duration-fast) var(--ease-smooth),
+                opacity var(--duration-fast) var(--ease-smooth);
 }
 
 #layout-menu .ps__rail-y:hover .ps__thumb-y,
@@ -437,7 +394,9 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
     left: 2px !important;
 }
 
-/* Collapsed — hide search, dot indicator, tooltips on top-level */
+/* ═══════════════════════════════════════
+   COLLAPSED MODE — search + dot indicator + tooltip
+═══════════════════════════════════════ */
 .layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-offcanvas):not(.layout-menu-fixed-offcanvas) #layout-menu .sidebar-search {
     display: none !important;
 }
@@ -454,7 +413,7 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
     height: 6px;
     min-height: 0;
     border-radius: 50%;
-    box-shadow: 0 0 10px rgba(115, 103, 240, .55);
+    box-shadow: 0 0 8px rgba(var(--color-brand-primary-rgb), 0.50);
 }
 
 .layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-offcanvas):not(.layout-menu-fixed-offcanvas) #layout-menu > ul.menu-inner > ul.menu-inner > .menu-item > a.menu-link[data-tooltip] {
@@ -470,7 +429,7 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
     inset-inline-start: calc(100% + 12px);
     padding: 0.35rem 0.65rem;
     max-width: 16rem;
-    border-radius: 8px;
+    border-radius: var(--sb-radius);
     font-size: 0.8125rem;
     font-weight: 600;
     white-space: nowrap;
@@ -478,9 +437,9 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
     text-overflow: ellipsis;
     color: var(--sb-tooltip-text);
     background: var(--sb-tooltip-bg);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
     pointer-events: none;
-    animation: sbTooltipIn 0.15s ease-out both;
+    animation: sbTooltipIn 0.15s var(--ease-out) both;
 }
 
 [dir='rtl'].layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-offcanvas):not(.layout-menu-fixed-offcanvas) #layout-menu > ul.menu-inner > ul.menu-inner > .menu-item > a.menu-link[data-tooltip]:hover::after {
@@ -490,139 +449,21 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
 }
 
 @keyframes sbTooltipIn {
-    from {
-        opacity: 0;
-        transform: translateY(-50%) translateX(-4px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(-50%) translateX(0);
-    }
+    from { opacity: 0; transform: translateY(-50%) translateX(-4px); }
+    to   { opacity: 1; transform: translateY(-50%) translateX(0);     }
 }
 
 @keyframes sbTooltipInRtl {
-    from {
-        opacity: 0;
-        transform: translateY(-50%) translateX(4px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(-50%) translateX(0);
-    }
-}
-
-@keyframes sbSidebarAuraLight {
-    0% {
-        opacity: 0.32;
-        transform: translateY(0);
-    }
-
-    100% {
-        opacity: 0.5;
-        transform: translateY(5px);
-    }
-}
-
-@keyframes sbSidebarAuraDark {
-    0% {
-        opacity: 0.72;
-        transform: translateY(0);
-    }
-
-    100% {
-        opacity: 0.95;
-        transform: translateY(8px);
-    }
-}
-
-@keyframes sbBrandPulse {
-    0%, 100% {
-        opacity: 0.65;
-    }
-
-    50% {
-        opacity: 1;
-    }
-}
-
-@keyframes sbIconNudge {
-    0% {
-        transform: scale(1) rotate(0deg);
-    }
-
-    35% {
-        transform: scale(1.08) rotate(-6deg);
-    }
-
-    70% {
-        transform: scale(1.05) rotate(5deg);
-    }
-
-    100% {
-        transform: scale(1) rotate(0deg);
-    }
-}
-
-@keyframes sbActiveBarGlow {
-    0%, 100% {
-        box-shadow: 0 0 12px rgba(115, 103, 240, 0.45);
-    }
-
-    50% {
-        box-shadow:
-            0 0 20px rgba(115, 103, 240, 0.65),
-            0 0 32px rgba(0, 207, 232, 0.22);
-    }
-}
-
-@keyframes sbActiveIconGlow {
-    0%, 100% {
-        filter: drop-shadow(0 0 6px rgba(115, 103, 240, 0.45));
-    }
-
-    50% {
-        filter:
-            drop-shadow(0 0 10px rgba(115, 103, 240, 0.7))
-            drop-shadow(0 0 16px rgba(0, 207, 232, 0.28));
-    }
+    from { opacity: 0; transform: translateY(-50%) translateX(4px); }
+    to   { opacity: 1; transform: translateY(-50%) translateX(0);    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    #layout-menu::before {
-        animation: none !important;
-    }
-
-    #layout-menu .app-brand.demo::after {
-        animation: none !important;
-    }
-
-    #layout-menu > ul.menu-inner > ul.menu-inner > .menu-item.active > .menu-link::before {
-        animation: none !important;
-    }
-
-    #layout-menu .menu-item.active > .menu-link i.ti,
-    #layout-menu .menu-item.active > .menu-link i[class^='ti-'] {
-        animation: none !important;
-    }
-
-    #layout-menu .menu-item:not(.active) > .menu-link:hover {
-        transform: none;
-        box-shadow: none;
-    }
-
-    #layout-menu .menu-item:not(.active) > .menu-link:hover i.ti,
-    #layout-menu .menu-item:not(.active) > .menu-link:hover i[class^='ti-'] {
-        animation: none !important;
-    }
-
     #layout-menu .menu-item .menu-link,
     #layout-menu .menu-item .menu-link i.ti,
     #layout-menu .menu-item .menu-link i[class^='ti-'] {
         transition: none;
     }
-
     .layout-menu-collapsed:not(.layout-menu-hover) #layout-menu > ul.menu-inner > ul.menu-inner > .menu-item > a.menu-link[data-tooltip]:hover::after {
         animation: none;
     }
