@@ -1,6 +1,6 @@
 <li class="menu-item {{isset($route['is_active']) && $route['is_active'] ? 'open' : ''}}" style="">
     <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="ti ti-users-group me-2"></i>
+        {!! !empty($route['icon']) ? $route['icon'] : '<i class="ti ti-users-group me-2"></i>' !!}
         <div>{{  __("admin/routes.admin.{$route['title']}.index") }}</div>
     </a>
     <ul class="menu-sub">

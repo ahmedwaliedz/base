@@ -1,51 +1,71 @@
+/* ─────────────────────────────────────────────────────────
+   filter.css  —  Table, filter panel, action buttons
+   All colours via tokens.css variables (no raw hex literals).
+───────────────────────────────────────────────────────── */
+
+/* Filter panel */
 .filter_div {
     overflow: hidden;
-    transition: all 0.1s ease-in-out;
     transform-origin: top;
     opacity: 0;
     display: none;
+    /* Specific properties only — no transition:all */
+    transition:
+        opacity  var(--duration-fast) var(--ease-smooth),
+        transform var(--duration-fast) var(--ease-smooth);
 }
+
 .filter_div.active {
     opacity: 1;
 }
+
 .show_filter .ti-filter-plus {
-    transition: transform 0.1s ease;
+    transition: transform var(--duration-fast) var(--ease-smooth);
 }
+
 .show_filter.active .ti-filter-plus {
     transform: rotate(45deg);
 }
-.custom-icon{
+
+/* Icon button wrapper */
+.custom-icon {
     width: 30px;
     height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    transition: transform 0.18s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    transition:
+        transform     var(--duration-fast) var(--ease-smooth),
+        box-shadow    var(--duration-base) var(--ease-smooth),
+        background    var(--duration-fast) var(--ease-smooth),
+        color         var(--duration-fast) var(--ease-smooth);
 }
 
+/* ═══ Table container ═══════════════════════════════════ */
+
 .table-content:has(.users-table-row) {
-    border: 1px solid rgba(105, 108, 255, 0.18);
+    border: 1px solid var(--surface-border);
     border-radius: var(--bs-card-border-radius);
     overflow: hidden;
     background:
-        radial-gradient(ellipse at 12% 0%, rgba(105, 108, 255, 0.14), transparent 55%),
-        radial-gradient(ellipse at 88% 0%, rgba(0, 207, 232, 0.1), transparent 55%),
-        radial-gradient(ellipse at 50% 100%, rgba(40, 199, 111, 0.06), transparent 55%);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+        radial-gradient(ellipse at 12% 0%,  rgba(var(--color-brand-primary-rgb), 0.10), transparent 55%),
+        radial-gradient(ellipse at 88% 0%,  rgba(var(--color-brand-secondary-rgb), 0.08), transparent 55%),
+        radial-gradient(ellipse at 50% 100%, rgba(var(--color-success-rgb), 0.05), transparent 55%);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
 }
 
 .datatables-products:has(.users-table-row) {
     border-collapse: separate;
     border-spacing: 0;
     width: 100%;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
 }
 
 .datatables-products:has(.users-table-row) thead th,
 .datatables-products:has(.users-table-row) tbody td {
     background: transparent !important;
-    border-left: none !important;
+    border-left:  none !important;
     border-right: none !important;
 }
 
@@ -54,66 +74,68 @@
 }
 
 .datatables-products:has(.users-table-row) thead tr:first-child th:first-child {
-    border-start-start-radius: 10px;
+    border-start-start-radius: var(--radius-md);
 }
 
 .datatables-products:has(.users-table-row) thead tr:first-child th:last-child {
-    border-start-end-radius: 10px;
+    border-start-end-radius: var(--radius-md);
     width: 1%;
     white-space: nowrap;
     padding-inline-end: 1rem !important;
 }
 
 .datatables-products:has(.users-table-row) thead th {
-    border-bottom: 1px solid rgba(105, 108, 255, 0.16) !important;
+    border-bottom: 1px solid var(--surface-border) !important;
     border-top: none !important;
     padding-bottom: 0.85rem !important;
 }
 
 .datatables-products:has(.users-table-row) tbody tr:not(.users-table-row) td {
-    border-top: none !important;
+    border-top:    none !important;
     border-bottom: none !important;
 }
 
-/* One line between rows: bottom border only (no gap + no double rule) */
 .datatables-products:has(.users-table-row) tbody tr.users-table-row td {
-    border-top: none !important;
-    border-bottom: 1px solid rgba(105, 108, 255, 0.08) !important;
+    border-top:    none !important;
+    border-bottom: 1px solid var(--surface-border) !important;
 }
 
 .datatables-products:has(.users-table-row) tbody tr.users-table-row td.users-actions-cell {
     width: 1%;
     white-space: nowrap;
     padding-inline-start: 0.5rem !important;
-    padding-inline-end: 1rem !important;
+    padding-inline-end:   1rem !important;
     vertical-align: middle;
 }
+
+/* ═══ Table rows ════════════════════════════════════════ */
 
 .users-table-row {
     position: relative;
     z-index: 0;
-    transition: background 0.2s ease;
+    transition: background var(--duration-fast) var(--ease-smooth);
 }
 
 .users-table-row:hover {
-    background: rgba(105, 108, 255, 0.08);
+    background: var(--surface-overlay);
 }
 
 .users-table-row:hover > td:first-child {
-    border-inline-start: 3px solid rgba(105, 108, 255, 0.6);
-    border-start-start-radius: 8px;
-    border-end-start-radius: 8px;
+    border-inline-start: 3px solid var(--surface-border-strong);
+    border-start-start-radius: var(--radius-md);
+    border-end-start-radius:   var(--radius-md);
 }
 
 .users-table-row.deleted-table-row:hover {
-    background: rgba(234, 84, 85, 0.1);
+    background: rgba(var(--color-danger-rgb), 0.08);
 }
 
 .users-table-row.deleted-table-row:hover > td:first-child {
-    border-inline-start: 3px solid rgba(234, 84, 85, 0.6);
+    border-inline-start: 3px solid rgba(var(--color-danger-rgb), 0.55);
 }
 
-/* Skeleton loader: same row rhythm + colors as users table */
+/* ═══ Skeleton loader ═══════════════════════════════════ */
+
 .table-content .table-loader > td {
     padding: 0 !important;
     border: none !important;
@@ -129,10 +151,10 @@
 
 .table-content .table-skeleton tbody tr > td {
     padding: 14px 10px !important;
-    border-top: none !important;
-    border-bottom: 1px solid rgba(105, 108, 255, 0.08) !important;
-    border-left: none !important;
-    border-right: none !important;
+    border-top:    none !important;
+    border-bottom: 1px solid var(--surface-border) !important;
+    border-left:   none !important;
+    border-right:  none !important;
     background: transparent !important;
     vertical-align: middle;
 }
@@ -140,18 +162,20 @@
 .table-content .table-skeleton .skel-cell > span {
     display: block;
     height: 14px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     background:
         linear-gradient(
             110deg,
-            rgba(255, 255, 255, 0.04) 0%,
+            rgba(255, 255, 255, 0.04)  0%,
             rgba(255, 255, 255, 0.14) 42%,
             rgba(255, 255, 255, 0.04) 88%
         ),
-        rgba(105, 108, 255, 0.06);
+        rgba(var(--color-brand-primary-rgb), 0.06);
     background-size: 200% 100%;
     animation: tl-sheen 1.2s ease-in-out infinite;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 207, 232, 0.06);
+    box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(var(--color-brand-secondary-rgb), 0.06);
 }
 
 .table-content .table-skeleton .skel-actions {
@@ -164,20 +188,22 @@
     display: inline-block;
     width: 31px;
     height: 31px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     margin-inline-end: 6px;
     vertical-align: middle;
     background:
         linear-gradient(
             110deg,
-            rgba(255, 255, 255, 0.04) 0%,
+            rgba(255, 255, 255, 0.04)  0%,
             rgba(255, 255, 255, 0.12) 42%,
             rgba(255, 255, 255, 0.04) 88%
         ),
-        rgba(105, 108, 255, 0.08);
+        rgba(var(--color-brand-primary-rgb), 0.08);
     background-size: 200% 100%;
     animation: tl-sheen 1.2s ease-in-out infinite;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(105, 108, 255, 0.12);
+    box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(var(--color-brand-primary-rgb), 0.12);
 }
 
 .table-content .table-skeleton .skel-actions .skel-dot:last-child {
@@ -185,12 +211,8 @@
 }
 
 @keyframes tl-sheen {
-    0% {
-        background-position: -40% 0;
-    }
-    100% {
-        background-position: 140% 0;
-    }
+    0%   { background-position: -40% 0; }
+    100% { background-position: 140% 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -200,105 +222,120 @@
     }
 }
 
+/* ═══ Status badge / switch ═════════════════════════════ */
+
 .users-status-wrap .status-badge {
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 0.5rem;
+    border-radius: var(--radius-lg);
     padding: 0.36rem 0.55rem;
 }
 
 .users-status-wrap .switch-block {
     border: 1px solid rgba(255, 255, 255, 0.16);
     box-shadow: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        border-color var(--duration-fast) var(--ease-smooth),
+        box-shadow   var(--duration-fast) var(--ease-smooth);
 }
 
 .users-status-wrap .switch-block:focus {
-    border-color: rgba(105, 108, 255, 0.55);
-    box-shadow: 0 0 0 0.12rem rgba(105, 108, 255, 0.25);
+    border-color: var(--surface-border-strong);
+    box-shadow: 0 0 0 0.12rem rgba(var(--color-brand-primary-rgb), 0.25);
 }
+
+/* ═══ Row action buttons ════════════════════════════════ */
 
 .users-row-actions {
     gap: 0.35rem !important;
     flex-wrap: nowrap;
 }
 
+/* Base — theme-aware: light bg in light mode, dark bg in dark mode */
 .users-row-actions .users-action-btn {
     width: 31px;
     height: 31px;
-    border-radius: 8px;
-    color: #d5d8f1;
-    background-color: rgba(32, 38, 54, 0.88);
-    border: 1px solid rgba(105, 108, 255, 0.22);
+    border-radius: var(--radius-md);
+    color: var(--text-body);
+    background-color: var(--surface-raised);
+    border: 1px solid var(--surface-border);
+    transition:
+        transform    var(--duration-fast) var(--ease-bounce),
+        box-shadow   var(--duration-base) var(--ease-smooth),
+        color        var(--duration-fast) var(--ease-smooth),
+        background   var(--duration-fast) var(--ease-smooth),
+        border-color var(--duration-fast) var(--ease-smooth);
 }
 
 .users-row-actions .users-action-btn:hover,
 .users-row-actions .users-action-btn:focus {
     transform: translateY(-1px);
-    color: #ffffff;
+    color: var(--text-strong);
 }
 
+/* Typed variants */
 .users-row-actions .users-action-edit {
-    color: #28c76f;
-    background-color: rgba(40, 199, 111, 0.14);
-    border-color: rgba(40, 199, 111, 0.28);
+    color: var(--color-success);
+    background-color: var(--color-success-soft);
+    border-color: rgba(var(--color-success-rgb), 0.28);
 }
 
 .users-row-actions .users-action-view {
-    color: #00cfe8;
-    background-color: rgba(0, 207, 232, 0.14);
-    border-color: rgba(0, 207, 232, 0.28);
+    color: var(--color-info);
+    background-color: var(--color-info-soft);
+    border-color: rgba(var(--color-brand-secondary-rgb), 0.28);
 }
 
 .users-row-actions .users-action-notify {
-    color: #ff9f43;
-    background-color: rgba(255, 159, 67, 0.14);
-    border-color: rgba(255, 159, 67, 0.3);
+    color: var(--color-brand-tertiary);
+    background-color: rgba(var(--color-brand-tertiary-rgb), 0.12);
+    border-color: rgba(var(--color-brand-tertiary-rgb), 0.30);
 }
 
 .users-row-actions .users-action-email {
-    color: #7367f0;
-    background-color: rgba(115, 103, 240, 0.14);
-    border-color: rgba(115, 103, 240, 0.32);
+    color: var(--color-brand-primary);
+    background-color: rgba(var(--color-brand-primary-rgb), 0.12);
+    border-color: rgba(var(--color-brand-primary-rgb), 0.30);
 }
 
 .users-row-actions .users-action-delete {
-    color: #ea5455;
-    background-color: rgba(234, 84, 85, 0.14);
-    border-color: rgba(234, 84, 85, 0.28);
+    color: var(--color-danger);
+    background-color: var(--color-danger-soft);
+    border-color: rgba(var(--color-danger-rgb), 0.28);
 }
 
 .users-row-actions .users-action-restore {
-    color: #28c76f;
-    background-color: rgba(40, 199, 111, 0.14);
-    border-color: rgba(40, 199, 111, 0.28);
+    color: var(--color-success);
+    background-color: var(--color-success-soft);
+    border-color: rgba(var(--color-success-rgb), 0.28);
 }
 
+/* Hover glows */
 .users-row-actions .users-action-edit:hover,
 .users-row-actions .users-action-edit:focus {
-    box-shadow: 0 5px 12px rgba(40, 199, 111, 0.25);
+    box-shadow: 0 5px 12px rgba(var(--color-success-rgb), 0.25);
 }
 
 .users-row-actions .users-action-view:hover,
 .users-row-actions .users-action-view:focus {
-    box-shadow: 0 5px 12px rgba(0, 207, 232, 0.25);
+    box-shadow: 0 5px 12px rgba(var(--color-brand-secondary-rgb), 0.25);
 }
 
 .users-row-actions .users-action-notify:hover,
 .users-row-actions .users-action-notify:focus {
-    box-shadow: 0 5px 12px rgba(255, 159, 67, 0.24);
+    box-shadow: 0 5px 12px rgba(var(--color-brand-tertiary-rgb), 0.24);
 }
 
 .users-row-actions .users-action-email:hover,
 .users-row-actions .users-action-email:focus {
-    box-shadow: 0 5px 12px rgba(115, 103, 240, 0.28);
+    box-shadow: 0 5px 12px rgba(var(--color-brand-primary-rgb), 0.28);
 }
 
 .users-row-actions .users-action-delete:hover,
 .users-row-actions .users-action-delete:focus {
-    box-shadow: 0 5px 12px rgba(234, 84, 85, 0.24);
+    box-shadow: 0 5px 12px rgba(var(--color-danger-rgb), 0.24);
 }
 
 .users-row-actions .users-action-restore:hover,
 .users-row-actions .users-action-restore:focus {
-    box-shadow: 0 5px 12px rgba(40, 199, 111, 0.25);
+    box-shadow: 0 5px 12px rgba(var(--color-success-rgb), 0.25);
 }
