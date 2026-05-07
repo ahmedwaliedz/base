@@ -96,6 +96,32 @@
     backdrop-filter: blur(12px) saturate(155%);
     -webkit-backdrop-filter: blur(12px) saturate(155%);
     box-shadow: 0 4px 14px rgba(var(--color-brand-primary-rgb), 0.05);
+
+    /* Independent scroll: when the nav has more items than fit in the
+       viewport, it scrolls inside itself; when the user reaches the
+       top/bottom, the wheel does not chain up to the page. */
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+
+    /* Slim, branded scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--color-brand-primary-rgb), 0.32) transparent;
+}
+
+.settings-nav::-webkit-scrollbar {
+    width: 6px;
+}
+.settings-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+.settings-nav::-webkit-scrollbar-thumb {
+    background: rgba(var(--color-brand-primary-rgb), 0.28);
+    border-radius: 99px;
+}
+.settings-nav::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--color-brand-primary-rgb), 0.55);
 }
 
 [data-theme*='dark'] .settings-nav,
@@ -245,11 +271,15 @@
     .settings-nav {
         position: static;
         padding: 0.4rem;
+        /* Reset desktop vertical-scroll constraints */
+        max-height: none;
+        overflow-y: visible;
     }
     .settings-nav__list {
         flex-direction: row;
         gap: 0.35rem;
         overflow-x: auto;
+        overscroll-behavior-x: contain;
         scrollbar-width: thin;
         -webkit-overflow-scrolling: touch;
     }
