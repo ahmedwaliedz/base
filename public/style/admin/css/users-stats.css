@@ -11,6 +11,13 @@
   --users-stats-label: rgba(15, 23, 42, 0.72);
   --users-stats-value: rgba(15, 23, 42, 0.92);
 
+  /* RGB accent palette (shared with crud-stats if not already defined) */
+  --color-primary-rgb: 115, 103, 240;
+  --color-success-rgb: 40, 199, 111;
+  --color-warning-rgb: 255, 159, 67;
+  --color-info-rgb: 0, 207, 232;
+  --color-danger-rgb: 234, 84, 85;
+
   --users-stats-toggle-bg: rgba(105, 108, 255, 0.08);
   --users-stats-toggle-bg-hover: rgba(105, 108, 255, 0.14);
   --users-stats-toggle-border: rgba(105, 108, 255, 0.45);
@@ -184,25 +191,49 @@ html[data-theme*='dark'] .users-stats::before,
   margin-top: 2px;
 }
 
+/* Card accent modifier classes */
+.users-stats__card--total   { --card-accent-rgb: var(--color-primary-rgb); }
+.users-stats__card--active  { --card-accent-rgb: var(--color-success-rgb); }
+.users-stats__card--inactive,
+.users-stats__card--blocked { --card-accent-rgb: var(--color-warning-rgb); }
+.users-stats__card--today   { --card-accent-rgb: var(--color-info-rgb); }
+
 .users-stats__card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--users-stats-card-border);
+  --card-accent-rgb: var(--color-primary-rgb);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--card-accent-rgb), 0.09) 0%,
+    var(--users-stats-card-bg) 65%
+  );
+  border: 1px solid rgba(var(--card-accent-rgb), 0.22);
   border-radius: 12px;
-  padding: 14px 14px;
+  padding: 16px;
   height: 100%;
+  box-shadow: 0 4px 18px rgba(var(--card-accent-rgb), 0.1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.users-stats__card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(var(--card-accent-rgb), 0.22);
 }
 
 .users-stats__label {
   color: var(--users-stats-label);
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
   margin: 0;
 }
 
 .users-stats__value {
   color: var(--users-stats-value);
-  font-size: 1.35rem;
-  font-weight: 800;
+  font-size: 2rem;
+  font-weight: 700;
   line-height: 1.15;
   margin: 0;
 }
