@@ -3,13 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Complaint;
-use App\Models\ContactMessage;
-use App\Models\Faq;
-use App\Models\Post;
-use App\Models\Slider;
 use App\Models\User;
+use Illuminate\Support\Facades\Schema;
 
 class HomeController extends Controller
 {
@@ -17,7 +12,7 @@ class HomeController extends Controller
     {
         $now = now();
 
-        /* ── Users ─────────────────────────────────────────── */
+        /* ── Users (always present) ─────────────────────── */
         $monthlyRaw = User::selectRaw('YEAR(created_at) as y, MONTH(created_at) as m, COUNT(*) as cnt')
             ->where('created_at', '>=', $now->copy()->subMonths(5)->startOfMonth())
             ->groupBy('y', 'm')
@@ -36,18 +31,27 @@ class HomeController extends Controller
         $activeUsers  = User::where('is_blocked', false)->count();
         $blockedUsers = User::where('is_blocked', true)->count();
 
-        /* ── Complaints monthly (last 6 months) ────────────── */
-        $complaintMonthlyRaw = Complaint::selectRaw('YEAR(created_at) as y, MONTH(created_at) as m, COUNT(*) as cnt')
-            ->where('created_at', '>=', $now->copy()->subMonths(5)->startOfMonth())
-            ->groupBy('y', 'm')
-            ->get()
-            ->keyBy(fn ($r) => "{$r->y}-{$r->m}");
+        /* ── Safe table query helper ────────────────────── */
+        $safeCount = function (string $table, array $where = []): int {
+            if (! Schema::hasTable($table)) return 0;
+            $q = \DB::table($table);
+            foreach ($where as $col => $val) { $q->where($col, $val); }
+            return $q->count();
+        };
 
-        $contactMonthlyRaw = ContactMessage::selectRaw('YEAR(created_at) as y, MONTH(created_at) as m, COUNT(*) as cnt')
-            ->where('created_at', '>=', $now->copy()->subMonths(5)->startOfMonth())
-            ->groupBy('y', 'm')
-            ->get()
-            ->keyBy(fn ($r) => "{$r->y}-{$r->m}");
+        $safeMonthly = function (string $table) use ($now): \Illuminate\Support\Collection {
+            if (! Schema::hasTable($table)) return collect();
+            return \DB::table($table)
+                ->selectRaw('YEAR(created_at) as y, MONTH(created_at) as m, COUNT(*) as cnt')
+                ->where('created_at', '>=', $now->copy()->subMonths(5)->startOfMonth())
+                ->groupBy('y', 'm')
+                ->get()
+                ->keyBy(fn ($r) => "{$r->y}-{$r->m}");
+        };
+
+        /* ── Optional tables ────────────────────────────── */
+        $complaintMonthlyRaw = $safeMonthly('complaints');
+        $contactMonthlyRaw   = $safeMonthly('contact_messages');
 
         $activityData = collect(range(5, 0))->map(function ($offset) use ($now, $complaintMonthlyRaw, $contactMonthlyRaw) {
             $date = $now->copy()->subMonths($offset);
@@ -59,45 +63,44 @@ class HomeController extends Controller
             ];
         });
 
-        /* ── Content stats ─────────────────────────────────── */
-        $totalCategories  = Category::count();
-        $activeCategories = Category::where('is_active', true)->count();
-        $totalSliders     = Slider::count();
-        $activeSliders    = Slider::where('is_active', true)->count();
-        $totalPosts       = Post::count();
-        $totalFaqs        = Faq::count();
-        $totalComplaints  = Complaint::count();
-        $pendingComplaints = Complaint::where('status', 'pending')->count();
-        $totalContacts    = ContactMessage::count();
+        $totalCategories  = $safeCount('categories');
+        $activeCategories = $safeCount('categories', ['is_active' => true]);
+        $totalSliders     = $safeCount('sliders');
+        $activeSliders    = $safeCount('sliders', ['is_active' => true]);
+        $totalPosts       = $safeCount('posts');
+        $totalFaqs        = $safeCount('faqs');
+        $totalComplaints  = $safeCount('complaints');
+        $pendingComplaints = $safeCount('complaints', ['status' => 'pending']);
+        $totalContacts    = $safeCount('contact_messages');
         $newContactsMonth = (int) ($contactMonthlyRaw->get("{$now->year}-{$now->month}")->cnt ?? 0);
 
         $stats = [
             /* Users */
-            'users_this_year'        => User::whereYear('created_at', $now->year)->count(),
-            'top_package_purchases'  => 0,
-            'total_users'            => $totalUsers,
-            'active_users'           => $activeUsers,
-            'blocked_users'          => $blockedUsers,
-            'new_this_month'         => (int) ($monthlyRaw->get("{$now->year}-{$now->month}")->cnt ?? 0),
-            'monthly_labels'         => $monthlyData->pluck('label')->values(),
-            'monthly_counts'         => $monthlyData->pluck('count')->values(),
+            'users_this_year'       => User::whereYear('created_at', $now->year)->count(),
+            'top_package_purchases' => 0,
+            'total_users'           => $totalUsers,
+            'active_users'          => $activeUsers,
+            'blocked_users'         => $blockedUsers,
+            'new_this_month'        => (int) ($monthlyRaw->get("{$now->year}-{$now->month}")->cnt ?? 0),
+            'monthly_labels'        => $monthlyData->pluck('label')->values(),
+            'monthly_counts'        => $monthlyData->pluck('count')->values(),
 
             /* Activity charts */
-            'activity_labels'        => $activityData->pluck('label')->values(),
-            'activity_complaints'    => $activityData->pluck('complaints')->values(),
-            'activity_contacts'      => $activityData->pluck('contacts')->values(),
+            'activity_labels'     => $activityData->pluck('label')->values(),
+            'activity_complaints' => $activityData->pluck('complaints')->values(),
+            'activity_contacts'   => $activityData->pluck('contacts')->values(),
 
             /* Content */
-            'total_posts'            => $totalPosts,
-            'total_categories'       => $totalCategories,
-            'active_categories'      => $activeCategories,
-            'total_sliders'          => $totalSliders,
-            'active_sliders'         => $activeSliders,
-            'total_faqs'             => $totalFaqs,
-            'total_complaints'       => $totalComplaints,
-            'pending_complaints'     => $pendingComplaints,
-            'total_contacts'         => $totalContacts,
-            'new_contacts_month'     => $newContactsMonth,
+            'total_posts'        => $totalPosts,
+            'total_categories'   => $totalCategories,
+            'active_categories'  => $activeCategories,
+            'total_sliders'      => $totalSliders,
+            'active_sliders'     => $activeSliders,
+            'total_faqs'         => $totalFaqs,
+            'total_complaints'   => $totalComplaints,
+            'pending_complaints' => $pendingComplaints,
+            'total_contacts'     => $totalContacts,
+            'new_contacts_month' => $newContactsMonth,
 
             /* Radial active ratios (0-100) */
             'ratio_users'      => $totalUsers      > 0 ? round($activeUsers      / $totalUsers      * 100) : 0,
