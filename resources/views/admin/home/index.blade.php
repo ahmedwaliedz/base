@@ -410,6 +410,54 @@
         </div>
     </div>
 
+    {{-- Users This Year --}}
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="dsc dsc--orange h-100">
+            <div class="dsc__top">
+                <div class="dsc__icon"><i class="ti ti-calendar-stats"></i></div>
+                <span class="dsc__change dsc__change--up">
+                    <i class="ti ti-trending-up"></i>
+                    {{ now()->format('Y') }}
+                </span>
+            </div>
+            <div class="dsc__body">
+                <div class="dsc__label">{{ __('admin/main.home_stat_users_this_year') }}</div>
+                <div class="dsc__value" data-counter="{{ $stats['users_this_year'] }}">0</div>
+                <div class="dsc__sub">{{ __('admin/main.home_stat_this_year') }}</div>
+            </div>
+            <div class="dsc__foot">
+                <a href="{{ route('admin.users.index') }}" class="dsc__link">{{ __('admin/main.home_card_view') }} ←</a>
+                <div class="dsc__bar-wrap">
+                    <div class="dsc__bar-fill" data-width="{{ $stats['total_users'] > 0 ? min(round($stats['users_this_year'] / $stats['total_users'] * 100), 100) : 0 }}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Total Admins --}}
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="dsc dsc--blue h-100">
+            <div class="dsc__top">
+                <div class="dsc__icon"><i class="ti ti-shield-check"></i></div>
+                <span class="dsc__change dsc__change--up">
+                    <i class="ti ti-trending-up"></i>
+                    100%
+                </span>
+            </div>
+            <div class="dsc__body">
+                <div class="dsc__label">{{ __('admin/main.home_stat_total_admins') }}</div>
+                <div class="dsc__value" data-counter="{{ $stats['total_admins'] }}">0</div>
+                <div class="dsc__sub">{{ __('admin/main.home_stat_admins_sub') }}</div>
+            </div>
+            <div class="dsc__foot">
+                <a href="{{ route('admin.admins.index') }}" class="dsc__link">{{ __('admin/main.home_card_view') }} ←</a>
+                <div class="dsc__bar-wrap">
+                    <div class="dsc__bar-fill" data-width="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 {{-- ═══════════════ CONTENT & ACTIVITY STATS ═══════════════ --}}
@@ -490,24 +538,68 @@
         </div>
     </div>
 
-    {{-- FAQs / Posts / Sliders --}}
+    {{-- FAQs --}}
     <div class="col-6 col-md-4 col-xl-2">
         <div class="dsc dsc--teal h-100">
             <div class="dsc__top">
                 <div class="dsc__icon"><i class="ti ti-help-circle"></i></div>
                 <span class="dsc__change dsc__change--up">
                     <i class="ti ti-trending-up"></i>
-                    {{ $stats['ratio_sliders'] }}%
+                    100%
                 </span>
             </div>
             <div class="dsc__body">
                 <div class="dsc__label">{{ __('admin/main.home_stat_total_faqs') }}</div>
                 <div class="dsc__value" data-counter="{{ $stats['total_faqs'] }}">0</div>
-                <div class="dsc__sub">
-                    {{ $stats['total_posts'] }} {{ __('admin/main.home_stat_posts') }}
-                    &nbsp;·&nbsp;
-                    {{ $stats['total_sliders'] }} {{ __('admin/main.home_stat_sliders') }}
+                <div class="dsc__sub">{{ __('admin/main.home_stat_faqs_sub') }}</div>
+            </div>
+            <div class="dsc__foot">
+                <a href="#" class="dsc__link">{{ __('admin/main.home_card_view') }} ←</a>
+                <div class="dsc__bar-wrap">
+                    <div class="dsc__bar-fill" data-width="100"></div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Posts --}}
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="dsc dsc--purple h-100">
+            <div class="dsc__top">
+                <div class="dsc__icon"><i class="ti ti-article"></i></div>
+                <span class="dsc__change dsc__change--up">
+                    <i class="ti ti-trending-up"></i>
+                    100%
+                </span>
+            </div>
+            <div class="dsc__body">
+                <div class="dsc__label">{{ __('admin/main.home_stat_posts') }}</div>
+                <div class="dsc__value" data-counter="{{ $stats['total_posts'] }}">0</div>
+                <div class="dsc__sub">{{ __('admin/main.home_stat_posts_sub') }}</div>
+            </div>
+            <div class="dsc__foot">
+                <a href="#" class="dsc__link">{{ __('admin/main.home_card_view') }} ←</a>
+                <div class="dsc__bar-wrap">
+                    <div class="dsc__bar-fill" data-width="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Sliders --}}
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="dsc dsc--green h-100">
+            <div class="dsc__top">
+                <div class="dsc__icon"><i class="ti ti-slideshow"></i></div>
+                <span class="dsc__change dsc__change--up">
+                    <i class="ti ti-trending-up"></i>
+                    {{ $stats['ratio_sliders'] }}%
+                </span>
+            </div>
+            <div class="dsc__body">
+                <div class="dsc__label">{{ __('admin/main.home_stat_sliders') }}</div>
+                <div class="dsc__value" data-counter="{{ $stats['total_sliders'] }}">0</div>
+                <div class="dsc__sub">{{ $stats['active_sliders'] }} {{ __('admin/main.home_stat_active') }}</div>
             </div>
             <div class="dsc__foot">
                 <a href="#" class="dsc__link">{{ __('admin/main.home_card_view') }} ←</a>

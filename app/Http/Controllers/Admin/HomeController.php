@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 
@@ -31,6 +32,7 @@ class HomeController extends Controller
         $totalUsers   = User::count();
         $activeUsers  = User::where('is_blocked', false)->count();
         $blockedUsers = User::where('is_blocked', true)->count();
+        $totalAdmins  = Admin::count();
 
         $newThisMonth = (int) ($monthlyRaw->get("{$now->year}-{$now->month}")->cnt ?? 0);
         $newLastMonth = (int) ($monthlyRaw->get("{$prev->year}-{$prev->month}")->cnt ?? 0);
@@ -90,6 +92,7 @@ class HomeController extends Controller
             'active_users'          => $activeUsers,
             'blocked_users'         => $blockedUsers,
             'new_this_month'        => $newThisMonth,
+            'total_admins'          => $totalAdmins,
             'monthly_labels'        => $monthlyData->pluck('label')->values(),
             'monthly_counts'        => $monthlyData->pluck('count')->values(),
 

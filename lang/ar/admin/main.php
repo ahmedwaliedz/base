@@ -235,4 +235,9 @@
         'home_chart_radial_title' => 'نسب النشاط',
         'home_chart_radial_sub' => 'نسبة السجلات النشطة لكل فئة',
         'home_card_view' => 'عرض',
+        'home_stat_total_admins' => 'المديرون',
+        'home_stat_admins_sub' => 'مديرو النظام',
+        'home_stat_this_year' => 'هذا العام',
+        'home_stat_faqs_sub' => 'الأسئلة المتكررة',
+        'home_stat_posts_sub' => 'المنشورات',
     ];

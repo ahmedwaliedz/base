@@ -189,4 +189,9 @@
         'home_chart_radial_title' => 'Active Ratios',
         'home_chart_radial_sub' => 'Percentage of active records per category',
         'home_card_view' => 'View',
+        'home_stat_total_admins' => 'Admins',
+        'home_stat_admins_sub' => 'System administrators',
+        'home_stat_this_year' => 'This year',
+        'home_stat_faqs_sub' => 'Frequently asked questions',
+        'home_stat_posts_sub' => 'Published posts',
     ];
