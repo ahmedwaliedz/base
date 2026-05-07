@@ -155,7 +155,29 @@
         'failed_to_send_notification' => 'Failed to send notification',
         'copied_to_clipboard' => 'Copied to clipboard',
         'home_welcome_back' => 'Welcome back, :name',
-        'home_welcome_subtitle' => 'A quick overview of user and package performance for the current period.',
+        'home_welcome_subtitle' => 'A quick overview of users, content and activity across the platform.',
+
+        // Time-aware greetings
+        'home_greeting_morning'   => 'Good morning',
+        'home_greeting_afternoon' => 'Good afternoon',
+        'home_greeting_evening'   => 'Good evening',
+        'home_greeting_night'     => 'Working late',
+
+        // Welcome chips
+        'home_chip_today'          => 'new today',
+        'home_chip_today_tooltip'  => 'Users registered today',
+        'home_chip_pending'        => 'awaiting review',
+        'home_chip_pending_tooltip'=> 'Pending complaints that need your attention',
+        'home_chip_last_login'     => 'Last login',
+        'home_chip_last_login_tooltip' => 'Your previous sign-in time',
+        'home_chip_server_ok'      => 'All systems normal',
+        'home_chip_server_tooltip' => 'Platform health status',
+
+        // Card aria-labels & actions
+        'home_card_view_users'     => 'Open users page',
+        'home_card_view_admins'    => 'Open administrators page',
+        'home_action_view'         => 'View details',
+
         'home_stat_users_this_year' => 'Total users this year',
         'home_stat_top_package_purchases' => 'Total purchases of top packages',
         'home_stat_total_users' => 'Total Users',

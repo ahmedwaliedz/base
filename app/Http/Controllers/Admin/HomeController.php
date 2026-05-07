@@ -33,6 +33,7 @@ class HomeController extends Controller
         $activeUsers  = User::where('is_blocked', false)->count();
         $blockedUsers = User::where('is_blocked', true)->count();
         $totalAdmins  = Admin::count();
+        $newUsersToday = User::whereDate('created_at', $now->toDateString())->count();
 
         /* ── Admins monthly ─────────────────────────────────── */
         $adminMonthlyRaw = Admin::selectRaw('YEAR(created_at) as y, MONTH(created_at) as m, COUNT(*) as cnt')
@@ -48,6 +49,8 @@ class HomeController extends Controller
 
         $newThisMonth = (int) ($monthlyRaw->get("{$now->year}-{$now->month}")->cnt ?? 0);
         $newLastMonth = (int) ($monthlyRaw->get("{$prev->year}-{$prev->month}")->cnt ?? 0);
+        $newAdminsThisMonth = (int) ($adminMonthlyRaw->get("{$now->year}-{$now->month}")->cnt ?? 0);
+        $newAdminsLastMonth = (int) ($adminMonthlyRaw->get("{$prev->year}-{$prev->month}")->cnt ?? 0);
 
         /* ── Safe helpers ───────────────────────────────────── */
         $safeCount = function (string $table, array $where = []): int {
@@ -86,34 +89,59 @@ class HomeController extends Controller
         $totalSliders      = $safeCount('sliders');
         $activeSliders     = $safeCount('sliders', ['is_active' => true]);
         $totalPosts        = $safeCount('posts');
+        $activePosts       = Schema::hasTable('posts') && Schema::hasColumn('posts', 'is_active')
+                                ? $safeCount('posts', ['is_active' => true])
+                                : $totalPosts;
         $totalFaqs         = $safeCount('faqs');
+        $activeFaqs        = Schema::hasTable('faqs') && Schema::hasColumn('faqs', 'is_active')
+                                ? $safeCount('faqs', ['is_active' => true])
+                                : $totalFaqs;
         $totalComplaints   = $safeCount('complaints');
         $pendingComplaints = $safeCount('complaints', ['status' => 'pending']);
+        $resolvedComplaints= $totalComplaints - $pendingComplaints;
         $totalContacts     = $safeCount('contact_messages');
+
         $newContactsMonth  = (int) ($contactMonthlyRaw->get("{$now->year}-{$now->month}")->cnt ?? 0);
         $prevContactsMonth = (int) ($contactMonthlyRaw->get("{$prev->year}-{$prev->month}")->cnt ?? 0);
+        $complThisMonth    = (int) ($complaintMonthlyRaw->get("{$now->year}-{$now->month}")->cnt ?? 0);
+        $complLastMonth    = (int) ($complaintMonthlyRaw->get("{$prev->year}-{$prev->month}")->cnt ?? 0);
 
-        $complThisMonth = (int) ($complaintMonthlyRaw->get("{$now->year}-{$now->month}")->cnt ?? 0);
-        $complLastMonth = (int) ($complaintMonthlyRaw->get("{$prev->year}-{$prev->month}")->cnt ?? 0);
+        /* ── Time-aware greeting ──────────────────────────── */
+        $hour = (int) $now->format('H');
+        $greetingKey = $hour < 12 ? 'home_greeting_morning'
+                    : ($hour < 17 ? 'home_greeting_afternoon'
+                    : ($hour < 21 ? 'home_greeting_evening'
+                    : 'home_greeting_night'));
+
+        /* ── Ratios for polar (all in %, consistent unit) ──── */
+        $ratioActiveUsers      = $totalUsers      > 0 ? (int) round($activeUsers      / $totalUsers      * 100) : 0;
+        $ratioActiveCategories = $totalCategories > 0 ? (int) round($activeCategories / $totalCategories * 100) : 0;
+        $ratioActiveSliders    = $totalSliders    > 0 ? (int) round($activeSliders    / $totalSliders    * 100) : 0;
+        $ratioResolvedCompl    = $totalComplaints > 0 ? (int) round($resolvedComplaints / $totalComplaints * 100) : 0;
 
         $stats = [
             /* Users */
             'users_this_year'       => User::whereYear('created_at', $now->year)->count(),
-            'top_package_purchases' => 0,
             'total_users'           => $totalUsers,
             'active_users'          => $activeUsers,
             'blocked_users'         => $blockedUsers,
             'new_this_month'        => $newThisMonth,
+            'new_today'             => $newUsersToday,
             'total_admins'          => $totalAdmins,
             'monthly_labels'        => $monthlyData->pluck('label')->values(),
             'monthly_counts'        => $monthlyData->pluck('count')->values(),
             'admin_monthly_counts'  => $adminMonthlyData->values(),
 
-            /* Month-over-month changes */
-            'change_new_users'   => self::pctChange($newThisMonth,    $newLastMonth),
-            'change_blocked'     => self::pctChange($blockedUsers,     $totalUsers > 0 ? (int)round($totalUsers * 0.1) : 0),
-            'change_complaints'  => self::pctChange($complThisMonth,  $complLastMonth),
-            'change_contacts'    => self::pctChange($newContactsMonth,$prevContactsMonth),
+            /* Greeting */
+            'greeting_key'          => $greetingKey,
+
+            /* Month-over-month deltas (signed, so blocked direction is correct) */
+            'change_new_users'    => self::pctChange($newThisMonth,        $newLastMonth),
+            'change_blocked'      => self::pctChange($blockedUsers,
+                                        $totalUsers > 0 ? (int) round($totalUsers * 0.1) : 0),
+            'change_complaints'   => self::pctChange($complThisMonth,      $complLastMonth),
+            'change_contacts'     => self::pctChange($newContactsMonth,    $prevContactsMonth),
+            'change_admins'       => self::pctChange($newAdminsThisMonth,  $newAdminsLastMonth),
 
             /* Activity charts */
             'activity_labels'     => $activityData->pluck('label')->values(),
@@ -121,52 +149,66 @@ class HomeController extends Controller
             'activity_contacts'   => $activityData->pluck('contacts')->values(),
 
             /* Content */
-            'total_posts'        => $totalPosts,
-            'total_categories'   => $totalCategories,
-            'active_categories'  => $activeCategories,
-            'total_sliders'      => $totalSliders,
-            'active_sliders'     => $activeSliders,
-            'total_faqs'         => $totalFaqs,
-            'total_complaints'   => $totalComplaints,
-            'pending_complaints' => $pendingComplaints,
-            'total_contacts'     => $totalContacts,
-            'new_contacts_month' => $newContactsMonth,
+            'total_posts'         => $totalPosts,
+            'active_posts'        => $activePosts,
+            'total_categories'    => $totalCategories,
+            'active_categories'   => $activeCategories,
+            'total_sliders'       => $totalSliders,
+            'active_sliders'      => $activeSliders,
+            'total_faqs'          => $totalFaqs,
+            'active_faqs'         => $activeFaqs,
+            'total_complaints'    => $totalComplaints,
+            'pending_complaints'  => $pendingComplaints,
+            'resolved_complaints' => $resolvedComplaints,
+            'total_contacts'      => $totalContacts,
+            'new_contacts_month'  => $newContactsMonth,
 
-            /* Ratios 0-100 (for progress bars & polar chart) */
-            'ratio_users'      => $totalUsers      > 0 ? round($activeUsers      / $totalUsers      * 100) : 0,
-            'ratio_categories' => $totalCategories > 0 ? round($activeCategories / $totalCategories * 100) : 0,
-            'ratio_sliders'    => $totalSliders    > 0 ? round($activeSliders    / $totalSliders    * 100) : 0,
-            'ratio_complaints' => $totalComplaints > 0 ? round(($totalComplaints - $pendingComplaints) / $totalComplaints * 100) : 0,
-            'ratio_contacts'   => $totalContacts   > 0 ? min(round($newContactsMonth / max($totalContacts, 1) * 100 * 10), 100) : 0,
+            /* Ratios 0-100 (real %) */
+            'ratio_users'         => $ratioActiveUsers,
+            'ratio_categories'    => $ratioActiveCategories,
+            'ratio_sliders'       => $ratioActiveSliders,
+            'ratio_posts'         => $totalPosts > 0 ? (int) round($activePosts / $totalPosts * 100) : 0,
+            'ratio_faqs'          => $totalFaqs  > 0 ? (int) round($activeFaqs  / $totalFaqs  * 100) : 0,
+            'ratio_complaints'    => $ratioResolvedCompl,
+            'ratio_blocked'       => $totalUsers > 0 ? (int) round($blockedUsers / $totalUsers * 100) : 0,
+            'ratio_new_users'     => $totalUsers > 0
+                                        ? min((int) round($newThisMonth / max($totalUsers, 1) * 100 * 5), 100)
+                                        : 0,
+            'ratio_year_users'    => $totalUsers > 0
+                                        ? min((int) round((int) $monthlyData->sum('count') / $totalUsers * 100), 100)
+                                        : 0,
 
             /* Quick-action tables */
-            'latest_users'      => User::latest()
+            'latest_users' => User::latest()
                 ->take(6)
-                ->get(['id','name','image','phone','is_blocked','created_at']),
+                ->get(['id', 'name', 'image', 'phone', 'is_blocked', 'created_at']),
 
             'pending_complaints_list' => Schema::hasTable('complaints')
                 ? \DB::table('complaints')
                     ->where('status', 'pending')
                     ->latest()->take(6)
-                    ->get(['id','name','phone','subject','type','status','created_at'])
+                    ->get(['id', 'name', 'phone', 'email', 'subject', 'type', 'status', 'created_at'])
                 : collect(),
 
             'latest_contacts' => Schema::hasTable('contact_messages')
                 ? \DB::table('contact_messages')
                     ->latest()->take(6)
-                    ->get(['id','name','email','phone','subject','created_at'])
+                    ->get(['id', 'name', 'email', 'phone', 'subject', 'created_at'])
                 : collect(),
 
-            /* Platform distribution (for donut) */
+            /* Donut: Platform distribution */
             'dist_series' => collect([
-                'users'       => $totalUsers,
-                'complaints'  => $totalComplaints,
-                'contacts'    => $totalContacts,
-                'categories'  => $totalCategories,
-                'faqs'        => $totalFaqs,
-                'posts'       => $totalPosts,
-                'sliders'     => $totalSliders,
+                $totalUsers, $totalComplaints, $totalContacts,
+                $totalCategories, $totalFaqs, $totalPosts, $totalSliders,
             ])->values(),
+
+            /* Polar: only ratios — same unit (%) */
+            'polar_series' => [
+                $ratioActiveUsers,
+                $ratioActiveCategories,
+                $ratioActiveSliders,
+                $ratioResolvedCompl,
+            ],
         ];
 
         return view('admin.home.index', compact('stats'));
@@ -175,7 +217,7 @@ class HomeController extends Controller
     private static function pctChange(int $current, int $previous): array
     {
         if ($previous === 0) {
-            return ['value' => $current > 0 ? 100.0 : 0.0, 'up' => true];
+            return ['value' => $current > 0 ? 100.0 : 0.0, 'up' => $current > 0];
         }
         $pct = round(($current - $previous) / $previous * 100, 1);
         return ['value' => abs($pct), 'up' => $pct >= 0];

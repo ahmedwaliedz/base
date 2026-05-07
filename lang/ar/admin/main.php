@@ -201,7 +201,29 @@
         'phone_verified_at' => 'تاريخ التحقق من الهاتف',
         'user_details' => 'تفاصيل المستخدم',
         'home_welcome_back' => 'مرحبًا بعودتك :name',
-        'home_welcome_subtitle' => 'نظرة عامة سريعة على أداء المستخدمين والباقات خلال الفترة الحالية.',
+        'home_welcome_subtitle' => 'نظرة عامة سريعة على المستخدمين والمحتوى والنشاط في المنصة.',
+
+        // Time-aware greetings
+        'home_greeting_morning'   => 'صباح الخير',
+        'home_greeting_afternoon' => 'مساء الخير',
+        'home_greeting_evening'   => 'مساء الخير',
+        'home_greeting_night'     => 'سهرة عمل',
+
+        // Welcome chips
+        'home_chip_today'          => 'مستخدم جديد اليوم',
+        'home_chip_today_tooltip'  => 'المستخدمون الذين سجّلوا اليوم',
+        'home_chip_pending'        => 'بانتظار المراجعة',
+        'home_chip_pending_tooltip'=> 'الشكاوى المعلقة التي تحتاج اهتمامك',
+        'home_chip_last_login'     => 'آخر تسجيل دخول',
+        'home_chip_last_login_tooltip' => 'وقت تسجيل دخولك السابق',
+        'home_chip_server_ok'      => 'جميع الأنظمة تعمل',
+        'home_chip_server_tooltip' => 'حالة المنصة',
+
+        // Card aria-labels & actions
+        'home_card_view_users'     => 'فتح صفحة المستخدمين',
+        'home_card_view_admins'    => 'فتح صفحة المشرفين',
+        'home_action_view'         => 'عرض التفاصيل',
+
         'home_stat_users_this_year' => 'إجمالي المستخدمين هذا العام',
         'home_stat_top_package_purchases' => 'إجمالي عمليات شراء أفضل الباقات',
         'home_stat_total_users' => 'إجمالي المستخدمين',
