@@ -142,7 +142,7 @@ class HomeController extends Controller
             /* Quick-action tables */
             'latest_users'      => User::latest()
                 ->take(6)
-                ->get(['id','name','image','phone','is_blocked','is_active','created_at']),
+                ->get(['id','name','image','phone','is_blocked','created_at']),
 
             'pending_complaints_list' => Schema::hasTable('complaints')
                 ? \DB::table('complaints')
