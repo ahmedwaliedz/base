@@ -290,6 +290,110 @@
     .dsc, .dash-welcome__orb { animation: none !important; opacity: 1 !important; transform: none !important; }
     .dsc__bar-fill { transition: none !important; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   QUICK-ACTION TABLES
+═══════════════════════════════════════════════════════════ */
+.dqt {
+    border-radius: 1rem;
+    backdrop-filter: blur(18px) saturate(170%);
+    -webkit-backdrop-filter: blur(18px) saturate(170%);
+    background: rgba(30,28,50,0.65);
+    border: 1px solid rgba(255,255,255,0.07);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.22);
+    overflow: hidden;
+}
+[data-theme="light"] .dqt {
+    background: rgba(255,255,255,0.80);
+    border-color: rgba(115,103,240,0.08);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+/* header */
+.dqt__head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.85rem 1.1rem 0.7rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+[data-theme="light"] .dqt__head { border-bottom-color: rgba(0,0,0,0.05); }
+
+.dqt__head-left { display: flex; align-items: center; gap: 0.55rem; }
+.dqt__icon {
+    width: 30px; height: 30px; border-radius: 0.45rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; flex-shrink: 0;
+}
+.dqt__title { font-size: 0.82rem; font-weight: 700; opacity: 0.88; }
+.dqt__view-all {
+    font-size: 0.7rem; font-weight: 600;
+    color: #7367f0; text-decoration: none; opacity: 0.75;
+    transition: opacity .18s;
+    white-space: nowrap;
+}
+.dqt__view-all:hover { opacity: 1; color: #7367f0; }
+
+/* table itself */
+.dqt__table { width: 100%; border-collapse: collapse; }
+.dqt__table th {
+    font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 700; opacity: 0.38; padding: 0.55rem 1.1rem;
+    text-align: start; white-space: nowrap;
+}
+.dqt__table td {
+    padding: 0.55rem 1.1rem; font-size: 0.78rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle; white-space: nowrap;
+}
+[data-theme="light"] .dqt__table td { border-top-color: rgba(0,0,0,0.04); }
+
+.dqt__table tbody tr {
+    transition: background .18s;
+}
+.dqt__table tbody tr:hover { background: rgba(115,103,240,0.06); }
+
+/* avatar */
+.dqt__avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    object-fit: cover; flex-shrink: 0;
+}
+.dqt__avatar-fallback {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 700; color: #fff; flex-shrink: 0;
+    background: linear-gradient(135deg, #7367f0, #9e95f5);
+}
+.dqt__name { font-weight: 600; font-size: 0.78rem; max-width: 130px; overflow: hidden; text-overflow: ellipsis; }
+.dqt__sub  { font-size: 0.68rem; opacity: 0.42; margin-top: 1px; }
+.dqt__date { font-size: 0.68rem; opacity: 0.38; }
+
+/* status badges */
+.dqt__badge {
+    display: inline-flex; align-items: center; gap: 0.22rem;
+    padding: 0.15rem 0.5rem; border-radius: 50rem;
+    font-size: 0.63rem; font-weight: 700; white-space: nowrap;
+}
+.dqt__badge--active  { background: rgba(40,199,111,.14); color: #28c76f; }
+.dqt__badge--blocked { background: rgba(234,84,85,.14);  color: #ea5455; }
+.dqt__badge--pending { background: rgba(255,159,67,.14); color: #ff9f43; }
+.dqt__badge--done    { background: rgba(40,199,111,.14); color: #28c76f; }
+.dqt__badge--process { background: rgba(0,207,232,.14);  color: #00cfe8; }
+.dqt__badge--reject  { background: rgba(234,84,85,.14);  color: #ea5455; }
+
+/* action icon */
+.dqt__action {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 0.4rem;
+    background: rgba(115,103,240,.12); color: #7367f0;
+    font-size: 0.8rem; text-decoration: none;
+    transition: background .18s, transform .18s;
+}
+.dqt__action:hover { background: rgba(115,103,240,.22); color: #7367f0; transform: scale(1.1); }
+
+/* empty state */
+.dqt__empty {
+    text-align: center; padding: 1.8rem 1rem;
+    font-size: 0.78rem; opacity: 0.32;
+}
+.dqt__empty i { font-size: 1.6rem; display: block; margin-bottom: 0.4rem; opacity: .5; }
 </style>
 @endpush
 
@@ -738,6 +842,189 @@
                 </div>
             </div>
             <div class="dash-chart__body"><div id="chartPolar"></div></div>
+        </div>
+    </div>
+
+</div>
+
+{{-- ═══════════════ QUICK-ACTION TABLES ═══════════════ --}}
+<div class="dash-section-label">{{ __('admin/main.home_section_tables') }}</div>
+<div class="row g-3 mb-4">
+
+    {{-- Latest Users --}}
+    <div class="col-12 col-xl-6">
+        <div class="dqt h-100">
+            <div class="dqt__head">
+                <div class="dqt__head-left">
+                    <div class="dqt__icon" style="background:rgba(115,103,240,.14);color:#7367f0">
+                        <i class="ti ti-users"></i>
+                    </div>
+                    <span class="dqt__title">{{ __('admin/main.home_table_latest_users') }}</span>
+                </div>
+                <a href="{{ route('admin.users.index') }}" class="dqt__view-all">
+                    {{ __('admin/main.home_table_view_all') }} ←
+                </a>
+            </div>
+            <table class="dqt__table">
+                <thead>
+                    <tr>
+                        <th>{{ __('admin/main.home_table_col_user') }}</th>
+                        <th>{{ __('admin/main.home_table_col_phone') }}</th>
+                        <th>{{ __('admin/main.home_table_col_status') }}</th>
+                        <th>{{ __('admin/main.home_table_col_date') }}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($stats['latest_users'] as $u)
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                @if($u->image)
+                                    <img src="{{ asset('storage/'.$u->image) }}" class="dqt__avatar" alt="">
+                                @else
+                                    <span class="dqt__avatar-fallback">{{ mb_substr($u->name, 0, 1) }}</span>
+                                @endif
+                                <div>
+                                    <div class="dqt__name">{{ $u->name }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="dqt__sub">{{ $u->phone ?? '—' }}</span></td>
+                        <td>
+                            @if($u->is_blocked)
+                                <span class="dqt__badge dqt__badge--blocked">
+                                    <i class="ti ti-lock"></i> {{ __('admin/main.home_badge_blocked') }}
+                                </span>
+                            @else
+                                <span class="dqt__badge dqt__badge--active">
+                                    <i class="ti ti-circle-check"></i> {{ __('admin/main.home_badge_active') }}
+                                </span>
+                            @endif
+                        </td>
+                        <td><span class="dqt__date">{{ $u->created_at->diffForHumans() }}</span></td>
+                        <td>
+                            <a href="{{ route('admin.users.index') }}" class="dqt__action">
+                                <i class="ti ti-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr><td colspan="5"><div class="dqt__empty"><i class="ti ti-users"></i>{{ __('admin/main.home_table_empty') }}</div></td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{-- Pending Complaints --}}
+    <div class="col-12 col-xl-6">
+        <div class="dqt h-100">
+            <div class="dqt__head">
+                <div class="dqt__head-left">
+                    <div class="dqt__icon" style="background:rgba(255,159,67,.14);color:#ff9f43">
+                        <i class="ti ti-alert-circle"></i>
+                    </div>
+                    <span class="dqt__title">{{ __('admin/main.home_table_pending_complaints') }}</span>
+                </div>
+                <a href="#" class="dqt__view-all">{{ __('admin/main.home_table_view_all') }} ←</a>
+            </div>
+            <table class="dqt__table">
+                <thead>
+                    <tr>
+                        <th>{{ __('admin/main.home_table_col_name') }}</th>
+                        <th>{{ __('admin/main.home_table_col_subject') }}</th>
+                        <th>{{ __('admin/main.home_table_col_status') }}</th>
+                        <th>{{ __('admin/main.home_table_col_date') }}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($stats['pending_complaints_list'] as $c)
+                    @php
+                        $statusMap = [
+                            'pending'    => ['class'=>'dqt__badge--pending', 'icon'=>'ti-clock',         'label'=>__('admin/main.home_badge_pending')],
+                            'processing' => ['class'=>'dqt__badge--process', 'icon'=>'ti-refresh',       'label'=>__('admin/main.home_badge_processing')],
+                            'completed'  => ['class'=>'dqt__badge--done',    'icon'=>'ti-circle-check',  'label'=>__('admin/main.home_badge_completed')],
+                            'rejected'   => ['class'=>'dqt__badge--reject',  'icon'=>'ti-x',             'label'=>__('admin/main.home_badge_rejected')],
+                        ];
+                        $st = $statusMap[$c->status] ?? $statusMap['pending'];
+                    @endphp
+                    <tr>
+                        <td>
+                            <div class="dqt__name">{{ $c->name }}</div>
+                            <div class="dqt__sub">{{ $c->phone ?? $c->email ?? '—' }}</div>
+                        </td>
+                        <td><span style="max-width:120px;display:block;overflow:hidden;text-overflow:ellipsis;font-size:.75rem">{{ $c->subject }}</span></td>
+                        <td>
+                            <span class="dqt__badge {{ $st['class'] }}">
+                                <i class="ti {{ $st['icon'] }}"></i> {{ $st['label'] }}
+                            </span>
+                        </td>
+                        <td><span class="dqt__date">{{ \Carbon\Carbon::parse($c->created_at)->diffForHumans() }}</span></td>
+                        <td>
+                            <a href="#" class="dqt__action"><i class="ti ti-eye"></i></a>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr><td colspan="5"><div class="dqt__empty"><i class="ti ti-circle-check"></i>{{ __('admin/main.home_table_no_pending') }}</div></td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-3 mb-4">
+
+    {{-- Latest Contact Messages --}}
+    <div class="col-12">
+        <div class="dqt">
+            <div class="dqt__head">
+                <div class="dqt__head-left">
+                    <div class="dqt__icon" style="background:rgba(30,136,229,.14);color:#1e88e5">
+                        <i class="ti ti-mail"></i>
+                    </div>
+                    <span class="dqt__title">{{ __('admin/main.home_table_latest_contacts') }}</span>
+                </div>
+                <a href="#" class="dqt__view-all">{{ __('admin/main.home_table_view_all') }} ←</a>
+            </div>
+            <table class="dqt__table">
+                <thead>
+                    <tr>
+                        <th>{{ __('admin/main.home_table_col_name') }}</th>
+                        <th>{{ __('admin/main.home_table_col_email') }}</th>
+                        <th>{{ __('admin/main.home_table_col_phone') }}</th>
+                        <th>{{ __('admin/main.home_table_col_subject') }}</th>
+                        <th>{{ __('admin/main.home_table_col_date') }}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($stats['latest_contacts'] as $m)
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="dqt__avatar-fallback" style="background:linear-gradient(135deg,#1e88e5,#64b5f6)">
+                                    {{ mb_substr($m->name, 0, 1) }}
+                                </span>
+                                <span class="dqt__name">{{ $m->name }}</span>
+                            </div>
+                        </td>
+                        <td><span class="dqt__sub">{{ $m->email ?? '—' }}</span></td>
+                        <td><span class="dqt__sub">{{ $m->phone ?? '—' }}</span></td>
+                        <td><span style="max-width:200px;display:block;overflow:hidden;text-overflow:ellipsis;font-size:.75rem">{{ $m->subject }}</span></td>
+                        <td><span class="dqt__date">{{ \Carbon\Carbon::parse($m->created_at)->diffForHumans() }}</span></td>
+                        <td>
+                            <a href="#" class="dqt__action"><i class="ti ti-eye"></i></a>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr><td colspan="6"><div class="dqt__empty"><i class="ti ti-mail"></i>{{ __('admin/main.home_table_empty') }}</div></td></tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 

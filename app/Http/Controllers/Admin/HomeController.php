@@ -139,6 +139,24 @@ class HomeController extends Controller
             'ratio_complaints' => $totalComplaints > 0 ? round(($totalComplaints - $pendingComplaints) / $totalComplaints * 100) : 0,
             'ratio_contacts'   => $totalContacts   > 0 ? min(round($newContactsMonth / max($totalContacts, 1) * 100 * 10), 100) : 0,
 
+            /* Quick-action tables */
+            'latest_users'      => User::latest()
+                ->take(6)
+                ->get(['id','name','image','phone','is_blocked','is_active','created_at']),
+
+            'pending_complaints_list' => Schema::hasTable('complaints')
+                ? \DB::table('complaints')
+                    ->where('status', 'pending')
+                    ->latest()->take(6)
+                    ->get(['id','name','phone','subject','type','status','created_at'])
+                : collect(),
+
+            'latest_contacts' => Schema::hasTable('contact_messages')
+                ? \DB::table('contact_messages')
+                    ->latest()->take(6)
+                    ->get(['id','name','email','phone','subject','created_at'])
+                : collect(),
+
             /* Platform distribution (for donut) */
             'dist_series' => collect([
                 'users'       => $totalUsers,
