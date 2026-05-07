@@ -314,7 +314,7 @@
 <div class="row g-3 mb-4">
 
     {{-- Total Users --}}
-    <div class="col-6 col-xl-3">
+    <div class="col-6 col-md-4 col-xl-2">
         <div class="dsc dsc--purple h-100">
             <div class="dsc__top">
                 <div class="dsc__icon"><i class="ti ti-users"></i></div>
@@ -338,7 +338,7 @@
     </div>
 
     {{-- Active Users --}}
-    <div class="col-6 col-xl-3">
+    <div class="col-6 col-md-4 col-xl-2">
         <div class="dsc dsc--green h-100">
             <div class="dsc__top">
                 <div class="dsc__icon"><i class="ti ti-user-check"></i></div>
@@ -362,7 +362,7 @@
     </div>
 
     {{-- New This Month --}}
-    <div class="col-6 col-xl-3">
+    <div class="col-6 col-md-4 col-xl-2">
         <div class="dsc dsc--cyan h-100">
             <div class="dsc__top">
                 <div class="dsc__icon"><i class="ti ti-user-plus"></i></div>
@@ -387,7 +387,7 @@
     </div>
 
     {{-- Blocked Users --}}
-    <div class="col-6 col-xl-3">
+    <div class="col-6 col-md-4 col-xl-2">
         <div class="dsc dsc--red h-100">
             <div class="dsc__top">
                 <div class="dsc__icon"><i class="ti ti-user-x"></i></div>
@@ -417,7 +417,7 @@
 <div class="row g-3 mb-4">
 
     {{-- Complaints --}}
-    <div class="col-6 col-xl-3">
+    <div class="col-6 col-md-4 col-xl-2">
         <div class="dsc dsc--orange h-100">
             <div class="dsc__top">
                 <div class="dsc__icon"><i class="ti ti-alert-circle"></i></div>
@@ -442,7 +442,7 @@
     </div>
 
     {{-- Contact Messages --}}
-    <div class="col-6 col-xl-3">
+    <div class="col-6 col-md-4 col-xl-2">
         <div class="dsc dsc--blue h-100">
             <div class="dsc__top">
                 <div class="dsc__icon"><i class="ti ti-mail"></i></div>
@@ -467,7 +467,7 @@
     </div>
 
     {{-- Categories --}}
-    <div class="col-6 col-xl-3">
+    <div class="col-6 col-md-4 col-xl-2">
         <div class="dsc dsc--pink h-100">
             <div class="dsc__top">
                 <div class="dsc__icon"><i class="ti ti-tag"></i></div>
@@ -491,7 +491,7 @@
     </div>
 
     {{-- FAQs / Posts / Sliders --}}
-    <div class="col-6 col-xl-3">
+    <div class="col-6 col-md-4 col-xl-2">
         <div class="dsc dsc--teal h-100">
             <div class="dsc__top">
                 <div class="dsc__icon"><i class="ti ti-help-circle"></i></div>
