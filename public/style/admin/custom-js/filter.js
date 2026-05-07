@@ -54,6 +54,31 @@ $(document).on('click', '.filter-reset', function () {
 });
 $(function () { updateFilterActiveIndicator(); });
 
+// Quick search — debounced; routes the value into the filter form's
+// `name` input and submits, so the existing AJAX pipeline takes over.
+(function () {
+    let debounceTimer = null;
+    $(document).on('input', '.quick-search-input', function () {
+        const value = $(this).val();
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function () {
+            const $nameInput = $('.filter-form input[name="name"]');
+            if ($nameInput.length) {
+                $nameInput.val(value);
+                $('.filter-form').trigger('submit');
+            }
+        }, 300);
+    });
+
+    // Pressing Esc clears the quick search and refreshes
+    $(document).on('keydown', '.quick-search-input', function (e) {
+        if (e.key === 'Escape') {
+            $(this).val('');
+            $(this).trigger('input');
+        }
+    });
+})();
+
 // Date validation for start_date and end_date
 $(document).on('keyup change', '.filter-form input[name="start_date"], .filter-form input[name="end_date"]', function() {
     var startDateInput = $('.filter-form input[name="start_date"]');

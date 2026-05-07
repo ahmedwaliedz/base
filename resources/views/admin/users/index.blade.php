@@ -10,6 +10,7 @@
                      :hasEmail="true"
                      :hasReload="true"
                      :hasFilter="true"
+                     :hasSearch="true"
                      :hasExport="true"
                      :exportCopy="true"
                      :exportPdf="true"
@@ -29,6 +30,9 @@
                         ['type' => 'text', 'name' => 'phone'],
                         ['type' => 'text', 'name' => 'email'],
                     ]" />
+
+    <x-table.bulk-actions :hasDelete="true"
+                          :deleteRoute="route('admin.users.destroyAll')" />
 
     <x-table.table :hasCheckbox="true"
                    :hasActions="true"

@@ -101,15 +101,35 @@ function deleteWithSwl(Route , selected) {
         }
     });
 }
-toggleDeleteAllButton()
+toggleDeleteAllButton();
+
 function toggleDeleteAllButton() {
-    const hasSelectedRows = $('tbody .dt-checkboxes:checked').length > 0;
+    const $checked = $('tbody .dt-checkboxes:checked');
+    const count = $checked.length;
+    const hasSelectedRows = count > 0;
+
+    // Legacy hook — kept so callers like .delete-all-button still get the class state
     if (hasSelectedRows) {
         $('.delete-all-button').removeClass('d-none');
     } else {
         $('.delete-all-button').addClass('d-none');
     }
+
+    // New: contextual bulk bar
+    const $bar = $('#crudBulkBar');
+    if ($bar.length) {
+        $bar.toggleClass('is-visible', hasSelectedRows);
+        $bar.attr('aria-hidden', hasSelectedRows ? 'false' : 'true');
+        $('#crudBulkBarCount').text(count);
+    }
 }
+
+// Clear selection from the bulk bar
+$(document).on('click', '#crudBulkBarClear', function (e) {
+    e.preventDefault();
+    $('thead .dt-checkboxes, tbody .dt-checkboxes').prop('checked', false);
+    toggleDeleteAllButton();
+});
 
 $(document).on('click', 'thead .dt-checkboxes', function() {
     const isChecked = $(this).prop('checked');

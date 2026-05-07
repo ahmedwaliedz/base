@@ -1,3 +1,25 @@
+@props([
+    'createRoute'    => null,
+    'hasNotification'=> false,
+    'hasDeleteAll'   => false,
+    'deleteAllRoute' => null,
+    'hasEmail'       => false,
+    'hasReload'      => false,
+    'hasFilter'      => false,
+    'hasSearch'      => false,
+    'hasExport'      => false,
+    'exportPrint'    => false,
+    'exportPdf'      => false,
+    'exportExcel'    => false,
+    'exportWord'     => false,
+    'exportJson'     => false,
+    'exportCopy'     => false,
+    'hasPagination'  => false,
+    'perPage'        => 20,
+    'hasExtraButtons'=> false,
+    'extraButtons'   => null,
+])
+
 <div class="crud-toolbar d-flex justify-content-between flex-wrap align-items-center gap-3">
     <div class="d-flex align-items-center flex-wrap gap-2">
         @if($createRoute)
@@ -27,9 +49,12 @@
             </button>
         @endif
 
+        {{-- Bulk delete moved to .crud-bulk-bar; keep an INVISIBLE element here
+             so existing JS hooks (.delete-all-button) still get triggered. --}}
         @if($hasDeleteAll)
-            <button data-route="{{$deleteAllRoute}}" type="button"
-                    class="btn btn-label-danger waves-effect delete-all-button">
+            <button data-route="{{ $deleteAllRoute }}" type="button"
+                    class="btn btn-label-danger waves-effect delete-all-button d-none"
+                    aria-hidden="true">
                 <span class="ti-xs ti ti-trash-off me-1"></span>{{ __('admin/main.delete_selected') }}
             </button>
         @endif
@@ -70,11 +95,21 @@
     </div>
 
     <div class="d-flex align-items-center gap-2">
+        @if($hasSearch)
+            <div class="crud-quick-search">
+                <i class="ti ti-search crud-quick-search__icon" aria-hidden="true"></i>
+                <input type="search"
+                       class="form-control crud-quick-search__input quick-search-input"
+                       placeholder="{{ __('admin/main.quick_search_placeholder') }}"
+                       aria-label="{{ __('admin/main.search') }}">
+            </div>
+        @endif
+
         @if($hasFilter)
             <button type="button" class="btn btn-label-primary waves-effect show_filter"
-                    aria-label="{{ __('admin/main.search') }}">
+                    aria-label="{{ __('admin/main.filter') }}">
                 <span class="ti-xs ti ti-filter-plus me-1"></span>
-                <span class="d-none d-md-inline">{{ __('admin/main.search') }}</span>
+                <span class="d-none d-md-inline">{{ __('admin/main.filter') }}</span>
             </button>
         @endif
 
@@ -90,13 +125,13 @@
                     <li><a class="dropdown-item per-page-item" data-value="100" href="javascript:void(0);">100</a></li>
                     <li><a class="dropdown-item per-page-item" data-value="500" href="javascript:void(0);">500</a></li>
                     <li><a class="dropdown-item per-page-item" data-value="1000" href="javascript:void(0);">1000</a></li>
-                    <li><a class="dropdown-item per-page-item" data-value="5000" href="javascript:void(0);">5000</a></li>
-                    <li><a class="dropdown-item per-page-item" data-value="10000" href="javascript:void(0);">10000</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <div class="px-3 py-2">
                             <div class="d-flex flex-column justify-content-between">
-                                <input type="number" id="custom-per-page" class="form-control mb-1" placeholder="{{ __('admin/main.custom_value') }}">
+                                <input type="number" id="custom-per-page" class="form-control mb-1"
+                                       placeholder="{{ __('admin/main.custom_value') }}"
+                                       max="1000">
                                 <button class="btn btn-outline-primary apply-custom-per-page" type="button">{{ __('admin/main.apply') }}</button>
                             </div>
                         </div>

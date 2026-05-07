@@ -3,6 +3,237 @@
    All colours via tokens.css (no raw hex literals).
 ───────────────────────────────────────────────────────── */
 
+/* ═══ Hide filter panel by default (was inline style) ═══ */
+.filter_div:not(.active) {
+    display: none;
+}
+
+/* ═══ Quick search input ═══════════════════════════════ */
+.crud-quick-search {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.crud-quick-search__icon {
+    position: absolute;
+    inset-inline-start: 0.7rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    pointer-events: none;
+    transition: color var(--duration-fast) var(--ease-smooth);
+}
+
+.crud-quick-search__input {
+    width: 14rem;
+    height: 38px;
+    padding-inline-start: 2.2rem;
+    padding-inline-end: 0.85rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--surface-border);
+    background: var(--surface-base);
+    font-size: 0.85rem;
+    transition:
+        border-color var(--duration-fast) var(--ease-smooth),
+        box-shadow   var(--duration-fast) var(--ease-smooth),
+        width        var(--duration-base) var(--ease-smooth);
+}
+
+[data-theme*='dark'] .crud-quick-search__input,
+.dark-style .crud-quick-search__input {
+    background: rgba(54, 60, 85, 0.55);
+}
+
+.crud-quick-search__input:focus {
+    outline: none;
+    border-color: rgba(var(--color-brand-primary-rgb), 0.55);
+    box-shadow: 0 0 0 3px rgba(var(--color-brand-primary-rgb), 0.16);
+    width: 16rem;
+}
+
+.crud-quick-search__input:focus + .crud-quick-search__icon,
+.crud-quick-search:has(.crud-quick-search__input:focus) .crud-quick-search__icon {
+    color: var(--color-brand-primary);
+}
+
+.crud-quick-search__input::-webkit-search-cancel-button {
+    cursor: pointer;
+}
+
+@media (max-width: 575.98px) {
+    .crud-quick-search__input {
+        width: 100%;
+    }
+    .crud-quick-search__input:focus {
+        width: 100%;
+    }
+    .crud-quick-search {
+        flex: 1;
+    }
+}
+
+/* ═══ Bulk actions bar (floating bottom) ═══════════════ */
+.crud-bulk-bar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 1.25rem;
+    z-index: 1075;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    transform: translateY(140%);
+    opacity: 0;
+    transition:
+        transform var(--duration-base) var(--ease-bounce),
+        opacity   var(--duration-base) var(--ease-smooth);
+}
+
+.crud-bulk-bar.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.crud-bulk-bar__inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    max-width: calc(100% - 2rem);
+    padding: 0.55rem 0.55rem 0.55rem 1rem;
+    border-radius: var(--radius-pill);
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb), 0.10) 0%,
+            transparent 100%),
+        var(--surface-base);
+    border: 1px solid var(--surface-border);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    box-shadow:
+        0 12px 40px rgba(var(--color-brand-primary-rgb), 0.20),
+        0 4px 12px  rgba(0, 0, 0, 0.10);
+    flex-wrap: wrap;
+}
+
+[dir='rtl'] .crud-bulk-bar__inner {
+    padding: 0.55rem 1rem 0.55rem 0.55rem;
+}
+
+[data-theme*='dark'] .crud-bulk-bar__inner,
+.dark-style .crud-bulk-bar__inner {
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb), 0.14) 0%,
+            transparent 100%),
+        rgba(44, 49, 72, 0.92);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.32),
+        0 4px 12px  rgba(0, 0, 0, 0.20);
+}
+
+.crud-bulk-bar__count {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    color: var(--text-strong);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding-inline-end: 0.85rem;
+    border-inline-end: 1px solid var(--surface-border);
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.crud-bulk-bar__count-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.6rem;
+    height: 1.6rem;
+    padding: 0 0.4rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-brand-primary);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.crud-bulk-bar__count-label {
+    color: var(--text-body);
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.crud-bulk-bar__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.crud-bulk-bar .crud-bulk-action {
+    border-radius: var(--radius-md);
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition:
+        transform   var(--duration-fast) var(--ease-bounce),
+        box-shadow  var(--duration-base) var(--ease-smooth);
+}
+
+.crud-bulk-bar .crud-bulk-action:hover {
+    transform: translateY(-1px);
+}
+
+.crud-bulk-bar__clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.45rem 0.7rem;
+    margin-inline-start: 0.35rem;
+    border-radius: var(--radius-md);
+    background: transparent;
+    border: 1px solid var(--surface-border);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition:
+        background    var(--duration-fast) var(--ease-smooth),
+        border-color  var(--duration-fast) var(--ease-smooth),
+        color         var(--duration-fast) var(--ease-smooth);
+}
+
+.crud-bulk-bar__clear:hover {
+    background: var(--surface-overlay);
+    border-color: var(--surface-border-strong);
+    color: var(--text-strong);
+}
+
+.crud-bulk-bar__clear i { font-size: 0.95rem; }
+
+@media (max-width: 575.98px) {
+    .crud-bulk-bar__inner {
+        gap: 0.5rem;
+        padding: 0.5rem 0.7rem;
+    }
+    .crud-bulk-bar__count {
+        padding-inline-end: 0.5rem;
+        border-inline-end: none;
+        font-size: 0.78rem;
+    }
+    .crud-bulk-bar__count-label { display: none; }
+    .crud-bulk-bar .crud-bulk-action {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.74rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .crud-bulk-bar {
+        transition: opacity var(--duration-fast) linear;
+    }
+}
+
 /* ═══ Toolbar (action buttons row) ════════════════════════ */
 .crud-toolbar {
     /* z-index 5 keeps Bootstrap dropdowns above the table card below
