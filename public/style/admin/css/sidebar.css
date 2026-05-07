@@ -1,0 +1,184 @@
+/* ═══════════════════════════════════════════════════════════
+   sidebar.css — Custom sidebar enhancements
+   Overrides Vuexy vendor styles without touching vendor files.
+   Supports light / dark / RTL out of the box.
+═══════════════════════════════════════════════════════════ */
+
+/* ── 1. Sidebar background — subtle top corner glow ──────── */
+#layout-menu {
+  background-image: radial-gradient(
+    ellipse 80% 35% at 50% 0%,
+    rgba(115, 103, 240, 0.1) 0%,
+    transparent 70%
+  ) !important;
+  background-size: 100% 100% !important;
+}
+
+/* ── 2. Custom scrollbar ─────────────────────────────────── */
+#layout-menu .menu-inner::-webkit-scrollbar,
+#layout-menu::-webkit-scrollbar {
+  width: 4px;
+}
+#layout-menu .menu-inner::-webkit-scrollbar-track,
+#layout-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+#layout-menu .menu-inner::-webkit-scrollbar-thumb,
+#layout-menu::-webkit-scrollbar-thumb {
+  background: rgba(115, 103, 240, 0.28);
+  border-radius: 4px;
+}
+#layout-menu .menu-inner::-webkit-scrollbar-thumb:hover,
+#layout-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(115, 103, 240, 0.5);
+}
+
+/* ── 3. Logo area (app-brand) separator ──────────────────── */
+.layout-menu .app-brand {
+  position: relative;
+  padding-bottom: 14px !important;
+}
+
+.layout-menu .app-brand::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  inset-inline: 16px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(115, 103, 240, 0.3) 30%,
+    rgba(115, 103, 240, 0.3) 70%,
+    transparent 100%
+  );
+}
+
+/* ── 4. Menu link base transition ────────────────────────── */
+.layout-menu .menu-link {
+  border-radius: 8px !important;
+  transition:
+    background  0.2s ease,
+    box-shadow  0.2s ease,
+    padding     0.15s ease !important;
+}
+
+/* ── 5. Hover state ──────────────────────────────────────── */
+.bg-menu-theme .menu-inner .menu-item:not(.active) > .menu-link:hover,
+.bg-menu-theme .menu-inner .menu-item:not(.active) > .menu-link:focus {
+  background: rgba(115, 103, 240, 0.07) !important;
+}
+
+/* Icon nudge on hover — RTL (right-to-left) */
+[dir=rtl] .bg-menu-theme .menu-item:not(.active) > .menu-link:hover .menu-icon,
+[dir=rtl] .bg-menu-theme .menu-item:not(.active) > .menu-link:focus .menu-icon {
+  transform: translateX(-3px);
+}
+
+/* Icon nudge on hover — LTR */
+html:not([dir=rtl]) .bg-menu-theme .menu-item:not(.active) > .menu-link:hover .menu-icon,
+html:not([dir=rtl]) .bg-menu-theme .menu-item:not(.active) > .menu-link:focus .menu-icon {
+  transform: translateX(3px);
+}
+
+.bg-menu-theme .menu-icon {
+  transition: transform 0.2s ease;
+}
+
+/* ── 6. Active item — pill / capsule style ───────────────── */
+.bg-menu-theme.menu-vertical .menu-item.active > .menu-link:not(.menu-toggle) {
+  background: linear-gradient(
+    135deg,
+    rgba(115, 103, 240, 0.2) 0%,
+    rgba(115, 103, 240, 0.08) 100%
+  ) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 12px rgba(115, 103, 240, 0.28) !important;
+}
+
+/* Active item indicator line — make it more vivid */
+.layout-wrapper:not(.layout-horizontal) .bg-menu-theme .menu-inner > .menu-item.active::before {
+  background: linear-gradient(
+    180deg,
+    rgba(115, 103, 240, 0.9) 0%,
+    rgba(115, 103, 240, 0.5) 100%
+  ) !important;
+  width: 3px !important;
+  border-radius: 0 3px 3px 0;
+}
+
+[dir=rtl] .layout-wrapper:not(.layout-horizontal) .bg-menu-theme .menu-inner > .menu-item.active::before {
+  border-radius: 3px 0 0 3px;
+}
+
+/* ── 7. Sub-menu — tree border line ─────────────────────── */
+.bg-menu-theme .menu-sub {
+  border-inline-start: 2px solid rgba(115, 103, 240, 0.18) !important;
+  margin-inline-start: 22px !important;
+}
+
+.bg-menu-theme .menu-sub .menu-item > .menu-link {
+  font-size: 0.875rem !important;
+  padding-block: 8px !important;
+}
+
+/* Sub-menu active dot — bigger and colored */
+.bg-menu-theme.menu-vertical .menu-sub > .menu-item > .menu-link::before {
+  transition: transform 0.2s ease, background-color 0.2s ease !important;
+}
+
+.bg-menu-theme.menu-vertical .menu-sub > .menu-item.active > .menu-link::before {
+  background-color: #7367f0 !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+/* ── 8. Section headers ──────────────────────────────────── */
+.menu-inner > .menu-header {
+  font-size: 0.68rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  opacity: 0.45 !important;
+  font-weight: 700 !important;
+  margin-top: 20px !important;
+  padding-inline: 20px !important;
+}
+
+.menu-inner > .menu-header:not(:first-child) {
+  border-top: 1px solid rgba(115, 103, 240, 0.1);
+  padding-top: 16px !important;
+}
+
+/* ── 9. Spacing between top-level items ──────────────────── */
+.menu-vertical .menu-inner > .menu-item {
+  margin-block: 1px;
+}
+
+/* ── 10. Open/expanded group toggle highlight ───────────── */
+.bg-menu-theme .menu-item.open > .menu-link.menu-toggle {
+  background: rgba(115, 103, 240, 0.07) !important;
+  border-radius: 8px !important;
+}
+
+/* ── 11. Light mode overrides ────────────────────────────── */
+html:not(.dark-style):not([data-theme*='dark']) #layout-menu {
+  background-image: radial-gradient(
+    ellipse 80% 35% at 50% 0%,
+    rgba(115, 103, 240, 0.06) 0%,
+    transparent 70%
+  ) !important;
+}
+
+html:not(.dark-style):not([data-theme*='dark']) .bg-menu-theme .menu-item:not(.active) > .menu-link:hover {
+  background: rgba(115, 103, 240, 0.05) !important;
+}
+
+html:not(.dark-style):not([data-theme*='dark']) .layout-menu .app-brand::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(115, 103, 240, 0.2) 30%,
+    rgba(115, 103, 240, 0.2) 70%,
+    transparent 100%
+  );
+}
