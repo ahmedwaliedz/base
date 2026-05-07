@@ -1,288 +1,234 @@
-/* Theme-aware tokens for CRUD statistics widget */
-:root {
-  --crud-stats-bg: #fbfcff;
-  --crud-stats-bg2: #ffffff;
-  --crud-stats-border: rgba(0, 0, 0, 0.06);
-  --crud-stats-title: rgba(15, 23, 42, 0.92);
-  --crud-stats-subtitle: rgba(15, 23, 42, 0.55);
+/**
+ * CRUD statistics widget — glass, token-based.
+ *
+ * Replaces the previous version which had:
+ *  - 2 infinite animations (gradient drift + glow rotation w/ filter:blur)
+ *  - 4 stacked radial gradients on the container
+ *  - duplicated dark-mode rules across .dark-style + 3 [data-theme*=dark] variants
+ *
+ * All colors source from tokens.css.
+ */
 
-  --crud-stats-card-bg: rgba(255, 255, 255, 0.96);
-  --crud-stats-card-border: rgba(0, 0, 0, 0.06);
-  --crud-stats-label: rgba(15, 23, 42, 0.72);
-  --crud-stats-value: rgba(15, 23, 42, 0.92);
-
-  /* RGB accent palette for card gradients */
-  --color-primary-rgb: 115, 103, 240;
-  --color-success-rgb: 40, 199, 111;
-  --color-warning-rgb: 255, 159, 67;
-  --color-info-rgb: 0, 207, 232;
-  --color-danger-rgb: 234, 84, 85;
-
-  --crud-stats-toggle-bg: rgba(105, 108, 255, 0.08);
-  --crud-stats-toggle-bg-hover: rgba(105, 108, 255, 0.14);
-  --crud-stats-toggle-border: rgba(105, 108, 255, 0.45);
-  --crud-stats-toggle-border-hover: rgba(105, 108, 255, 0.7);
-  --crud-stats-toggle-color: rgba(33, 37, 41, 0.85);
-  --crud-stats-toggle-color-hover: rgba(33, 37, 41, 0.95);
-  --crud-stats-toggle-shadow: rgba(105, 108, 255, 0.18);
+/* ═══════════════════════════════════════════════════════════
+   CONTAINER
+═══════════════════════════════════════════════════════════ */
+.crud-stats {
+    position: relative;
+    border-radius: var(--radius-xl);
+    padding: 1.1rem 1.25rem;
+    /* Glass surface */
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb),   0.06) 0%,
+            rgba(var(--color-brand-secondary-rgb), 0.04) 100%),
+        var(--surface-base);
+    border: 1px solid var(--surface-border);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    box-shadow: 0 4px 14px rgba(var(--color-brand-primary-rgb), 0.05);
+    overflow: hidden;
 }
 
-/* Dark mode can be applied either via data-theme or a root class (dark-style) */
-html[data-theme='dark'],
-html[data-theme='theme-dark'],
-html[data-theme*='dark'],
-html.dark-style,
-body.dark-style,
-.dark-style {
-  --crud-stats-bg: #1f2430;
-  --crud-stats-bg2: #202636;
-  --crud-stats-border: rgba(255, 255, 255, 0.06);
-  --crud-stats-title: rgba(255, 255, 255, 0.92);
-  --crud-stats-subtitle: rgba(255, 255, 255, 0.55);
-
-  --crud-stats-card-bg: #202636;
-  --crud-stats-card-border: rgba(255, 255, 255, 0.06);
-  --crud-stats-label: rgba(255, 255, 255, 0.75);
-  --crud-stats-value: rgba(255, 255, 255, 0.95);
-
-  --crud-stats-toggle-border: rgba(105, 108, 255, 0.55);
-  --crud-stats-toggle-color: #b6b8ff;
-  --crud-stats-toggle-color-hover: #d7d8ff;
+[data-theme*='dark'] .crud-stats,
+.dark-style .crud-stats {
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb),   0.10) 0%,
+            rgba(var(--color-brand-secondary-rgb), 0.06) 100%),
+        rgba(44, 49, 72, 0.72);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.20);
 }
 
 @media (prefers-color-scheme: dark) {
-  html[data-theme='system'] {
-    --crud-stats-bg: #1f2430;
-    --crud-stats-bg2: #202636;
-    --crud-stats-border: rgba(255, 255, 255, 0.06);
-    --crud-stats-title: rgba(255, 255, 255, 0.92);
-    --crud-stats-subtitle: rgba(255, 255, 255, 0.55);
-    --crud-stats-card-bg: #202636;
-    --crud-stats-card-border: rgba(255, 255, 255, 0.06);
-    --crud-stats-label: rgba(255, 255, 255, 0.75);
-    --crud-stats-value: rgba(255, 255, 255, 0.95);
-    --crud-stats-toggle-border: rgba(105, 108, 255, 0.55);
-    --crud-stats-toggle-color: #b6b8ff;
-    --crud-stats-toggle-color-hover: #d7d8ff;
-  }
-}
-
-.crud-stats {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(1100px 260px at 12% -10%, rgba(105, 108, 255, 0.26), transparent 60%),
-    radial-gradient(900px 240px at 88% 0%, rgba(0, 207, 232, 0.18), transparent 58%),
-    radial-gradient(700px 260px at 55% 110%, rgba(40, 199, 111, 0.12), transparent 60%),
-    linear-gradient(135deg, color-mix(in srgb, var(--crud-stats-bg) 92%, rgba(105, 108, 255, 0.08)), var(--crud-stats-bg2));
-  border: 1px solid var(--crud-stats-border);
-  border-radius: 14px;
-  padding: 18px;
-  background-size: 160% 160%;
-  animation: crudStatsGradient 18s ease-in-out infinite;
-}
-
-/* Dark mode background tuned to match screenshot */
-html[data-theme='dark'] .crud-stats,
-html[data-theme='theme-dark'] .crud-stats,
-html[data-theme*='dark'] .crud-stats,
-.dark-style .crud-stats {
-  background:
-    radial-gradient(circle at 12% 28%, rgba(115, 103, 240, 0.18), transparent 55%),
-    radial-gradient(circle at 84% 20%, rgba(0, 207, 232, 0.14), transparent 55%),
-    radial-gradient(circle at 64% 84%, rgba(234, 84, 85, 0.1), transparent 55%);
-  background-size: 160% 160%;
-}
-
-.crud-stats::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.34) 0%,
-    rgba(255, 255, 255, 0.14) 22%,
-    rgba(255, 255, 255, 0) 55%
-  );
-  opacity: 1;
-}
-
-.crud-stats::after {
-  content: '';
-  position: absolute;
-  inset: -40%;
-  pointer-events: none;
-  background:
-    radial-gradient(closest-side, rgba(105, 108, 255, 0.22), transparent 70%),
-    radial-gradient(closest-side, rgba(0, 207, 232, 0.16), transparent 72%),
-    radial-gradient(closest-side, rgba(40, 199, 111, 0.12), transparent 75%);
-  filter: blur(10px);
-  opacity: 0.9;
-  transform: translate3d(-10%, -8%, 0) rotate(0deg);
-  animation: crudStatsGlow 12s ease-in-out infinite;
-}
-
-@keyframes crudStatsGlow {
-  0% {
-    transform: translate3d(-10%, -8%, 0) rotate(0deg);
-    opacity: 0.75;
-  }
-  40% {
-    transform: translate3d(6%, -4%, 0) rotate(8deg);
-    opacity: 0.95;
-  }
-  70% {
-    transform: translate3d(10%, 6%, 0) rotate(-6deg);
-    opacity: 0.85;
-  }
-  100% {
-    transform: translate3d(-10%, -8%, 0) rotate(0deg);
-    opacity: 0.75;
-  }
-}
-
-@keyframes crudStatsGradient {
-  0% {
-    background-position: 0% 20%;
-  }
-  50% {
-    background-position: 100% 80%;
-  }
-  100% {
-    background-position: 0% 20%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .crud-stats,
-  .crud-stats::after {
-    animation: none !important;
-  }
-}
-
-html[data-theme='dark'] .crud-stats::before,
-html[data-theme='theme-dark'] .crud-stats::before,
-html[data-theme*='dark'] .crud-stats::before,
-.dark-style .crud-stats::before {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.03) 22%,
-    rgba(255, 255, 255, 0) 55%
-  );
-  opacity: 1;
-}
-
-.crud-stats > * {
-  position: relative;
-  z-index: 1;
+    html[data-theme='system'] .crud-stats {
+        background:
+            linear-gradient(135deg,
+                rgba(var(--color-brand-primary-rgb),   0.10) 0%,
+                rgba(var(--color-brand-secondary-rgb), 0.06) 100%),
+            rgba(44, 49, 72, 0.72);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.20);
+    }
 }
 
 .crud-stats__title {
-  color: var(--crud-stats-title);
-  font-weight: 700;
-  letter-spacing: 0.2px;
+    color: var(--text-strong);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.2px;
 }
 
 .crud-stats__subtitle {
-  color: var(--crud-stats-subtitle);
-  font-size: 0.875rem;
-  margin-top: 2px;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    margin-top: 2px;
 }
 
-/* Card accent modifier classes — set --card-accent-rgb per card type */
-.crud-stats__card--total   { --card-accent-rgb: var(--color-primary-rgb); }
-.crud-stats__card--active  { --card-accent-rgb: var(--color-success-rgb); }
-.crud-stats__card--inactive,
-.crud-stats__card--blocked { --card-accent-rgb: var(--color-warning-rgb); }
-.crud-stats__card--today   { --card-accent-rgb: var(--color-info-rgb); }
-
-.crud-stats__card {
-  --card-accent-rgb: var(--color-primary-rgb);
-  background: linear-gradient(
-    135deg,
-    rgba(var(--card-accent-rgb), 0.09) 0%,
-    var(--crud-stats-card-bg) 65%
-  );
-  border: 1px solid rgba(var(--card-accent-rgb), 0.22);
-  border-radius: 12px;
-  padding: 16px;
-  height: 100%;
-  box-shadow: 0 4px 18px rgba(var(--card-accent-rgb), 0.1);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.crud-stats__card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 28px rgba(var(--card-accent-rgb), 0.22);
-}
-
-.crud-stats__label {
-  color: var(--crud-stats-label);
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  opacity: 0.7;
-  margin: 0;
-}
-
-.crud-stats__value {
-  color: var(--crud-stats-value);
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1.15;
-  margin: 0;
-}
-
-.crud-stats__icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(105, 108, 255, 0.14);
-  color: #696cff;
-}
-
-.crud-stats__icon i {
-  font-size: 1.2rem;
-}
-
+/* ═══════════════════════════════════════════════════════════
+   TOGGLE BUTTON
+═══════════════════════════════════════════════════════════ */
 .crud-stats__toggle {
-  border: 1px solid var(--crud-stats-toggle-border);
-  background: var(--crud-stats-toggle-bg);
-  color: var(--crud-stats-toggle-color);
-  border-radius: 12px;
-  padding: 10px 16px;
-  font-weight: 700;
-  white-space: nowrap;
+    border: 1px solid rgba(var(--color-brand-primary-rgb), 0.32);
+    background: rgba(var(--color-brand-primary-rgb), 0.08);
+    color: var(--color-brand-primary);
+    border-radius: var(--radius-lg);
+    padding: 0.5rem 0.95rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background var(--duration-fast) var(--ease-smooth),
+                border-color var(--duration-fast) var(--ease-smooth),
+                color var(--duration-fast) var(--ease-smooth);
 }
 
 .crud-stats__toggle:hover,
 .crud-stats__toggle:focus {
-  color: var(--crud-stats-toggle-color-hover);
-  background: var(--crud-stats-toggle-bg-hover);
-  border-color: var(--crud-stats-toggle-border-hover);
+    background: rgba(var(--color-brand-primary-rgb), 0.14);
+    border-color: rgba(var(--color-brand-primary-rgb), 0.55);
+    color: var(--color-brand-primary);
 }
 
 .crud-stats__toggle:focus {
-  box-shadow: 0 0 0 0.15rem var(--crud-stats-toggle-shadow);
+    box-shadow: 0 0 0 3px rgba(var(--color-brand-primary-rgb), 0.18);
+    outline: none;
 }
 
 .crud-stats__toggle i {
-  font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .crud-stats__toggle .crud-stats__chev {
-  transition: transform 180ms ease;
+    transition: transform var(--duration-fast) var(--ease-smooth);
 }
 
 .crud-stats__toggle[aria-expanded='true'] .crud-stats__chev {
-  transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
+/* ═══════════════════════════════════════════════════════════
+   STAT CARDS — glass surface, accent border, hover lift
+═══════════════════════════════════════════════════════════ */
+
+/* Color tokens per card variant */
+.crud-stats__card--total    { --card-accent-rgb: var(--color-brand-primary-rgb); }
+.crud-stats__card--active   { --card-accent-rgb: var(--color-success-rgb); }
+.crud-stats__card--inactive,
+.crud-stats__card--blocked  { --card-accent-rgb: var(--color-warning-rgb); }
+.crud-stats__card--today    { --card-accent-rgb: var(--color-brand-secondary-rgb); }
+
+.crud-stats__card {
+    --card-accent-rgb: var(--color-brand-primary-rgb);
+    position: relative;
+    border-radius: var(--radius-lg);
+    padding: 0.95rem 1rem;
+    height: 100%;
+    overflow: hidden;
+    /* Glass + subtle accent gradient */
+    background:
+        linear-gradient(135deg,
+            rgba(var(--card-accent-rgb), 0.10) 0%,
+            transparent 70%),
+        rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(var(--card-accent-rgb), 0.22);
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset,
+                0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform var(--duration-base) var(--ease-smooth),
+                box-shadow  var(--duration-base) var(--ease-smooth);
+}
+
+[data-theme*='dark'] .crud-stats__card,
+.dark-style .crud-stats__card {
+    background:
+        linear-gradient(135deg,
+            rgba(var(--card-accent-rgb), 0.14) 0%,
+            transparent 70%),
+        rgba(44, 49, 72, 0.78);
+    border-color: rgba(var(--card-accent-rgb), 0.28);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
+                0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme='system'] .crud-stats__card {
+        background:
+            linear-gradient(135deg,
+                rgba(var(--card-accent-rgb), 0.14) 0%,
+                transparent 70%),
+            rgba(44, 49, 72, 0.78);
+        border-color: rgba(var(--card-accent-rgb), 0.28);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
+                    0 2px 8px rgba(0, 0, 0, 0.18);
+    }
+}
+
+.crud-stats__card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset,
+                0 12px 28px rgba(var(--card-accent-rgb), 0.22);
+}
+
+[data-theme*='dark'] .crud-stats__card:hover,
+.dark-style .crud-stats__card:hover {
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
+                0 12px 28px rgba(var(--card-accent-rgb), 0.30);
+}
+
+/* Decorative corner glow (static — was an animated radial) */
+.crud-stats__card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 100% 0%,
+                rgba(var(--card-accent-rgb), 0.10) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.crud-stats__card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.crud-stats__label {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin: 0;
+}
+
+.crud-stats__value {
+    color: var(--text-strong);
+    font-size: 1.65rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.crud-stats__icon {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(var(--card-accent-rgb), 0.16);
+    color: rgb(var(--card-accent-rgb));
+    border: 1px solid rgba(var(--card-accent-rgb), 0.28);
+    flex-shrink: 0;
+}
+
+.crud-stats__icon i {
+    font-size: 1.15rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .crud-stats__card { transition: none; }
+}
+
+/* Skeleton card during load */
+.crud-stats__card .placeholder {
+    background-color: rgba(var(--color-brand-primary-rgb), 0.16);
+}

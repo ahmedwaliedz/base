@@ -1,5 +1,5 @@
-<div class="filter_div row mt-4 py-3 gap-3 gap-md-0" style="display: none;">
-    <form  class="row w-100 filter-form">
+<div class="filter_div crud-filter-shell row mt-3 gap-3 gap-md-0" style="display: none;">
+    <form class="row w-100 filter-form">
         @if($hasOrderBy)
             <x-form.select :options="[
                 'name' => 'order_by',

@@ -1,22 +1,97 @@
 /* ─────────────────────────────────────────────────────────
-   filter.css  —  Table, filter panel, action buttons
-   All colours via tokens.css variables (no raw hex literals).
+   filter.css  —  Toolbar, filter panel, table, skeleton, row actions
+   All colours via tokens.css (no raw hex literals).
 ───────────────────────────────────────────────────────── */
 
-/* Filter panel */
+/* ═══ Toolbar (action buttons row) ════════════════════════ */
+.crud-toolbar {
+    position: relative;
+    border-radius: var(--radius-xl);
+    padding: 0.65rem 0.85rem;
+    margin-bottom: 0.85rem;
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb), 0.04) 0%,
+            transparent 100%),
+        var(--surface-base);
+    border: 1px solid var(--surface-border);
+    backdrop-filter: blur(12px) saturate(155%);
+    -webkit-backdrop-filter: blur(12px) saturate(155%);
+    box-shadow: 0 2px 8px rgba(var(--color-brand-primary-rgb), 0.04);
+}
+
+[data-theme*='dark'] .crud-toolbar,
+.dark-style .crud-toolbar {
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb), 0.06) 0%,
+            transparent 100%),
+        rgba(44, 49, 72, 0.72);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme='system'] .crud-toolbar {
+        background:
+            linear-gradient(135deg,
+                rgba(var(--color-brand-primary-rgb), 0.06) 0%,
+                transparent 100%),
+            rgba(44, 49, 72, 0.72);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    }
+}
+
+/* ═══ Filter panel ═══════════════════════════════════════ */
 .filter_div {
     overflow: hidden;
     transform-origin: top;
     opacity: 0;
     display: none;
-    /* Specific properties only — no transition:all */
     transition:
-        opacity  var(--duration-fast) var(--ease-smooth),
+        opacity   var(--duration-fast) var(--ease-smooth),
         transform var(--duration-fast) var(--ease-smooth);
 }
 
 .filter_div.active {
     opacity: 1;
+    display: block;
+}
+
+/* When the filter panel is wrapped in our glass shell */
+.crud-filter-shell {
+    border-radius: var(--radius-xl);
+    padding: 1rem 1.1rem 0.5rem;
+    margin-top: 0.85rem;
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb), 0.05) 0%,
+            transparent 100%),
+        var(--surface-base);
+    border: 1px solid var(--surface-border);
+    backdrop-filter: blur(12px) saturate(155%);
+    -webkit-backdrop-filter: blur(12px) saturate(155%);
+    box-shadow: 0 2px 8px rgba(var(--color-brand-primary-rgb), 0.04);
+}
+
+[data-theme*='dark'] .crud-filter-shell,
+.dark-style .crud-filter-shell {
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb), 0.07) 0%,
+            transparent 100%),
+        rgba(44, 49, 72, 0.72);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme='system'] .crud-filter-shell {
+        background:
+            linear-gradient(135deg,
+                rgba(var(--color-brand-primary-rgb), 0.07) 0%,
+                transparent 100%),
+            rgba(44, 49, 72, 0.72);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    }
 }
 
 .show_filter .ti-filter-plus {
@@ -42,35 +117,83 @@
         color         var(--duration-fast) var(--ease-smooth);
 }
 
-/* ═══ Table container ═══════════════════════════════════ */
-
+/* ═══ Table container — glass card ═══════════════════════ */
 .table-content:has(.users-table-row) {
     border: 1px solid var(--surface-border);
-    border-radius: var(--bs-card-border-radius);
+    border-radius: var(--radius-xl);
     overflow: hidden;
     background:
-        radial-gradient(ellipse at 12% 0%,  rgba(var(--color-brand-primary-rgb), 0.10), transparent 55%),
-        radial-gradient(ellipse at 88% 0%,  rgba(var(--color-brand-secondary-rgb), 0.08), transparent 55%),
-        radial-gradient(ellipse at 50% 100%, rgba(var(--color-success-rgb), 0.05), transparent 55%);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb),   0.05) 0%,
+            rgba(var(--color-brand-secondary-rgb), 0.03) 100%),
+        var(--surface-base);
+    backdrop-filter: blur(12px) saturate(155%);
+    -webkit-backdrop-filter: blur(12px) saturate(155%);
+    box-shadow: 0 4px 16px rgba(var(--color-brand-primary-rgb), 0.06);
 }
 
-.datatables-products:has(.users-table-row) {
+[data-theme*='dark'] .table-content:has(.users-table-row),
+.dark-style .table-content:has(.users-table-row) {
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb),   0.07) 0%,
+            rgba(var(--color-brand-secondary-rgb), 0.04) 100%),
+        rgba(44, 49, 72, 0.74);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.20);
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme='system'] .table-content:has(.users-table-row) {
+        background:
+            linear-gradient(135deg,
+                rgba(var(--color-brand-primary-rgb),   0.07) 0%,
+                rgba(var(--color-brand-secondary-rgb), 0.04) 100%),
+            rgba(44, 49, 72, 0.74);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.20);
+    }
+}
+
+/* The .card wrapper around the table — drop its own background so the glass shows */
+.card:has(.table-content .users-table-row),
+.card:has(.table-content .table-loader) {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.datatables-products:has(.users-table-row),
+.datatables-products:has(.table-loader) {
     border-collapse: separate;
     border-spacing: 0;
     width: 100%;
     border-radius: var(--radius-md);
+    margin-bottom: 0;
 }
 
 .datatables-products:has(.users-table-row) thead th,
-.datatables-products:has(.users-table-row) tbody td {
+.datatables-products:has(.users-table-row) tbody td,
+.datatables-products:has(.table-loader) thead th,
+.datatables-products:has(.table-loader) tbody td {
     background: transparent !important;
     border-left:  none !important;
     border-right: none !important;
 }
 
-.datatables-products:has(.users-table-row) thead tr {
+.datatables-products:has(.users-table-row) thead tr,
+.datatables-products:has(.table-loader) thead tr {
     background: transparent;
+}
+
+/* Table header — refined uppercase typography */
+.datatables-products thead th {
+    font-size: 0.7rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700 !important;
+    color: var(--text-muted) !important;
+    padding-block: 0.85rem !important;
+    border-top: none !important;
+    border-bottom: 1px solid var(--surface-border) !important;
 }
 
 .datatables-products:has(.users-table-row) thead tr:first-child th:first-child {
@@ -84,12 +207,6 @@
     padding-inline-end: 1rem !important;
 }
 
-.datatables-products:has(.users-table-row) thead th {
-    border-bottom: 1px solid var(--surface-border) !important;
-    border-top: none !important;
-    padding-bottom: 0.85rem !important;
-}
-
 .datatables-products:has(.users-table-row) tbody tr:not(.users-table-row) td {
     border-top:    none !important;
     border-bottom: none !important;
@@ -100,6 +217,10 @@
     border-bottom: 1px solid var(--surface-border) !important;
 }
 
+.datatables-products:has(.users-table-row) tbody tr.users-table-row:last-child td {
+    border-bottom: none !important;
+}
+
 .datatables-products:has(.users-table-row) tbody tr.users-table-row td.users-actions-cell {
     width: 1%;
     white-space: nowrap;
@@ -108,8 +229,7 @@
     vertical-align: middle;
 }
 
-/* ═══ Table rows ════════════════════════════════════════ */
-
+/* ═══ Table rows — hover glow + RTL-aware accent edge ════ */
 .users-table-row {
     position: relative;
     z-index: 0;
@@ -118,7 +238,8 @@
 }
 
 .users-table-row > td {
-    padding-block: 14px;
+    padding-block: 0.9rem;
+    color: var(--text-body);
 }
 
 .users-table-row:hover {
@@ -126,9 +247,15 @@
 }
 
 .users-table-row:hover > td:first-child {
-    border-inline-start: 3px solid var(--surface-border-strong);
-    border-start-start-radius: var(--radius-md);
-    border-end-start-radius:   var(--radius-md);
+    box-shadow: inset 3px 0 0 var(--color-brand-primary);
+}
+
+[dir='rtl'] .users-table-row:hover > td:first-child {
+    box-shadow: inset -3px 0 0 var(--color-brand-primary);
+}
+
+.users-table-row.deleted-table-row {
+    background: rgba(var(--color-danger-rgb), 0.04);
 }
 
 .users-table-row.deleted-table-row:hover {
@@ -136,11 +263,14 @@
 }
 
 .users-table-row.deleted-table-row:hover > td:first-child {
-    border-inline-start: 3px solid rgba(var(--color-danger-rgb), 0.55);
+    box-shadow: inset 3px 0 0 var(--color-danger);
+}
+
+[dir='rtl'] .users-table-row.deleted-table-row:hover > td:first-child {
+    box-shadow: inset -3px 0 0 var(--color-danger);
 }
 
 /* ═══ Skeleton loader ═══════════════════════════════════ */
-
 .table-content .table-loader > td {
     padding: 0 !important;
     border: none !important;
@@ -155,7 +285,7 @@
 }
 
 .table-content .table-skeleton tbody tr > td {
-    padding: 14px 10px !important;
+    padding: 0.9rem 0.7rem !important;
     border-top:    none !important;
     border-bottom: 1px solid var(--surface-border) !important;
     border-left:   none !important;
@@ -164,10 +294,32 @@
     vertical-align: middle;
 }
 
-.table-content .table-skeleton .skel-cell > span {
+.table-content .table-skeleton tbody tr:last-child > td {
+    border-bottom: none !important;
+}
+
+/* Theme-aware shimmer:
+   - Dark mode: white sheen on faint bg
+   - Light mode: dark sheen on faint bg (was invisible white-on-white)  */
+.table-content .table-skeleton .skel-cell > span,
+.table-content .table-skeleton .skel-actions .skel-dot {
     display: block;
-    height: 14px;
-    border-radius: var(--radius-md);
+    background:
+        linear-gradient(
+            110deg,
+            rgba(0, 0, 0, 0.02)  0%,
+            rgba(0, 0, 0, 0.10) 42%,
+            rgba(0, 0, 0, 0.02) 88%
+        ),
+        rgba(var(--color-brand-primary-rgb), 0.06);
+    background-size: 200% 100%;
+    animation: tl-sheen 1.4s ease-in-out infinite;
+}
+
+[data-theme*='dark'] .table-content .table-skeleton .skel-cell > span,
+[data-theme*='dark'] .table-content .table-skeleton .skel-actions .skel-dot,
+.dark-style .table-content .table-skeleton .skel-cell > span,
+.dark-style .table-content .table-skeleton .skel-actions .skel-dot {
     background:
         linear-gradient(
             110deg,
@@ -175,12 +327,29 @@
             rgba(255, 255, 255, 0.14) 42%,
             rgba(255, 255, 255, 0.04) 88%
         ),
-        rgba(var(--color-brand-primary-rgb), 0.06);
+        rgba(var(--color-brand-primary-rgb), 0.10);
     background-size: 200% 100%;
-    animation: tl-sheen 1.2s ease-in-out infinite;
-    box-shadow:
-        inset 0 1px 2px rgba(0, 0, 0, 0.06),
-        0 0 0 1px rgba(var(--color-brand-secondary-rgb), 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme='system'] .table-content .table-skeleton .skel-cell > span,
+    html[data-theme='system'] .table-content .table-skeleton .skel-actions .skel-dot {
+        background:
+            linear-gradient(
+                110deg,
+                rgba(255, 255, 255, 0.04)  0%,
+                rgba(255, 255, 255, 0.14) 42%,
+                rgba(255, 255, 255, 0.04) 88%
+            ),
+            rgba(var(--color-brand-primary-rgb), 0.10);
+        background-size: 200% 100%;
+    }
+}
+
+.table-content .table-skeleton .skel-cell > span {
+    height: 14px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 0 0 1px rgba(var(--color-brand-primary-rgb), 0.06);
 }
 
 .table-content .table-skeleton .skel-actions {
@@ -196,23 +365,23 @@
     border-radius: var(--radius-md);
     margin-inline-end: 6px;
     vertical-align: middle;
-    background:
-        linear-gradient(
-            110deg,
-            rgba(255, 255, 255, 0.04)  0%,
-            rgba(255, 255, 255, 0.12) 42%,
-            rgba(255, 255, 255, 0.04) 88%
-        ),
-        rgba(var(--color-brand-primary-rgb), 0.08);
-    background-size: 200% 100%;
-    animation: tl-sheen 1.2s ease-in-out infinite;
-    box-shadow:
-        inset 0 1px 2px rgba(0, 0, 0, 0.06),
-        0 0 0 1px rgba(var(--color-brand-primary-rgb), 0.12);
+    box-shadow: 0 0 0 1px rgba(var(--color-brand-primary-rgb), 0.10);
 }
 
 .table-content .table-skeleton .skel-actions .skel-dot:last-child {
     margin-inline-end: 0;
+}
+
+.table-content .table-skeleton .skel-checkbox {
+    width: 48px;
+    text-align: center;
+}
+
+.table-content .table-skeleton .skel-checkbox > span {
+    width: 18px;
+    height: 18px;
+    border-radius: var(--radius-sm);
+    margin: 0 auto;
 }
 
 @keyframes tl-sheen {
@@ -227,18 +396,23 @@
     }
 }
 
-/* ═══ Status badge / switch ═════════════════════════════ */
+@media (max-width: 576px) {
+    .table-content .table-skeleton tbody tr > td { padding: 0.7rem 0.5rem !important; }
+    .table-content .table-skeleton .skel-actions { width: 110px; }
+    .table-content .table-skeleton .skel-actions .skel-dot { width: 24px; height: 24px; }
+}
 
+/* ═══ Status badge / switch ═════════════════════════════ */
 .users-status-wrap .status-badge {
-    border-radius: 50rem;
-    padding: 0.28rem 0.65rem;
+    border-radius: var(--radius-pill);
+    padding: 0.32rem 0.7rem;
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.03em;
 }
 
 .users-status-wrap .switch-block {
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    border: 1px solid var(--surface-border);
     box-shadow: none;
     transition:
         border-color var(--duration-fast) var(--ease-smooth),
@@ -250,20 +424,19 @@
     box-shadow: 0 0 0 0.12rem rgba(var(--color-brand-primary-rgb), 0.25);
 }
 
-/* ═══ Row action buttons ════════════════════════════════ */
-
+/* ═══ Row action buttons — fade in on row hover ══════════ */
 .users-row-actions {
     gap: 0.35rem !important;
     flex-wrap: nowrap;
-    opacity: 0.45;
-    transition: opacity 0.2s ease;
+    opacity: 0.5;
+    transition: opacity var(--duration-base) var(--ease-smooth);
 }
 
-.users-table-row:hover .users-row-actions {
+.users-table-row:hover .users-row-actions,
+.users-row-actions:focus-within {
     opacity: 1;
 }
 
-/* Base — theme-aware: light bg in light mode, dark bg in dark mode */
 .users-row-actions .users-action-btn {
     width: 31px;
     height: 31px;
@@ -285,7 +458,7 @@
     color: var(--text-strong);
 }
 
-/* Typed variants */
+/* Typed variants — colors source from tokens.css */
 .users-row-actions .users-action-edit {
     color: var(--color-success);
     background-color: var(--color-success-soft);
@@ -324,31 +497,37 @@
 
 /* Hover glows */
 .users-row-actions .users-action-edit:hover,
-.users-row-actions .users-action-edit:focus {
-    box-shadow: 0 5px 12px rgba(var(--color-success-rgb), 0.25);
-}
-
+.users-row-actions .users-action-edit:focus       { box-shadow: 0 5px 12px rgba(var(--color-success-rgb), 0.25); }
 .users-row-actions .users-action-view:hover,
-.users-row-actions .users-action-view:focus {
-    box-shadow: 0 5px 12px rgba(var(--color-brand-secondary-rgb), 0.25);
-}
-
+.users-row-actions .users-action-view:focus       { box-shadow: 0 5px 12px rgba(var(--color-brand-secondary-rgb), 0.25); }
 .users-row-actions .users-action-notify:hover,
-.users-row-actions .users-action-notify:focus {
-    box-shadow: 0 5px 12px rgba(var(--color-brand-tertiary-rgb), 0.24);
-}
-
+.users-row-actions .users-action-notify:focus     { box-shadow: 0 5px 12px rgba(var(--color-brand-tertiary-rgb), 0.24); }
 .users-row-actions .users-action-email:hover,
-.users-row-actions .users-action-email:focus {
-    box-shadow: 0 5px 12px rgba(var(--color-brand-primary-rgb), 0.28);
-}
-
+.users-row-actions .users-action-email:focus      { box-shadow: 0 5px 12px rgba(var(--color-brand-primary-rgb), 0.28); }
 .users-row-actions .users-action-delete:hover,
-.users-row-actions .users-action-delete:focus {
-    box-shadow: 0 5px 12px rgba(var(--color-danger-rgb), 0.24);
+.users-row-actions .users-action-delete:focus     { box-shadow: 0 5px 12px rgba(var(--color-danger-rgb), 0.24); }
+.users-row-actions .users-action-restore:hover,
+.users-row-actions .users-action-restore:focus    { box-shadow: 0 5px 12px rgba(var(--color-success-rgb), 0.25); }
+
+/* ═══ Avatar wrapper in name cell ════════════════════════ */
+.users-table-row .product-name .avatar img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 
-.users-row-actions .users-action-restore:hover,
-.users-row-actions .users-action-restore:focus {
-    box-shadow: 0 5px 12px rgba(var(--color-success-rgb), 0.25);
+.users-table-row .product-name .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md) !important;
+}
+
+/* ═══ Empty state ═════════════════════════════════════════ */
+.datatables-products tbody tr.data-rows td .text-center.py-5 {
+    padding: 2.5rem 1rem !important;
+}
+
+.datatables-products tbody tr.data-rows td .text-center.py-5 i.ti-file-off {
+    color: var(--color-brand-primary) !important;
+    opacity: 0.55;
 }

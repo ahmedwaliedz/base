@@ -4,21 +4,25 @@
 <div id="usersStatsContainer">
     <div class="crud-stats mb-3">
         <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
-            <div>
-                <div class="crud-stats__title">{{ __('admin/main.statistics') }}</div>
-                <div class="crud-stats__subtitle hide_on_load " id="usersStatsSubtitle">{{ __('admin/main.statistics_subtitle') }}</div>
+            <div class="min-w-0">
+                <div class="crud-stats__title d-inline-flex align-items-center gap-2">
+                    <i class="ti ti-chart-pie-filled" aria-hidden="true" style="color: var(--color-brand-primary);"></i>
+                    {{ __('admin/main.statistics') }}
+                </div>
+                <div class="crud-stats__subtitle hide_on_load" id="usersStatsSubtitle">{{ __('admin/main.statistics_subtitle') }}</div>
                 <div class="crud-stats__subtitle show_on_load">{{ __('admin/main.loading') }}</div>
             </div>
             <button class="btn crud-stats__toggle d-inline-flex align-items-center gap-2 hide_on_load" type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#usersStatsCollapse"
                     aria-expanded="true"
-                    aria-controls="usersStatsCollapse">
-                <i class="ti ti-chart-line"></i>
-                <span>{{ __('admin/main.statistics_toggle') }}</span>
-                <i class="ti ti-chevron-down crud-stats__chev ms-1"></i>
+                    aria-controls="usersStatsCollapse"
+                    aria-label="{{ __('admin/main.statistics_toggle') }}">
+                <i class="ti ti-eye" aria-hidden="true"></i>
+                <span class="d-none d-sm-inline">{{ __('admin/main.statistics_toggle') }}</span>
+                <i class="ti ti-chevron-down crud-stats__chev" aria-hidden="true"></i>
             </button>
-            <output class="spinner-border spinner-border-sm text-primary show_on_load" aria-label="Loading"></output>
+            <output class="spinner-border spinner-border-sm text-primary show_on_load" aria-label="{{ __('admin/main.loading') }}"></output>
         </div>
 
         <div id="usersStatsCollapse" class="collapse show">
@@ -26,7 +30,7 @@
                 <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
                     <div class="crud-stats__subtitle">{{ __('admin/main.error_loading_data') }}</div>
                     <button type="button" class="btn crud-stats__toggle d-inline-flex align-items-center gap-2 js-crud-stats-reload">
-                        <i class="ti ti-refresh"></i>
+                        <i class="ti ti-refresh" aria-hidden="true"></i>
                         <span>{{ __('admin/main.retry') }}</span>
                     </button>
                 </div>
@@ -41,7 +45,7 @@
                                     <div class="crud-stats__value placeholder-glow"><span class="placeholder col-4"></span></div>
                                 </div>
                                 <span class="crud-stats__icon opacity-50">
-                                    <output class="spinner-border spinner-border-sm text-primary show_on_load" aria-label="Loading"></output>
+                                    <output class="spinner-border spinner-border-sm text-primary show_on_load" aria-label="{{ __('admin/main.loading') }}"></output>
                                 </span>
                             </div>
                         </div>
@@ -54,7 +58,5 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>
