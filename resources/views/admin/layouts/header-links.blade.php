@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{asset('style/admin/css/tokens.css')}}" />
     <link rel="stylesheet" href="{{asset('style/admin/css/demo.css')}}" />
     <link rel="stylesheet" href="{{asset('style/admin/css/sidebar.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/admin/css/navbar.css')}}" />
     <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
     <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/typeahead-js/typeahead.css')}}" />
     <link rel="stylesheet" href="{{asset('style/admin/css/custom-spinner.css')}}" />
