@@ -3,6 +3,10 @@
 
     return [
         'language_changed_successfully' => 'Language changed successfully',
+        'language' => 'Language',
+        'menu' => 'Menu',
+        'fullscreen' => 'Fullscreen',
+        'quick_links' => 'Quick links',
         'notifications' => 'Notifications',
         'mark_all_as_read' => 'Mark all as read',
         'light' => 'Light',

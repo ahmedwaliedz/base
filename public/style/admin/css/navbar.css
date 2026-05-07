@@ -1,0 +1,431 @@
+/**
+ * Admin top navbar
+ *  - Glass surface that matches the dashboard cards
+ *  - Pill ghost buttons with hover lift
+ *  - Animated notifications badge
+ *  - Avatar + name + role on >=lg
+ *  - System status indicator
+ *
+ * All colors source from tokens.css.
+ */
+
+/* ═══════════════════════════════════════════════════════════
+   NAVBAR SHELL — glass
+═══════════════════════════════════════════════════════════ */
+.layout-navbar.navbar-detached {
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--surface-border);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb), 0.05) 0%,
+            transparent 100%),
+        var(--surface-base) !important;
+    box-shadow: 0 4px 14px rgba(var(--color-brand-primary-rgb), 0.06) !important;
+    transition: box-shadow var(--duration-base) var(--ease-smooth);
+}
+
+[data-theme*='dark'] .layout-navbar.navbar-detached,
+.dark-style .layout-navbar.navbar-detached {
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb), 0.08) 0%,
+            transparent 100%),
+        rgba(44, 49, 72, 0.74) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.20) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme='system'] .layout-navbar.navbar-detached {
+        background:
+            linear-gradient(135deg,
+                rgba(var(--color-brand-primary-rgb), 0.08) 0%,
+                transparent 100%),
+            rgba(44, 49, 72, 0.74) !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.20) !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NAV LINK BUTTONS — pill ghost style
+═══════════════════════════════════════════════════════════ */
+.layout-navbar .nav-item > .nav-link {
+    --nav-btn-rgb: var(--color-brand-primary-rgb);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    margin-inline: 0.15rem;
+    border-radius: var(--radius-md);
+    color: var(--text-body);
+    background: transparent;
+    border: 1px solid transparent;
+    transition:
+        background    var(--duration-fast) var(--ease-smooth),
+        color         var(--duration-fast) var(--ease-smooth),
+        border-color  var(--duration-fast) var(--ease-smooth),
+        transform     var(--duration-fast) var(--ease-bounce),
+        box-shadow    var(--duration-base) var(--ease-smooth);
+}
+
+.layout-navbar .nav-item > .nav-link:hover,
+.layout-navbar .nav-item > .nav-link:focus-visible {
+    background: rgba(var(--nav-btn-rgb), 0.10);
+    color: rgb(var(--nav-btn-rgb));
+    border-color: rgba(var(--nav-btn-rgb), 0.22);
+    transform: translateY(-1px);
+}
+
+.layout-navbar .nav-item.show > .nav-link {
+    background: rgba(var(--nav-btn-rgb), 0.14);
+    color: rgb(var(--nav-btn-rgb));
+    border-color: rgba(var(--nav-btn-rgb), 0.32);
+}
+
+.layout-navbar .nav-item > .nav-link i {
+    font-size: 1.15rem;
+}
+
+/* Per-button tinted accent */
+.layout-navbar .dropdown-style-switcher  > .nav-link { --nav-btn-rgb: var(--color-warning-rgb); }
+.layout-navbar .dropdown-language        > .nav-link { --nav-btn-rgb: var(--color-brand-secondary-rgb); }
+.layout-navbar .dropdown-notifications   > .nav-link { --nav-btn-rgb: 245, 158, 11; }
+.layout-navbar .nav-item-fullscreen      > .nav-link { --nav-btn-rgb: var(--color-success-rgb); }
+.layout-navbar .nav-item-quick-links     > .nav-link { --nav-btn-rgb: var(--color-brand-primary-rgb); }
+
+/* ═══════════════════════════════════════════════════════════
+   NOTIFICATIONS — animated pulse badge
+═══════════════════════════════════════════════════════════ */
+.layout-navbar .dropdown-notifications .nav-link {
+    overflow: visible;
+}
+
+.layout-navbar .badge-notifications {
+    position: absolute;
+    top: 4px;
+    inset-inline-end: 4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 0.32rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 18px;
+    border-radius: 99px;
+    background: var(--color-danger) !important;
+    color: #fff !important;
+    border: 2px solid var(--surface-base);
+    z-index: 1;
+}
+
+[data-theme*='dark'] .layout-navbar .badge-notifications,
+.dark-style .layout-navbar .badge-notifications {
+    border-color: rgba(44, 49, 72, 1);
+}
+
+/* Pulsing ring */
+.layout-navbar .badge-notifications::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 99px;
+    border: 2px solid var(--color-danger);
+    opacity: 0;
+    animation: nav-badge-pulse 1.8s var(--ease-smooth) infinite;
+    pointer-events: none;
+}
+
+@keyframes nav-badge-pulse {
+    0%   { transform: scale(1);   opacity: 0.7; }
+    100% { transform: scale(1.6); opacity: 0;   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .layout-navbar .badge-notifications::after { animation: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SYSTEM STATUS DOT
+═══════════════════════════════════════════════════════════ */
+.nav-system-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.7rem;
+    margin-inline-end: 0.3rem;
+    border-radius: var(--radius-pill);
+    background: rgba(var(--color-success-rgb), 0.10);
+    border: 1px solid rgba(var(--color-success-rgb), 0.22);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-success);
+    white-space: nowrap;
+}
+
+.nav-system-status__dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-success);
+    flex-shrink: 0;
+}
+
+.nav-system-status__dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid var(--color-success);
+    opacity: 0;
+    animation: nav-status-pulse 2s var(--ease-smooth) infinite;
+}
+
+@keyframes nav-status-pulse {
+    0%   { transform: scale(1);   opacity: 0.6; }
+    100% { transform: scale(1.8); opacity: 0;   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nav-system-status__dot::after { animation: none; }
+}
+
+@media (max-width: 991.98px) {
+    .nav-system-status__label { display: none; }
+    .nav-system-status {
+        padding: 0.4rem;
+        gap: 0;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PROFILE DROPDOWN — avatar + name + role
+═══════════════════════════════════════════════════════════ */
+.layout-navbar .dropdown-user > .nav-link {
+    width: auto;
+    min-height: 38px;
+    padding: 0.2rem 0.45rem;
+    gap: 0.55rem;
+    border-radius: var(--radius-pill);
+}
+
+.layout-navbar .dropdown-user .avatar {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.layout-navbar .dropdown-user .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* The online dot uses Sneat's .avatar-online — re-style for visibility */
+.layout-navbar .dropdown-user .avatar.avatar-online::after {
+    width: 9px;
+    height: 9px;
+    border: 2px solid var(--surface-base);
+    background: var(--color-success);
+    box-shadow: 0 0 0 2px rgba(var(--color-success-rgb), 0.20);
+}
+
+[data-theme*='dark'] .layout-navbar .dropdown-user .avatar.avatar-online::after,
+.dark-style .layout-navbar .dropdown-user .avatar.avatar-online::after {
+    border-color: rgba(44, 49, 72, 1);
+}
+
+.nav-profile-meta {
+    display: none;
+    flex-direction: column;
+    line-height: 1.2;
+    text-align: start;
+    margin-inline-end: 0.25rem;
+}
+
+@media (min-width: 992px) {
+    .nav-profile-meta {
+        display: flex;
+    }
+}
+
+.nav-profile-meta__name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-strong);
+}
+
+.nav-profile-meta__role {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DROPDOWN MENUS — refined glass
+═══════════════════════════════════════════════════════════ */
+.layout-navbar .dropdown-menu {
+    margin-top: 0.5rem !important;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-border);
+    padding: 0.4rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.10),
+                0 2px 6px  rgba(0, 0, 0, 0.05);
+    background: var(--surface-base);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    min-width: 12.5rem;
+    z-index: 1080;
+    animation: nav-dropdown-in 0.2s var(--ease-out) both;
+}
+
+[data-theme*='dark'] .layout-navbar .dropdown-menu,
+.dark-style .layout-navbar .dropdown-menu {
+    background: rgba(44, 49, 72, 0.92);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32),
+                0 2px 6px  rgba(0, 0, 0, 0.18);
+}
+
+@keyframes nav-dropdown-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0);    }
+}
+
+.layout-navbar .dropdown-menu .dropdown-item {
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: var(--text-body);
+    transition:
+        background var(--duration-fast) var(--ease-smooth),
+        color      var(--duration-fast) var(--ease-smooth);
+}
+
+.layout-navbar .dropdown-menu .dropdown-item:hover,
+.layout-navbar .dropdown-menu .dropdown-item:focus {
+    background: rgba(var(--color-brand-primary-rgb), 0.10);
+    color: var(--color-brand-primary);
+}
+
+.layout-navbar .dropdown-menu .dropdown-item i {
+    color: var(--text-muted);
+    transition: color var(--duration-fast) var(--ease-smooth);
+}
+
+.layout-navbar .dropdown-menu .dropdown-item:hover i {
+    color: var(--color-brand-primary);
+}
+
+.layout-navbar .dropdown-menu .dropdown-divider {
+    margin: 0.35rem 0;
+    border-color: var(--surface-border);
+}
+
+/* User-card dropdown header */
+.layout-navbar .dropdown-user .dropdown-menu .dropdown-item:first-child {
+    padding: 0.65rem 0.75rem;
+    background: rgba(var(--color-brand-primary-rgb), 0.06);
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.25rem;
+}
+
+.layout-navbar .dropdown-user .dropdown-menu .dropdown-item:first-child:hover {
+    background: rgba(var(--color-brand-primary-rgb), 0.12);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   QUICK LINKS DROPDOWN — grid of shortcuts
+═══════════════════════════════════════════════════════════ */
+.nav-quick-links-menu {
+    width: 18rem;
+    padding: 0.6rem !important;
+}
+
+.nav-quick-links-menu__title {
+    padding: 0.3rem 0.5rem 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.nav-quick-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+}
+
+.nav-quick-link {
+    --link-rgb: var(--color-brand-primary-rgb);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.85rem 0.5rem;
+    border-radius: var(--radius-md);
+    background: rgba(var(--link-rgb), 0.07);
+    border: 1px solid rgba(var(--link-rgb), 0.14);
+    color: var(--text-body);
+    text-decoration: none;
+    text-align: center;
+    transition:
+        background    var(--duration-fast) var(--ease-smooth),
+        border-color  var(--duration-fast) var(--ease-smooth),
+        transform     var(--duration-fast) var(--ease-bounce);
+}
+
+.nav-quick-link:hover {
+    background: rgba(var(--link-rgb), 0.14);
+    border-color: rgba(var(--link-rgb), 0.32);
+    color: rgb(var(--link-rgb));
+    transform: translateY(-2px);
+}
+
+.nav-quick-link__icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: rgb(var(--link-rgb));
+    background: rgba(var(--link-rgb), 0.16);
+    border: 1px solid rgba(var(--link-rgb), 0.20);
+}
+
+.nav-quick-link__label {
+    font-size: 0.74rem;
+    font-weight: 600;
+}
+
+.nav-quick-link[data-link="dashboard"]     { --link-rgb: var(--color-brand-primary-rgb); }
+.nav-quick-link[data-link="users"]         { --link-rgb: var(--color-brand-secondary-rgb); }
+.nav-quick-link[data-link="settings"]      { --link-rgb: var(--color-warning-rgb); }
+.nav-quick-link[data-link="notifications"] { --link-rgb: 245, 158, 11; }
+
+/* ═══════════════════════════════════════════════════════════
+   LANGUAGE FLAG ICON inside dropdown
+═══════════════════════════════════════════════════════════ */
+.layout-navbar .dropdown-menu .dropdown-item .fi {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: var(--radius-xs);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE TWEAKS
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 575.98px) {
+    .layout-navbar .nav-item > .nav-link {
+        width: 36px;
+        height: 36px;
+    }
+    .layout-navbar .nav-quick-links-menu {
+        width: 16rem;
+    }
+}

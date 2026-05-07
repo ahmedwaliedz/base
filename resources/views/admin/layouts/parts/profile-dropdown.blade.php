@@ -1,47 +1,56 @@
+@php
+    $admin = auth('admin')->user();
+@endphp
 <li class="nav-item navbar-dropdown dropdown-user dropdown">
-    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+    <a class="nav-link dropdown-toggle hide-arrow d-inline-flex align-items-center"
+       href="javascript:void(0);"
+       data-bs-toggle="dropdown"
+       aria-label="{{ $admin?->name }}">
+
+        <div class="nav-profile-meta">
+            <span class="nav-profile-meta__name">{{ $admin?->name }}</span>
+            <span class="nav-profile-meta__role">{{ $admin?->role_name }}</span>
+        </div>
+
         <div class="avatar avatar-online">
-            <img src="{{auth('admin')->user()->image_url}}" alt class="h-auto rounded-circle"/>
+            <img src="{{ $admin?->image_url }}" alt="" class="h-auto rounded-circle"/>
         </div>
     </a>
+
     <ul class="dropdown-menu dropdown-menu-end">
         <li>
-            <a class="dropdown-item" href="{{route('admin.profile')}}">
-                <div class="d-flex">
-                    <div class="flex-shrink-0 me-3">
+            <a class="dropdown-item" href="{{ route('admin.profile') }}">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="flex-shrink-0">
                         <div class="avatar avatar-online">
-                            <img src="{{auth('admin')->user()->image_url}}" alt class="h-auto rounded-circle"/>
+                            <img src="{{ $admin?->image_url }}" alt="" class="h-auto rounded-circle"/>
                         </div>
                     </div>
-                    <div class="flex-grow-1">
-                        <span class="fw-medium d-block">{{auth('admin')->user()->name}}</span>
-                        <small class="text-muted">{{auth('admin')->user()->role_name}}</small>
+                    <div class="flex-grow-1 min-w-0">
+                        <span class="fw-semibold d-block text-truncate">{{ $admin?->name }}</span>
+                        <small class="text-muted">{{ $admin?->role_name }}</small>
                     </div>
                 </div>
             </a>
         </li>
+        <li><div class="dropdown-divider"></div></li>
         <li>
-            <div class="dropdown-divider"></div>
-        </li>
-        <li>
-            <a class="dropdown-item" href="{{route('admin.profile')}}">
-                <i class="ti ti-user-check me-2 ti-sm"></i>
-                <span class="align-middle">{{__('admin/main.profile')}}</span>
+            <a class="dropdown-item" href="{{ route('admin.profile') }}">
+                <i class="ti ti-user-check me-2" aria-hidden="true"></i>
+                <span class="align-middle">{{ __('admin/main.profile') }}</span>
             </a>
         </li>
         <li>
-            <a class="dropdown-item" href="{{route('admin.settings.index')}}">
-                <i class="ti ti-settings me-2 ti-sm"></i>
-                <span class="align-middle">{{__('admin/main.settings')}}</span>
+            <a class="dropdown-item" href="{{ route('admin.settings.index') }}">
+                <i class="ti ti-settings me-2" aria-hidden="true"></i>
+                <span class="align-middle">{{ __('admin/main.settings') }}</span>
             </a>
         </li>
+        <li><div class="dropdown-divider"></div></li>
         <li>
-            <div class="dropdown-divider"></div>
-        </li>
-        <li>
-            <a class="dropdown-item" href="{{route('admin.logout')}}">
-                <i class="ti ti-logout me-2 ti-sm"></i>
-                <span class="align-middle">{{__('admin/auth.logout')}}</span>
+            <a class="dropdown-item text-danger" href="{{ route('admin.logout') }}">
+                <i class="ti ti-logout me-2" aria-hidden="true"></i>
+                <span class="align-middle">{{ __('admin/auth.logout') }}</span>
             </a>
         </li>
     </ul>
