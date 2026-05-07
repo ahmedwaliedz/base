@@ -32,12 +32,19 @@
     display: grid;
     grid-template-columns: 280px 1fr;
     gap: 1.25rem;
-    align-items: flex-start;
+    align-items: stretch;
+    /* App-shell pattern: shell is exactly this tall, so the nav column
+       stays put while the content column scrolls inside itself.
+       The offset accounts for navbar + breadcrumb + page-head + page padding. */
+    height: calc(100vh - var(--settings-shell-offset, 12.5rem));
 }
 
 @media (max-width: 991.98px) {
     .settings-shell {
         grid-template-columns: 1fr;
+        /* On mobile drop the fixed height — page scroll is fine in
+           single-column mode (nav is a horizontal pill row at top). */
+        height: auto;
     }
 }
 
@@ -83,8 +90,10 @@
    SIDEBAR NAV (vertical desktop / horizontal mobile)
 ═══════════════════════════════════════════════════════════ */
 .settings-nav {
-    position: sticky;
-    top: 1rem;
+    /* The shell is fixed-height now — nav fills its own column and
+       stays put while the content beside it scrolls. */
+    align-self: stretch;
+    height: 100%;
     border-radius: var(--radius-xl);
     padding: 0.6rem;
     background:
@@ -97,10 +106,8 @@
     -webkit-backdrop-filter: blur(12px) saturate(155%);
     box-shadow: 0 4px 14px rgba(var(--color-brand-primary-rgb), 0.05);
 
-    /* Independent scroll: when the nav has more items than fit in the
-       viewport, it scrolls inside itself; when the user reaches the
-       top/bottom, the wheel does not chain up to the page. */
-    max-height: calc(100vh - 2rem);
+    /* If the nav has more items than fit, it scrolls inside itself;
+       overscroll-behavior keeps the wheel from chaining to the page. */
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
@@ -301,6 +308,45 @@
         font-size: 0.85rem;
         font-weight: 600;
         margin-inline-start: 0.35rem;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTENT COLUMN — the scrollable side of the shell
+═══════════════════════════════════════════════════════════ */
+.settings-content {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+
+    /* Slim, branded scrollbar matching the nav */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--color-brand-primary-rgb), 0.28) transparent;
+    /* Reserve room for the scrollbar so cards don't shift on overflow */
+    padding-inline-end: 0.25rem;
+}
+
+.settings-content::-webkit-scrollbar {
+    width: 6px;
+}
+.settings-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.settings-content::-webkit-scrollbar-thumb {
+    background: rgba(var(--color-brand-primary-rgb), 0.24);
+    border-radius: 99px;
+}
+.settings-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--color-brand-primary-rgb), 0.55);
+}
+
+@media (max-width: 991.98px) {
+    /* Mobile: revert to natural page scroll */
+    .settings-content {
+        height: auto;
+        overflow-y: visible;
+        padding-inline-end: 0;
     }
 }
 
