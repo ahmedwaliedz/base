@@ -188,4 +188,5 @@
         'home_chart_activity_sub' => 'Complaints & contact messages over last 6 months',
         'home_chart_radial_title' => 'Active Ratios',
         'home_chart_radial_sub' => 'Percentage of active records per category',
+        'home_card_view' => 'View',
     ];

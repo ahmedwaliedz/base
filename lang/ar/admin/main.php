@@ -234,4 +234,5 @@
         'home_chart_activity_sub' => 'الشكاوى ورسائل التواصل خلال آخر 6 أشهر',
         'home_chart_radial_title' => 'نسب النشاط',
         'home_chart_radial_sub' => 'نسبة السجلات النشطة لكل فئة',
+        'home_card_view' => 'عرض',
     ];
