@@ -486,26 +486,127 @@
     .table-content .table-skeleton .skel-actions .skel-dot { width: 24px; height: 24px; }
 }
 
-/* ═══ Status badge / switch ═════════════════════════════ */
-.users-status-wrap .status-badge {
+/* ═══ Status pill toggle (clickable, single source of truth) ══════ */
+.user-status-toggle {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0;
+    user-select: none;
+}
+
+.user-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.32rem 0.7rem 0.32rem 0.55rem;
     border-radius: var(--radius-pill);
-    padding: 0.32rem 0.7rem;
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.03em;
-}
-
-.users-status-wrap .switch-block {
-    border: 1px solid var(--surface-border);
-    box-shadow: none;
     transition:
-        border-color var(--duration-fast) var(--ease-smooth),
-        box-shadow   var(--duration-fast) var(--ease-smooth);
+        background var(--duration-fast) var(--ease-smooth),
+        color      var(--duration-fast) var(--ease-smooth),
+        transform  var(--duration-fast) var(--ease-bounce),
+        box-shadow var(--duration-base) var(--ease-smooth);
 }
 
-.users-status-wrap .switch-block:focus {
-    border-color: var(--surface-border-strong);
-    box-shadow: 0 0 0 0.12rem rgba(var(--color-brand-primary-rgb), 0.25);
+[dir='rtl'] .user-status-pill {
+    padding: 0.32rem 0.55rem 0.32rem 0.7rem;
+}
+
+.user-status-pill__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px currentColor;
+    background: currentColor;
+    opacity: 0.85;
+}
+
+.user-status-pill.is-active {
+    background: var(--color-success-soft);
+    color: var(--color-success);
+}
+
+.user-status-pill.is-blocked {
+    background: var(--color-warning-soft);
+    color: var(--color-warning);
+}
+
+.user-status-toggle:hover .user-status-pill {
+    transform: scale(1.04);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.user-status-toggle:has(.switch-block:focus-visible) .user-status-pill {
+    box-shadow: 0 0 0 3px rgba(var(--color-brand-primary-rgb), 0.20);
+}
+
+/* The actual checkbox is hidden visually but stays accessible to JS + screen readers */
+.users-status-wrap .switch-block.visually-hidden {
+    /* Bootstrap's .visually-hidden is sufficient; no extra styling here */
+}
+
+/* ═══ "More actions" dropdown button in row ══════════════ */
+.user-more-dropdown {
+    display: inline-flex;
+}
+
+.users-row-actions .users-action-more {
+    color: var(--text-body);
+    background-color: var(--surface-raised);
+    border: 1px solid var(--surface-border);
+}
+
+.users-row-actions .users-action-more:hover,
+.users-row-actions .users-action-more:focus,
+.user-more-dropdown.show .users-action-more {
+    color: var(--color-brand-primary);
+    background-color: rgba(var(--color-brand-primary-rgb), 0.10);
+    border-color: rgba(var(--color-brand-primary-rgb), 0.30);
+    box-shadow: 0 5px 12px rgba(var(--color-brand-primary-rgb), 0.18);
+}
+
+.user-more-menu {
+    min-width: 11rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--surface-border);
+    padding: 0.3rem;
+    background: var(--surface-base);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.10);
+}
+
+[data-theme*='dark'] .user-more-menu,
+.dark-style .user-more-menu {
+    background: rgba(44, 49, 72, 0.95);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
+}
+
+.user-more-menu .dropdown-item {
+    border-radius: var(--radius-sm);
+    padding: 0.45rem 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-body);
+    transition: background var(--duration-fast) var(--ease-smooth),
+                color      var(--duration-fast) var(--ease-smooth);
+}
+
+.user-more-menu .dropdown-item:hover,
+.user-more-menu .dropdown-item:focus {
+    background: rgba(var(--color-brand-primary-rgb), 0.10);
+    color: var(--color-brand-primary);
+}
+
+.user-more-menu .dropdown-item i {
+    color: var(--text-muted);
+    transition: color var(--duration-fast) var(--ease-smooth);
+}
+
+.user-more-menu .dropdown-item:hover i {
+    color: var(--color-brand-primary);
 }
 
 /* ═══ Row action buttons — visible by default, lift on hover ═ */
