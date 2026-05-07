@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
     <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/typeahead-js/typeahead.css')}}" />
     <link rel="stylesheet" href="{{asset('style/admin/css/custom-spinner.css')}}" />
-    <link rel="stylesheet" href="{{asset('style/admin/css/sidebar.css')}}" />
     <script src="{{asset('style/admin/vendor/js/helpers.js')}}"></script>
     <script src="{{asset('style/admin/vendor/js/template-customizer.js')}}"></script>
     <script src="{{asset('style/admin/js/config.js')}}"></script>
