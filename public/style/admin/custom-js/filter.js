@@ -14,16 +14,45 @@ $(document).on('click', '.show_filter', function () {
         filterDiv.css('opacity', 0)
             .slideDown({
                 duration: 100,
-                start: function() {
-                    $(this).css('display', 'flex');
-                },
                 complete: function() {
-                    $(this).addClass('active')
+                    $(this).css('display', '').addClass('active')
                         .animate({opacity: 1}, 100);
                 }
             });
     }
 });
+
+// Active-filter indicator on the filter toggle button.
+// Adds .has-active-filters when any filter input has a non-empty value.
+function updateFilterActiveIndicator() {
+    var $form = $('.filter-form');
+    if (!$form.length) return;
+
+    var hasValue = false;
+    $form.find('input, select').each(function () {
+        var $el = $(this);
+        var type = ($el.attr('type') || '').toLowerCase();
+
+        if (type === 'checkbox' || type === 'radio') {
+            if ($el.is(':checked')) hasValue = true;
+        } else if ($el.is('select')) {
+            var val = $el.val();
+            // ignore default "descending" / "ascending" on order_by
+            if ($el.attr('name') === 'order_by') return;
+            if (val !== null && val !== '' && val !== 'all') hasValue = true;
+        } else if (type !== 'hidden') {
+            if (($el.val() || '').trim() !== '') hasValue = true;
+        }
+    });
+
+    $('.show_filter').toggleClass('has-active-filters', hasValue);
+}
+
+$(document).on('input change', '.filter-form input, .filter-form select', updateFilterActiveIndicator);
+$(document).on('click', '.filter-reset', function () {
+    setTimeout(updateFilterActiveIndicator, 50);
+});
+$(function () { updateFilterActiveIndicator(); });
 
 // Date validation for start_date and end_date
 $(document).on('keyup change', '.filter-form input[name="start_date"], .filter-form input[name="end_date"]', function() {

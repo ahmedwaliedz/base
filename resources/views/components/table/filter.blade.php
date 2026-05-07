@@ -1,4 +1,4 @@
-<div class="filter_div crud-filter-shell row mt-3 gap-3 gap-md-0" style="display: none;">
+<div class="filter_div crud-filter-shell" style="display: none;">
     <form class="row w-100 filter-form">
         @if($hasOrderBy)
             <x-form.select :options="[
