@@ -28,9 +28,10 @@ class GroupCrumbBuilder
      */
     public function build(string $groupKey = '', array $routesList = []): array
     {
-        $group = $routesList[$groupKey] ?? [];
-        $title = $groupKey . '.index';
-        $icon = $group['icon'] ?? '';
+        $groups = config('sidebar_groups.admin', []);
+        $group  = $groups[$groupKey] ?? $routesList[$groupKey] ?? [];
+        $title  = $groupKey . '.index';
+        $icon   = $group['icon'] ?? '';
 
         return [
             'title'  => $title,

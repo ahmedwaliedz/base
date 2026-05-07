@@ -1,10 +1,10 @@
-<div class="mb-4 ">
+<div class="admin-breadcrumbs-glass mb-4">
     @foreach($crumbs as $crumb)
         {{-- render the crumb --}}
         @if($crumb['active'])
-            <a style="text-decoration:none;color:#999;cursor:default;" href="#">
+            <span class="breadcrumb-current active-breadcrumb" aria-current="page">
                 {!! $crumb['icon'] !!} {{ __('admin/routes.admin.'.$crumb['title']) }}
-            </a>
+            </span>
         @else
             <a href="{{ $crumb['url'] }}">
                 {!! $crumb['icon'] !!} {{ __('admin/routes.admin.'.$crumb['title']) }}
@@ -13,7 +13,7 @@
 
         {{-- separator after, except on the last item --}}
         @unless($loop->last)
-            <span class="mx-2" style="color: #999">
+            <span class="breadcrumb-separator mx-1">
                 <i class="fa fa-angle-left"></i>
             </span>
         @endunless

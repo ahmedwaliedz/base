@@ -197,3 +197,128 @@
 .deleted-table-row{
     background-color: #bd36412a!important;
 }
+
+/* ════════════════════════════════════════════════════
+   Admin breadcrumbs — token-based, GPU-light
+   - Single fade-in animation (one-shot)
+   - No backdrop-filter, no blur filters, no infinite loops
+   - All colors flow from tokens.css
+══════════════════════════════════════════════════════ */
+.admin-breadcrumbs-glass {
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-lg);
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb), 0.06) 0%,
+            rgba(var(--color-brand-secondary-rgb), 0.04) 100%),
+        var(--surface-base);
+    box-shadow: 0 4px 14px rgba(var(--color-brand-primary-rgb), 0.06);
+    overflow: hidden;
+    animation: breadcrumbsFadeUp 0.35s var(--ease-out) both;
+}
+
+/* Subtle accent edge on the inline-start (replaces 4 layered gradients) */
+.admin-breadcrumbs-glass::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 3px;
+    background: linear-gradient(180deg,
+        var(--color-brand-primary) 0%,
+        var(--color-brand-secondary) 100%);
+    pointer-events: none;
+}
+
+.admin-breadcrumbs-glass a,
+.admin-breadcrumbs-glass .breadcrumb-current {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    text-decoration: none;
+    color: var(--text-body);
+    font-weight: 600;
+    font-size: 0.86rem;
+    transition: color var(--duration-fast) var(--ease-smooth);
+}
+
+.admin-breadcrumbs-glass a:not(.active-breadcrumb):hover {
+    color: var(--color-brand-primary);
+}
+
+.admin-breadcrumbs-glass .active-breadcrumb {
+    color: var(--color-brand-primary);
+    cursor: default;
+}
+
+.admin-breadcrumbs-glass .breadcrumb-separator {
+    color: var(--text-muted);
+    font-size: 0.8em;
+}
+
+/* Dark-mode override — single rule via attribute selector  */
+[data-theme*='dark'] .admin-breadcrumbs-glass,
+.dark-style .admin-breadcrumbs-glass {
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb), 0.10) 0%,
+            rgba(var(--color-brand-secondary-rgb), 0.06) 100%),
+        var(--surface-base);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.20);
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme='system'] .admin-breadcrumbs-glass {
+        background:
+            linear-gradient(135deg,
+                rgba(var(--color-brand-primary-rgb), 0.10) 0%,
+                rgba(var(--color-brand-secondary-rgb), 0.06) 100%),
+            var(--surface-base);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.20);
+    }
+}
+
+@keyframes breadcrumbsFadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0);   }
+}
+
+/*
+ * Softer dark admin canvas — lighter than default #25293c, gentle purple wash.
+ * Single linear gradient (was 3 stacked layers).
+ */
+[data-theme*='dark'] body,
+.dark-style body {
+    background:
+        linear-gradient(168deg,
+            rgba(var(--color-brand-primary-rgb), 0.06) 0%,
+            #2e3348 50%,
+            #2c3146 100%) !important;
+    background-attachment: fixed;
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme='system'] body {
+        background:
+            linear-gradient(168deg,
+                rgba(var(--color-brand-primary-rgb), 0.06) 0%,
+                #2e3348 50%,
+                #2c3146 100%) !important;
+        background-attachment: fixed;
+    }
+}
+
+/* Main admin column: fill width beside fixed sidebar (avoids empty strip + max-width centering gap on wide screens) */
+@media (min-width: 1200px) {
+    .layout-content-navbar .layout-page .content-wrapper > .container-xxl:first-child {
+        max-width: 100%;
+    }
+}

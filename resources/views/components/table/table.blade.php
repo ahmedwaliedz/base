@@ -1,4 +1,13 @@
 <style>
+/* Modern table header */
+.datatables-products thead th {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    opacity: 0.55;
+    padding-block: 14px;
+}
 /* Scoped table skeleton styles matching the table structure */
 .table-skeleton{width:100%}
 .table-skeleton tbody tr>td{padding:16px 14px}

@@ -13,7 +13,9 @@
     <link rel="stylesheet" href="{{asset('style/admin/vendor/fonts/flag-icons.css')}}" />
     <link rel="stylesheet" href="{{asset('style/admin/vendor/css/rtl/core.css')}}" class="template-customizer-core-css" />
     <link rel="stylesheet" href="{{asset('style/admin/vendor/css/rtl/theme-default.css')}}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{asset('style/admin/css/tokens.css')}}" />
     <link rel="stylesheet" href="{{asset('style/admin/css/demo.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/admin/css/sidebar.css')}}" />
     <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
     <link rel="stylesheet" href="{{asset('style/admin/vendor/libs/typeahead-js/typeahead.css')}}" />
     <link rel="stylesheet" href="{{asset('style/admin/css/custom-spinner.css')}}" />
