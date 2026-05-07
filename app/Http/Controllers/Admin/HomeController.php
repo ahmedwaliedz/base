@@ -34,6 +34,18 @@ class HomeController extends Controller
         $blockedUsers = User::where('is_blocked', true)->count();
         $totalAdmins  = Admin::count();
 
+        /* ── Admins monthly ─────────────────────────────────── */
+        $adminMonthlyRaw = Admin::selectRaw('YEAR(created_at) as y, MONTH(created_at) as m, COUNT(*) as cnt')
+            ->where('created_at', '>=', $now->copy()->subMonths(5)->startOfMonth())
+            ->groupBy('y', 'm')
+            ->get()
+            ->keyBy(fn ($r) => "{$r->y}-{$r->m}");
+
+        $adminMonthlyData = collect(range(5, 0))->map(function ($offset) use ($now, $adminMonthlyRaw) {
+            $date = $now->copy()->subMonths($offset);
+            return (int) ($adminMonthlyRaw->get("{$date->year}-{$date->month}")->cnt ?? 0);
+        });
+
         $newThisMonth = (int) ($monthlyRaw->get("{$now->year}-{$now->month}")->cnt ?? 0);
         $newLastMonth = (int) ($monthlyRaw->get("{$prev->year}-{$prev->month}")->cnt ?? 0);
 
@@ -95,6 +107,7 @@ class HomeController extends Controller
             'total_admins'          => $totalAdmins,
             'monthly_labels'        => $monthlyData->pluck('label')->values(),
             'monthly_counts'        => $monthlyData->pluck('count')->values(),
+            'admin_monthly_counts'  => $adminMonthlyData->values(),
 
             /* Month-over-month changes */
             'change_new_users'   => self::pctChange($newThisMonth,    $newLastMonth),
@@ -119,12 +132,23 @@ class HomeController extends Controller
             'total_contacts'     => $totalContacts,
             'new_contacts_month' => $newContactsMonth,
 
-            /* Ratios 0-100 (for progress bars) */
+            /* Ratios 0-100 (for progress bars & polar chart) */
             'ratio_users'      => $totalUsers      > 0 ? round($activeUsers      / $totalUsers      * 100) : 0,
             'ratio_categories' => $totalCategories > 0 ? round($activeCategories / $totalCategories * 100) : 0,
             'ratio_sliders'    => $totalSliders    > 0 ? round($activeSliders    / $totalSliders    * 100) : 0,
             'ratio_complaints' => $totalComplaints > 0 ? round(($totalComplaints - $pendingComplaints) / $totalComplaints * 100) : 0,
             'ratio_contacts'   => $totalContacts   > 0 ? min(round($newContactsMonth / max($totalContacts, 1) * 100 * 10), 100) : 0,
+
+            /* Platform distribution (for donut) */
+            'dist_series' => collect([
+                'users'       => $totalUsers,
+                'complaints'  => $totalComplaints,
+                'contacts'    => $totalContacts,
+                'categories'  => $totalCategories,
+                'faqs'        => $totalFaqs,
+                'posts'       => $totalPosts,
+                'sliders'     => $totalSliders,
+            ])->values(),
         ];
 
         return view('admin.home.index', compact('stats'));

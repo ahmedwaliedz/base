@@ -240,4 +240,10 @@
         'home_stat_this_year' => 'هذا العام',
         'home_stat_faqs_sub' => 'الأسئلة المتكررة',
         'home_stat_posts_sub' => 'المنشورات',
+        'home_chart_dist_title' => 'نظرة عامة على المنصة',
+        'home_chart_dist_sub' => 'توزيع جميع أنواع المحتوى',
+        'home_chart_polar_title' => 'نسب النشاط',
+        'home_chart_polar_sub' => 'النسب النشطة والمحلولة',
+        'home_chart_last_6' => 'آخر 6 أشهر',
+        'home_chart_resolved' => 'محلولة',
     ];

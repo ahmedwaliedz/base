@@ -250,22 +250,41 @@
     border-radius: 1rem;
     backdrop-filter: blur(18px) saturate(170%);
     -webkit-backdrop-filter: blur(18px) saturate(170%);
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.14);
-    padding: 1.4rem 1.5rem 1rem;
+    background: rgba(30,28,50,0.65);
+    border: 1px solid rgba(255,255,255,0.07);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.22);
+    padding: 0;
+    overflow: hidden;
 }
-.dash-chart__title { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; opacity: 0.9; }
-.dash-chart__sub   { font-size: 0.73rem; opacity: 0.4; margin-bottom: 1rem; }
-.dash-chart__legend { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 0.75rem; }
-.dash-chart__legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; opacity: 0.6; }
-.dash-chart__dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.dash-chart__head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.25rem 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.dash-chart__head-left { display: flex; align-items: center; gap: 0.6rem; }
+.dash-chart__icon {
+    width: 32px; height: 32px; border-radius: 0.5rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.95rem; flex-shrink: 0;
+}
+.dash-chart__title { font-size: 0.85rem; font-weight: 700; opacity: 0.9; margin: 0; }
+.dash-chart__sub   { font-size: 0.7rem; opacity: 0.38; margin: 0; }
+.dash-chart__badge {
+    display: inline-flex; align-items: center; gap: 0.2rem;
+    padding: 0.18rem 0.55rem; border-radius: 50rem;
+    font-size: 0.68rem; font-weight: 700;
+}
+.dash-chart__body  { padding: 0.5rem 0.5rem 0.75rem; }
+.dash-chart__legend { display: flex; flex-wrap: wrap; gap: 0.75rem; padding: 0 1.25rem 1rem; }
+.dash-chart__legend-item { display: flex; align-items: center; gap: 0.38rem; font-size: 0.72rem; opacity: 0.55; }
+.dash-chart__dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 
 [data-theme="light"] .dash-chart {
-    background: rgba(255,255,255,0.72);
-    border-color: rgba(115,103,240,0.10);
-    box-shadow: 0 4px 18px rgba(115,103,240,0.08);
+    background: rgba(255,255,255,0.80);
+    border-color: rgba(115,103,240,0.08);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
 }
+[data-theme="light"] .dash-chart__head { border-bottom-color: rgba(0,0,0,0.05); }
 
 @media (prefers-reduced-motion: reduce) {
     .dsc, .dash-welcome__orb { animation: none !important; opacity: 1 !important; transform: none !important; }
@@ -614,58 +633,114 @@
 
 {{-- ═══════════════ CHARTS ROW 1 ═══════════════ --}}
 <div class="row g-3 mb-3">
+
+    {{-- Multi-series Area: Users + Admins monthly --}}
     <div class="col-12 col-xl-8">
         <div class="dash-chart h-100">
-            <div class="dash-chart__title">{{ __('admin/main.home_chart_monthly_title') }}</div>
-            <div class="dash-chart__sub">{{ __('admin/main.home_chart_monthly_sub') }}</div>
-            <div id="chartMonthly"></div>
-        </div>
-    </div>
-    <div class="col-12 col-xl-4">
-        <div class="dash-chart h-100">
-            <div class="dash-chart__title">{{ __('admin/main.home_chart_status_title') }}</div>
-            <div class="dash-chart__sub">{{ __('admin/main.home_chart_status_sub') }}</div>
-            <div id="chartStatus"></div>
-            <div class="dash-chart__legend justify-content-center">
+            <div class="dash-chart__head">
+                <div class="dash-chart__head-left">
+                    <div class="dash-chart__icon" style="background:rgba(115,103,240,0.15);color:#7367f0">
+                        <i class="ti ti-chart-line"></i>
+                    </div>
+                    <div>
+                        <div class="dash-chart__title">{{ __('admin/main.home_chart_monthly_title') }}</div>
+                        <div class="dash-chart__sub">{{ __('admin/main.home_chart_monthly_sub') }}</div>
+                    </div>
+                </div>
+                <span class="dash-chart__badge" style="background:rgba(115,103,240,0.12);color:#7367f0">
+                    {{ __('admin/main.home_chart_last_6') }}
+                </span>
+            </div>
+            <div class="dash-chart__body"><div id="chartMonthly"></div></div>
+            <div class="dash-chart__legend">
                 <div class="dash-chart__legend-item">
-                    <div class="dash-chart__dot" style="background:#28c76f"></div>
-                    {{ __('admin/main.home_stat_active_users') }}
+                    <div class="dash-chart__dot" style="background:#7367f0"></div>
+                    {{ __('admin/main.home_stat_total_users') }}
                 </div>
                 <div class="dash-chart__legend-item">
-                    <div class="dash-chart__dot" style="background:#ea5455"></div>
-                    {{ __('admin/main.home_stat_blocked_users') }}
+                    <div class="dash-chart__dot" style="background:#1e88e5"></div>
+                    {{ __('admin/main.home_stat_total_admins') }}
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- Donut: Full platform distribution --}}
+    <div class="col-12 col-xl-4">
+        <div class="dash-chart h-100">
+            <div class="dash-chart__head">
+                <div class="dash-chart__head-left">
+                    <div class="dash-chart__icon" style="background:rgba(0,207,232,0.15);color:#00cfe8">
+                        <i class="ti ti-chart-donut"></i>
+                    </div>
+                    <div>
+                        <div class="dash-chart__title">{{ __('admin/main.home_chart_dist_title') }}</div>
+                        <div class="dash-chart__sub">{{ __('admin/main.home_chart_dist_sub') }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="dash-chart__body"><div id="chartDist"></div></div>
+            <div class="dash-chart__legend" style="justify-content:center">
+                <div class="dash-chart__legend-item"><div class="dash-chart__dot" style="background:#7367f0"></div>{{ __('admin/main.home_stat_total_users') }}</div>
+                <div class="dash-chart__legend-item"><div class="dash-chart__dot" style="background:#ff9f43"></div>{{ __('admin/main.home_stat_total_complaints') }}</div>
+                <div class="dash-chart__legend-item"><div class="dash-chart__dot" style="background:#1e88e5"></div>{{ __('admin/main.home_stat_total_contacts') }}</div>
+                <div class="dash-chart__legend-item"><div class="dash-chart__dot" style="background:#e861d8"></div>{{ __('admin/main.home_stat_total_categories') }}</div>
+                <div class="dash-chart__legend-item"><div class="dash-chart__dot" style="background:#20c997"></div>{{ __('admin/main.home_stat_total_faqs') }}</div>
+                <div class="dash-chart__legend-item"><div class="dash-chart__dot" style="background:#ea5455"></div>{{ __('admin/main.home_stat_posts') }}</div>
+                <div class="dash-chart__legend-item"><div class="dash-chart__dot" style="background:#28c76f"></div>{{ __('admin/main.home_stat_sliders') }}</div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 {{-- ═══════════════ CHARTS ROW 2 ═══════════════ --}}
 <div class="row g-3 mb-4">
-    <div class="col-12 col-xl-8">
+
+    {{-- Mixed: Bars (complaints+contacts) + Line (users) --}}
+    <div class="col-12 col-xl-7">
         <div class="dash-chart h-100">
-            <div class="dash-chart__title">{{ __('admin/main.home_chart_activity_title') }}</div>
-            <div class="dash-chart__sub">{{ __('admin/main.home_chart_activity_sub') }}</div>
-            <div id="chartActivity"></div>
+            <div class="dash-chart__head">
+                <div class="dash-chart__head-left">
+                    <div class="dash-chart__icon" style="background:rgba(255,159,67,0.15);color:#ff9f43">
+                        <i class="ti ti-chart-bar"></i>
+                    </div>
+                    <div>
+                        <div class="dash-chart__title">{{ __('admin/main.home_chart_activity_title') }}</div>
+                        <div class="dash-chart__sub">{{ __('admin/main.home_chart_activity_sub') }}</div>
+                    </div>
+                </div>
+                <span class="dash-chart__badge" style="background:rgba(255,159,67,0.12);color:#ff9f43">
+                    {{ __('admin/main.home_chart_last_6') }}
+                </span>
+            </div>
+            <div class="dash-chart__body"><div id="chartMixed"></div></div>
             <div class="dash-chart__legend">
-                <div class="dash-chart__legend-item">
-                    <div class="dash-chart__dot" style="background:#ff9f43"></div>
-                    {{ __('admin/main.home_stat_total_complaints') }}
-                </div>
-                <div class="dash-chart__legend-item">
-                    <div class="dash-chart__dot" style="background:#1e88e5"></div>
-                    {{ __('admin/main.home_stat_total_contacts') }}
-                </div>
+                <div class="dash-chart__legend-item"><div class="dash-chart__dot" style="background:#ff9f43"></div>{{ __('admin/main.home_stat_total_complaints') }}</div>
+                <div class="dash-chart__legend-item"><div class="dash-chart__dot" style="background:#1e88e5"></div>{{ __('admin/main.home_stat_total_contacts') }}</div>
+                <div class="dash-chart__legend-item"><div class="dash-chart__dot" style="background:#7367f0"></div>{{ __('admin/main.home_stat_total_users') }}</div>
             </div>
         </div>
     </div>
-    <div class="col-12 col-xl-4">
+
+    {{-- Polar Area: Active ratios per model --}}
+    <div class="col-12 col-xl-5">
         <div class="dash-chart h-100">
-            <div class="dash-chart__title">{{ __('admin/main.home_chart_radial_title') }}</div>
-            <div class="dash-chart__sub">{{ __('admin/main.home_chart_radial_sub') }}</div>
-            <div id="chartRadial"></div>
+            <div class="dash-chart__head">
+                <div class="dash-chart__head-left">
+                    <div class="dash-chart__icon" style="background:rgba(40,199,111,0.15);color:#28c76f">
+                        <i class="ti ti-chart-radar"></i>
+                    </div>
+                    <div>
+                        <div class="dash-chart__title">{{ __('admin/main.home_chart_polar_title') }}</div>
+                        <div class="dash-chart__sub">{{ __('admin/main.home_chart_polar_sub') }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="dash-chart__body"><div id="chartPolar"></div></div>
         </div>
     </div>
+
 </div>
 
 @endsection
@@ -676,117 +751,208 @@
 (function () {
     'use strict';
 
-    /* ─── Theme helpers ─────────────────────────────────── */
+    /* ─── Theme helpers ─────────────────────────────── */
     function isDark() {
         var t = document.documentElement.getAttribute('data-theme') || '';
         return t === 'dark' || (t !== 'light' && window.matchMedia('(prefers-color-scheme:dark)').matches);
     }
-    var tc   = function () { return isDark() ? 'rgba(225,222,245,0.5)'  : 'rgba(50,48,77,0.5)';  };
-    var gc   = function () { return isDark() ? 'rgba(255,255,255,0.05)' : 'rgba(50,48,77,0.05)'; };
+    var tc   = function () { return isDark() ? 'rgba(225,222,245,0.45)' : 'rgba(50,48,77,0.45)'; };
+    var gc   = function () { return isDark() ? 'rgba(255,255,255,0.04)' : 'rgba(50,48,77,0.05)'; };
+    var sc   = function () { return isDark() ? '#2a2742' : '#fff'; };
     var mode = function () { return isDark() ? 'dark' : 'light'; };
 
-    /* ─── 1. Area — Monthly Registrations ──────────────── */
+    var sharedAxis = function () {
+        return {
+            labels: { style: { colors: tc(), fontSize: '0.72rem', fontFamily: 'inherit' } },
+            axisBorder: { show: false }, axisTicks: { show: false }
+        };
+    };
+    var sharedGrid = function () {
+        return { borderColor: gc(), strokeDashArray: 4, xaxis: { lines: { show: false } } };
+    };
+    var sharedTooltip = function () {
+        return { theme: mode(), style: { fontSize: '0.78rem', fontFamily: 'inherit' } };
+    };
+
+    /* ── 1. Multi-series Area ── Users + Admins monthly ── */
     var areaChart = new ApexCharts(document.querySelector('#chartMonthly'), {
-        chart: { type:'area', height:240, toolbar:{show:false}, background:'transparent',
-                 animations:{enabled:true, easing:'easeinout', speed:750} },
-        series: [{ name:'{{ __('admin/main.home_chart_monthly_series') }}', data:@json($stats['monthly_counts']) }],
-        xaxis: { categories:@json($stats['monthly_labels']),
-                 labels:{style:{colors:tc(),fontSize:'0.74rem'}}, axisBorder:{show:false}, axisTicks:{show:false} },
-        yaxis: { labels:{style:{colors:tc(),fontSize:'0.74rem'}, formatter:function(v){return Math.round(v);}}, min:0 },
-        grid: { borderColor:gc(), strokeDashArray:4, xaxis:{lines:{show:false}} },
-        stroke: { curve:'smooth', width:2.5 },
-        colors: ['#7367f0'],
-        fill: { type:'gradient', gradient:{shadeIntensity:1, opacityFrom:0.35, opacityTo:0.02, stops:[0,95,100]} },
-        markers: { size:4, colors:['#7367f0'], strokeColors:isDark()?'#2f2b3d':'#fff', strokeWidth:2 },
-        dataLabels: { enabled:false },
-        tooltip: { theme:mode(), style:{fontSize:'0.78rem'} },
-        theme: { mode:mode() },
+        chart: {
+            type: 'area', height: 230,
+            toolbar: { show: false }, background: 'transparent',
+            animations: { enabled: true, easing: 'easeinout', speed: 800,
+                          animateGradually: { enabled: true, delay: 120 } },
+        },
+        series: [
+            { name: '{{ __('admin/main.home_stat_total_users') }}',  data: @json($stats['monthly_counts']) },
+            { name: '{{ __('admin/main.home_stat_total_admins') }}', data: @json($stats['admin_monthly_counts']) },
+        ],
+        xaxis: Object.assign({ categories: @json($stats['monthly_labels']) }, sharedAxis()),
+        yaxis: { labels: { style: { colors: tc(), fontSize: '0.72rem' }, formatter: function(v){ return Math.round(v); } }, min: 0 },
+        grid: sharedGrid(),
+        stroke: { curve: 'smooth', width: [2.5, 2] },
+        colors: ['#7367f0', '#1e88e5'],
+        fill: {
+            type: 'gradient',
+            gradient: { shadeIntensity: 1, opacityFrom: [0.32, 0.22], opacityTo: [0.01, 0.01], stops: [0, 90, 100] }
+        },
+        markers: { size: [4, 3], strokeColors: sc(), strokeWidth: 2, hover: { sizeOffset: 2 } },
+        dataLabels: { enabled: false },
+        tooltip: Object.assign({ shared: true, intersect: false }, sharedTooltip()),
+        theme: { mode: mode() },
     });
     areaChart.render();
 
-    /* ─── 2. Donut — User Status ────────────────────────── */
-    var donutChart = new ApexCharts(document.querySelector('#chartStatus'), {
-        chart: { type:'donut', height:220, background:'transparent',
-                 animations:{enabled:true, easing:'easeinout', speed:750} },
-        series: [{{ (int)$stats['active_users'] }}, {{ (int)$stats['blocked_users'] }}],
-        labels: ['{{ __('admin/main.home_stat_active_users') }}','{{ __('admin/main.home_stat_blocked_users') }}'],
-        colors: ['#28c76f','#ea5455'],
-        stroke: { width:0 },
-        plotOptions: { pie: { donut: { size:'68%', labels: { show:true,
-            total:{ show:true, label:'{{ __('admin/main.home_chart_total') }}', color:tc(), fontSize:'0.76rem',
-                    formatter:function(w){ return w.globals.seriesTotals.reduce(function(a,b){return a+b;},0); } },
-            value:{ fontSize:'1.5rem', fontWeight:800, color:isDark()?'#e1def5':'#32304d' } } } } },
-        dataLabels: { enabled:false },
-        legend: { show:false },
-        tooltip: { theme:mode(), style:{fontSize:'0.78rem'} },
-        theme: { mode:mode() },
-    });
-    donutChart.render();
-
-    /* ─── 3. Grouped Bar — Monthly Activity ─────────────── */
-    var barChart = new ApexCharts(document.querySelector('#chartActivity'), {
-        chart: { type:'bar', height:240, toolbar:{show:false}, background:'transparent',
-                 animations:{enabled:true, easing:'easeinout', speed:750} },
-        series: [
-            { name:'{{ __('admin/main.home_stat_total_complaints') }}', data:@json($stats['activity_complaints']) },
-            { name:'{{ __('admin/main.home_stat_total_contacts') }}',   data:@json($stats['activity_contacts'])   },
+    /* ── 2. Donut ── Full platform distribution ─────── */
+    var distSeries = @json($stats['dist_series']);
+    var distChart = new ApexCharts(document.querySelector('#chartDist'), {
+        chart: {
+            type: 'donut', height: 240, background: 'transparent',
+            animations: { enabled: true, easing: 'easeinout', speed: 800 },
+        },
+        series: distSeries,
+        labels: [
+            '{{ __('admin/main.home_stat_total_users') }}',
+            '{{ __('admin/main.home_stat_total_complaints') }}',
+            '{{ __('admin/main.home_stat_total_contacts') }}',
+            '{{ __('admin/main.home_stat_total_categories') }}',
+            '{{ __('admin/main.home_stat_total_faqs') }}',
+            '{{ __('admin/main.home_stat_posts') }}',
+            '{{ __('admin/main.home_stat_sliders') }}',
         ],
-        xaxis: { categories:@json($stats['activity_labels']),
-                 labels:{style:{colors:tc(),fontSize:'0.74rem'}}, axisBorder:{show:false}, axisTicks:{show:false} },
-        yaxis: { labels:{style:{colors:tc(),fontSize:'0.74rem'}, formatter:function(v){return Math.round(v);}}, min:0 },
-        grid: { borderColor:gc(), strokeDashArray:4, xaxis:{lines:{show:false}} },
-        colors: ['#ff9f43','#1e88e5'],
-        plotOptions: { bar:{ columnWidth:'50%', borderRadius:5, borderRadiusApplication:'end' } },
-        dataLabels: { enabled:false },
-        legend: { show:false },
-        tooltip: { theme:mode(), style:{fontSize:'0.78rem'}, shared:true, intersect:false },
-        theme: { mode:mode() },
+        colors: ['#7367f0','#ff9f43','#1e88e5','#e861d8','#20c997','#ea5455','#28c76f'],
+        stroke: { width: 0 },
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '65%',
+                    labels: {
+                        show: true,
+                        total: {
+                            show: true,
+                            label: '{{ __('admin/main.home_chart_total') }}',
+                            color: tc(), fontSize: '0.72rem',
+                            formatter: function(w) {
+                                return w.globals.seriesTotals.reduce(function(a, b){ return a + b; }, 0);
+                            }
+                        },
+                        value: { fontSize: '1.4rem', fontWeight: 800,
+                                 color: isDark() ? '#e1def5' : '#32304d',
+                                 offsetY: 4 },
+                        name: { fontSize: '0.7rem', color: tc(), offsetY: -6 },
+                    }
+                },
+                expandOnClick: true,
+            }
+        },
+        dataLabels: { enabled: false },
+        legend: { show: false },
+        tooltip: sharedTooltip(),
+        theme: { mode: mode() },
     });
-    barChart.render();
+    distChart.render();
 
-    /* ─── 4. Radial Bar — Active Ratios ─────────────────── */
-    var radialChart = new ApexCharts(document.querySelector('#chartRadial'), {
-        chart: { type:'radialBar', height:260, background:'transparent',
-                 animations:{enabled:true, easing:'easeinout', speed:900} },
-        series: [{{ $stats['ratio_users'] }}, {{ $stats['ratio_categories'] }}, {{ $stats['ratio_sliders'] }}],
-        labels: ['{{ __('admin/main.home_stat_active_users') }}','{{ __('admin/main.home_stat_total_categories') }}','{{ __('admin/main.home_stat_sliders') }}'],
-        colors: ['#28c76f','#e861d8','#00cfe8'],
-        plotOptions: { radialBar: {
-            hollow:{ size:'20%', margin:5 },
-            track:{ background:isDark()?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)', strokeWidth:'100%' },
-            dataLabels: {
-                name:{ fontSize:'0.72rem', offsetY:-4, color:tc() },
-                value:{ fontSize:'0.9rem', fontWeight:700, color:isDark()?'#e1def5':'#32304d',
-                        formatter:function(v){ return v+'%'; } },
-                total:{ show:true, label:'{{ __('admin/main.home_chart_total') }}', color:tc(), fontSize:'0.72rem',
-                        formatter:function(){ return '{{ $stats['ratio_users'] }}%'; } },
-            },
-            startAngle:-135, endAngle:135,
-        }},
-        stroke: { lineCap:'round' },
-        tooltip: { enabled:false },
-        theme: { mode:mode() },
+    /* ── 3. Mixed ── Bars (complaints+contacts) + Line (users) */
+    var mixedChart = new ApexCharts(document.querySelector('#chartMixed'), {
+        chart: {
+            type: 'bar', height: 230,
+            toolbar: { show: false }, background: 'transparent',
+            animations: { enabled: true, easing: 'easeinout', speed: 750 },
+        },
+        series: [
+            { name: '{{ __('admin/main.home_stat_total_complaints') }}', type: 'column', data: @json($stats['activity_complaints']) },
+            { name: '{{ __('admin/main.home_stat_total_contacts') }}',   type: 'column', data: @json($stats['activity_contacts']) },
+            { name: '{{ __('admin/main.home_stat_total_users') }}',      type: 'line',   data: @json($stats['monthly_counts']) },
+        ],
+        xaxis: Object.assign({ categories: @json($stats['activity_labels']) }, sharedAxis()),
+        yaxis: [
+            { seriesName: '{{ __('admin/main.home_stat_total_complaints') }}',
+              labels: { style: { colors: tc(), fontSize: '0.72rem' }, formatter: function(v){ return Math.round(v); } }, min: 0 },
+            { seriesName: '{{ __('admin/main.home_stat_total_contacts') }}', show: false },
+            { seriesName: '{{ __('admin/main.home_stat_total_users') }}',
+              opposite: true,
+              labels: { style: { colors: tc(), fontSize: '0.72rem' }, formatter: function(v){ return Math.round(v); } }, min: 0 },
+        ],
+        grid: sharedGrid(),
+        colors: ['#ff9f43', '#1e88e5', '#7367f0'],
+        plotOptions: { bar: { columnWidth: '45%', borderRadius: 4, borderRadiusApplication: 'end' } },
+        stroke: { width: [0, 0, 2.5], curve: 'smooth' },
+        fill: { opacity: [0.85, 0.85, 1] },
+        markers: { size: [0, 0, 4], strokeColors: sc(), strokeWidth: 2 },
+        dataLabels: { enabled: false },
+        legend: { show: false },
+        tooltip: Object.assign({ shared: true, intersect: false }, sharedTooltip()),
+        theme: { mode: mode() },
     });
-    radialChart.render();
+    mixedChart.render();
 
-    /* ─── Re-render on theme toggle ─────────────────────── */
+    /* ── 4. Polar Area ── Active ratios per model ───── */
+    var polarChart = new ApexCharts(document.querySelector('#chartPolar'), {
+        chart: {
+            type: 'polarArea', height: 270, background: 'transparent',
+            animations: { enabled: true, easing: 'easeinout', speed: 900 },
+            toolbar: { show: false },
+        },
+        series: [
+            {{ $stats['ratio_users'] }},
+            {{ $stats['ratio_categories'] }},
+            {{ $stats['ratio_sliders'] }},
+            {{ $stats['ratio_complaints'] }},
+        ],
+        labels: [
+            '{{ __('admin/main.home_stat_active_users') }}',
+            '{{ __('admin/main.home_stat_total_categories') }}',
+            '{{ __('admin/main.home_stat_sliders') }}',
+            '{{ __('admin/main.home_chart_resolved') }}',
+        ],
+        colors: ['#7367f0', '#e861d8', '#28c76f', '#ff9f43'],
+        stroke: { width: 0 },
+        fill: { opacity: 0.75 },
+        yaxis: { show: false },
+        plotOptions: {
+            polarArea: { rings: { strokeWidth: 1, strokeColor: gc() },
+                         spokes: { strokeWidth: 1, connectorColors: gc() } }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function(v) { return Math.round(v) + '%'; },
+            style: { fontSize: '0.72rem', fontFamily: 'inherit', colors: ['#fff'] },
+            dropShadow: { enabled: false },
+        },
+        legend: {
+            show: true, position: 'bottom',
+            fontSize: '0.72rem', fontFamily: 'inherit',
+            labels: { colors: tc() },
+            markers: { width: 8, height: 8, radius: 4 },
+            itemMargin: { horizontal: 8 },
+        },
+        tooltip: sharedTooltip(),
+        theme: { mode: mode() },
+    });
+    polarChart.render();
+
+    /* ─── Re-render on theme toggle ─────────────────── */
     document.querySelectorAll('[data-theme]').forEach(function(el) {
         el.addEventListener('click', function() {
             setTimeout(function() {
                 var m = mode();
-                var ax = {labels:{style:{colors:tc()}}};
-                var opts = {theme:{mode:m}, tooltip:{theme:m}, grid:{borderColor:gc()}, xaxis:ax, yaxis:{labels:{style:{colors:tc()}}}};
-                [areaChart, barChart].forEach(function(c){ c.updateOptions(opts); });
-                donutChart.updateOptions({ theme:{mode:m}, tooltip:{theme:m},
-                    plotOptions:{pie:{donut:{labels:{total:{color:tc()}, value:{color:isDark()?'#e1def5':'#32304d'}}}}} });
-                radialChart.updateOptions({ theme:{mode:m},
-                    plotOptions:{radialBar:{track:{background:isDark()?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.05)'},
-                        dataLabels:{name:{color:tc()}, value:{color:isDark()?'#e1def5':'#32304d'}, total:{color:tc()}}}} });
+                var axUpdate  = { labels: { style: { colors: tc() } } };
+                var baseOpts  = { theme:{mode:m}, tooltip:{theme:m}, grid:{borderColor:gc()},
+                                  xaxis: axUpdate, yaxis:[{labels:{style:{colors:tc()}}},{show:false},{labels:{style:{colors:tc()}}}] };
+                areaChart.updateOptions(Object.assign({}, baseOpts, {
+                    markers: { strokeColors: sc() },
+                    yaxis: { labels: { style: { colors: tc() } } },
+                }));
+                mixedChart.updateOptions(baseOpts);
+                distChart.updateOptions({ theme:{mode:m}, tooltip:{theme:m},
+                    plotOptions:{pie:{donut:{labels:{total:{color:tc()}, value:{color:isDark()?'#e1def5':'#32304d'}, name:{color:tc()}}}}} });
+                polarChart.updateOptions({ theme:{mode:m}, tooltip:{theme:m},
+                    legend:{ labels:{colors:tc()} },
+                    plotOptions:{polarArea:{rings:{strokeColor:gc()}, spokes:{connectorColors:gc()}}} });
             }, 50);
         });
     });
 
-    /* ─── Animated counters ─────────────────────────────── */
+    /* ─── Animated counters ─────────────────────────── */
     document.querySelectorAll('[data-counter]').forEach(function(el) {
         var target = parseInt(el.getAttribute('data-counter'), 10) || 0;
         var start  = performance.now(), dur = 900;
@@ -797,7 +963,7 @@
         })(start);
     });
 
-    /* ─── Animated progress bars ────────────────────────── */
+    /* ─── Animated progress bars ────────────────────── */
     setTimeout(function() {
         document.querySelectorAll('.dsc__bar-fill').forEach(function(el) {
             el.style.width = (el.getAttribute('data-width') || 0) + '%';

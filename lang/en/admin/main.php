@@ -194,4 +194,10 @@
         'home_stat_this_year' => 'This year',
         'home_stat_faqs_sub' => 'Frequently asked questions',
         'home_stat_posts_sub' => 'Published posts',
+        'home_chart_dist_title' => 'Platform Overview',
+        'home_chart_dist_sub' => 'All content types distribution',
+        'home_chart_polar_title' => 'Activity Ratios',
+        'home_chart_polar_sub' => 'Active & resolved percentages',
+        'home_chart_last_6' => 'Last 6 months',
+        'home_chart_resolved' => 'Resolved',
     ];
