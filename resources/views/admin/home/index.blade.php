@@ -137,46 +137,56 @@
 ═══════════════════════════════════════════════════════════ */
 .dsc {
     position: relative;
-    border-radius: 1rem;
-    padding: 1.25rem 1.4rem;
+    border-radius: 0.875rem;
+    padding: 1rem 1.15rem 0.95rem;
     overflow: hidden;
-    backdrop-filter: blur(18px) saturate(170%);
-    -webkit-backdrop-filter: blur(18px) saturate(170%);
-    border: 1px solid rgba(255,255,255,0.09);
-    background: rgba(255,255,255,0.04);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(var(--dsc-rgb), 0.18);
+    background: rgba(var(--dsc-rgb), 0.06);
+    /* colored shadow — key change */
+    box-shadow:
+        0 2px 8px  rgba(var(--dsc-rgb), 0.08),
+        0 8px 24px rgba(var(--dsc-rgb), 0.18),
+        inset 0 1px 0 rgba(255,255,255,0.08);
     transition: transform 0.22s ease, box-shadow 0.22s ease;
     cursor: default;
-    animation: dsc-in 0.5s ease-out both;
+    animation: dsc-in 0.45s ease-out both;
 }
 .dsc:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.09);
+    transform: translateY(-5px);
+    box-shadow:
+        0 4px 12px  rgba(var(--dsc-rgb), 0.12),
+        0 16px 36px rgba(var(--dsc-rgb), 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.12);
 }
 @keyframes dsc-in {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0);    }
 }
 
-/* gradient tint per card */
+/* top-left accent gradient */
 .dsc::before {
     content: '';
-    position: absolute; inset: 0;
+    position: absolute;
+    inset-block-start: 0; inset-inline-start: 0;
+    width: 60%; height: 60%;
     border-radius: inherit;
-    background: linear-gradient(135deg, rgba(var(--dsc-rgb),0.13) 0%, transparent 55%);
+    background: radial-gradient(ellipse at 0% 0%, rgba(var(--dsc-rgb),0.22) 0%, transparent 70%);
     pointer-events: none;
 }
-/* shimmer */
+/* shimmer sweep */
 .dsc::after {
     content: '';
     position: absolute;
-    top: -40%; inset-inline-start: -60%;
-    width: 40%; height: 180%;
-    background: linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.065) 50%,transparent 60%);
-    transform: skewX(-20deg);
-    transition: inset-inline-start 0.45s ease;
+    top: -40%; inset-inline-start: -70%;
+    width: 40%; height: 200%;
+    background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.07) 50%, transparent 65%);
+    transform: skewX(-18deg);
+    transition: inset-inline-start 0.5s ease;
+    pointer-events: none;
 }
-.dsc:hover::after { inset-inline-start: 130%; }
+.dsc:hover::after { inset-inline-start: 140%; }
 
 /* color tokens */
 .dsc--purple  { --dsc-rgb: 115,103,240; }
@@ -190,51 +200,69 @@
 
 /* stagger */
 .dsc:nth-child(1) { animation-delay: 0ms;   }
-.dsc:nth-child(2) { animation-delay: 60ms;  }
-.dsc:nth-child(3) { animation-delay: 120ms; }
-.dsc:nth-child(4) { animation-delay: 180ms; }
+.dsc:nth-child(2) { animation-delay: 55ms;  }
+.dsc:nth-child(3) { animation-delay: 110ms; }
+.dsc:nth-child(4) { animation-delay: 165ms; }
 
 .dsc__icon {
-    width: 42px; height: 42px;
-    border-radius: 0.7rem;
-    background: rgba(var(--dsc-rgb),0.17);
+    width: 36px; height: 36px;
+    border-radius: 0.6rem;
+    background: rgba(var(--dsc-rgb), 0.15);
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     color: rgb(var(--dsc-rgb));
-    box-shadow: 0 0 0 1px rgba(var(--dsc-rgb),0.22);
+    box-shadow: 0 0 0 1px rgba(var(--dsc-rgb), 0.25), 0 4px 10px rgba(var(--dsc-rgb), 0.2);
     flex-shrink: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 .dsc__label {
-    font-size: 0.69rem;
+    font-size: 0.67rem;
     text-transform: uppercase;
-    letter-spacing: 0.07em;
-    opacity: 0.5;
-    font-weight: 600;
-    margin-bottom: 0.2rem;
+    letter-spacing: 0.08em;
+    opacity: 0.48;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
 }
 .dsc__value {
-    font-size: 1.85rem;
+    font-size: 1.6rem;
     font-weight: 800;
     line-height: 1.1;
     color: rgb(var(--dsc-rgb));
-    text-shadow: 0 0 20px rgba(var(--dsc-rgb),0.3);
+    text-shadow: 0 0 18px rgba(var(--dsc-rgb), 0.4);
+    letter-spacing: -0.02em;
 }
 .dsc__sub {
-    font-size: 0.75rem;
-    opacity: 0.45;
-    margin-top: 0.25rem;
+    font-size: 0.72rem;
+    opacity: 0.42;
+    margin-top: 0.2rem;
     display: flex; align-items: center; gap: 0.25rem;
 }
 .dsc__badge {
     display: inline-flex; align-items: center;
-    padding: 0.15rem 0.55rem;
+    padding: 0.12rem 0.5rem;
     border-radius: 50rem;
-    font-size: 0.67rem;
+    font-size: 0.64rem;
     font-weight: 700;
-    background: rgba(var(--dsc-rgb),0.15);
+    background: rgba(var(--dsc-rgb), 0.14);
     color: rgb(var(--dsc-rgb));
-    margin-top: 0.5rem;
+    margin-top: 0.45rem;
+    border: 1px solid rgba(var(--dsc-rgb), 0.2);
+}
+
+/* light-mode: stronger glass feel */
+[data-theme="light"] .dsc {
+    background: rgba(255,255,255,0.72);
+    border-color: rgba(var(--dsc-rgb), 0.2);
+    box-shadow:
+        0 2px 8px  rgba(var(--dsc-rgb), 0.10),
+        0 8px 24px rgba(var(--dsc-rgb), 0.20),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+}
+[data-theme="light"] .dsc:hover {
+    box-shadow:
+        0 4px 12px  rgba(var(--dsc-rgb), 0.15),
+        0 16px 36px rgba(var(--dsc-rgb), 0.30),
+        inset 0 1px 0 rgba(255,255,255,0.9);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -274,15 +302,11 @@
     flex-shrink: 0;
 }
 
-/* ── Light mode overrides ─────────────────────────────── */
-[data-theme="light"] .dsc,
+/* ── Light mode: chart cards ──────────────────────────── */
 [data-theme="light"] .dash-chart {
-    background: rgba(255,255,255,0.70);
+    background: rgba(255,255,255,0.72);
     border-color: rgba(115,103,240,0.10);
-    box-shadow: 0 4px 18px rgba(115,103,240,0.07);
-}
-[data-theme="light"] .dsc:hover {
-    box-shadow: 0 10px 28px rgba(var(--dsc-rgb),0.14);
+    box-shadow: 0 4px 18px rgba(115,103,240,0.08);
 }
 [data-theme="light"] .dash-welcome { /* keep dark even in light mode */ }
 
