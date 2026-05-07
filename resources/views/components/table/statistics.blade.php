@@ -1,5 +1,6 @@
 @props([
     'loaderCards' => 4,
+    'loaderCol' => 'col-6 col-md-4 col-xl-2',
 ])
 <div id="usersStatsContainer">
     <div class="crud-stats mb-3">
@@ -38,7 +39,7 @@
             <div id="usersStatsLoader" class="show_on_load">
                 <div class="row g-3">
                     @for ($i = 0; $i < $loaderCards; $i++)
-                        <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="{{ $loaderCol }}">
                             <div class="crud-stats__card d-flex align-items-center justify-content-between">
                                 <div class="w-100">
                                     <div class="crud-stats__label mb-2 placeholder-glow"><span class="placeholder col-6"></span></div>

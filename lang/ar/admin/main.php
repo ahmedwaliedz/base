@@ -29,6 +29,8 @@
         'statistics_toggle' => 'إظهار أو إخفاء الرسوم',
         'total' => 'الإجمالي',
         'today' => 'اليوم',
+        'this_week' => 'هذا الأسبوع',
+        'this_month' => 'هذا الشهر',
         'diagrams' => 'الرسوم',
         'diagrams_subtitle' => 'عرض سريع للمخططات في هذا القسم',
         'diagrams_toggle' => 'إظهار أو إخفاء الرسوم',

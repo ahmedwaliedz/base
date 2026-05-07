@@ -114,6 +114,8 @@
 .crud-stats__card--inactive,
 .crud-stats__card--blocked  { --card-accent-rgb: var(--color-warning-rgb); }
 .crud-stats__card--today    { --card-accent-rgb: var(--color-brand-secondary-rgb); }
+.crud-stats__card--week     { --card-accent-rgb: 168, 85, 247; }
+.crud-stats__card--month    { --card-accent-rgb: 245, 158, 11; }
 
 .crud-stats__card {
     --card-accent-rgb: var(--color-brand-primary-rgb);
@@ -200,11 +202,42 @@
 
 .crud-stats__value {
     color: var(--text-strong);
-    font-size: 1.65rem;
+    font-size: 1.4rem;
     font-weight: 800;
     line-height: 1.15;
     letter-spacing: -0.02em;
     margin: 0;
+}
+
+@media (min-width: 1400px) {
+    .crud-stats__value { font-size: 1.55rem; }
+}
+
+/* Growth delta pill (next to month label) */
+.crud-stats__delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.18rem;
+    padding: 0.1rem 0.38rem;
+    border-radius: var(--radius-xs);
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.crud-stats__delta--up {
+    background: var(--color-success-soft);
+    color: var(--color-success);
+}
+
+.crud-stats__delta--down {
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+}
+
+.crud-stats__delta i {
+    font-size: 0.7rem;
 }
 
 .crud-stats__icon {

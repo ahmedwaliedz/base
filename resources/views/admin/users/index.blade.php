@@ -1,7 +1,7 @@
 @extends('admin.layouts.crud.index')
 
 @push('content')
-    <x-table.statistics :loaderCards="4" />
+    <x-table.statistics :loaderCards="6" />
 
     <x-table.buttons createRoute="{{ route('admin.users.create') }}"
                      :hasNotification="true"

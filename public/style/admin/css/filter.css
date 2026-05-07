@@ -936,33 +936,61 @@
 }
 
 /* ═══ Empty state ═════════════════════════════════════════ */
-.datatables-products tbody tr.data-rows td .text-center.py-5 {
-    padding: 3rem 1rem !important;
-}
-
-.datatables-products tbody tr.data-rows td .text-center.py-5 i.ti-file-off {
-    display: inline-flex !important;
+.crud-empty-state {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 64px;
-    height: 64px;
+    padding: 3rem 1rem;
+    text-align: center;
+    gap: 0.4rem;
+}
+
+.crud-empty-state__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 0.8rem;
     border-radius: 50%;
-    margin-bottom: 1rem !important;
-    font-size: 1.75rem !important;
-    color: var(--color-brand-primary) !important;
-    background: rgba(var(--color-brand-primary-rgb), 0.10);
-    border: 1px solid rgba(var(--color-brand-primary-rgb), 0.18);
+    font-size: 1.9rem;
+    color: var(--color-brand-primary);
+    background:
+        radial-gradient(circle at 30% 30%,
+            rgba(var(--color-brand-primary-rgb), 0.18),
+            rgba(var(--color-brand-primary-rgb), 0.06));
+    border: 1px solid rgba(var(--color-brand-primary-rgb), 0.20);
+    box-shadow: 0 4px 12px rgba(var(--color-brand-primary-rgb), 0.10);
 }
 
-.datatables-products tbody tr.data-rows td .text-center.py-5 h5 {
-    color: var(--text-strong) !important;
+.crud-empty-state__title {
+    color: var(--text-strong);
     font-weight: 700;
+    font-size: 1rem;
+    margin: 0;
 }
 
-.datatables-products tbody tr.data-rows td .text-center.py-5 p {
-    color: var(--text-muted) !important;
+.crud-empty-state__desc {
+    color: var(--text-muted);
     font-size: 0.85rem;
-    margin-bottom: 0;
+    margin: 0;
+    max-width: 26rem;
+}
+
+.crud-empty-state__cta {
+    margin-top: 0.9rem;
+    border-radius: var(--radius-md);
+    padding: 0.55rem 1.4rem;
+    font-weight: 600;
+    transition:
+        transform var(--duration-fast) var(--ease-bounce),
+        box-shadow var(--duration-base) var(--ease-smooth);
+}
+
+.crud-empty-state__cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px rgba(var(--color-brand-primary-rgb), 0.32);
 }
 
 /* ═══ Selected row highlight (checkbox checked) ═══════════ */

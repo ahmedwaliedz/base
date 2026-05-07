@@ -21,6 +21,8 @@
         'statistics_toggle' => 'Show or hide charts',
         'total' => 'Total',
         'today' => 'Today',
+        'this_week' => 'This Week',
+        'this_month' => 'This Month',
         'diagrams' => 'Charts',
         'diagrams_subtitle' => 'A quick view of charts in this section',
         'diagrams_toggle' => 'Show or hide charts',

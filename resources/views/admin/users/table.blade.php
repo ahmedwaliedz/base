@@ -1,4 +1,7 @@
-@extends('admin.layouts.crud.table', ['rows' => $users])
+@extends('admin.layouts.crud.table', [
+    'rows'        => $users,
+    'createRoute' => route('admin.users.create'),
+])
 
 @section('table')
     @foreach ($users as $user)
