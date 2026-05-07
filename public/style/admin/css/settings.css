@@ -12,11 +12,17 @@
    PER-TAB ACCENT COLOR TOKENS
 ═══════════════════════════════════════════════════════════ */
 :root {
+    /* Settings page tabs */
     --st-main-rgb:     var(--color-brand-primary-rgb);   /* 115,103,240 */
     --st-pricing-rgb:  var(--color-success-rgb);          /* 34,197,94   */
     --st-images-rgb:   var(--color-brand-secondary-rgb);  /* 0,207,232   */
     --st-smtp-rgb:     var(--color-warning-rgb);          /* 245,158,11  */
     --st-location-rgb: 30, 136, 229;
+
+    /* Notifications page tabs */
+    --st-notif-rgb:    var(--color-brand-primary-rgb);   /* 115,103,240 — bell */
+    --st-mail-rgb:     var(--color-brand-secondary-rgb); /* 0,207,232   — envelope */
+    --st-sms-rgb:      var(--color-success-rgb);         /* 34,197,94   — phone msg */
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -230,6 +236,9 @@
 .settings-nav__btn[data-tab="images"]   { --tab-rgb: var(--st-images-rgb); }
 .settings-nav__btn[data-tab="smtp"]     { --tab-rgb: var(--st-smtp-rgb); }
 .settings-nav__btn[data-tab="location"] { --tab-rgb: var(--st-location-rgb); }
+.settings-nav__btn[data-tab="notif"]    { --tab-rgb: var(--st-notif-rgb); }
+.settings-nav__btn[data-tab="mail"]     { --tab-rgb: var(--st-mail-rgb); }
+.settings-nav__btn[data-tab="sms"]      { --tab-rgb: var(--st-sms-rgb); }
 
 /* Mobile: horizontal scrolling pills */
 @media (max-width: 991.98px) {
@@ -311,6 +320,9 @@
 .settings-card[data-card="images"]   { --card-rgb: var(--st-images-rgb); }
 .settings-card[data-card="smtp"]     { --card-rgb: var(--st-smtp-rgb); }
 .settings-card[data-card="location"] { --card-rgb: var(--st-location-rgb); }
+.settings-card[data-card="notif"]    { --card-rgb: var(--st-notif-rgb); }
+.settings-card[data-card="mail"]     { --card-rgb: var(--st-mail-rgb); }
+.settings-card[data-card="sms"]      { --card-rgb: var(--st-sms-rgb); }
 
 /* ── HEADER ── */
 .settings-card__head {
@@ -471,6 +483,11 @@
 .settings-card .form-select:focus {
     border-color: rgba(var(--card-rgb), 0.55);
     box-shadow: 0 0 0 3px rgba(var(--card-rgb), 0.16);
+}
+
+.settings-card textarea.form-control {
+    min-height: 5.5rem;
+    resize: vertical;
 }
 
 .settings-card .input-group-text {
