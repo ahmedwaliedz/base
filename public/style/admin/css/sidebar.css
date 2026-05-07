@@ -34,6 +34,26 @@
     border-inline-end: 1px solid var(--sb-border);
     box-shadow: var(--sb-shadow);
     font-family: inherit;
+
+    /* Isolate sidebar scroll from page scroll.
+       Without this, scrolling inside the sidebar past its top/bottom
+       chains up to the document and moves the page content too. */
+    overscroll-behavior: contain;
+}
+
+/* The actual scrollable list inside the sidebar — same isolation,
+   so wheel events here do not bubble out to the page. */
+#layout-menu > ul.menu-inner {
+    overscroll-behavior: contain;
+    /* On touch devices Perfect Scrollbar's scroll target is this list */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* The outer .layout-menu wrapper Sneat positions as fixed on >=1200px.
+   Containing scroll here belt-and-braces prevents chaining when the
+   sidebar is offcanvas on mobile too. */
+.layout-menu {
+    overscroll-behavior: contain;
 }
 
 /* ═══════════════════════════════════════
