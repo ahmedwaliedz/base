@@ -20,6 +20,7 @@
             @include('admin.layouts.nav')
             <div class="content-wrapper">
                 <div class="container-xxl flex-grow-1 container-p-y">
+                    {!!   \App\Builders\Breadcrumb\BreadcrumbBuilder::buildFromConfig() !!}
                     @yield('content')
                 </div>
                 @include('admin.layouts.footer')

@@ -1,32 +1,22 @@
-@php
-    $lastCrumb   = collect($crumbs)->last();
-    $pageTitle   = $lastCrumb ? __('admin/routes.admin.' . $lastCrumb['title']) : '';
-    $pageIcon    = $lastCrumb['icon'] ?? '';
-@endphp
-
-<div class="navbar-page-info">
-
-    {{-- Page title --}}
-    <div class="navbar-page-title">
-        @if($pageIcon)
-            {!! $pageIcon !!}
+<div class="admin-breadcrumbs-glass mb-4">
+    @foreach($crumbs as $crumb)
+        {{-- render the crumb --}}
+        @if($crumb['active'])
+            <span class="breadcrumb-current active-breadcrumb" aria-current="page">
+                {!! $crumb['icon'] !!} {{ __('admin/routes.admin.'.$crumb['title']) }}
+            </span>
+        @else
+            <a href="{{ $crumb['url'] }}">
+                {!! $crumb['icon'] !!} {{ __('admin/routes.admin.'.$crumb['title']) }}
+            </a>
         @endif
-        <span>{{ $pageTitle }}</span>
-    </div>
 
-    {{-- Breadcrumb trail --}}
-    <div class="navbar-breadcrumb-trail">
-        @foreach($crumbs as $crumb)
-            @if($crumb['active'])
-                <span class="crumb-active">{{ __('admin/routes.admin.' . $crumb['title']) }}</span>
-            @else
-                <a href="{{ $crumb['url'] }}" class="crumb-link">{{ __('admin/routes.admin.' . $crumb['title']) }}</a>
-            @endif
-
-            @unless($loop->last)
-                <span class="crumb-sep">/</span>
-            @endunless
-        @endforeach
-    </div>
-
+        {{-- separator after, except on the last item --}}
+        @unless($loop->last)
+            <span class="breadcrumb-separator mx-1">
+                <i class="fa fa-angle-left"></i>
+            </span>
+        @endunless
+    @endforeach
 </div>
+
