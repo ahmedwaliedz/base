@@ -22,13 +22,7 @@ class UserService extends AuthenticatableBaseService {
     }
 
     public function editVars(): array {
-        return [
-            'countries'                   => Country::where('is_active', true)->forSelect(['code as id', 'code as name'])->toArray(),
-            'receiveNotificationsOptions' => [
-                ['id' => true, 'name' => __('admin/main.yes')],
-                ['id' => false, 'name' => __('admin/main.no')],
-            ],
-        ];
+        return $this->createVars();
     }
 
 }

@@ -152,6 +152,8 @@
         'reload' => 'Reload',
         'create' => 'Create',
         'blocked' => 'Blocked',
+        'block' => 'Block',
+        'unblock' => 'Unblock',
         'active' => 'Active',
         'name' => 'Name',
         'role' => 'Role',

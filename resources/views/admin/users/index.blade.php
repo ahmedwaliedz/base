@@ -29,6 +29,15 @@
                         ['type' => 'text', 'name' => 'name'],
                         ['type' => 'text', 'name' => 'phone'],
                         ['type' => 'text', 'name' => 'email'],
+                        [
+                            'type' => 'select',
+                            'name' => 'is_blocked',
+                            'options' => [
+                                ['id' => '', 'name' => __('admin/main.all')],
+                                ['id' => 'not_blocked', 'name' => __('admin/main.active')],
+                                ['id' => 'blocked_only', 'name' => __('admin/main.blocked')],
+                            ],
+                        ],
                     ]" />
 
     <x-table.bulk-actions :hasDelete="true"

@@ -54,6 +54,19 @@
     --surface-border:             rgba(115, 103, 240, 0.14); /* all borders  */
     --surface-border-strong:      rgba(115, 103, 240, 0.28); /* focus rings  */
 
+    /* ── Sidebar Gradient Surfaces ────── */
+    --sb-gradient-from:         #1f1c3a;
+    --sb-gradient-mid:          #2d2a5e;
+    --sb-gradient-to:           #232142;
+
+    --sb-glass-bg-dark:         rgba(44, 49, 72, 0.72);
+    --sb-glass-bg-light:        rgba(255, 255, 255, 0.86);
+    --sb-glass-border-dark:     rgba(255, 255, 255, 0.06);
+    --sb-glass-border-light:    rgba(115, 103, 240, 0.12);
+
+    --sb-orb-primary:           rgba(115, 103, 240, 0.35);
+    --sb-orb-secondary:         rgba(0, 207, 232, 0.25);
+
     /* ── Typography ─────────────────────── */
     --text-strong:                #2F2B3D;
     --text-body:                  #6F6B7D;

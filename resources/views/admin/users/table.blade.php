@@ -18,7 +18,7 @@
             @endif
 
             {{-- Compact name + email cell on mobile, separated columns on desktop --}}
-            <td class="sorting_1">
+            <td>
                 <div class="d-flex product-name align-items-center gap-2">
                     <div class="avatar-wrapper flex-shrink-0">
                         <div class="avatar rounded-2">
@@ -49,7 +49,7 @@
                         $statusLabel = $user->statusData()['label'];
                     @endphp
                     <label class="user-status-toggle"
-                           title="{{ $isBlocked ? __('admin/main.click_to_unblock') : __('admin/main.click_to_block') }}">
+                           title="{{ $isBlocked ? __('admin/main.unblock') : __('admin/main.block') }}">
                         <input class="form-check-input switch-block visually-hidden" type="checkbox" role="switch"
                                data-id="{{ $user->id }}"
                                data-route="{{ route('admin.users.switchBlock', ['id' => $user->id]) }}"

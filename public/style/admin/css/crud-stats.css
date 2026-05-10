@@ -247,7 +247,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(var(--card-accent-rgb), 0.16);
+    background: rgba(var(--card-accent-rgb), 0.14);
     color: rgb(var(--card-accent-rgb));
     border: 1px solid rgba(var(--card-accent-rgb), 0.28);
     flex-shrink: 0;

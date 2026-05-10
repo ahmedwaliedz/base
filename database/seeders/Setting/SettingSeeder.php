@@ -17,19 +17,19 @@ class SettingSeeder extends Seeder
         $mainData = [
             [
                 'key'   => 'name',
-                'value' => json_encode(['ar' => 'أوامر الشبكه', 'en' => 'Awamer Alshbakah']),
+                'value' => json_encode(['ar' => 'التطبيق', 'en' => 'Application']),
                 'type'  => SettingTypeEnum::JSON,
             ],[
                 'key'   => 'email',
-                'value' => 'aait@info.com',
+                'value' => 'hello@example.com',
                 'type'  => SettingTypeEnum::STRING,
             ],[
                 'key'   => 'whatsapp',
-                'value' => '0966555184424',
+                'value' => '',
                 'type'  => SettingTypeEnum::STRING,
             ],[
                 'key'   => 'phone',
-                'value' => '0966555184424',
+                'value' => '',
                 'type'  => SettingTypeEnum::STRING,
             ],[
                 'key'   => 'is_production',
@@ -70,19 +70,19 @@ class SettingSeeder extends Seeder
         $locationData=[
           [
               'key'   => 'map_desc',
-              'value' => json_encode(['ar' => 'الرياض - السعودية', 'en' => 'Riyadh - Saudi Arabia']),
+              'value' => json_encode(['ar' => 'غير محدد', 'en' => 'Not set']),
               'type'  => SettingTypeEnum::JSON,
           ],[
               'key'   => 'lat',
-              'value' => '24.7136',
+              'value' => '',
               'type'  => SettingTypeEnum::STRING,
           ],[
               'key'   => 'lng',
-              'value' => '46.6753',
+              'value' => '',
               'type'  => SettingTypeEnum::STRING,
           ],[
                 'key' => 'google_map_api_key',
-                'value' => 'AIzaSyA9S2ndLXNQAUC10JXWv9ajJljAxcVF-eM',
+                'value' => '',
                 'type'  => SettingTypeEnum::STRING,
             ]
         ];
@@ -117,7 +117,7 @@ class SettingSeeder extends Seeder
                 'type'  => SettingTypeEnum::STRING,
             ],[
                 'key'   => 'mail_from_name',
-                'value' => 'Example',
+                'value' => 'Application',
                 'type'  => SettingTypeEnum::STRING,
             ],
         ];

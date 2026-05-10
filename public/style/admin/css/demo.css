@@ -316,9 +316,35 @@
     }
 }
 
-/* Main admin column: fill width beside fixed sidebar (avoids empty strip + max-width centering gap on wide screens) */
+/* Main admin column + Navbar: fill width beside fixed sidebar (avoids empty strip + max-width centering gap on wide screens) */
 @media (min-width: 1200px) {
     .layout-content-navbar .layout-page .content-wrapper > .container-xxl:first-child {
         max-width: 100%;
+    }
+
+    /* vendor/core.css caps .layout-navbar.navbar-detached.container-xxl at 1392px —
+       override so the navbar stays as wide as the content cards below it */
+    .layout-navbar.navbar-detached.container-xxl {
+        max-width: 100% !important;
+    }
+}
+
+/* ════════════════════════════════════════════════════
+   Navbar — تناسق border-radius وshadow مع بطاقات الداشبورد
+   vendor/core.css sets border-radius: 0.375rem (6px) — override to match cards (16px)
+══════════════════════════════════════════════════════ */
+.layout-navbar.navbar-detached {
+    border-radius: var(--radius-xl) !important;
+    box-shadow: 0 4px 20px rgba(var(--color-brand-primary-rgb), 0.08) !important;
+}
+
+[data-theme*='dark'] .layout-navbar.navbar-detached,
+.dark-style .layout-navbar.navbar-detached {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme='system'] .layout-navbar.navbar-detached {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
     }
 }

@@ -28,13 +28,13 @@
 </div>
 
 <div class="col-6 col-md-4 col-xl-2">
-    <div class="crud-stats__card crud-stats__card--inactive d-flex align-items-center justify-content-between">
+    <div class="crud-stats__card crud-stats__card--blocked d-flex align-items-center justify-content-between">
         <div>
-            <p class="crud-stats__label mb-1">{{ __('admin/main.inactive') }}</p>
-            <p class="crud-stats__value">{{ number_format($inactive ?? 0) }}</p>
+            <p class="crud-stats__label mb-1">{{ __('admin/main.blocked') }}</p>
+            <p class="crud-stats__value">{{ number_format($blocked ?? 0) }}</p>
         </div>
         <span class="crud-stats__icon" aria-hidden="true">
-            <i class="ti ti-player-pause"></i>
+            <i class="ti ti-lock"></i>
         </span>
     </div>
 </div>

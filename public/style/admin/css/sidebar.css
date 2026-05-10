@@ -10,27 +10,35 @@
    LIGHT MODE (default)
 ═══════════════════════════════════════ */
 #layout-menu {
-    --sb-bg:               var(--surface-base);
-    --sb-bg-2:             var(--surface-raised);
-    --sb-border:           var(--surface-border);
-    --sb-text:             var(--text-body);
-    --sb-text-strong:      var(--text-strong);
-    --sb-muted:            var(--text-muted);
-    --sb-hover-bg:         var(--surface-overlay);
-    --sb-active-bg:        rgba(var(--color-brand-primary-rgb), 0.12);
-    --sb-accent:           var(--color-brand-primary);
-    --sb-accent-2:         var(--color-brand-secondary);
-    --sb-accent-soft:      rgba(var(--color-brand-primary-rgb), 0.55);
-    --sb-divider:          var(--surface-border);
-    --sb-radius:           var(--radius-md);
-    --sb-search-bg:        var(--surface-canvas);
-    --sb-search-bg-focus:  var(--surface-base);
-    --sb-tooltip-bg:       var(--text-strong);
-    --sb-tooltip-text:     #fff;
-    --sb-shadow:           4px 0 18px rgba(var(--color-brand-primary-rgb), 0.04);
+    --sb-bg:              #faf9ff;
+    --sb-bg-2:            #f2f0ff;
+    --sb-bg-gradient:     linear-gradient(180deg, #f7f5ff 0%, #eeebff 100%);
+    --sb-border:          rgba(115, 103, 240, 0.18);
+    --sb-text:            var(--text-body);
+    --sb-text-strong:     var(--text-strong);
+    --sb-muted:           var(--text-muted);
+    --sb-hover-bg:        rgba(115, 103, 240, 0.07);
+    --sb-active-bg:       rgba(115, 103, 240, 0.13);
+    --sb-active-text:     var(--color-brand-primary-deep);
+    --sb-accent:          var(--color-brand-primary);
+    --sb-accent-2:        var(--color-brand-secondary);
+    --sb-accent-soft:     rgba(115, 103, 240, 0.55);
+    --sb-divider:         var(--surface-border);
+    --sb-radius:          var(--radius-md);
+    --sb-search-bg:       rgba(255, 255, 255, 0.42);
+    --sb-search-bg-focus: rgba(255, 255, 255, 0.78);
+    --sb-tooltip-bg:      var(--text-strong);
+    --sb-tooltip-text:    #fff;
+    --sb-shadow:          4px 0 24px rgba(115, 103, 240, 0.10);
 
+    --sb-orb-1:           rgba(115, 103, 240, 0.18);
+    --sb-orb-2:           rgba(0, 207, 232, 0.12);
+
+    /* Do not set position here — #layout-menu wins over .layout-menu-fixed .layout-menu
+       (ID vs classes); position:relative would override position:fixed and break layout
+       (empty strip beside sidebar). ::before / .sb-orb use the fixed menu as containing block. */
     isolation: isolate;
-    background: var(--sb-bg) !important;
+    background: var(--sb-bg-gradient) !important;
     border-inline-end: 1px solid var(--sb-border);
     box-shadow: var(--sb-shadow);
     font-family: inherit;
@@ -41,9 +49,66 @@
     overscroll-behavior: contain;
 }
 
-/* The actual scrollable list inside the sidebar — same isolation,
-   so wheel events here do not bubble out to the page. */
+/* Dot grid — matches dash-welcome */
+#layout-menu::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(115, 103, 240, 0.06) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+[data-theme*='dark'] #layout-menu::before,
+.dark-style #layout-menu::before {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme='system'] #layout-menu::before {
+        background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    }
+}
+
+/* Decorative orbs — static (no animation, performance) */
+#layout-menu .sb-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(55px);
+}
+
+#layout-menu .sb-orb--1 {
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, var(--sb-orb-1) 0%, transparent 70%);
+    inset-block-start: -60px;
+    inset-inline-end: -60px;
+}
+
+#layout-menu .sb-orb--2 {
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle, var(--sb-orb-2) 0%, transparent 70%);
+    inset-block-end: 10%;
+    inset-inline-start: -40px;
+}
+
+#layout-menu .app-brand,
+#layout-menu .menu-inner-shadow,
+#layout-menu .sidebar-search {
+    position: relative;
+    z-index: 1;
+}
+
+/* Scroll target + sit above dot grid / orbs */
 #layout-menu > ul.menu-inner {
+    position: relative;
+    z-index: 1;
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
     overscroll-behavior: contain;
     /* On touch devices Perfect Scrollbar's scroll target is this list */
     -webkit-overflow-scrolling: touch;
@@ -61,40 +126,50 @@
 ═══════════════════════════════════════ */
 [data-theme*='dark'] #layout-menu,
 .dark-style #layout-menu {
-    --sb-bg:               #2e3348;
-    --sb-bg-2:             #363c55;
-    --sb-border:           rgba(255, 255, 255, 0.08);
-    --sb-text:             rgba(225, 228, 248, 0.82);
-    --sb-text-strong:      #f7f8ff;
-    --sb-muted:            rgba(200, 204, 232, 0.55);
-    --sb-hover-bg:         rgba(255, 255, 255, 0.06);
-    --sb-active-bg:        rgba(var(--color-brand-primary-rgb), 0.20);
-    --sb-accent-soft:      rgba(177, 168, 255, 0.72);
-    --sb-divider:          rgba(255, 255, 255, 0.08);
-    --sb-search-bg:        rgba(255, 255, 255, 0.05);
-    --sb-search-bg-focus:  rgba(255, 255, 255, 0.10);
-    --sb-tooltip-bg:       #f3f4ff;
-    --sb-tooltip-text:     #2e3348;
-    --sb-shadow:           4px 0 22px rgba(0, 0, 0, 0.18);
+    --sb-bg:              #1f1c3a;
+    --sb-bg-2:            #2d2a5e;
+    --sb-bg-gradient:     linear-gradient(180deg, #1f1c3a 0%, #2d2a5e 60%, #232142 100%);
+    --sb-border:          rgba(255, 255, 255, 0.08);
+    --sb-text:            rgba(225, 228, 248, 0.82);
+    --sb-text-strong:     #f7f8ff;
+    --sb-muted:           rgba(200, 204, 232, 0.55);
+    --sb-hover-bg:        rgba(255, 255, 255, 0.06);
+    --sb-active-bg:       rgba(115, 103, 240, 0.22);
+    --sb-active-text:     #f7f8ff;
+    --sb-accent-soft:     rgba(177, 168, 255, 0.72);
+    --sb-divider:         rgba(255, 255, 255, 0.07);
+    --sb-search-bg:       rgba(255, 255, 255, 0.05);
+    --sb-search-bg-focus: rgba(255, 255, 255, 0.10);
+    --sb-tooltip-bg:      #f3f4ff;
+    --sb-tooltip-text:    #2e3348;
+    --sb-shadow:          4px 0 28px rgba(0, 0, 0, 0.35);
+
+    --sb-orb-1:           rgba(115, 103, 240, 0.28);
+    --sb-orb-2:           rgba(0, 207, 232, 0.18);
 }
 
 @media (prefers-color-scheme: dark) {
     html[data-theme='system'] #layout-menu {
-        --sb-bg:               #2e3348;
-        --sb-bg-2:             #363c55;
-        --sb-border:           rgba(255, 255, 255, 0.08);
-        --sb-text:             rgba(225, 228, 248, 0.82);
-        --sb-text-strong:      #f7f8ff;
-        --sb-muted:            rgba(200, 204, 232, 0.55);
-        --sb-hover-bg:         rgba(255, 255, 255, 0.06);
-        --sb-active-bg:        rgba(var(--color-brand-primary-rgb), 0.20);
-        --sb-accent-soft:      rgba(177, 168, 255, 0.72);
-        --sb-divider:          rgba(255, 255, 255, 0.08);
-        --sb-search-bg:        rgba(255, 255, 255, 0.05);
-        --sb-search-bg-focus:  rgba(255, 255, 255, 0.10);
-        --sb-tooltip-bg:       #f3f4ff;
-        --sb-tooltip-text:     #2e3348;
-        --sb-shadow:           4px 0 22px rgba(0, 0, 0, 0.18);
+        --sb-bg:              #1f1c3a;
+        --sb-bg-2:            #2d2a5e;
+        --sb-bg-gradient:     linear-gradient(180deg, #1f1c3a 0%, #2d2a5e 60%, #232142 100%);
+        --sb-border:          rgba(255, 255, 255, 0.08);
+        --sb-text:            rgba(225, 228, 248, 0.82);
+        --sb-text-strong:     #f7f8ff;
+        --sb-muted:           rgba(200, 204, 232, 0.55);
+        --sb-hover-bg:        rgba(255, 255, 255, 0.06);
+        --sb-active-bg:       rgba(115, 103, 240, 0.22);
+        --sb-active-text:     #f7f8ff;
+        --sb-accent-soft:     rgba(177, 168, 255, 0.72);
+        --sb-divider:         rgba(255, 255, 255, 0.07);
+        --sb-search-bg:       rgba(255, 255, 255, 0.05);
+        --sb-search-bg-focus: rgba(255, 255, 255, 0.10);
+        --sb-tooltip-bg:      #f3f4ff;
+        --sb-tooltip-text:    #2e3348;
+        --sb-shadow:          4px 0 28px rgba(0, 0, 0, 0.35);
+
+        --sb-orb-1:           rgba(115, 103, 240, 0.28);
+        --sb-orb-2:           rgba(0, 207, 232, 0.18);
     }
 }
 
@@ -119,15 +194,43 @@
     border-radius: 2px;
     background: linear-gradient(90deg,
         transparent,
-        rgba(var(--color-brand-primary-rgb), 0.35),
-        rgba(var(--color-brand-secondary-rgb), 0.30),
+        rgba(var(--color-brand-primary-rgb), 0.50),
+        rgba(var(--color-brand-secondary-rgb), 0.40),
         transparent);
-    opacity: 0.85;
+    opacity: 1;
     pointer-events: none;
+}
+
+[data-theme*='dark'] #layout-menu .app-brand.demo::after,
+.dark-style #layout-menu .app-brand.demo::after {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(var(--color-brand-primary-rgb), 0.70),
+        rgba(var(--color-brand-secondary-rgb), 0.55),
+        transparent);
 }
 
 #layout-menu .app-brand-link img {
     max-height: 2rem;
+}
+
+[data-theme*='dark'] #layout-menu .app-brand-link img,
+.dark-style #layout-menu .app-brand-link img {
+    filter: brightness(1.15) drop-shadow(0 0 8px rgba(var(--color-brand-primary-rgb), 0.35));
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme='system'] #layout-menu .app-brand.demo::after {
+        background: linear-gradient(90deg,
+            transparent,
+            rgba(var(--color-brand-primary-rgb), 0.70),
+            rgba(var(--color-brand-secondary-rgb), 0.55),
+            transparent);
+    }
+
+    html[data-theme='system'] #layout-menu .app-brand-link img {
+        filter: brightness(1.15) drop-shadow(0 0 8px rgba(var(--color-brand-primary-rgb), 0.35));
+    }
 }
 
 /* Menu inner shadow (top fade) */
@@ -142,7 +245,7 @@
 #layout-menu .sidebar-search {
     position: relative;
     z-index: 3;
-    background: var(--sb-bg);
+    background: transparent;
     padding-top: 0.6rem !important;
     padding-bottom: 0.45rem !important;
 }
@@ -169,11 +272,13 @@
     border-radius: var(--sb-radius);
     border: 1px solid var(--sb-border);
     background: var(--sb-search-bg);
+    backdrop-filter: blur(8px);
     color: var(--sb-text-strong);
     font-size: 0.8125rem;
     font-weight: 500;
     transition: border-color var(--duration-fast) var(--ease-smooth),
-                background    var(--duration-fast) var(--ease-smooth);
+                background    var(--duration-fast) var(--ease-smooth),
+                box-shadow    var(--duration-fast) var(--ease-smooth);
 }
 
 #layout-menu .sidebar-search-input::placeholder {
@@ -183,7 +288,8 @@
 #layout-menu .sidebar-search-input:focus {
     border-color: var(--sb-accent);
     background: var(--sb-search-bg-focus);
-    box-shadow: 0 0 0 3px rgba(var(--color-brand-primary-rgb), 0.18);
+    box-shadow: 0 0 0 3px rgba(var(--color-brand-primary-rgb), 0.20),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
     outline: none;
     color: var(--sb-text-strong);
 }
@@ -235,11 +341,6 @@
     padding-block: 0.2rem;
 }
 
-#layout-menu > ul.menu-inner {
-    padding-top: 0.35rem !important;
-    padding-bottom: 0.35rem !important;
-}
-
 #layout-menu .menu-item .menu-link {
     position: relative;
     border-radius: var(--sb-radius);
@@ -249,9 +350,10 @@
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--sb-text);
-    /* Light transitions only — no transform/box-shadow on hover */
+    /* Light transitions only — no transform on hover */
     transition: background var(--duration-fast) var(--ease-smooth),
-                color      var(--duration-fast) var(--ease-smooth);
+                color      var(--duration-fast) var(--ease-smooth),
+                box-shadow var(--duration-fast) var(--ease-smooth);
 }
 
 #layout-menu .menu-item .menu-link > div {
@@ -261,6 +363,7 @@
 #layout-menu .menu-item:not(.active) > .menu-link:hover {
     background: var(--sb-hover-bg);
     color: var(--sb-text-strong);
+    box-shadow: inset 0 0 0 1px rgba(var(--color-brand-primary-rgb), 0.10);
 }
 
 #layout-menu .menu-item .menu-link i.ti,
@@ -283,14 +386,44 @@
     color: var(--sb-text-strong);
 }
 
-/* Active — gradient bar (static, was sbActiveBarGlow infinite) */
+/* Active — glass tint + gradient bar (static, was sbActiveBarGlow infinite) */
 #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link,
 #layout-menu .menu-item.active > .menu-link,
 #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link.menu-toggle,
 #layout-menu.bg-menu-theme .menu-inner .menu-item.open > .menu-link.menu-toggle.active {
     background: var(--sb-active-bg) !important;
-    color: var(--sb-text-strong) !important;
+    color: var(--sb-active-text) !important;
     font-weight: 600;
+    box-shadow:
+        inset 0 0 0 1px rgba(var(--color-brand-primary-rgb), 0.22),
+        0 2px 8px rgba(var(--color-brand-primary-rgb), 0.14);
+    backdrop-filter: blur(4px);
+}
+
+[data-theme*='dark'] #layout-menu .menu-item.active > .menu-link,
+.dark-style #layout-menu .menu-item.active > .menu-link,
+[data-theme*='dark'] #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link,
+.dark-style #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link,
+[data-theme*='dark'] #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link.menu-toggle,
+.dark-style #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link.menu-toggle,
+[data-theme*='dark'] #layout-menu.bg-menu-theme .menu-inner .menu-item.open > .menu-link.menu-toggle.active,
+.dark-style #layout-menu.bg-menu-theme .menu-inner .menu-item.open > .menu-link.menu-toggle.active {
+    background: rgba(115, 103, 240, 0.22) !important;
+    box-shadow:
+        inset 0 0 0 1px rgba(115, 103, 240, 0.30),
+        0 2px 12px rgba(115, 103, 240, 0.20);
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme='system'] #layout-menu .menu-item.active > .menu-link,
+    html[data-theme='system'] #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link,
+    html[data-theme='system'] #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link.menu-toggle,
+    html[data-theme='system'] #layout-menu.bg-menu-theme .menu-inner .menu-item.open > .menu-link.menu-toggle.active {
+        background: rgba(115, 103, 240, 0.22) !important;
+        box-shadow:
+            inset 0 0 0 1px rgba(115, 103, 240, 0.30),
+            0 2px 12px rgba(115, 103, 240, 0.20);
+    }
 }
 
 /* Open (but not active) parent toggle keeps a calmer look */
@@ -304,11 +437,6 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
     background: var(--sb-hover-bg) !important;
 }
 
-/* Static box-shadow on top-level active item (was a transition-based hover) */
-#layout-menu .menu-inner > ul.menu-inner > .menu-item.active > .menu-link {
-    box-shadow: inset 0 0 0 1px rgba(var(--color-brand-primary-rgb), 0.16);
-}
-
 /* Vertical accent bar on active top-level item — STATIC (no glow animation) */
 #layout-menu > ul.menu-inner > ul.menu-inner > .menu-item.active > .menu-link::before {
     content: '';
@@ -316,13 +444,14 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
     inset-inline-start: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 2.5px;
-    height: 55%;
+    width: 3px;
+    height: 60%;
     min-height: 1.1rem;
     border-radius: 3px;
-    background: linear-gradient(180deg, var(--sb-accent), var(--sb-accent-2));
-    /* Static glow — no infinite animation */
-    box-shadow: 0 0 8px rgba(var(--color-brand-primary-rgb), 0.40);
+    background: linear-gradient(180deg,
+        var(--color-brand-primary),
+        var(--color-brand-secondary));
+    box-shadow: 0 0 12px rgba(var(--color-brand-primary-rgb), 0.55);
 }
 
 /* Active icon — static color (was sbActiveIconGlow filter:drop-shadow loop) */
@@ -397,8 +526,10 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
     right: 2px !important;
     width: 4px !important;
     border-radius: 10px;
-    background: linear-gradient(180deg, var(--sb-accent), var(--sb-accent-2)) !important;
-    opacity: 0.55;
+    background: linear-gradient(180deg,
+        var(--color-brand-primary),
+        var(--color-brand-secondary)) !important;
+    opacity: 0.60;
     transition: width var(--duration-fast) var(--ease-smooth),
                 opacity var(--duration-fast) var(--ease-smooth);
 }
@@ -406,7 +537,7 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
 #layout-menu .ps__rail-y:hover .ps__thumb-y,
 #layout-menu .ps__rail-y:focus .ps__thumb-y {
     width: 6px !important;
-    opacity: 0.85;
+    opacity: 0.90;
 }
 
 [dir='rtl'] #layout-menu .ps__thumb-y {
@@ -433,7 +564,10 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
     height: 6px;
     min-height: 0;
     border-radius: 50%;
-    box-shadow: 0 0 8px rgba(var(--color-brand-primary-rgb), 0.50);
+    background: linear-gradient(135deg,
+        var(--color-brand-primary),
+        var(--color-brand-secondary));
+    box-shadow: 0 0 10px rgba(var(--color-brand-primary-rgb), 0.60);
 }
 
 .layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-offcanvas):not(.layout-menu-fixed-offcanvas) #layout-menu > ul.menu-inner > ul.menu-inner > .menu-item > a.menu-link[data-tooltip] {

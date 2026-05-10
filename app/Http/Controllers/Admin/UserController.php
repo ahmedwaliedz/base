@@ -21,7 +21,7 @@ class UserController extends AuthenticatableBaseController
 
         $total      = (clone $base)->count();
         $active     = (clone $base)->where('is_blocked', false)->count();
-        $inactive   = (clone $base)->where('is_blocked', true)->count();
+        $blocked    = (clone $base)->where('is_blocked', true)->count();
         $today      = (clone $base)->whereDate('created_at', $now->toDateString())->count();
         $thisWeek   = (clone $base)->where('created_at', '>=', $now->copy()->startOfWeek())->count();
         $thisMonth  = (clone $base)->where('created_at', '>=', $now->copy()->startOfMonth())->count();
@@ -38,7 +38,7 @@ class UserController extends AuthenticatableBaseController
 
         return response()->view(
             'admin.users.parts.statistics',
-            compact('total', 'active', 'inactive', 'today', 'thisWeek', 'thisMonth', 'growth')
+            compact('total', 'active', 'blocked', 'today', 'thisWeek', 'thisMonth', 'growth')
         );
     }
 }

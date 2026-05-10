@@ -106,4 +106,22 @@ class User extends Authenticatable {
         return $this->morphMany(Otp::class, 'otpable');
     }
 
+    /**
+     * Boolean column is_blocked must use equality, not LIKE (see FilterableTrait::applyColumnFilter).
+     * Option values are non-empty strings so FilterHelpers::shouldApplyFilter accepts them (PHP empty('0') is true).
+     */
+    protected function applyColumnFilter($query, $column, $value): void {
+        if ($column === 'is_blocked') {
+            if ($value === 'blocked_only') {
+                $query->where('is_blocked', true);
+            } elseif ($value === 'not_blocked') {
+                $query->where('is_blocked', false);
+            }
+
+            return;
+        }
+
+        $query->where($column, 'like', '%' . $value . '%');
+    }
+
 }
