@@ -1,0 +1,42 @@
+---
+alwaysApply: true
+---
+
+# Backend Rules
+
+## Validation
+
+- Prefer dedicated **Form Request** classes over ad-hoc `$request->validate()` for non-trivial endpoints, aligned with `app/Http/Requests/Admin/` and `app/Http/Requests/Api/`.
+
+## API / JSON responses
+
+- Use **JsonResource** / **JsonResource::collection** under `app/Http/Resources/Api/V1/` for structured payloads.
+- Reuse response helpers in `app/Traits/Response/` (success, failure, validation, pagination) so clients see consistent shapes and status codes.
+- Do not introduce custom response structures outside the shared response traits.
+- All endpoints must follow the same success and error response format.
+
+## Controllers and services
+
+- Keep request handling in controllers; move non-trivial rules to **services** or **repositories** already used in the feature area.
+- Prefer deterministic, testable methods; avoid hidden side effects.
+- All non-trivial business logic must be placed in Service classes.
+- Controllers should not contain business rules beyond simple orchestration.
+
+## Authentication and authorization
+
+- **API:** Laravel **Sanctum**; respect token/session guards configured for the app.
+- **Middleware:** do not bypass `api.lang`, admin auth, `complete.info`, or other route middleware without an explicit product/security decision.
+
+## Security and safety
+
+- Validate and sanitize external input; never log secrets or raw tokens.
+- Respect role/permission boundaries where the admin area enforces them.
+- Avoid leaking internal implementation details in JSON or HTML error surfaces.
+
+## Long-running work
+
+- For slow IO (mail, large exports, heavy file processing), prefer **queued jobs**; local dev often runs `queue:listen` via `composer dev`.
+
+## Edge cases
+
+- Handle failure paths explicitly (exceptions, failed jobs, validation errors); align API errors with the global API exception handling in `bootstrap/app.php` where applicable.

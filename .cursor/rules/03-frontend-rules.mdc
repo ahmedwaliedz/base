@@ -1,0 +1,37 @@
+---
+alwaysApply: true
+---
+
+# Frontend Rules
+
+## Scope of “frontend” in this project
+
+- **Blade templates:** `resources/views/` (admin under `resources/views/admin/`).
+- **View components:** `app/View/Components/` — use tags such as `<x-form.*>`, `<x-table.*>` consistent with existing components.
+- **Admin theme assets:** `public/style/admin/` (vendor theme, template customizer, RTL/LTR).
+- **App JS/CSS via Vite:** `vite.config.js`, `resources/js`, `resources/css`, `package.json` — use when adding build-pipeline assets, not for duplicating the whole admin theme.
+
+## UI principles
+
+- Build clear, usable, consistent interfaces; prefer simple layouts and predictable interactions.
+- Support loading, empty, error, and success states where users expect feedback.
+
+## Components
+
+- Keep Blade and component classes focused; split large templates into partials or smaller components.
+- Keep business rules out of views: use component classes, controllers, or services for heavy logic.
+- Do not place business logic, database queries, or service calls inside Blade templates.
+
+## Forms
+
+- Validate on the server with **Form Requests**; surface errors with Blade (`@error`, shared layout patterns) consistent with existing admin forms.
+- Use appropriate input types and defaults; group related fields for scanability.
+
+## Lists and tables
+
+- Add search, filters, sorting, or pagination when data volume warrants it, following existing table/filter components.
+- Keep row actions consistent and labeled.
+
+## RTL / LTR
+
+- Admin supports RTL; test layout and alignment when changing structure or global CSS so template-customizer / RTL behavior is not broken unintentionally.
