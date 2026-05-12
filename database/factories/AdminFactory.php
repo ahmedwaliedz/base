@@ -13,17 +13,18 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
  */
 class AdminFactory extends Factory
 {
-    public function definition(): array
+public function definition(): array
     {
         return [
             'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->unique()->regexify('\+05[0-9]{8}'),
-            'country_code' => $this->faker->randomElement(Country::get()->pluck('code')->toArray()),
+            'country_code' => Country::get()->isNotEmpty() ? $this->faker->randomElement(Country::pluck('code')->toArray()) : '20',
+            'password' => 'Password@123',
+            'type' => AdminType::SUPER_ADMIN,
             'is_notify' => $this->faker->boolean,
             'created_at' => now()->subDays(rand(1, 30)),
-
         ];
-
     }
 
     public function withSequencedAttributes(): self

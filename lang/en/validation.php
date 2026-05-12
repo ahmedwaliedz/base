@@ -192,7 +192,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'is_notify' => 'receive notifications',
+    ],
 
     'invalid_data' => 'The given data was invalid.',
 

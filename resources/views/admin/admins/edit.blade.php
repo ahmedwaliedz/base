@@ -63,11 +63,10 @@
             ]" />
             <x-form.select :options="[
                 'name' => 'is_notify',
-                'value' => true,
+                'value' => $admin->is_notify,
                 'label' => 'receive_notifications',
                 'class' => 'col-md-4',
                 'options' => $receiveNotificationsOptions,
-                'value' => $admin->is_notify,
             ]" />
         </div>
 

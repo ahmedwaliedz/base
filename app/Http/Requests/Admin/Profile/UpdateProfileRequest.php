@@ -7,6 +7,16 @@ use Illuminate\Validation\Rule;
 
 class UpdateProfileRequest extends BaseAdminRequest
 {
+    protected function nullableBooleanFields(): array
+    {
+        return ['is_notify'];
+    }
+
+    public function prepareForValidation(): void
+    {
+        $this->prepareNullableBooleans();
+    }
+
     public function rules(): array
     {
         return [
@@ -14,7 +24,7 @@ class UpdateProfileRequest extends BaseAdminRequest
             'email'         => ['required', 'email', Rule::unique('admins')->ignore($this->user('admin')->id)],
             'country_code'  => 'required|string|max:10',
             'phone'         => ['required', 'string', Rule::unique('admins')->ignore($this->user('admin')->id)],
-            'is_notify'     => 'boolean',
+            'is_notify'     => ['nullable', 'boolean'],
             'image'         => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }

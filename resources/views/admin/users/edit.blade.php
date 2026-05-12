@@ -78,11 +78,10 @@
             <div class="row g-3">
                 <x-form.select :options="[
                     'name' => 'is_notify',
-                    'value' => true,
+                    'value' => $user->is_notify,
                     'label' => 'receive_notifications',
                     'class' => 'col-md-12',
                     'options' => $receiveNotificationsOptions,
-                    'value' => $user->is_notify,
                 ]" />
             </div>
         </fieldset>
