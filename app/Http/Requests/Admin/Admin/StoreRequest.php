@@ -17,7 +17,7 @@ class StoreRequest extends BaseAdminRequest {
             'type'         => ['required', new Enum(AdminType::class)],
             'image'        => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'is_notify'    => ['nullable', 'in:true,false'],
-            'role_id'      => ['nullable', 'required_if:type,{AdminType::ADMIN->value}', 'exists:roles,id'],
+            'role_id'      => ['nullable', 'required_if:type,' . AdminType::ADMIN->value, 'exists:roles,id'],
         ];
 
     }

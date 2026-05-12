@@ -15,10 +15,17 @@ class CheckRolePermission
     use AuthResponseTrait ,RouteTrait;
     public function handle(Request $request, Closure $next): Response
     {
-        $role = auth('admin')->user()?->role;
+        $admin = auth('admin')->user();
+
+        if (!$admin) {
+            abort(401, 'Unauthenticated');
+        }
+
+        $role = $admin->role;
         $permissionsList = $role?->permissions->pluck('permission')->filter(fn($p) => Str::startsWith($p, 'admin.'))->toArray();
         $currentRouteName = $request->route()->getName();
-        return match (auth('admin')->user()->type) {
+
+        return match ($admin->type) {
             AdminType::SUPER_ADMIN  =>  $next($request),
             AdminType::ADMIN        =>  self::checkThatIsAuthorized($currentRouteName , $permissionsList , $next , $request),
             default                 =>  $next($request) ,
