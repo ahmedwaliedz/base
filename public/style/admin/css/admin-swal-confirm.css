@@ -1,0 +1,160 @@
+/* Delete / confirm SweetAlert2 — Sneat dark dashboard (RTL-friendly) */
+
+div.admin-swal-confirm-container.swal2-container {
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(15, 17, 32, 0.72) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+[data-bs-theme='light'] div.admin-swal-confirm-container.swal2-container {
+    background: rgba(30, 32, 48, 0.45) !important;
+}
+
+div.admin-swal-confirm-container.swal2-container.swal2-backdrop-show {
+    background: rgba(15, 17, 32, 0.72) !important;
+}
+
+[data-bs-theme='light'] div.admin-swal-confirm-container.swal2-container.swal2-backdrop-show {
+    background: rgba(30, 32, 48, 0.45) !important;
+}
+
+/* Keep confirm on the physical right, cancel on the left (matches EN + AR layouts) */
+.admin-swal-confirm-popup .admin-swal-confirm__actions.swal2-actions {
+    direction: ltr;
+    width: 100%;
+    justify-content: center;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    gap: 0.75rem;
+}
+
+.admin-swal-confirm-popup {
+    width: 26rem;
+    max-width: calc(100vw - 2rem);
+    padding: 1.75rem 1.5rem 1.5rem !important;
+    border-radius: 0.75rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+        0 24px 48px rgba(0, 0, 0, 0.45),
+        0 8px 16px rgba(0, 0, 0, 0.25) !important;
+    background: linear-gradient(
+        165deg,
+        rgba(42, 44, 62, 0.98) 0%,
+        rgba(30, 32, 48, 0.98) 100%
+    ) !important;
+    color: #fff;
+}
+
+[data-bs-theme='light'] .admin-swal-confirm-popup {
+    border-color: rgba(var(--bs-border-color-rgb, 100, 103, 121), 0.35);
+    background: var(--bs-paper-bg, #fff) !important;
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.04) inset,
+        0 24px 48px rgba(15, 17, 32, 0.12),
+        0 8px 16px rgba(15, 17, 32, 0.08) !important;
+    color: var(--bs-heading-color, #433c50);
+}
+
+/* Warning icon — large amber ring */
+.admin-swal-confirm-popup .swal2-icon.admin-swal-confirm__icon.swal2-warning {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1rem;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #f59e0b;
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.12);
+    border-radius: 50%;
+    line-height: 4rem;
+    box-shadow: 0 0 0 8px rgba(245, 158, 11, 0.08);
+}
+
+.admin-swal-confirm-popup .swal2-icon.admin-swal-confirm__icon .swal2-icon-content {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.admin-swal-confirm-popup h2.admin-swal-confirm__title.swal2-title {
+    margin: 0 0 0.5rem;
+    padding: 0 0.25rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.96);
+    text-align: center;
+}
+
+[data-bs-theme='light'] .admin-swal-confirm-popup h2.admin-swal-confirm__title.swal2-title {
+    color: var(--bs-heading-color, #433c50);
+}
+
+.admin-swal-confirm-popup .admin-swal-confirm__text.swal2-html-container {
+    margin: 0 auto;
+    padding: 0 0.25rem;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.55);
+    text-align: center;
+}
+
+[data-bs-theme='light'] .admin-swal-confirm-popup .admin-swal-confirm__text.swal2-html-container {
+    color: var(--bs-secondary-color, #8b8d95);
+}
+
+/* Buttons */
+.admin-swal-confirm-popup .btn-admin-swal-confirm {
+    min-width: 7rem;
+    padding: 0.55rem 1.25rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(105, 108, 255, 0.35);
+}
+
+.admin-swal-confirm-popup .btn-admin-swal-confirm:focus {
+    box-shadow: 0 0 0 0.2rem rgba(105, 108, 255, 0.35);
+}
+
+.admin-swal-confirm-popup .btn-admin-swal-cancel {
+    min-width: 7rem;
+    padding: 0.55rem 1.25rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+}
+
+[data-bs-theme='dark'] .admin-swal-confirm-popup .btn-admin-swal-cancel {
+    color: rgba(255, 255, 255, 0.88) !important;
+    border-color: rgba(255, 255, 255, 0.28) !important;
+    background: transparent !important;
+}
+
+[data-bs-theme='dark'] .admin-swal-confirm-popup .btn-admin-swal-cancel:hover {
+    color: #fff !important;
+    border-color: rgba(255, 255, 255, 0.45) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-bs-theme='light'] .admin-swal-confirm-popup .btn-admin-swal-cancel {
+    /* btn-outline-secondary + optional tweak */
+    border-width: 1px;
+}
+
+@media (max-width: 575.98px) {
+    .admin-swal-confirm-popup .admin-swal-confirm__actions.swal2-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .admin-swal-confirm-popup .btn-admin-swal-confirm,
+    .admin-swal-confirm-popup .btn-admin-swal-cancel {
+        width: 100%;
+        min-width: 0;
+    }
+}

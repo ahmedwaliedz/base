@@ -126,7 +126,10 @@ if (document.getElementById('layout-menu')) {
             localStorage.getItem('templateCustomizer-' + templateName + '--Style') ||
             window.templateCustomizer.settings.defaultStyle;
 
-        let styleSwitcherItems = [].slice.call(styleSwitcher.children[1].querySelectorAll('.dropdown-item'));
+        let styleMenu = styleSwitcher.querySelector('.dropdown-menu');
+        let styleSwitcherItems = styleMenu
+            ? [].slice.call(styleMenu.querySelectorAll('.dropdown-item'))
+            : [];
         styleSwitcherItems.forEach(function(item) {
             item.addEventListener('click', function() {
                 let currentStyle = this.getAttribute('data-theme');
@@ -137,6 +140,7 @@ if (document.getElementById('layout-menu')) {
                 } else {
                     window.templateCustomizer.setStyle('system');
                 }
+                document.dispatchEvent(new CustomEvent('themechange', { detail: { style: currentStyle } }));
             });
         });
 

@@ -11,6 +11,10 @@ class Replay extends Model
 
     protected $fillable = [
         'replay',
+        'replayable_id',
+        'replayable_type',
+        'replaybyable_id',
+        'replaybyable_type',
     ];
 
     public function replayable()

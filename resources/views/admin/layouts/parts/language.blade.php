@@ -1,10 +1,12 @@
-@php
+﻿@php
     $currentLang = adminLang();
     $flagClass = $currentLang === 'ar' ? 'fi-sa' : 'fi-us';
 @endphp
 <li class="nav-item dropdown-language dropdown">
     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
        data-bs-toggle="dropdown"
+       data-bs-container="body"
+       data-bs-popper-config='{"strategy":"fixed"}'
        aria-label="{{ __('admin/main.language') }}">
         <i class="ti ti-language" aria-hidden="true"></i>
     </a>

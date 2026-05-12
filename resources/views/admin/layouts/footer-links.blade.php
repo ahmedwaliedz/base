@@ -9,8 +9,10 @@
 <script src="{{asset('style/admin/vendor/libs/block-ui/block-ui.js')}}"></script>
 <script src="{{asset('style/admin/vendor/libs/sortablejs/sortable.js')}}"></script>
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-<script src="{{asset('style/admin/js/main.js')}}"></script>
-<script src="{{ asset('style/admin/custom-js/error-handlers/show-exception-dev.js') }}"></script>
+    <script src="{{asset('style/admin/js/main.js')}}"></script>
+    <script src="{{ asset('style/admin/custom-js/brand-color-switcher.js') }}"></script>
+    <script src="{{ asset('style/admin/custom-js/dashboard-toast.js') }}"></script>
+{{-- <script src="{{ asset('style/admin/custom-js/error-handlers/show-exception-dev.js') }}"></script> --}}
 <script>
     // Expose environment flags for frontend logic
     window.APP_DEBUG = @json(config('app.debug'));
@@ -21,11 +23,6 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    {{--const loader = `--}}
-    {{--        <div class="text-center p-5 table-loader">--}}
-    {{--            <lottie-player src="{{ asset('storage/uploads/settings/Load.json') }}" background="transparent" speed="1" style="width: 200px; height: 200px; margin: 0 auto;" loop autoplay></lottie-player>--}}
-    {{--        </div>--}}
-    {{--    `;--}}
 
     window.translations = {
         error_loading_data: "{{ __('admin/main.error_loading_data') }}",

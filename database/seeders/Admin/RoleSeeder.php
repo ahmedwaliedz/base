@@ -8,12 +8,13 @@ use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
 {
-    use HasFactory ;
+    use HasFactory;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Role::factory()->count(50)->create();
+        Role::factory()->count(100)->create();
     }
 }

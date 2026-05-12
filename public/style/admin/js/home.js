@@ -23,18 +23,32 @@
         return v || fallback;
     }
 
-    /* ─── Theme helpers ───────────────────────────── */
+    /* ─── Theme helpers (template customizer uses html.light-style / html.dark-style) ─ */
     function isDark() {
-        var t = document.documentElement.getAttribute('data-theme') || '';
-        if (t === 'dark') return true;
-        if (t === 'light') return false;
+        var el = document.documentElement;
+        if (el.classList.contains('dark-style')) return true;
+        if (el.classList.contains('light-style')) return false;
         return window.matchMedia('(prefers-color-scheme:dark)').matches;
     }
-    var tc   = function () { return isDark() ? 'rgba(225,222,245,0.55)' : 'rgba(50,48,77,0.55)'; };
-    var gc   = function () { return isDark() ? 'rgba(255,255,255,0.05)' : 'rgba(50,48,77,0.06)'; };
-    var sc   = function () { return isDark() ? '#2C3148' : '#fff'; };
-    var mode = function () { return isDark() ? 'dark' : 'light'; };
-    var strong = function () { return isDark() ? '#F7F8FF' : '#2F2B3D'; };
+    /* Chart chrome: matches home.css light polish (docs/ai/home_light_mode_polish.md) */
+    var tc = function () {
+        return isDark() ? 'rgba(225,222,245,0.55)' : 'rgba(40,38,80,0.45)';
+    };
+    var gc = function () {
+        return isDark() ? 'rgba(255,255,255,0.05)' : 'rgba(115,103,240,0.10)';
+    };
+    var sc = function () {
+        return isDark() ? '#2C3148' : '#ffffff';
+    };
+    var mode = function () {
+        return isDark() ? 'dark' : 'light';
+    };
+    var strong = function () {
+        return isDark() ? '#F7F8FF' : '#1f1c45';
+    };
+    var fore = function () {
+        return isDark() ? '#cbd5e1' : '#3b3766';
+    };
 
     var sharedAxis = function () {
         return {
@@ -65,6 +79,7 @@
     var areaChart = new ApexCharts(document.querySelector('#chartMonthly'), {
         chart: {
             type: 'area', height: 240,
+            foreColor: fore(),
             toolbar: { show: false }, background: 'transparent',
             animations: { enabled: true, easing: 'easeinout', speed: 800,
                           animateGradually: { enabled: true, delay: 120 } },
@@ -105,6 +120,7 @@
     var distChart = new ApexCharts(document.querySelector('#chartDist'), {
         chart: {
             type: 'donut', height: 240, background: 'transparent',
+            foreColor: fore(),
             animations: { enabled: true, easing: 'easeinout', speed: 800 },
         },
         series: DATA.dist_series,
@@ -169,6 +185,7 @@
         return {
             chart: {
                 type: 'bar', height: 240,
+                foreColor: fore(),
                 toolbar: { show: false }, background: 'transparent',
                 animations: { enabled: true, easing: 'easeinout', speed: 700 },
             },
@@ -240,6 +257,7 @@
     var polarChart = new ApexCharts(document.querySelector('#chartPolar'), {
         chart: {
             type: 'polarArea', height: 280, background: 'transparent',
+            foreColor: fore(),
             animations: { enabled: true, easing: 'easeinout', speed: 900 },
             toolbar: { show: false },
         },
@@ -265,7 +283,11 @@
         dataLabels: {
             enabled: true,
             formatter: function (v) { return Math.round(v) + '%'; },
-            style: { fontSize: '0.74rem', fontFamily: 'inherit', colors: ['#fff'] },
+            style: {
+                fontSize: '0.74rem',
+                fontFamily: 'inherit',
+                colors: [isDark() ? '#fff' : strong()],
+            },
             dropShadow: { enabled: false },
         },
         legend: {
@@ -282,43 +304,110 @@
     });
     polarChart.render();
 
-    /* ─── Re-render on theme toggle ─── */
-    document.querySelectorAll('[data-theme]').forEach(function (el) {
-        el.addEventListener('click', function () {
-            setTimeout(function () {
-                var m = mode();
-                var ax = { labels: { style: { colors: tc() } } };
-                var base = {
-                    theme: { mode: m },
-                    tooltip: { theme: m },
-                    grid: { borderColor: gc() },
-                    xaxis: ax,
-                    yaxis: { labels: { style: { colors: tc() } } }
-                };
-                areaChart.updateOptions(Object.assign({}, base, {
-                    markers: { strokeColors: sc() }
-                }));
-                activityChart.updateOptions(base);
-                distChart.updateOptions({
-                    theme: { mode: m },
-                    tooltip: { theme: m },
-                    plotOptions: { pie: { donut: { labels: {
-                        total: { color: tc() },
-                        value: { color: strong() },
-                        name:  { color: tc() }
-                    } } } }
-                });
-                polarChart.updateOptions({
-                    theme: { mode: m },
-                    tooltip: { theme: m },
-                    legend: { labels: { colors: tc() } },
-                    plotOptions: { polarArea: {
-                        rings:  { strokeColor: gc() },
-                        spokes: { connectorColors: gc() }
-                    } }
-                });
-            }, 50);
+    function updateChartsForTheme() {
+        var m = mode();
+        var fc = fore();
+        var ax = { labels: { style: { colors: tc() } } };
+        var areaLineBase = {
+            chart: { foreColor: fc },
+            theme: { mode: m },
+            tooltip: { theme: m },
+            grid: { borderColor: gc() },
+            xaxis: ax,
+            yaxis: { labels: { style: { colors: tc() } } }
+        };
+        areaChart.updateOptions(Object.assign({}, areaLineBase, {
+            markers: { strokeColors: sc() }
+        }));
+        activityChart.updateOptions(areaLineBase);
+        distChart.updateOptions({
+            chart: { foreColor: fc },
+            theme: { mode: m },
+            tooltip: { theme: m },
+            plotOptions: { pie: { donut: { labels: {
+                total: { color: tc() },
+                value: { color: strong() },
+                name:  { color: tc() }
+            } } } }
         });
+        polarChart.updateOptions({
+            chart: { foreColor: fc },
+            theme: { mode: m },
+            tooltip: { theme: m },
+            grid: { borderColor: gc() },
+            legend: { labels: { colors: tc() } },
+            yaxis: { labels: { style: { colors: tc() } } },
+            dataLabels: {
+                style: {
+                    colors: [isDark() ? '#fff' : strong()],
+                },
+            },
+            plotOptions: { polarArea: {
+                rings:  { strokeColor: gc() },
+                spokes: { connectorColors: gc() }
+            } }
+        });
+    }
+
+    document.addEventListener('themechange', function () {
+        setTimeout(updateChartsForTheme, 50);
+    });
+
+    function syncPaletteUsersFromCss() {
+        palette.users = tokenRgb('--color-brand-primary-rgb', '#7367f0');
+        activityTabs.users.color = palette.users;
+    }
+
+    function updateChartsForBrand() {
+        syncPaletteUsersFromCss();
+        areaChart.updateOptions({
+            colors: [palette.users, palette.admins],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: [0.32, 0.22],
+                    opacityTo: [0.01, 0.01],
+                    stops: [0, 90, 100]
+                }
+            }
+        });
+        distChart.updateOptions({
+            colors: [
+                palette.users, palette.complaints, palette.contacts,
+                palette.categories, palette.faqs, palette.posts, palette.sliders
+            ]
+        });
+        var activeBtn = document.querySelector('.dash-chart__tab.is-active');
+        var tabKey = (activeBtn && activeBtn.getAttribute('data-tab')) || 'complaints';
+        var t = activityTabs[tabKey];
+        if (t) {
+            activityChart.updateOptions({
+                colors: [t.color],
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'dark',
+                        type: 'vertical',
+                        gradientToColors: [t.color],
+                        inverseColors: false,
+                        opacityFrom: 0.95,
+                        opacityTo: 0.55,
+                        stops: [0, 100]
+                    }
+                }
+            });
+        }
+        polarChart.updateOptions({
+            colors: [
+                palette.users, palette.categories,
+                palette.sliders, palette.complaints
+            ]
+        });
+    }
+
+    document.addEventListener('brandchange', function () {
+        setTimeout(updateChartsForBrand, 0);
     });
 
     /* ─── Animated counters via IntersectionObserver ─── */

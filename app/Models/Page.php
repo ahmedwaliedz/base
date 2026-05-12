@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\PageType;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
-    use HasFactory, Translatable ;
+    use HasFactory, Translatable;
 
     protected $fillable = ['slug', 'icon', 'type'];
 
@@ -20,7 +21,6 @@ class Page extends Model
     }
 
     protected $casts = [
-        'type' => 'boolean',
+        'type' => PageType::class,
     ];
-
 }

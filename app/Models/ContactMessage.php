@@ -15,6 +15,8 @@ class ContactMessage extends Model
         'email',
         'subject',
         'message',
+        'contactable_id',
+        'contactable_type',
     ];
 
     public function contactable()
@@ -26,5 +28,4 @@ class ContactMessage extends Model
     {
         return $this->morphMany(Replay::class, 'replayable');
     }
-
 }

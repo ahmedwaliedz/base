@@ -28,7 +28,6 @@ $(document).on('click', '.delete-all-button' , function(e) {
             selected.push(id);
         }
     });
-    console.log(selected);
     const deleteAllRoute = $(this).data('route');
     deleteWithSwl(deleteAllRoute, selected);
 });
@@ -37,17 +36,24 @@ function deleteWithSwl(Route , selected) {
     Swal.fire({
         title: window.translations.are_you_sure,
         text: window.translations.are_you_sure_want_delete,
-        type: 'warning',
-        showDenyButton:   false,
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText:  window.translations.confirmButtonText,
-        confirmButtonClass: 'btn btn-primary',
-        cancelButtonText: window.translations.cancelButtonText,
-        cancelButtonClass: 'btn btn-danger ml-1',
-        denyButtonClass: 'd-none',
+        focusCancel: true,
+        width: '26rem',
+        padding: 0,
         buttonsStyling: false,
+        customClass: {
+            container: 'admin-swal-confirm-container',
+            popup: 'admin-swal-confirm-popup',
+            title: 'admin-swal-confirm__title',
+            htmlContainer: 'admin-swal-confirm__text',
+            icon: 'admin-swal-confirm__icon',
+            confirmButton: 'btn btn-primary btn-admin-swal-confirm',
+            cancelButton: 'btn btn-outline-secondary btn-admin-swal-cancel',
+            actions: 'admin-swal-confirm__actions',
+        },
+        confirmButtonText: window.translations.confirmButtonText,
+        cancelButtonText: window.translations.cancelButtonText,
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
@@ -59,14 +65,11 @@ function deleteWithSwl(Route , selected) {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: (response) => {
-                    Swal.fire({
-                        denyButtonClass: 'd-none',
-                        icon: 'success',
-                        position: 'top-start',
-                        text: window.translations.deleted_successfully,
-                        showConfirmButton: false,
-                        timer: 1000
-                    });
+                    try {
+                        if (typeof showTopToast === 'function') {
+                            showTopToast(window.translations.deleted_successfully, 'success', 1500);
+                        }
+                    } catch (_) {}
                     // Clear selections and hide the bulk delete button immediately
                     try {
                         $('thead .dt-checkboxes, tbody .dt-checkboxes').prop('checked', false);
@@ -89,13 +92,20 @@ function deleteWithSwl(Route , selected) {
                     }
                 },
                 error: (xhr) => {
-                    Swal.fire({
-                        icon: 'error',
-                        confirmButtonClass: 'd-none',
-                        denyButtonClass: 'd-none',
-                        text: xhr.responseJSON?.message || 'An error occurred',
-                        cancelButtonText: window.translations.cancelButtonText,
-                    });
+                    var errMsg = (xhr.responseJSON && xhr.responseJSON.message)
+                        ? xhr.responseJSON.message
+                        : 'An error occurred';
+                    try {
+                        if (typeof showTopToast === 'function') {
+                            showTopToast(errMsg, 'error', 3500);
+                        } else if (window.Swal) {
+                            Swal.fire({ icon: 'error', text: errMsg });
+                        }
+                    } catch (_) {
+                        if (window.Swal) {
+                            Swal.fire({ icon: 'error', text: errMsg });
+                        }
+                    }
                 },
             });
         }

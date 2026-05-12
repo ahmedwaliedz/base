@@ -1,5 +1,5 @@
 <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
+    <div class="modal-dialog modal-dialog-centered modal-simple modal-add-new-address">
         <div class="modal-content">
             <div class="modal-body p-0">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -25,7 +25,7 @@
                     <x-form.text-area    :options="['name' => 'message[ar]' , 'label' => 'message_ar'  , 'class' => 'col-md-12', 'isRequired' => true]"   />
                     <x-form.text-area    :options="['name' => 'message[en]' , 'label' => 'message_en'  , 'class' => 'col-md-12', 'isRequired' => true]"   />
 
-                    <div class="col-12 text-center mt-4">
+                    <div class="col-12 text-center mt-3 mb-0 pb-0">
                         <button type="submit" class="btn btn-primary me-sm-3 me-1">
                             <i class="fa fa-check-double me-1"></i> {{__('admin/main.send')}}
                         </button>

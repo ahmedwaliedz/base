@@ -11290,26 +11290,26 @@ form select.selectpicker.is-invalid ~ .btn {
     transition: all 0.23s ease 0.1s;
 }
 
-html:not([dir=rtl]) .modal .btn-close {
+/* html:not([dir=rtl]) .modal .btn-close {
     transform: translate(23px, -25px);
-}
+} */
 
-[dir=rtl] .modal .btn-close {
+/* [dir=rtl] .modal .btn-close {
     transform: translate(-31px, -25px);
-}
+} */
 
 .modal .btn-close:hover, .modal .btn-close:focus, .modal .btn-close:active {
     opacity: 1;
     outline: none;
 }
 
-html:not([dir=rtl]) .modal .btn-close:hover, html:not([dir=rtl]) .modal .btn-close:focus, html:not([dir=rtl]) .modal .btn-close:active {
+/* html:not([dir=rtl]) .modal .btn-close:hover, html:not([dir=rtl]) .modal .btn-close:focus, html:not([dir=rtl]) .modal .btn-close:active {
     transform: translate(20px, -20px);
-}
+} */
 
-[dir=rtl] .modal .btn-close:hover, [dir=rtl] .modal .btn-close:focus, [dir=rtl] .modal .btn-close:active {
+/* [dir=rtl] .modal .btn-close:hover, [dir=rtl] .modal .btn-close:focus, [dir=rtl] .modal .btn-close:active {
     transform: translate(-26px, -20px);
-}
+} */
 
 .modal .modal-header {
     position: relative;

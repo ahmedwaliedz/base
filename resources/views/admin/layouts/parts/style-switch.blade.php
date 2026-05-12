@@ -1,8 +1,9 @@
 <li class="nav-item dropdown-style-switcher dropdown me-2 me-xl-0">
-    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown"
+       data-bs-container="body" data-bs-popper-config='{"strategy":"fixed"}'>
         <i class="ti ti-md"></i>
     </a>
-    <ul class="dropdown-menu dropdown-menu-start dropdown-styles" style="z-index: 9999;">
+    <ul class="dropdown-menu dropdown-menu-start dropdown-styles">
         <li>
             <a class="dropdown-item" href="javascript:void(0);" data-theme="light">
                 <span class="align-middle"><i class="ti ti-sun me-2"></i>{{__('admin/main.light')}}</span>

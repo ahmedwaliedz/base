@@ -3,7 +3,6 @@
 namespace Database\Seeders\Admin;
 
 use App\Models\Admin;
-use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class AdminSeeder extends Seeder
@@ -15,8 +14,7 @@ class AdminSeeder extends Seeder
     {
         Admin::factory()
             ->withSequencedAttributes()
-            ->count(50)
-            ->create()
-        ;
+            ->count(100)
+            ->create();
     }
 }

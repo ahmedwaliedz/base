@@ -17,6 +17,8 @@ class Complaint extends Model
         'complaint',
         'type',
         'status',
+        'complaiantable_id',
+        'complaiantable_type',
     ];
 
     public function complaiantable()

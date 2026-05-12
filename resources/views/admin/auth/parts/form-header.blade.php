@@ -1,11 +1,19 @@
-<!-- Logo -->
-<div class="app-brand mb-4">
-    <a href="#" class="app-brand-link gap-2">
-        <span class="app-brand-logo demo">
-            <img src="{{cache()->get('settings')['logo']}}" alt="{{cache()->get('settings')['name'][adminLang()]}}" class="w-100">
-        </span>
-    </a>
+﻿{{-- Logo with pulse rings --}}
+<div class="auth-brand-wrap auth-animate-logo">
+    <div class="auth-logo-ring-wrap">
+        <div class="auth-logo-pulse" aria-hidden="true"></div>
+        <div class="auth-logo-pulse" aria-hidden="true"></div>
+        <div class="auth-logo-pulse" aria-hidden="true"></div>
+        <div class="auth-logo-inner">
+            <img src="{{cache()->get('settings')['logo']}}"
+                 alt="{{cache()->get('settings')['name'][adminLang()]}}">
+        </div>
+    </div>
 </div>
 
-<h3 class="mb-1 fw-bold">{{__('admin/auth.welcome_to' , ['site_name' => cache()->get('settings')['name'][adminLang()]])}}</h3>
-<p class="mb-4">{{__('admin/auth.sign_in_to_your_account')}}</p>
+<h3 class="auth-title auth-animate-title">
+    {{__('admin/auth.welcome_to', ['site_name' => cache()->get('settings')['name'][adminLang()]])}}
+</h3>
+<p class="auth-subtitle auth-animate-subtitle">
+    {{__('admin/auth.sign_in_to_your_account')}}
+</p>

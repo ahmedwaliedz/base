@@ -1,4 +1,4 @@
-# Admin CRUD Module – AI Scaffolding Template
+﻿# Admin CRUD Module – AI Scaffolding Template
 
 When this doc is used, **the first response MUST be questions only (Step 1)**. Do not generate code until the user has provided all required inputs and the plan (Step 2) has been confirmed.
 
@@ -14,14 +14,18 @@ When this doc is used, **the first response MUST be questions only (Step 1)**. D
 2. **Step 2 – Create plan:** From the collected inputs, produce a plan: file tree, which components are Create/Exists/Skip, and for Exists list the files to patch and what will change.
 3. **Step 3 – Create section:** Generate full code for every Create component and full updated content + CHANGES for every Exists component.
 
-### Step 1 – Required prompts (do not skip)
+### Step 1 - Required prompts (NEVER skip, NEVER infer)
 
-Ask clearly and separately:
+Ask these explicitly and separately before anything else:
 
-1. **Statistics on index:** “Do you want **statistics cards** on the index page (totals, active/blocked, today, etc.)?” → `{{INDEX_STATISTICS}}`
-2. **Diagrams / charts on index:** “Do you want **diagrams or charts** (الرسوم البيانيه / collapsible charts section, pie/bar/donut, etc.) on the index page?” This is **independent** of statistics cards → `{{INDEX_DIAGRAMS}}` (alias: `STATISTICS_CHARTS` when charts are used)
-3. **Sidebar display mode (`SIDEBAR_DISPLAY_MODE`) — always ask explicitly:** “Should the menu entry be a **single direct link** or a **dropdown** (parent with optional children)?” → `{{SIDEBAR_DISPLAY_MODE}}` (`single` | `dropdown`). **Never infer** this from other answers; if `ADD_TO_SIDEBAR=true`, the user must choose. If `ADD_TO_SIDEBAR=false`, record as N/A.
-4. **Show page – related data:** “For the show page, list every **relation** to expose. Should related data appear as **quick stat tiles**, **tables**, or **both**?” → `{{SHOW_RELATED_PRESENTATION}}`
+1. **Statistics cards:** Do you want **statistics cards** on the index page? -> `{{INDEX_STATISTICS}}`
+   - If yes -> ask: Which cards make sense? (total / active / blocked / today / this week / this month+growth -- or custom) -> `{{STATISTICS_CARDS}}`
+2. **Diagrams / charts:** Do you want **diagrams or charts** (pie/bar/donut via ApexCharts, collapsible section)? -- independent of cards -> `{{INDEX_DIAGRAMS}}`
+3. **Export:** Do you want **export** on the index? Which formats? (copy / pdf / excel / word / json) -> `{{ENABLE_EXPORT}}` + `{{EXPORT_TYPES}}`
+4. **Send Email:** Do you want a **bulk email** button in the toolbar? -> `{{HAS_EMAIL}}`
+5. **Send Notification:** Do you want a **bulk notification** button in the toolbar? -> `{{HAS_NOTIFICATION}}`
+6. **Sidebar display mode** (ask only when ADD_TO_SIDEBAR=true): Single direct link or dropdown? -> `{{SIDEBAR_DISPLAY_MODE}}`. **Never infer.**
+7. **Show page - related data:** List every **relation** to expose. Stat tiles / tables / both? -> `{{SHOW_RELATED_PRESENTATION}}`
 
 ---
 
@@ -45,6 +49,493 @@ Use these paths and patterns when generating a new admin CRUD unless overrides a
 
 ---
 
+## Index View Pattern (reference: `users/index.blade.php`)
+
+```blade
+@extends('admin.layouts.crud.index')
+
+@push('content')
+    {{-- 1. Statistics (only when INDEX_STATISTICS=true) --}}
+    <x-table.statistics :loaderCards="{{STATISTICS_CARD_COUNT}}" />
+
+    {{-- 2. Toolbar --}}
+    <x-table.buttons
+        createRoute="{{ route('admin.{{entity}}.create') }}"
+        :hasNotification="{{HAS_NOTIFICATION}}"
+        :hasEmail="{{HAS_EMAIL}}"
+        :hasDeleteAll="true"
+        :deleteAllRoute="route('admin.{{entity}}.destroyAll')"
+        :hasReload="true"
+        :hasSearch="true"
+        :hasFilter="true"
+        :hasExport="{{ENABLE_EXPORT}}"
+        :exportCopy="{{exportCopy}}"
+        :exportPdf="{{exportPdf}}"
+        :exportExcel="{{exportExcel}}"
+        :exportWord="{{exportWord}}"
+        :exportJson="{{exportJson}}"
+        :hasPagination="true"
+        :perPage="20" />
+
+    {{-- 3. Filter panel --}}
+    <x-table.filter
+        :mainCol="'col-md-3'"
+        :hasStartDate="true"
+        :hasEndDate="true"
+        :hasOrderBy="true"
+        :hasRetrieve="$is_retreivable"
+        :filters="[/* per-column filters */]" />
+
+    {{-- 4. Bulk-actions bar (always when hasDeleteAll=true) --}}
+    <x-table.bulk-actions
+        :hasDelete="true"
+        :deleteRoute="route('admin.{{entity}}.destroyAll')" />
+
+    {{-- 5. Table --}}
+    <x-table.table
+        :hasCheckbox="true"
+        :hasActions="true"
+        :headers="[/* translated column headers */]" />
+
+    {{-- 6. Modals (conditional) --}}
+    @if({{HAS_NOTIFICATION}})
+        <x-model.notification
+            :route="route('admin.notifications.sendNotifications')"
+            :class="'App\Models\{{ModelName}}'" />
+    @endif
+    @if({{HAS_EMAIL}})
+        <x-model.email />
+    @endif
+@endpush
+
+@push('js')
+    @if({{INDEX_STATISTICS}})
+    <script>
+        var statsUrl = "{{ route('admin.{{entity}}.statistics') }}";
+    </script>
+    <script src="{{ asset('style/admin/custom-js/stats.js') }}"></script>
+    @endif
+@endpush
+```
+
+**`<x-table.buttons>` props:**
+
+| Prop | Type | Purpose |
+|------|------|---------|
+| `createRoute` | string | "Create" button href |
+| `hasNotification` | bool | Bulk notify button (btn-label-warning) -> opens #notificationModal |
+| `hasEmail` | bool | Bulk email button (btn-label-info) -> opens #emailModal |
+| `hasDeleteAll` | bool | Wires bulk-delete JS; visible button is in bulk-actions bar |
+| `deleteAllRoute` | string | Route for bulk delete |
+| `hasReload` | bool | Reload table button |
+| `hasSearch` | bool | Quick-search input in toolbar |
+| `hasFilter` | bool | Filter panel toggle |
+| `hasExport` | bool | Export dropdown master switch |
+| `exportCopy/Pdf/Excel/Word/Json` | bool | Individual export formats |
+| `hasPagination` | bool | Per-page selector |
+| `perPage` | int | Default rows per page |
+
+---
+
+## Statistics Pattern (reference: `users`)
+
+### When `INDEX_STATISTICS = true`
+
+**Controller method:**
+
+```php
+public function statistics(Request $request)
+{
+    $base = $this->service->index($request);
+    $now  = Carbon::now();
+
+    $total     = (clone $base)->count();
+    $active    = (clone $base)->where('is_blocked', false)->count();
+    $blocked   = (clone $base)->where('is_blocked', true)->count();
+    $today     = (clone $base)->whereDate('created_at', $now->toDateString())->count();
+    $thisWeek  = (clone $base)->where('created_at', '>=', $now->copy()->startOfWeek())->count();
+    $thisMonth = (clone $base)->where('created_at', '>=', $now->copy()->startOfMonth())->count();
+    $lastMonth = (clone $base)->whereBetween('created_at', [
+        $now->copy()->subMonth()->startOfMonth(),
+        $now->copy()->subMonth()->endOfMonth(),
+    ])->count();
+
+    $growth = $lastMonth > 0
+        ? round((($thisMonth - $lastMonth) / $lastMonth) * 100, 1)
+        : ($thisMonth > 0 ? 100.0 : 0.0);
+
+    return response()->view(
+        'admin.{{entity}}.parts.statistics',
+        compact('total', 'active', 'blocked', 'today', 'thisWeek', 'thisMonth', 'growth')
+    );
+}
+```
+
+**Adapt cards per entity type:**
+- Has is_blocked/is_active: use --active / --blocked cards.
+- Has status enum: one card per status (--pending, --approved, --rejected).
+- No status: use --total, --today, --week, --month only.
+- Always include month card with $growth delta when entity has created_at.
+- Set `:loaderCards` to the **exact** card count rendered.
+
+**Statistics partial (6-card example):**
+
+```blade
+@php $growthUp = ($growth ?? 0) >= 0; @endphp
+
+<div class="col-6 col-md-4 col-xl-2">
+    <div class="crud-stats__card crud-stats__card--total d-flex align-items-center justify-content-between">
+        <div>
+            <p class="crud-stats__label mb-1">{{ __('admin/main.total') }}</p>
+            <p class="crud-stats__value">{{ number_format($total ?? 0) }}</p>
+        </div>
+        <span class="crud-stats__icon" aria-hidden="true"><i class="ti ti-{ICON}"></i></span>
+    </div>
+</div>
+
+{{-- Month card with growth delta --}}
+<div class="col-6 col-md-4 col-xl-2">
+    <div class="crud-stats__card crud-stats__card--month d-flex align-items-center justify-content-between">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                <p class="crud-stats__label mb-0">{{ __('admin/main.this_month') }}</p>
+                @if(($growth ?? 0) !== 0)
+                    <span class="crud-stats__delta {{ $growthUp ? 'crud-stats__delta--up' : 'crud-stats__delta--down' }}">
+                        <i class="ti {{ $growthUp ? 'ti-trending-up' : 'ti-trending-down' }}" aria-hidden="true"></i>
+                        {{ abs($growth) }}%
+                    </span>
+                @endif
+            </div>
+            <p class="crud-stats__value">{{ number_format($thisMonth ?? 0) }}</p>
+        </div>
+        <span class="crud-stats__icon" aria-hidden="true"><i class="ti ti-calendar-month"></i></span>
+    </div>
+</div>
+```
+
+**CSS modifier classes** (in `crud-stats.css`):
+
+| Class | Accent color |
+|-------|-------------|
+| `crud-stats__card--total` | brand primary (violet) |
+| `crud-stats__card--active` | success (green) |
+| `crud-stats__card--blocked` | warning (amber) |
+| `crud-stats__card--today` | info (cyan) |
+| `crud-stats__card--week` | tertiary |
+| `crud-stats__card--month` | danger / neutral |
+| `crud-stats__card--pending` | warning |
+| `crud-stats__card--approved` | success |
+| `crud-stats__card--rejected` | danger |
+
+**Statistics rules:**
+- Always `number_format()` every value in the partial.
+- Icon inherits color from `--card-accent-rgb` via CSS -- never use inline `style=`.
+- Route: `GET admin/{entity}/statistics` -> `{Entity}Controller@statistics`.
+- JS wiring: push `statsUrl` var + `stats.js` in `@push('js')` of index view.
+
+---
+
+## Table Row Pattern (reference: `users/table.blade.php`)
+
+```blade
+@extends('admin.layouts.crud.table', [
+    'rows'        => ${{entities}},
+    'createRoute' => route('admin.{{entity}}.create'),
+])
+
+@section('table')
+    @foreach (${{entities}} as $item)
+        <tr class="data-rows {{entity}}-table-row {{ $item->deleted_at ? 'deleted-table-row' : '' }}"
+            data-{{entity}}-id="{{ $item->id }}">
+
+            @if (!$item->deleted_at)
+                <td class="dt-checkboxes-cell">
+                    <input type="checkbox" value="{{ $item->id }}" data-id="{{ $item->id }}"
+                           class="dt-checkboxes form-check-input"
+                           aria-label="{{ __('admin/main.select_row', ['name' => $item->name]) }}">
+                </td>
+            @else
+                <td></td>
+            @endif
+
+            <td>...primary column...</td>
+            <td class="d-none d-md-table-cell">...secondary column (hidden on mobile)...</td>
+
+            <td class="{{entity}}-actions-cell">
+                <div class="d-flex align-items-center gap-2 flex-nowrap {{entity}}-row-actions">
+
+                    <a href="{{ route('admin.{{entity}}.show', $item) }}"
+                       class="custom-icon {{entity}}-action-btn {{entity}}-action-view"
+                       data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="@lang('admin/main.show')" aria-label="@lang('admin/main.show')">
+                        <i class="ti ti-eye" aria-hidden="true"></i>
+                    </a>
+
+                    @if (!$item->deleted_at)
+                        <a href="{{ route('admin.{{entity}}.edit', $item) }}"
+                           class="custom-icon {{entity}}-action-btn {{entity}}-action-edit"
+                           data-bs-toggle="tooltip" data-bs-placement="top"
+                           title="@lang('admin/main.edit')" aria-label="@lang('admin/main.edit')">
+                            <i class="ti ti-pencil" aria-hidden="true"></i>
+                        </a>
+                    @endif
+
+                    @if ($item->deleted_at)
+                        <a href="javascript:void(0);" data-id="{{ $item->id }}"
+                           data-route="{{ route('admin.{{entity}}.restore', ['id' => $item->id]) }}"
+                           class="custom-icon {{entity}}-action-btn {{entity}}-action-restore restore-row"
+                           data-bs-toggle="tooltip" data-bs-placement="top"
+                           title="@lang('admin/main.restore')" aria-label="@lang('admin/main.restore')">
+                            <i class="ti ti-arrow-back-up" aria-hidden="true"></i>
+                        </a>
+                    @else
+                        <a href="javascript:void(0);" data-id="{{ $item->id }}"
+                           data-route="{{ route('admin.{{entity}}.destroy', $item) }}"
+                           class="custom-icon {{entity}}-action-btn {{entity}}-action-delete delete-row"
+                           data-bs-toggle="tooltip" data-bs-placement="top"
+                           title="@lang('admin/main.delete')" aria-label="@lang('admin/main.delete')">
+                            <i class="ti ti-trash" aria-hidden="true"></i>
+                        </a>
+                    @endif
+
+                    {{-- "More" dropdown: NEVER put data-bs-toggle="tooltip" on the same element as data-bs-toggle="dropdown" --}}
+                    @if (!$item->deleted_at && ({{HAS_NOTIFICATION}} || {{HAS_EMAIL}}))
+                        <div class="dropdown {{entity}}-more-dropdown">
+                            <button type="button"
+                                    class="custom-icon {{entity}}-action-btn {{entity}}-action-more"
+                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                    aria-label="@lang('admin/main.more_actions')">
+                                <i class="ti ti-dots-vertical" aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                @if({{HAS_NOTIFICATION}})
+                                <li>
+                                    <button type="button" class="dropdown-item send-notification"
+                                            data-bs-toggle="modal" data-bs-target="#notificationModal"
+                                            data-id="{{ $item->id }}">
+                                        <i class="ti ti-bell-plus me-2" aria-hidden="true"></i>
+                                        @lang('admin/main.send_notification')
+                                    </button>
+                                </li>
+                                @endif
+                                @if({{HAS_EMAIL}})
+                                <li>
+                                    <button type="button" class="dropdown-item"
+                                            data-bs-toggle="modal" data-bs-target="#emailModal"
+                                            data-id="{{ $item->id }}">
+                                        <i class="ti ti-mail-plus me-2" aria-hidden="true"></i>
+                                        @lang('admin/main.send_email')
+                                    </button>
+                                </li>
+                                @endif
+                            </ul>
+                        </div>
+                    @endif
+
+                </div>
+            </td>
+        </tr>
+    @endforeach
+@endsection
+```
+
+**Table row rules:**
+- `<tr>` must have class `data-rows` + entity row class (e.g. `users-table-row`).
+- `data-{entity}-id="{{ $item->id }}"` attribute on the `<tr>`.
+- Secondary data columns (phone, email, etc.): add `d-none d-md-table-cell` for mobile hiding.
+- NEVER put `data-bs-toggle` twice on the same element -- tooltip + dropdown on same button = conflict. Notify/email triggers go inside `dropdown-menu`.
+- `data-id="{{ $item->id }}"` required on every notify and email button.
+- Edit button hidden when `$item->deleted_at` is set.
+
+---
+
+## Form Pattern (reference: `users/create.blade.php`, `users/edit.blade.php`)
+
+### Form tag
+
+```blade
+{{-- Create --}}
+<form class="mb-3 validated-form form" novalidate method="POST"
+      action="{{ route('admin.{{entity}}.store') }}" enctype="multipart/form-data">
+    @csrf
+
+{{-- Edit --}}
+<form class="mb-3 validated-form form" novalidate method="POST"
+      action="{{ route('admin.{{entity}}.update', $id) }}" enctype="multipart/form-data">
+    @method('PUT')
+    @csrf
+```
+
+### Grid layout - column-fill rule
+
+All fields live inside `<div class="row g-3">`. **Every row of fields must sum to exactly 12 Bootstrap columns** -- never leave orphaned inputs next to blank space.
+
+| Valid row combination | Total |
+|-----------------------|-------|
+| `col-md-12` | 12 -- image, full-width textarea |
+| `col-md-6` + `col-md-6` | 6+6 = 12 |
+| `col-md-4` + `col-md-4` + `col-md-4` | 4+4+4 = 12 |
+| `col-md-6` + `col-md-3` + `col-md-3` | 6+3+3 = 12 |
+| `col-md-4` + `col-md-8` | 4+8 = 12 |
+
+**Multilingual expansion:** `x-form.text` / `x-form.text-area` with `'isMultiLanguage' => true` generates **one `col-*` div per locale** -- NOT a single wrapper. Example: `class='col-md-6'` with 2 locales (ar + en) = 2 x col-md-6 = 12 columns = row is full. Next fields start a fresh row.
+
+**WRONG (the screenshot bug -- 6-col gap after multilingual field):**
+```blade
+{{-- name[ar] col-6 + name[en] col-6 = 12, row is done --}}
+<x-form.text :options="['name'=>'name','class'=>'col-md-6','isMultiLanguage'=>true,'isRequired'=>true]" />
+{{-- Only 3+3=6 of 12 used -- creates a 6-col empty gap! --}}
+<x-form.text   :options="['name'=>'code',      'class'=>'col-md-3','isRequired'=>true]" />
+<x-form.select :options="['name'=>'is_active', 'class'=>'col-md-3','options'=>[...]]" />
+```
+
+**CORRECT -- widen to fill 12:**
+```blade
+<x-form.text :options="['name'=>'name','class'=>'col-md-6','isMultiLanguage'=>true,'isRequired'=>true]" />
+{{-- 6+6=12 --}}
+<x-form.text   :options="['name'=>'code',      'class'=>'col-md-6','isRequired'=>true]" />
+<x-form.select :options="['name'=>'is_active', 'class'=>'col-md-6','options'=>[...]]" />
+```
+
+**CORRECT -- group three fields to fill 12:**
+```blade
+<x-form.text   :options="['name'=>'code',       'class'=>'col-md-4','isRequired'=>true]" />
+<x-form.select :options="['name'=>'is_active',  'class'=>'col-md-4','options'=>[...]]" />
+<x-form.select :options="['name'=>'country_id', 'class'=>'col-md-4','options'=>$countries]" />
+```
+
+### Available form components
+
+| Component | Tag | Notes |
+|-----------|-----|-------|
+| Text | `<x-form.text>` | Supports `isMultiLanguage`, `minLength` |
+| Number | `<x-form.number>` | `minLength` / `maxLength` |
+| Email | `<x-form.email>` | |
+| Password | `<x-form.password>` | `isRequired=false` on edit |
+| Select | `<x-form.select>` | Pass `options` array with `id`/`name` keys |
+| Checkbox | `<x-form.checkbox>` | Simple boolean toggle |
+| Textarea | `<x-form.text-area>` | Supports `isMultiLanguage` |
+| Image | `<x-form.image>` | Always `col-md-12`, placed first |
+| Multi-image | `<x-form.multi-image>` | Always `col-md-12`, placed first |
+| Date | `<x-form.date>` | |
+| Datetime | `<x-form.datetime>` | |
+| Map | `<x-form.map>` | When entity has lat/lng |
+
+**File inputs always first** -- `x-form.image` / `x-form.multi-image` before all other fields.
+
+### Boolean / status fields
+
+Use `x-form.select` with **semantic options** matching the field meaning -- never generic Yes/No strings:
+
+```blade
+{{-- is_active --}}
+<x-form.select :options="[
+    'name'    => 'is_active',
+    'label'   => 'is_active',
+    'class'   => 'col-md-4',
+    'value'   => true,
+    'options' => [
+        ['id' => 1, 'name' => __('admin/main.active')],
+        ['id' => 0, 'name' => __('admin/main.inactive')],
+    ],
+]" />
+
+{{-- is_blocked --}}
+<x-form.select :options="[
+    'name'    => 'is_blocked',
+    'label'   => 'is_blocked',
+    'class'   => 'col-md-4',
+    'value'   => false,
+    'options' => [
+        ['id' => 0, 'name' => __('admin/main.active')],
+        ['id' => 1, 'name' => __('admin/main.blocked')],
+    ],
+]" />
+
+{{-- Enum status (pending/approved/rejected) -- options from controller/service --}}
+<x-form.select :options="[
+    'name'    => 'status',
+    'label'   => 'status',
+    'class'   => 'col-md-4',
+    'options' => $statuses,
+]" />
+```
+
+**Boolean rules:**
+- Options from controller/service when list is reused (like `$receiveNotificationsOptions` in users), or inline with `admin/main` keys.
+- Default `value` must reflect sensible initial state (e.g. `true` for `is_active`, `false` for `is_blocked`).
+- Never use plain PHP `true`/`false` as option labels.
+
+### Action buttons
+
+```blade
+{{-- Create form --}}
+<div class="pt-4 d-flex justify-content-center mt-3">
+    <button type="submit" class="btn btn-primary me-sm-3 me-1 waves-effect waves-light submit-button">
+        {{ __('admin/main.create') }}
+    </button>
+</div>
+
+{{-- Edit form --}}
+<div class="pt-4 d-flex justify-content-center mt-3">
+    <button type="submit" class="btn btn-success me-sm-3 me-1 waves-effect waves-light submit-button">
+        {{ __('admin/main.edit') }}
+    </button>
+</div>
+```
+
+**Action button rules:**
+- Create -> `btn-primary` | Edit -> `btn-success` -- never swap, never use other colors.
+- Always include `waves-effect waves-light submit-button` -- submit-form.js targets `.submit-button`.
+- Container always: `pt-4 d-flex justify-content-center mt-3`.
+
+---
+
+## Routes Translations Pattern
+
+Two files must be updated. They have **different structures**:
+
+**`lang/ar/admin/routes.php`** -- entity nested under outer `'admin'` key:
+```php
+return [
+    'admin' => [
+        // existing entities...
+        '{{entity_plural}}' => [
+            'index'      => 'قائمة {{ENTITY_PLURAL_AR}}',
+            'create'     => 'صفحة إنشاء {{ENTITY_SINGULAR_AR}}',
+            'store'      => 'إنشاء {{ENTITY_SINGULAR_AR}}',
+            'update'     => 'صفحة تعديل {{ENTITY_SINGULAR_AR}}',
+            'edit'       => 'تعديل {{ENTITY_SINGULAR_AR}}',
+            'show'       => 'عرض {{ENTITY_SINGULAR_AR}}',
+            'destroy'    => 'حذف {{ENTITY_SINGULAR_AR}}',
+            'delete_all' => 'حذف {{ENTITY_PLURAL_AR}}',
+        ],
+    ],
+];
+```
+
+**`lang/en/admin/routes.php`** -- entity flat at root (NO `'admin'` wrapper):
+```php
+return [
+    // existing entities...
+    '{{entity_plural}}' => [
+        'index'      => '{{ENTITY_PLURAL_EN}}',
+        'create'     => 'Create {{ENTITY_SINGULAR_EN}} Page',
+        'store'      => 'Create {{ENTITY_SINGULAR_EN}}',
+        'update'     => 'Update {{ENTITY_SINGULAR_EN}} Page',
+        'edit'       => 'Edit {{ENTITY_SINGULAR_EN}}',
+        'show'       => 'Show {{ENTITY_SINGULAR_EN}}',
+        'destroy'    => 'Delete {{ENTITY_SINGULAR_EN}}',
+        'delete_all' => 'Delete {{ENTITY_PLURAL_EN}}',
+    ],
+];
+```
+
+**Always-required keys:** `index`, `create`, `store`, `update`, `edit`, `show`, `destroy`, `delete_all`.
+**Add custom keys** for: `statistics`, `restore`, `switchBlock`, `diagrams`, and any entity-specific routes.
+
+---
+
 ## Critical Rules
 
 1. **Only use passed columns:** Build CRUD (migration, model fillable, form fields, table columns, validation, factory, export) strictly from the columns provided in `{{COLUMNS}}`. Never infer, assume, or add extra columns beyond what was explicitly listed.
@@ -61,6 +552,11 @@ Use these paths and patterns when generating a new admin CRUD unless overrides a
    - **Blade `@section('title')` / headings:** Any literal or `__()` keys must have matching translations; no orphaned keys and no English-only or Arabic-only halves unless the product intentionally skips a locale (default here: **both**).
 8. **Seeder Arabic locale:** For entities with `MULTILANG=true`, the Seeder MUST fill translatable columns per locale. For the **ar** locale, all translatable field values MUST be real **Arabic** text, not English or placeholder strings. Use Faker with `ar_SA` or explicit Arabic strings.
 9. **Statistics / diagrams behavior:** If `INDEX_STATISTICS` or `INDEX_DIAGRAMS` is true, follow the **Users** pattern: statistics cards via dedicated route + partial when applicable, `crud-stats` CSS, and optional ApexCharts (already included in `admin.layouts.crud.index`). Animate stat/charts consistently with existing assets (`stats.js`, ApexCharts config). Do not ship completely static dashboards when the user asked for statistics or diagrams.
+10. **Email and Notification modals:** Include `<x-model.notification>` ONLY when `HAS_NOTIFICATION=true`. Include `<x-model.email>` ONLY when `HAS_EMAIL=true`. Both require `data-id="{{ $item->id }}"` on every row trigger button inside the "more" dropdown.
+11. **Bulk-actions bar:** Always include `<x-table.bulk-actions>` when `hasDeleteAll=true`. The delete-all button inside `<x-table.buttons>` is hidden (d-none) -- the visible delete UI is the bulk-actions bar.
+12. **Form grid -- no orphaned inputs:** Every row in `<div class="row g-3">` must sum to exactly **12 Bootstrap columns**. Multilingual field with `isMultiLanguage=true` at `col-md-6` generates one `col-md-6` per locale (2 locales x 6 = 12) -- that row is consumed. Widen or add fields so each row totals 12. See **Form Pattern** above.
+13. **Form action buttons:** Create -> `btn btn-primary`. Edit -> `btn btn-success`. Both must include `waves-effect waves-light submit-button`. Container: `<div class="pt-4 d-flex justify-content-center mt-3">`. Never swap colors or omit `submit-button`.
+14. **Boolean / status form fields:** Use `x-form.select` with semantic options from `admin/main` keys -- never generic Yes/No strings. Options for reused lists come from controller/service. Default `value` must be set to the sensible initial state.
 
 ---
 
@@ -342,17 +838,18 @@ Implementation rules:
 
 ### Questions Phase
 - **First response MUST be questions only:** Print the Component Checklist and ask Create/Exists/Skip for each component.
-- **Always ask (explicit):**
-  1. “Do you want **statistics cards** on the index page?” → `INDEX_STATISTICS`
-  2. “Do you want **diagrams/charts** on the index page?” → `INDEX_DIAGRAMS` (independent question)
-  3. **`SIDEBAR_DISPLAY_MODE` (mandatory when sidebar is in scope):** “Should the sidebar item be a **single direct link** or a **dropdown**?” — ask when `ADD_TO_SIDEBAR=true`; do not default silently.
-  4. “On the **show** page, how should **related data** appear (**stats**, **tables**, or **both**)?” → `SHOW_RELATED_PRESENTATION`
-- If `ADD_TO_SIDEBAR=true`, also confirm optional **`childes`**, **group**, **icon**, and **permission** as in [Sidebar Registration](#d-sidebar-registration-configsidebar_routesphp).
-- **Filters:** Confirm **full** filter set: date range, order, retrieve (if soft deletes), and **per-column** filters for all relevant `{{COLUMNS}}`.
-- **Export:** Ask for types and columns; headers use translation keys on the model export schema.
+- **Always ask all 7 from Step 1:**
+  1. Statistics cards? -> `INDEX_STATISTICS` (if yes -> which cards?)
+  2. Diagrams/charts? -> `INDEX_DIAGRAMS` (independent)
+  3. Export? Formats? -> `ENABLE_EXPORT` + `EXPORT_TYPES`
+  4. Bulk email button? -> `HAS_EMAIL`
+  5. Bulk notification button? -> `HAS_NOTIFICATION`
+  6. Sidebar: single or dropdown? -> `SIDEBAR_DISPLAY_MODE` (when ADD_TO_SIDEBAR=true)
+  7. Show page relations: tiles / tables / both? -> `SHOW_RELATED_PRESENTATION`
+- **Filters:** Confirm full filter set: date range, order, retrieve (soft deletes), per-column filters.
 - **Map on show:** If lat/lng exist, confirm read-only map.
-- **Translations:** Confirm route/input/main/validation coverage plan; after coding, run the **translations review** checklist in Critical Rules (rule 7).
-- **Do not generate code until inputs are complete.**
+- **Translations:** Confirm AR+EN coverage plan; run review after coding (Critical Rules rule 7).
+- **Do not generate code until all inputs are confirmed.**
 
 ### Code Generation Rules
 - When you update an existing file, output **full updated file** + **CHANGES** list.
@@ -370,7 +867,14 @@ Implementation rules:
 ### Blade Views Are Passive
 - No DB in Blade; only render data from Controller/Service.
 
-### Form Field Ordering
+### Form Layout
+- File inputs (`x-form.image`, `x-form.multi-image`) always first, always `col-md-12`.
+- Every row in `<div class="row g-3">` must sum to **12 columns** -- no orphaned inputs next to blank space.
+- `isMultiLanguage=true` generates one `col-*` div per locale: plan rows so each sums to 12 after expansion (e.g. 2 locales x col-md-6 = 12 = full row).
+- Widen remaining fields or add fields; never leave a partial row with empty grid space.
+- Create button: `btn-primary` | Edit button: `btn-success` | Both: `waves-effect waves-light submit-button` | Container: `pt-4 d-flex justify-content-center mt-3`.
+- Boolean/status fields: `x-form.select` with semantic `admin/main` translation labels, not raw yes/no. Set default `value` to sensible initial state.
+
 - File inputs first in create/edit.
 
 ### Index: filters + statistics + diagrams
@@ -381,19 +885,33 @@ Implementation rules:
 - All **relations** from `{{RELATIONS}}`: expose summary stats and/or tables per `SHOW_RELATED_PRESENTATION`. Eager-load in the service; Blade uses passed variables only.
 
 ### Route and page translations
-- Add **all** route keys for the section in AR and EN (same as Critical Rules rule 6).
-- After implementation, complete the **translations review** (Critical Rules rule 7): `inputs`, `main`, `routes`, `validation`, and any Blade titles/headings.
+- Add **all** route keys in both `lang/ar/admin/routes.php` AND `lang/en/admin/routes.php`.
+- **Structure difference:** AR file nests entities under outer `'admin'` key; EN file is flat at root. See **Routes Translations Pattern** section.
+- Required keys: `index`, `create`, `store`, `update`, `edit`, `show`, `destroy`, `delete_all`. Add custom keys for `statistics`, `restore`, `switchBlock`, `diagrams`, etc.
+- After implementation, complete translations review (rule 7): `inputs`, `main`, `routes`, `validation`, Blade titles.
 
 ---
 
 ## 3) Quick checklist before coding
 
-- [ ] Reference entity (default **users**) confirmed — **UI copied from that reference** (tables, statistics, buttons, inputs)
-- [ ] `INDEX_STATISTICS` and `INDEX_DIAGRAMS` asked separately
-- [ ] **`SIDEBAR_DISPLAY_MODE` asked** when `ADD_TO_SIDEBAR=true` (single vs dropdown; maps to `has_child`)
+- [ ] Reference entity (default **users**) confirmed -- UI copied from reference (tables, stats, buttons, inputs, forms)
+- [ ] `INDEX_STATISTICS` asked -> card list confirmed -> `:loaderCards` set to exact count
+- [ ] `INDEX_DIAGRAMS` asked (independent of stats)
+- [ ] `ENABLE_EXPORT` asked -> formats confirmed
+- [ ] `HAS_EMAIL` asked -> `<x-model.email>` + row 'more' dropdown buttons planned
+- [ ] `HAS_NOTIFICATION` asked -> `<x-model.notification>` + row 'more' dropdown buttons planned
+- [ ] `SIDEBAR_DISPLAY_MODE` asked when `ADD_TO_SIDEBAR=true` (single vs dropdown; maps to `has_child`)
 - [ ] Index **filters** cover all applicable column/date/order/retrieve cases
-- [ ] Show page **relations** + **stats/tables/both** confirmed
+- [ ] Show page **relations** + stats/tables/both confirmed
+- [ ] `<x-table.bulk-actions>` included when `hasDeleteAll=true`
+- [ ] `hasSearch=true` set on `<x-table.buttons>`
+- [ ] Row actions: `data-id` on all notify/email buttons; no `data-bs-toggle` conflict (tooltip + dropdown on same element)
+- [ ] **Form grid:** every row sums to 12 cols; multilingual expansion planned (N locales x col-md-X <= 12 per row)
+- [ ] **Form buttons:** Create = `btn-primary`, Edit = `btn-success`; both have `waves-effect waves-light submit-button`
+- [ ] **Boolean/status fields:** `x-form.select` with semantic `admin/main` labels (not raw yes/no)
+- [ ] **Routes translations:** both `lang/ar/admin/routes.php` (nested under 'admin') and `lang/en/admin/routes.php` (flat) updated with all required keys
+- [ ] Statistics: `number_format()` on all values; no inline `style=` on `crud-stats__icon`; `stats.js` + `statsUrl` wired
+- [ ] Skeleton loader `:loaderCards` + `data-rows` verified
 - [ ] `routes/admin.php`, `config/sidebar_routes.php`, lang files scoped
-- [ ] Service + `AdminBaseController` pattern agreed
-- [ ] Plan to **verify skeleton loader + `data-rows`** after table partial / headers change
-- [ ] Plan for **full AR/EN translation review** (inputs, main, routes, validation, page titles)
+- [ ] Service + `AdminBaseController` pattern agreed -- no DB logic in Blade
+- [ ] Full AR/EN translation review planned (inputs, main, routes, validation, page titles)

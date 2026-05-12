@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Admin sidebar — token-based, GPU-light
  *  - All colors source from tokens.css
  *  - No infinite animations (was 4: aura, brand-pulse, bar-glow, icon-glow)
@@ -13,25 +13,25 @@
     --sb-bg:              #faf9ff;
     --sb-bg-2:            #f2f0ff;
     --sb-bg-gradient:     linear-gradient(180deg, #f7f5ff 0%, #eeebff 100%);
-    --sb-border:          rgba(115, 103, 240, 0.18);
+    --sb-border:          rgba(var(--color-brand-primary-rgb), 0.18);
     --sb-text:            var(--text-body);
     --sb-text-strong:     var(--text-strong);
     --sb-muted:           var(--text-muted);
-    --sb-hover-bg:        rgba(115, 103, 240, 0.07);
-    --sb-active-bg:       rgba(115, 103, 240, 0.13);
+    --sb-hover-bg:        rgba(var(--color-brand-primary-rgb), 0.07);
+    --sb-active-bg:       rgba(var(--color-brand-primary-rgb), 0.13);
     --sb-active-text:     var(--color-brand-primary-deep);
     --sb-accent:          var(--color-brand-primary);
     --sb-accent-2:        var(--color-brand-secondary);
-    --sb-accent-soft:     rgba(115, 103, 240, 0.55);
+    --sb-accent-soft:     rgba(var(--color-brand-primary-rgb), 0.55);
     --sb-divider:         var(--surface-border);
     --sb-radius:          var(--radius-md);
     --sb-search-bg:       rgba(255, 255, 255, 0.42);
     --sb-search-bg-focus: rgba(255, 255, 255, 0.78);
     --sb-tooltip-bg:      var(--text-strong);
     --sb-tooltip-text:    #fff;
-    --sb-shadow:          4px 0 24px rgba(115, 103, 240, 0.10);
+    --sb-shadow:          4px 0 24px rgba(var(--color-brand-primary-rgb), 0.10);
 
-    --sb-orb-1:           rgba(115, 103, 240, 0.18);
+    --sb-orb-1:           rgba(var(--color-brand-primary-rgb), 0.18);
     --sb-orb-2:           rgba(0, 207, 232, 0.12);
 
     /* Do not set position here — #layout-menu wins over .layout-menu-fixed .layout-menu
@@ -54,7 +54,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(rgba(115, 103, 240, 0.06) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(var(--color-brand-primary-rgb), 0.06) 1px, transparent 1px);
     background-size: 20px 20px;
     pointer-events: none;
     z-index: 0;
@@ -134,7 +134,7 @@
     --sb-text-strong:     #f7f8ff;
     --sb-muted:           rgba(200, 204, 232, 0.55);
     --sb-hover-bg:        rgba(255, 255, 255, 0.06);
-    --sb-active-bg:       rgba(115, 103, 240, 0.22);
+    --sb-active-bg:       rgba(var(--color-brand-primary-rgb), 0.22);
     --sb-active-text:     #f7f8ff;
     --sb-accent-soft:     rgba(177, 168, 255, 0.72);
     --sb-divider:         rgba(255, 255, 255, 0.07);
@@ -144,7 +144,7 @@
     --sb-tooltip-text:    #2e3348;
     --sb-shadow:          4px 0 28px rgba(0, 0, 0, 0.35);
 
-    --sb-orb-1:           rgba(115, 103, 240, 0.28);
+    --sb-orb-1:           rgba(var(--color-brand-primary-rgb), 0.28);
     --sb-orb-2:           rgba(0, 207, 232, 0.18);
 }
 
@@ -158,7 +158,7 @@
         --sb-text-strong:     #f7f8ff;
         --sb-muted:           rgba(200, 204, 232, 0.55);
         --sb-hover-bg:        rgba(255, 255, 255, 0.06);
-        --sb-active-bg:       rgba(115, 103, 240, 0.22);
+        --sb-active-bg:       rgba(var(--color-brand-primary-rgb), 0.22);
         --sb-active-text:     #f7f8ff;
         --sb-accent-soft:     rgba(177, 168, 255, 0.72);
         --sb-divider:         rgba(255, 255, 255, 0.07);
@@ -168,7 +168,7 @@
         --sb-tooltip-text:    #2e3348;
         --sb-shadow:          4px 0 28px rgba(0, 0, 0, 0.35);
 
-        --sb-orb-1:           rgba(115, 103, 240, 0.28);
+        --sb-orb-1:           rgba(var(--color-brand-primary-rgb), 0.28);
         --sb-orb-2:           rgba(0, 207, 232, 0.18);
     }
 }
@@ -408,10 +408,10 @@
 .dark-style #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link.menu-toggle,
 [data-theme*='dark'] #layout-menu.bg-menu-theme .menu-inner .menu-item.open > .menu-link.menu-toggle.active,
 .dark-style #layout-menu.bg-menu-theme .menu-inner .menu-item.open > .menu-link.menu-toggle.active {
-    background: rgba(115, 103, 240, 0.22) !important;
+    background: rgba(var(--color-brand-primary-rgb), 0.22) !important;
     box-shadow:
-        inset 0 0 0 1px rgba(115, 103, 240, 0.30),
-        0 2px 12px rgba(115, 103, 240, 0.20);
+        inset 0 0 0 1px rgba(var(--color-brand-primary-rgb), 0.30),
+        0 2px 12px rgba(var(--color-brand-primary-rgb), 0.20);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -419,10 +419,10 @@
     html[data-theme='system'] #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link,
     html[data-theme='system'] #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link.menu-toggle,
     html[data-theme='system'] #layout-menu.bg-menu-theme .menu-inner .menu-item.open > .menu-link.menu-toggle.active {
-        background: rgba(115, 103, 240, 0.22) !important;
+        background: rgba(var(--color-brand-primary-rgb), 0.22) !important;
         box-shadow:
-            inset 0 0 0 1px rgba(115, 103, 240, 0.30),
-            0 2px 12px rgba(115, 103, 240, 0.20);
+            inset 0 0 0 1px rgba(var(--color-brand-primary-rgb), 0.30),
+            0 2px 12px rgba(var(--color-brand-primary-rgb), 0.20);
     }
 }
 
@@ -620,5 +620,251 @@ html:not(.layout-menu-collapsed) #layout-menu.bg-menu-theme .menu-inner .menu-it
     }
     .layout-menu-collapsed:not(.layout-menu-hover) #layout-menu > ul.menu-inner > ul.menu-inner > .menu-item > a.menu-link[data-tooltip]:hover::after {
         animation: none;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   ░░ ADVANCED DARK MODE — Premium polish ░░
+   Every accent below derives from --color-brand-primary-rgb
+   so the brand switcher live-recolors the sidebar.
+═══════════════════════════════════════════════════════════ */
+
+/* ── 1. Richer brand-tinted background gradient ───────── */
+[data-theme*='dark'] #layout-menu,
+.dark-style #layout-menu {
+    background:
+        radial-gradient(ellipse 110% 50% at 50% 0%,
+            rgba(var(--color-brand-primary-rgb), 0.20) 0%,
+            transparent 65%),
+        linear-gradient(180deg,
+            #1a1638 0%,
+            #221d4a 30%,
+            #1e1a40 70%,
+            #181430 100%) !important;
+}
+
+/* Subtle ambient cyan glow at bottom */
+[data-theme*='dark'] #layout-menu::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 28% at 50% 100%,
+        rgba(var(--color-brand-secondary-rgb), 0.10) 0%,
+        transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── 2. Logo halo ──────────────────────────────────────── */
+[data-theme*='dark'] #layout-menu .app-brand {
+    position: relative;
+}
+[data-theme*='dark'] #layout-menu .app-brand::before {
+    content: '';
+    position: absolute;
+    inset: -25%;
+    background: radial-gradient(circle,
+        rgba(var(--color-brand-primary-rgb), 0.22) 0%,
+        transparent 70%);
+    filter: blur(18px);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ── 3. Active item — premium glow + shimmer pass ─────── */
+[data-theme*='dark'] #layout-menu .menu-item.active > .menu-link,
+[data-theme*='dark'] #layout-menu.bg-menu-theme .menu-inner .menu-item.active > .menu-link,
+[data-theme*='dark'] #layout-menu.bg-menu-theme .menu-inner .menu-item.open > .menu-link.menu-toggle.active {
+    background: linear-gradient(135deg,
+        rgba(var(--color-brand-primary-rgb), 0.34) 0%,
+        rgba(var(--color-brand-primary-rgb), 0.14) 70%,
+        rgba(var(--color-brand-primary-rgb), 0.26) 100%) !important;
+    box-shadow:
+        inset 0 0 0 1px rgba(var(--color-brand-primary-rgb), 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.10),
+        0 4px 18px rgba(var(--color-brand-primary-rgb), 0.28),
+        0 0 36px rgba(var(--color-brand-primary-rgb), 0.18) !important;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Slow shimmer sweep across active item */
+[data-theme*='dark'] #layout-menu .menu-item.active > .menu-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg,
+        transparent 35%,
+        rgba(255, 255, 255, 0.10) 50%,
+        transparent 65%);
+    background-size: 250% 100%;
+    animation: sb-active-shimmer 5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes sb-active-shimmer {
+    0%   { background-position: -120% 0; }
+    50%  { background-position:  220% 0; }
+    100% { background-position:  220% 0; }
+}
+
+/* Active icon — brand-color with glow */
+[data-theme*='dark'] #layout-menu .menu-item.active > .menu-link i.ti,
+[data-theme*='dark'] #layout-menu .menu-item.active > .menu-link i[class^='ti-'] {
+    color: var(--color-brand-primary-glow) !important;
+    filter: drop-shadow(0 0 8px rgba(var(--color-brand-primary-rgb), 0.65));
+}
+
+/* ── 4. Vertical accent bar — pulsing brand glow ───────── */
+[data-theme*='dark'] #layout-menu > ul.menu-inner > ul.menu-inner > .menu-item.active > .menu-link::before {
+    background: linear-gradient(180deg,
+        var(--color-brand-primary) 0%,
+        var(--color-brand-primary-glow) 50%,
+        var(--color-brand-primary) 100%) !important;
+    box-shadow: 0 0 14px rgba(var(--color-brand-primary-rgb), 0.85);
+    animation: sb-bar-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes sb-bar-glow {
+    0%, 100% { box-shadow: 0 0 10px rgba(var(--color-brand-primary-rgb), 0.65); }
+    50%      { box-shadow: 0 0 22px rgba(var(--color-brand-primary-rgb), 1.00); }
+}
+
+/* ── 5. Hover state — smooth brand slide-in ────────────── */
+[data-theme*='dark'] #layout-menu .menu-item:not(.active) > .menu-link {
+    position: relative;
+    overflow: hidden;
+    transition: color .22s ease, background .22s ease, box-shadow .22s ease;
+}
+[data-theme*='dark'] #layout-menu .menu-item:not(.active) > .menu-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+        rgba(var(--color-brand-primary-rgb), 0) 0%,
+        rgba(var(--color-brand-primary-rgb), 0.12) 100%);
+    transform: translateX(-100%);
+    transition: transform .28s ease-out;
+    pointer-events: none;
+    z-index: 0;
+}
+[dir='rtl'][data-theme*='dark'] #layout-menu .menu-item:not(.active) > .menu-link::before {
+    transform: translateX(100%);
+}
+[data-theme*='dark'] #layout-menu .menu-item:not(.active) > .menu-link:hover::before {
+    transform: translateX(0);
+}
+[data-theme*='dark'] #layout-menu .menu-item:not(.active) > .menu-link:hover {
+    box-shadow:
+        inset 0 0 0 1px rgba(var(--color-brand-primary-rgb), 0.18),
+        0 2px 12px rgba(var(--color-brand-primary-rgb), 0.08);
+}
+[data-theme*='dark'] #layout-menu .menu-item:not(.active) > .menu-link:hover i {
+    color: var(--color-brand-primary-glow);
+    transform: scale(1.08);
+    transition: transform .22s var(--ease-bounce);
+}
+
+/* Ensure link content stacks above the ::before shimmer */
+[data-theme*='dark'] #layout-menu .menu-link > * { position: relative; z-index: 1; }
+
+/* ── 6. Glass search bar with brand focus glow ─────────── */
+[data-theme*='dark'] #layout-menu .sidebar-search-input {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #fff !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+[data-theme*='dark'] #layout-menu .sidebar-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.38);
+}
+[data-theme*='dark'] #layout-menu .sidebar-search-input:focus {
+    background: rgba(var(--color-brand-primary-rgb), 0.10) !important;
+    border-color: rgba(var(--color-brand-primary-rgb), 0.48) !important;
+    box-shadow:
+        0 0 0 3px rgba(var(--color-brand-primary-rgb), 0.18),
+        0 0 22px rgba(var(--color-brand-primary-rgb), 0.22) !important;
+}
+[data-theme*='dark'] #layout-menu .sidebar-search-wrap:focus-within .sidebar-search-icon {
+    color: var(--color-brand-primary-glow);
+    filter: drop-shadow(0 0 6px rgba(var(--color-brand-primary-rgb), 0.55));
+}
+
+/* ── 7. Custom brand-tinted scrollbar ──────────────────── */
+[data-theme*='dark'] #layout-menu .ps__rail-y .ps__thumb-y,
+[data-theme*='dark'] #layout-menu .menu-inner::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg,
+        rgba(var(--color-brand-primary-rgb), 0.45),
+        rgba(var(--color-brand-primary-rgb), 0.22)) !important;
+    border-radius: 99px !important;
+}
+[data-theme*='dark'] #layout-menu .ps__rail-y:hover .ps__thumb-y,
+[data-theme*='dark'] #layout-menu .menu-inner::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--color-brand-primary-rgb), 0.62) !important;
+}
+[data-theme*='dark'] #layout-menu .menu-inner::-webkit-scrollbar {
+    width: 5px;
+}
+[data-theme*='dark'] #layout-menu .menu-inner::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* ── 8. Submenu connector line ─────────────────────────── */
+[data-theme*='dark'] #layout-menu .menu-sub {
+    position: relative;
+}
+[data-theme*='dark'] #layout-menu .menu-sub::before {
+    content: '';
+    position: absolute;
+    inset-block: 0.4rem;
+    inset-inline-start: 1.55rem;
+    width: 1px;
+    background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(var(--color-brand-primary-rgb), 0.32) 25%,
+        rgba(var(--color-brand-primary-rgb), 0.32) 75%,
+        transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Submenu active item — strong brand dot */
+[data-theme*='dark'] #layout-menu .menu-sub .menu-item.active > .menu-link::before {
+    color: var(--color-brand-primary-glow) !important;
+    text-shadow: 0 0 8px rgba(var(--color-brand-primary-rgb), 0.85);
+}
+
+/* ── 9. Brand orbs — slow drift (performance-friendly) ── */
+[data-theme*='dark'] #layout-menu .sb-orb--1 {
+    background: radial-gradient(circle,
+        rgba(var(--color-brand-primary-rgb), 0.32) 0%,
+        transparent 70%);
+    animation: sb-orb-drift-1 18s ease-in-out infinite alternate;
+}
+[data-theme*='dark'] #layout-menu .sb-orb--2 {
+    background: radial-gradient(circle,
+        rgba(var(--color-brand-secondary-rgb), 0.22) 0%,
+        transparent 70%);
+    animation: sb-orb-drift-2 22s ease-in-out infinite alternate;
+}
+@keyframes sb-orb-drift-1 {
+    0%   { transform: translate(0, 0)        scale(1);    }
+    100% { transform: translate(-20px, 30px) scale(1.10); }
+}
+@keyframes sb-orb-drift-2 {
+    0%   { transform: translate(0, 0)       scale(1);    }
+    100% { transform: translate(15px, -25px) scale(1.08); }
+}
+
+/* ── 10. Reduced motion ────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    [data-theme*='dark'] #layout-menu .menu-item.active > .menu-link::after,
+    [data-theme*='dark'] #layout-menu > ul.menu-inner > ul.menu-inner > .menu-item.active > .menu-link::before,
+    [data-theme*='dark'] #layout-menu .sb-orb--1,
+    [data-theme*='dark'] #layout-menu .sb-orb--2 {
+        animation: none !important;
     }
 }

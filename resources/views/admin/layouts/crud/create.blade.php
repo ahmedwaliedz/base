@@ -5,12 +5,13 @@
     <link rel="stylesheet" href="{{ asset('style/admin/vendor/libs/sweetalert2/sweetalert2.css') }}" />
     <link rel="stylesheet" href="{{ asset('style/admin/vendor/libs/select2/select2.css') }}" />
     <link rel="stylesheet" href="{{ asset('style/admin/css/single-upload.css') }}" />
+    <link rel="stylesheet" href="{{ asset('style/admin/css/user-crud.css') }}" />
 @endpush
 
 @section('content')
     <div class="card">
         <div class="card-body">
-            
+
             @stack('content')
 
         </div>
@@ -27,7 +28,7 @@
     <script src="{{ asset('style/admin/custom-js/error-handlers/show-validation-on-inputs.js') }}"></script>
     <script src="{{ asset('style/admin/custom-js/error-handlers/show-block.js') }}"></script>
     <script src="{{ asset('style/admin/custom-js/error-handlers/show-un-authorize.js') }}"></script>
-    <script src="{{ asset('style/admin/custom-js/error-handlers/show-unknown-error.js') }}"></script>
+    {{-- <script src="{{ asset('style/admin/custom-js/error-handlers/show-unknown-error.js') }}"></script> --}}
 
     <script>
         $(document).ready(function() {
@@ -38,7 +39,7 @@
                 const roleSelect = $('select[name="role_id"]');
 
                 if (typeValue === 'super_admin') {
-                    roleContainer.fadeOut();
+                    roleContainer.fadeOut(); 
                     roleSelect.prop('required', false);
                 } else {
                     roleContainer.fadeIn();

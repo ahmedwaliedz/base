@@ -1,0 +1,222 @@
+/* Advanced dashboard toasts — top-start side, mirrors dashboard LTR/RTL */
+#dashboard-toast-host.dashboard-toast {
+    unicode-bidi: isolate;
+    position: fixed;
+    top: var(--dashboard-toast-top, 80px);
+    inset-inline-start: var(--dashboard-toast-side, 1.25rem);
+    inset-inline-end: auto;
+    z-index: 10990;
+    min-width: 280px;
+    max-width: min(360px, calc(100vw - 2rem));
+    width: max-content;
+    border-radius: 0.625rem;
+    outline: 1px solid rgba(var(--bs-border-color-rgb, 100, 103, 121), 0.22);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+        0 8px 32px rgba(15, 17, 32, 0.35),
+        0 2px 8px rgba(15, 17, 32, 0.12);
+
+    opacity: 0;
+    transition:
+        opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+/* LTR: anchored on the left → slides in from the left edge */
+#dashboard-toast-host.dashboard-toast {
+    transform: translateX(-16px) translateY(-4px) scale(0.98);
+}
+
+/* RTL: anchored on the right → mirror, slides in from the right edge */
+#dashboard-toast-host.dashboard-toast[dir='rtl'] {
+    transform: translateX(16px) translateY(-4px) scale(0.98);
+}
+
+#dashboard-toast-host.dashboard-toast.dashboard-toast--visible {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+}
+
+#dashboard-toast-host.dashboard-toast.dashboard-toast--leave {
+    opacity: 0;
+    transform: translateX(-12px) translateY(-4px) scale(0.98);
+    transition:
+        opacity 0.28s ease,
+        transform 0.28s ease;
+}
+
+#dashboard-toast-host.dashboard-toast[dir='rtl'].dashboard-toast--leave {
+    transform: translateX(12px) translateY(-4px) scale(0.98);
+}
+
+#dashboard-toast-host .dashboard-toast__card {
+    position: relative;
+    overflow: hidden;
+    border-radius: inherit;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.09) 0%,
+        rgba(255, 255, 255, 0.02) 100%
+    );
+    background-color: rgba(var(--bs-body-bg-rgb, 255, 255, 255), 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-inline-start: 3px solid var(--dashboard-toast-accent, #71dd37);
+}
+
+[data-bs-theme='dark'] #dashboard-toast-host .dashboard-toast__card {
+    background: linear-gradient(
+        155deg,
+        rgba(40, 42, 58, 0.92) 0%,
+        rgba(26, 28, 42, 0.88) 50%,
+        rgba(20, 22, 35, 0.94) 100%
+    );
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+#dashboard-toast-host .dashboard-toast__row {
+    padding-block: 0.65rem;
+    padding-inline: 0.65rem 0.5rem;
+}
+
+#dashboard-toast-host .dashboard-toast__body {
+    padding: 0 !important;
+    gap: 0.65rem !important;
+}
+
+/* Variant tint (very subtle) */
+#dashboard-toast-host[data-toast-variant='success'] .dashboard-toast__card {
+    box-shadow: inset 0 0 0 1px rgba(113, 221, 55, 0.08);
+}
+
+#dashboard-toast-host[data-toast-variant='error'] .dashboard-toast__card {
+    box-shadow: inset 0 0 0 1px rgba(255, 76, 81, 0.1);
+}
+
+#dashboard-toast-host[data-toast-variant='warning'] .dashboard-toast__card {
+    box-shadow: inset 0 0 0 1px rgba(255, 171, 0, 0.1);
+}
+
+#dashboard-toast-host[data-toast-variant='info'] .dashboard-toast__card {
+    box-shadow: inset 0 0 0 1px rgba(3, 195, 236, 0.1);
+}
+
+#dashboard-toast-host .dashboard-toast__icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.125rem;
+    height: 2.125rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--dashboard-toast-accent, #71dd37) 20%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--dashboard-toast-accent, #71dd37) 35%, transparent);
+}
+
+#dashboard-toast-host .dashboard-toast__icon {
+    font-size: 1.15rem;
+    line-height: 1;
+    color: var(--dashboard-toast-accent, #71dd37);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+#dashboard-toast-host .dashboard-toast__text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+    color: var(--bs-heading-color, var(--bs-body-color, #433c50));
+    word-break: break-word;
+    text-align: start;
+}
+
+[data-bs-theme='dark'] #dashboard-toast-host .dashboard-toast__text {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+/* Close — visible on glass */
+#dashboard-toast-host .dashboard-toast__close {
+    opacity: 0.65;
+    margin-inline-end: 0.25rem;
+    transition: opacity 0.15s ease;
+}
+
+#dashboard-toast-host .dashboard-toast__close:hover {
+    opacity: 1;
+}
+
+[data-bs-theme='dark'] #dashboard-toast-host .dashboard-toast__close {
+    filter: invert(1) grayscale(1);
+    opacity: 0.55;
+}
+
+[data-bs-theme='dark'] #dashboard-toast-host .dashboard-toast__close:hover {
+    opacity: 0.9;
+}
+
+/* Progress strip — auto-dismiss */
+#dashboard-toast-host .dashboard-toast__progress {
+    height: 3px;
+    background: color-mix(in srgb, var(--dashboard-toast-accent, #71dd37) 22%, transparent);
+    overflow: hidden;
+}
+
+#dashboard-toast-host .dashboard-toast__progress-bar {
+    height: 100%;
+    width: 100%;
+    /* Gradient follows reading direction: strong accent at “start” of the bar */
+    background: linear-gradient(
+        to right,
+        var(--dashboard-toast-accent, #71dd37),
+        color-mix(in srgb, var(--dashboard-toast-accent, #71dd37) 70%, white)
+    );
+    transform-origin: inline-start;
+    animation: dashboard-toast-progress linear forwards;
+    animation-duration: var(--toast-duration, 2s);
+}
+
+#dashboard-toast-host[dir='rtl'] .dashboard-toast__progress-bar {
+    background: linear-gradient(
+        to left,
+        var(--dashboard-toast-accent, #71dd37),
+        color-mix(in srgb, var(--dashboard-toast-accent, #71dd37) 70%, white)
+    );
+}
+
+@keyframes dashboard-toast-progress {
+    from {
+        transform: scaleX(1);
+    }
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* Smaller side gap on narrow screens */
+@media (max-width: 575.98px) {
+    #dashboard-toast-host.dashboard-toast {
+        inset-inline-end: 0.75rem;
+        inset-inline-start: 0.75rem;
+        max-width: none;
+        width: auto;
+    }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    #dashboard-toast-host.dashboard-toast,
+    #dashboard-toast-host.dashboard-toast[dir='rtl'] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    #dashboard-toast-host.dashboard-toast:not(.dashboard-toast--visible) {
+        opacity: 0;
+    }
+
+    #dashboard-toast-host .dashboard-toast__progress-bar {
+        animation: none;
+        transform: scaleX(0);
+    }
+}

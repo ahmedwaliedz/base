@@ -2,19 +2,22 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\Admin\{
-    AdminSeeder, PermissionSeeder, RoleSeeder,
-};
-use Database\Seeders\Country\{
-    CitySeeder,CountrySeeder,DistrictSeeder,RegionSeeder
-};
-use Database\Seeders\Setting\SettingSeeder;
-use Database\Seeders\MorePage\{
-    FaqSeeder,IntroPageSeeder,PageSeeder,SliderSeeder,SocialSeeder
-};
+use Database\Seeders\Admin\AdminSeeder;
+use Database\Seeders\Admin\PermissionSeeder;
+use Database\Seeders\Admin\RoleSeeder;
 use Database\Seeders\Category\CategorySeeder;
 use Database\Seeders\Complaint\ComplaintSeeder;
 use Database\Seeders\Complaint\ContactMessageSeeder;
+use Database\Seeders\Country\CitySeeder;
+use Database\Seeders\Country\CountrySeeder;
+use Database\Seeders\Country\DistrictSeeder;
+use Database\Seeders\Country\RegionSeeder;
+use Database\Seeders\MorePage\FaqSeeder;
+use Database\Seeders\MorePage\IntroPageSeeder;
+use Database\Seeders\MorePage\PageSeeder;
+use Database\Seeders\MorePage\SliderSeeder;
+use Database\Seeders\MorePage\SocialSeeder;
+use Database\Seeders\Setting\SettingSeeder;
 use Database\Seeders\User\UserSeeder;
 use Illuminate\Database\Seeder;
 
@@ -40,9 +43,9 @@ class DatabaseSeeder extends Seeder
             SliderSeeder::class,
             SocialSeeder::class,
             IntroPageSeeder::class,
+            UserSeeder::class,
             ComplaintSeeder::class,
             ContactMessageSeeder::class,
-            UserSeeder::class,
         ]);
     }
 }

@@ -16,6 +16,7 @@
         </div>
 
         <ul class="navbar-nav flex-row align-items-center">
+            @include('admin.layouts.parts.brand-switch')
             @include('admin.layouts.parts.style-switch')
         </ul>
 

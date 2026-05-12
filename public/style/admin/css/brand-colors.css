@@ -1,0 +1,160 @@
+﻿/**
+ * Admin brand color presets (overrides tokens.css default violet when html[data-brand] is set).
+ * Default violet: no attribute — variables come from tokens.css only.
+ */
+
+html[data-brand="ocean"] {
+    --color-brand-primary: #3b82f6;
+    --color-brand-primary-deep: #2563eb;
+    --color-brand-primary-glow: #93c5fd;
+    --color-brand-primary-rgb: 59, 130, 246;
+}
+
+html[data-brand="sky"] {
+    --color-brand-primary: #06b6d4;
+    --color-brand-primary-deep: #0891b2;
+    --color-brand-primary-glow: #67e8f9;
+    --color-brand-primary-rgb: 6, 182, 212;
+}
+
+html[data-brand="emerald"] {
+    --color-brand-primary: #10b981;
+    --color-brand-primary-deep: #059669;
+    --color-brand-primary-glow: #6ee7b7;
+    --color-brand-primary-rgb: 16, 185, 129;
+}
+
+html[data-brand="magenta"] {
+    --color-brand-primary: #d946ef;
+    --color-brand-primary-deep: #a21caf;
+    --color-brand-primary-glow: #f0abfc;
+    --color-brand-primary-rgb: 217, 70, 239;
+}
+
+html[data-brand="sunset"] {
+    --color-brand-primary: #f97316;
+    --color-brand-primary-deep: #c2410c;
+    --color-brand-primary-glow: #fdba74;
+    --color-brand-primary-rgb: 249, 115, 22;
+}
+
+html[data-brand="slate"] {
+    --color-brand-primary: #64748b;
+    --color-brand-primary-deep: #475569;
+    --color-brand-primary-glow: #94a3b8;
+    --color-brand-primary-rgb: 100, 116, 139;
+}
+
+html[data-brand="onyx"] {
+    --color-brand-primary: #1e1e2a;
+    --color-brand-primary-deep: #0f0f18;
+    --color-brand-primary-glow: #3f3f52;
+    --color-brand-primary-rgb: 30, 30, 42;
+}
+
+/* ── Popover swatches (navbar brand picker) ───────────────── */
+.brand-color-picker {
+    padding: 0.85rem;
+    min-width: 220px;
+    max-width: 240px;
+}
+
+.brand-color-picker__title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-bottom: 0.7rem;
+    text-align: center;
+}
+
+.brand-color-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);  /* 4×2 grid — fits any viewport */
+    gap: 0.6rem;
+    justify-items: center;
+}
+
+.brand-swatch {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0) inset;
+    transition: transform 0.18s var(--ease-bounce), box-shadow 0.18s ease;
+}
+
+.brand-swatch:hover {
+    transform: scale(1.18);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85) inset;
+}
+
+.brand-swatch.is-active {
+    transform: scale(1.12);
+    box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.85) inset,
+        0 0 0 2px currentColor;
+}
+
+.brand-swatch.is-active::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    pointer-events: none;
+}
+
+html.light-style .brand-swatch:hover,
+html.light-style .brand-swatch.is-active {
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.12) inset;
+}
+
+html.light-style .brand-swatch.is-active {
+    box-shadow:
+        0 0 0 2px rgba(0, 0, 0, 0.12) inset,
+        0 0 0 2px currentColor;
+}
+
+/* ══════════════════════════════════════════════════════════
+   Z-INDEX FIX — Navbar dropdowns above sidebar
+   Vendor core.css uses z-index up to 1100. The .layout-navbar
+   creates a stacking context with z-index:2 by default, so any
+   dropdown inside it is trapped below the sidebar (z~1075-1100).
+   We bump the navbar AND its dropdowns to a clear tier above.
+   The :not(.modal-open) guard mirrors Sneat's own pattern so that
+   Bootstrap modals (z-index 1300, backdrop 1295) still paint
+   above the navbar when shown.
+══════════════════════════════════════════════════════════ */
+body:not(.modal-open) .layout-navbar {
+    z-index: 1200 !important;
+}
+
+.brand-color-picker.dropdown-menu,
+.nav-quick-links-menu.dropdown-menu,
+.dropdown-language .dropdown-menu,
+.dropdown-style-switcher .dropdown-menu,
+.layout-navbar .dropdown-menu {
+    z-index: 1210 !important;
+}
+
+/* Dropdowns Popper portals to body get an even higher tier */
+body > .dropdown-menu.brand-color-picker,
+body > .dropdown-menu.dropdown-styles {
+    z-index: 1220 !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   SIDEBAR HOVER-EXPAND  →  above navbar
+   When user hover-expands a collapsed sidebar, the flyout must
+   paint above the navbar (which we lifted to z-1200 so its
+   dropdowns can escape the stacking context).
+══════════════════════════════════════════════════════════ */
+.layout-menu-collapsed.layout-menu-hover #layout-menu,
+.layout-menu-collapsed.layout-menu-hover .layout-menu {
+    z-index: 1250 !important;
+}

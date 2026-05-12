@@ -6,4 +6,5 @@ enum PageType: string
 {
     case USER = 'user';
     case PROVIDER = 'provider';
+    case PUBLIC = 'public';
 }

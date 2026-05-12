@@ -187,6 +187,33 @@ $(document).on('change', '.switch-block', function() {
     });
 });
 
+// Block / unblock from profile danger-zone (button, not checkbox)
+$(document).on('click', 'button.switch-block', function (e) {
+    e.preventDefault();
+    var $btn = $(this);
+    var url = $btn.data('route');
+    if (!url) {
+        return;
+    }
+    $.ajax({
+        type: 'PUT',
+        url: url,
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        success: function () {
+            window.location.reload();
+        },
+        error: function (xhr) {
+            if (typeof handelErrorByStatus === 'function') {
+                handelErrorByStatus(xhr);
+            }
+        },
+    });
+});
+
 // Export handlers
 $(document).on('click', '.export-action', function(e) {
     e.preventDefault();
@@ -204,11 +231,11 @@ $(document).on('click', '.export-action', function(e) {
                                 .then(() => {
                                     hideExportLoader();
                                     var msg = (window.translations && window.translations.copied_to_clipboard) ? window.translations.copied_to_clipboard : 'Copied to clipboard';
-                                    try { showTopToast(msg); } catch (_) {
-                                        if (window.Swal) {
-                                            Swal.fire({ toast: true, position: 'top-end', icon: 'success', text: msg, showConfirmButton: false, timer: 1500, timerProgressBar: true });
+                                    try {
+                                        if (typeof showTopToast === 'function') {
+                                            showTopToast(msg, 'success');
                                         }
-                                    }
+                                    } catch (_) {}
                                 })
                         .catch((err) => {
                             hideExportLoader();
@@ -310,50 +337,6 @@ function hideExportLoader() {
     if ($loader.length) {
         $loader.fadeOut('fast');
     }
-}
-
-// Small toast helper for top notifications
-function showTopToast(message, icon = 'success') {
-    try {
-        if (window.Swal) {
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: icon,
-                text: message,
-                showConfirmButton: false,
-                timer: 1500,
-                timerProgressBar: true
-            });
-            return;
-        }
-    } catch (_) {}
-
-    // Fallback minimal toast
-    try {
-        const existing = document.getElementById('simple-top-toast');
-        if (existing) existing.remove();
-        const toast = document.createElement('div');
-        toast.id = 'simple-top-toast';
-        toast.textContent = message || 'Done';
-        toast.style.position = 'fixed';
-        toast.style.top = '12px';
-        toast.style.right = '12px';
-        toast.style.zIndex = '2147483647';
-        toast.style.padding = '10px 14px';
-        toast.style.borderRadius = '8px';
-        toast.style.background = icon === 'error' ? '#d9534f' : (icon === 'warning' ? '#f0ad4e' : '#28a745');
-        toast.style.color = '#fff';
-        toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-        toast.style.opacity = '0';
-        toast.style.transition = 'opacity 150ms ease';
-        document.body.appendChild(toast);
-        requestAnimationFrame(() => { toast.style.opacity = '1'; });
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => { try { toast.remove(); } catch (_) {} }, 180);
-        }, 1600);
-    } catch (_) {}
 }
 
 function copyTextToClipboard(text) {

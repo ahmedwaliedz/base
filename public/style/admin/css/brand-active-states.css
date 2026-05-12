@@ -1,0 +1,706 @@
+/**
+ * Brand-active states — every accent surface follows --color-brand-primary*
+ * Loaded AFTER brand-colors.css so the cascade is:
+ *   tokens.css  →  brand-colors.css  →  brand-active-states.css  →  component CSS
+ *
+ * Purpose: every UI surface in the highlighted screenshot reacts when the
+ * user picks a different swatch from the brand-color picker.
+ */
+
+/* ══════════════════════════════════════════════════════════
+   1. ACTIVE ITEMS IN NAV DROPDOWNS
+      (language switcher, theme switcher, any future menu)
+   The current language / theme / option becomes unmistakable:
+   brand-tinted background + brand text + bold + checkmark.
+══════════════════════════════════════════════════════════ */
+.layout-navbar .dropdown-menu .dropdown-item.active,
+.layout-navbar .dropdown-menu .dropdown-item:active,
+.layout-navbar .dropdown-menu .dropdown-item.active:focus,
+body > .dropdown-menu .dropdown-item.active,
+body > .dropdown-menu .dropdown-item:active {
+    background: rgba(var(--color-brand-primary-rgb), 0.14) !important;
+    color: var(--color-brand-primary) !important;
+    font-weight: 600;
+}
+
+.layout-navbar .dropdown-menu .dropdown-item.active i,
+.layout-navbar .dropdown-menu .dropdown-item.active .fi,
+.layout-navbar .dropdown-menu .dropdown-item.active .ti-check,
+body > .dropdown-menu .dropdown-item.active i,
+body > .dropdown-menu .dropdown-item.active .ti-check {
+    color: var(--color-brand-primary) !important;
+}
+
+/* Hover on inactive items: subtle brand tint */
+.layout-navbar .dropdown-menu .dropdown-item:hover:not(.active),
+body > .dropdown-menu .dropdown-item:hover:not(.active) {
+    background: rgba(var(--color-brand-primary-rgb), 0.06);
+    color: var(--color-brand-primary);
+}
+
+/* ══════════════════════════════════════════════════════════
+   2. "ALL SYSTEMS NORMAL" PILL  →  hybrid brand chrome + green dot
+   Chrome (bg / border / text) follows the brand color so the badge
+   feels native to the dashboard. The pulsing dot stays semantic
+   green — that's the actual "system OK" signal. If we add a
+   "degraded" or "outage" state later, the dot carries the meaning.
+══════════════════════════════════════════════════════════ */
+.nav-system-status {
+    background: rgba(var(--color-brand-primary-rgb), 0.10) !important;
+    border-color: rgba(var(--color-brand-primary-rgb), 0.24) !important;
+    color: var(--color-brand-primary) !important;
+}
+/* dot keeps semantic green from navbar.css — NO override here */
+
+/* ══════════════════════════════════════════════════════════
+   3. PRIMARY BUTTONS (.btn-primary)  →  follow brand color
+   We override the *Bootstrap CSS variables* that .btn-primary
+   already consumes — that way :hover, :active, :disabled keep
+   working without !important on every property.
+
+   Applies to: "أضافة / Create" buttons, login submit, and every
+   primary form CTA across the admin.
+══════════════════════════════════════════════════════════ */
+.btn-primary {
+    --bs-btn-bg:                    var(--color-brand-primary);
+    --bs-btn-border-color:          var(--color-brand-primary);
+    --bs-btn-hover-bg:              var(--color-brand-primary-deep);
+    --bs-btn-hover-border-color:    var(--color-brand-primary-deep);
+    --bs-btn-active-bg:             var(--color-brand-primary-deep);
+    --bs-btn-active-border-color:   var(--color-brand-primary-deep);
+    --bs-btn-focus-shadow-rgb:      var(--color-brand-primary-rgb);
+    --bs-btn-disabled-bg:           rgba(var(--color-brand-primary-rgb), 0.55);
+    --bs-btn-disabled-border-color: rgba(var(--color-brand-primary-rgb), 0.55);
+    --bs-btn-color:                 #fff;
+    --bs-btn-hover-color:           #fff;
+    --bs-btn-active-color:          #fff;
+    --bs-btn-disabled-color:        #fff;
+}
+
+/* Outline variant */
+.btn-outline-primary {
+    --bs-btn-color:                 var(--color-brand-primary);
+    --bs-btn-border-color:          var(--color-brand-primary);
+    --bs-btn-hover-bg:              var(--color-brand-primary);
+    --bs-btn-hover-border-color:    var(--color-brand-primary);
+    --bs-btn-hover-color:           #fff;
+    --bs-btn-active-bg:             var(--color-brand-primary);
+    --bs-btn-active-border-color:   var(--color-brand-primary);
+    --bs-btn-active-color:          #fff;
+    --bs-btn-focus-shadow-rgb:      var(--color-brand-primary-rgb);
+    --bs-btn-disabled-color:        rgba(var(--color-brand-primary-rgb), 0.55);
+    --bs-btn-disabled-border-color: rgba(var(--color-brand-primary-rgb), 0.40);
+}
+
+/* Soft variant (if used) */
+.btn-label-primary {
+    --bs-btn-color:                 var(--color-brand-primary);
+    --bs-btn-bg:                    rgba(var(--color-brand-primary-rgb), 0.10);
+    --bs-btn-border-color:          transparent;
+    --bs-btn-hover-bg:              var(--color-brand-primary);
+    --bs-btn-hover-border-color:    var(--color-brand-primary);
+    --bs-btn-hover-color:           #fff;
+    --bs-btn-active-bg:             var(--color-brand-primary-deep);
+    --bs-btn-active-border-color:   var(--color-brand-primary-deep);
+    --bs-btn-active-color:          #fff;
+}
+
+/* ══════════════════════════════════════════════════════════
+   4. EXTRAS — Catch any submit-button utility that wraps btn-primary
+   Some templates use class="submit-button btn btn-primary"; the
+   .btn-primary block above handles those automatically.
+   Below: project's custom .submit-button utility if used solo.
+══════════════════════════════════════════════════════════ */
+.submit-button:not(.btn-success):not(.btn-danger):not(.btn-warning):not(.btn-info) {
+    background-color: var(--color-brand-primary);
+    border-color: var(--color-brand-primary);
+    color: #fff;
+}
+.submit-button:not(.btn-success):not(.btn-danger):not(.btn-warning):not(.btn-info):hover {
+    background-color: var(--color-brand-primary-deep);
+    border-color: var(--color-brand-primary-deep);
+}
+
+/* ══════════════════════════════════════════════════════════
+   5. COLLAPSED SIDEBAR — Active link polish (icon-only mode)
+   Default vendor active state was designed for full-width sidebar.
+   In collapsed mode the link becomes a square icon button — needs
+   a more compact, centered, brand-tinted treatment.
+══════════════════════════════════════════════════════════ */
+.layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-offcanvas)
+    #layout-menu .menu-inner > .menu-item.active > .menu-link,
+.layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-offcanvas)
+    #layout-menu .menu-inner > .menu-item.active > .menu-link.menu-toggle {
+    background: linear-gradient(135deg,
+        rgba(var(--color-brand-primary-rgb), 0.22) 0%,
+        rgba(var(--color-brand-primary-rgb), 0.10) 100%) !important;
+    border-radius: 12px !important;
+    margin: 4px auto !important;
+    width: 44px !important;
+    height: 44px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow:
+        inset 0 0 0 1.5px rgba(var(--color-brand-primary-rgb), 0.45),
+        0 4px 14px rgba(var(--color-brand-primary-rgb), 0.28) !important;
+    position: relative;
+    transition: transform .18s var(--ease-bounce);
+}
+
+/* Replace the vendor's vertical accent bar with a small bottom dot in collapsed mode */
+.layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-offcanvas)
+    #layout-menu .menu-inner > .menu-item.active > .menu-link::before {
+    content: '' !important;
+    top: auto !important;
+    bottom: -6px !important;
+    inset-inline-start: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 6px !important;
+    height: 6px !important;
+    border-radius: 50% !important;
+    background: var(--color-brand-primary) !important;
+    box-shadow: 0 0 10px rgba(var(--color-brand-primary-rgb), 0.85) !important;
+    animation: collapsed-active-dot 1.8s ease-in-out infinite !important;
+}
+
+/* Icon inside collapsed active item — brand color + subtle pulse */
+.layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-offcanvas)
+    #layout-menu .menu-inner > .menu-item.active > .menu-link i,
+.layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-offcanvas)
+    #layout-menu .menu-inner > .menu-item.active > .menu-link i[class^='ti-'] {
+    color: var(--color-brand-primary) !important;
+    font-size: 1.35rem !important;
+    margin: 0 !important;
+    filter: drop-shadow(0 0 8px rgba(var(--color-brand-primary-rgb), 0.55));
+}
+
+/* Hide the label text inside collapsed active (it's already hidden by vendor) */
+.layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-offcanvas)
+    #layout-menu .menu-inner > .menu-item.active > .menu-link > div {
+    display: none !important;
+}
+
+/* Slight hover scale on collapsed active */
+.layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-offcanvas)
+    #layout-menu .menu-inner > .menu-item.active > .menu-link:hover {
+    transform: scale(1.06);
+}
+
+@keyframes collapsed-active-dot {
+    0%, 100% { transform: translateX(-50%) scale(1);   opacity: 1; }
+    50%      { transform: translateX(-50%) scale(1.3); opacity: .7; }
+}
+
+/* Light-mode tweak — soften shadow */
+html.light-style .layout-menu-collapsed:not(.layout-menu-hover):not(.layout-menu-offcanvas)
+    #layout-menu .menu-inner > .menu-item.active > .menu-link {
+    box-shadow:
+        inset 0 0 0 1.5px rgba(var(--color-brand-primary-rgb), 0.40),
+        0 3px 12px rgba(var(--color-brand-primary-rgb), 0.20) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   6. BULK-ACTIONS FLOATING BAR  (.crud-bulk-bar)
+   The bar at page-bottom that appears when rows are selected.
+   Brand-tinted glass surface + light/dark variants.
+══════════════════════════════════════════════════════════ */
+/* The outer .crud-bulk-bar is a full-width transparent positioner from filter.css
+   (uses inset-inline:0 + display:flex + justify-content:center).
+   Style only the inner pill so we don't paint a giant bg strip across the page. */
+.crud-bulk-bar__inner {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: nowrap;
+    border-radius: 999px !important;
+    padding: 0.45rem 0.65rem !important;
+    background: linear-gradient(135deg,
+        rgba(var(--color-brand-primary-rgb), 0.14) 0%,
+        rgba(var(--color-brand-primary-rgb), 0.06) 60%,
+        rgba(var(--color-brand-primary-rgb), 0.10) 100%) !important;
+    backdrop-filter: blur(18px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+    border: 1px solid rgba(var(--color-brand-primary-rgb), 0.28) !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.10),
+        0 18px 50px rgba(var(--color-brand-primary-rgb), 0.25),
+        0 4px 14px rgba(0, 0, 0, 0.20) !important;
+}
+
+/* Count badge */
+.crud-bulk-bar__count {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.95rem;
+    background: rgba(var(--color-brand-primary-rgb), 0.16);
+    border: 1px solid rgba(var(--color-brand-primary-rgb), 0.32);
+    border-radius: 999px;
+    color: var(--color-brand-primary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+.crud-bulk-bar__count-num {
+    min-width: 1.4rem;
+    height: 1.4rem;
+    padding: 0 0.4rem;
+    background: var(--color-brand-primary);
+    color: #fff;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(var(--color-brand-primary-rgb), 0.55);
+}
+
+/* Action buttons inside the bar */
+.crud-bulk-bar__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.crud-bulk-bar .crud-bulk-action {
+    padding: 0.48rem 0.95rem !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    border-radius: 999px !important;
+    transition: transform .15s var(--ease-bounce), box-shadow .15s ease;
+    white-space: nowrap;
+}
+.crud-bulk-bar .crud-bulk-action:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* Clear-selection button */
+.crud-bulk-bar__clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: var(--text-body);
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    transition: background .15s ease, color .15s ease, transform .15s var(--ease-bounce);
+    white-space: nowrap;
+}
+.crud-bulk-bar__clear:hover {
+    background: rgba(var(--color-brand-primary-rgb), 0.14);
+    color: var(--color-brand-primary);
+    transform: translateY(-1px);
+}
+
+/* Light mode tweaks — target inner pill only */
+html.light-style .crud-bulk-bar__inner {
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.92) 0%,
+        rgba(255, 255, 255, 0.82) 100%) !important;
+    border-color: rgba(var(--color-brand-primary-rgb), 0.20) !important;
+    box-shadow:
+        0 18px 50px rgba(var(--color-brand-primary-rgb), 0.18),
+        0 4px 14px rgba(115, 103, 240, 0.08) !important;
+}
+html.light-style .crud-bulk-bar__clear {
+    background: rgba(var(--color-brand-primary-rgb), 0.04);
+    border-color: rgba(var(--color-brand-primary-rgb), 0.14);
+    color: var(--text-strong);
+}
+
+/* Mobile — stack vertically on very small screens */
+@media (max-width: 575.98px) {
+    .crud-bulk-bar__inner {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0.4rem 0.7rem !important;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   7. ROW "MORE" DROPDOWN  (.user-more-menu portaled to body)
+   Brand-themed glass dropdown for per-row secondary actions.
+   z-index above bulk-bar so it never gets covered.
+══════════════════════════════════════════════════════════ */
+body > .dropdown-menu.user-more-menu,
+.user-more-menu {
+    z-index: 1220 !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(var(--color-brand-primary-rgb), 0.22) !important;
+    background: linear-gradient(135deg,
+        rgba(var(--color-brand-primary-rgb), 0.08) 0%,
+        rgba(var(--color-brand-primary-rgb), 0.02) 100%),
+        var(--bs-dropdown-bg, #fff);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    box-shadow:
+        0 12px 32px rgba(var(--color-brand-primary-rgb), 0.18),
+        0 4px 12px rgba(0, 0, 0, 0.18) !important;
+    padding: 0.4rem !important;
+    min-width: 200px;
+    animation: more-menu-in .18s var(--ease-bounce);
+}
+@keyframes more-menu-in {
+    from { opacity: 0; transform: translateY(-4px) scale(.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1);   }
+}
+
+.user-more-menu .dropdown-item {
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background .15s ease, color .15s ease;
+}
+.user-more-menu .dropdown-item:hover {
+    background: rgba(var(--color-brand-primary-rgb), 0.12);
+    color: var(--color-brand-primary);
+}
+.user-more-menu .dropdown-item i {
+    font-size: 1rem;
+    color: var(--color-brand-primary);
+}
+
+/* Trigger button — subtle brand hover */
+.users-action-more {
+    transition: background .18s ease, color .18s ease, transform .15s var(--ease-bounce);
+}
+.users-action-more:hover,
+.users-action-more[aria-expanded="true"] {
+    background: rgba(var(--color-brand-primary-rgb), 0.14) !important;
+    color: var(--color-brand-primary) !important;
+    transform: scale(1.06);
+}
+
+/* Dark-mode adjustments for the dropdown */
+[data-theme*='dark'] body > .dropdown-menu.user-more-menu,
+.dark-style body > .dropdown-menu.user-more-menu,
+[data-theme*='dark'] .user-more-menu,
+.dark-style .user-more-menu {
+    background: linear-gradient(135deg,
+        rgba(var(--color-brand-primary-rgb), 0.22) 0%,
+        rgba(30, 26, 64, 0.92) 100%) !important;
+    border-color: rgba(var(--color-brand-primary-rgb), 0.38) !important;
+    color: #fff;
+}
+[data-theme*='dark'] .user-more-menu .dropdown-item,
+.dark-style .user-more-menu .dropdown-item {
+    color: rgba(255, 255, 255, 0.85);
+}
+[data-theme*='dark'] .user-more-menu .dropdown-item:hover,
+.dark-style .user-more-menu .dropdown-item:hover {
+    background: rgba(var(--color-brand-primary-rgb), 0.24);
+    color: #fff;
+}
+
+/* ══════════════════════════════════════════════════════════
+   8. ADVANCED MODAL STYLING  (.modal-add-new-address)
+   Targets: #emailModal, #notificationModal (both use this class)
+   Premium glass card · animated accent bar · branded inputs ·
+   scale+fade entrance · rotated close button · full dark variant
+══════════════════════════════════════════════════════════ */
+
+/* Z-index lift: modal must paint above the bumped navbar (z-1200)
+   and brand picker dropdowns (z-1220). Backdrop sits just below.
+   Override Bootstrap's CSS variables (the canonical way) AND the
+   resolved z-index value with !important, for full safety against
+   any vendor or inline-style regression. */
+.modal {
+    --bs-modal-zindex: 1300;
+    z-index: 1300 !important;
+}
+.modal-backdrop {
+    --bs-backdrop-zindex: 1295;
+    z-index: 1295 !important;
+}
+
+/* Backdrop — stronger blur for focus */
+.modal-backdrop.show {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(15, 12, 40, 0.55);
+}
+
+/* Dialog container — compact width for simple forms */
+.modal-add-new-address {
+    max-width: 480px;
+}
+
+/* Sneat `.modal-simple` adds 3rem padding on `.modal-content` and floats
+   `.btn-close` outside (`top: -2rem`, RTL `left: -2rem`). Our compact
+   forms use `modal-body p-0`, so all spacing came from that 3rem shell —
+   huge empty band below the footer buttons. Neutralize both here. */
+.modal-add-new-address.modal-simple .modal-content {
+    padding: 0 !important;
+}
+
+/* Modal content — glass card with brand tint */
+.modal-add-new-address .modal-content {
+    position: relative;
+    border-radius: 18px;
+    border: 1px solid rgba(var(--color-brand-primary-rgb), 0.22);
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb), 0.06) 0%,
+            rgba(var(--color-brand-primary-rgb), 0.02) 100%),
+        var(--bs-modal-bg, #fff);
+    box-shadow:
+        0 24px 70px rgba(var(--color-brand-primary-rgb), 0.22),
+        0 8px 24px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+    animation: modal-advanced-in 0.35s var(--ease-bounce);
+}
+
+@keyframes modal-advanced-in {
+    from { opacity: 0; transform: scale(0.92) translateY(24px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+/* Top accent bar — animated brand gradient */
+.modal-add-new-address .modal-content::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    height: 4px;
+    background: linear-gradient(90deg,
+        var(--color-brand-primary)   0%,
+        var(--color-brand-secondary) 50%,
+        var(--color-brand-primary)   100%);
+    background-size: 200% 100%;
+    animation: modal-accent-shift 6s ease infinite;
+    z-index: 2;
+}
+@keyframes modal-accent-shift {
+    0%, 100% { background-position:   0% 0%; }
+    50%      { background-position: 100% 0%; }
+}
+
+/* Soft radial glow at top-center for depth */
+.modal-add-new-address .modal-content::after {
+    content: '';
+    position: absolute;
+    inset-block-start: -10px;
+    inset-inline: 0;
+    height: 120px;
+    background: radial-gradient(ellipse at 50% 0%,
+        rgba(var(--color-brand-primary-rgb), 0.18) 0%,
+        transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Body padding + stack content above the radial glow */
+.modal-add-new-address .modal-body {
+    position: relative;
+    padding: 1.65rem 1.65rem 1.25rem !important;
+    z-index: 1;
+}
+
+/* Close button — circular, brand-tinted, rotates on hover.
+   Overrides Sneat `.modal-simple .btn-close` (negative top / RTL left)
+   which parked the control outside the card and broke hit-testing at
+   the viewport edge. Use logical inset + explicit left/right reset. */
+.modal-add-new-address.modal-simple .btn-close,
+.modal-add-new-address .btn-close {
+    position: absolute;
+    top: 1rem !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    inset-inline-start: auto !important;
+    inset-inline-end: 1rem !important;
+    width: 36px;
+    height: 36px;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: rgba(var(--color-brand-primary-rgb), 0.14);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M11 3 3 11M3 3l8 8' stroke='%234b465c' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+    border: 1px solid rgba(var(--color-brand-primary-rgb), 0.28);
+    border-radius: 50%;
+    opacity: 1;
+    z-index: 10;
+    cursor: pointer;
+    pointer-events: auto;
+    transition:
+        background-color .18s ease,
+        border-color     .18s ease,
+        transform        .25s var(--ease-bounce);
+}
+.modal-add-new-address.modal-simple .btn-close:hover,
+.modal-add-new-address .btn-close:hover {
+    background-color: rgba(var(--color-brand-primary-rgb), 0.28);
+    border-color: rgba(var(--color-brand-primary-rgb), 0.55);
+    transform: rotate(90deg) scale(1.06);
+}
+.modal-add-new-address.modal-simple .btn-close:focus,
+.modal-add-new-address .btn-close:focus {
+    box-shadow: 0 0 0 3px rgba(var(--color-brand-primary-rgb), 0.25);
+    outline: 0;
+}
+
+/* Title */
+.modal-add-new-address .address-title {
+    font-size: 1.45rem !important;
+    font-weight: 700;
+    color: var(--text-strong);
+    text-align: center;
+    letter-spacing: -.01em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem !important;
+    text-shadow: 0 0 24px rgba(var(--color-brand-primary-rgb), 0.18);
+}
+
+/* Subtitle */
+.modal-add-new-address .address-subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Form labels */
+.modal-add-new-address .form-label {
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    color: var(--text-strong) !important;
+    margin-bottom: 0.4rem !important;
+    letter-spacing: 0.01em;
+}
+
+/* Textareas + inputs — brand-tinted focus */
+.modal-add-new-address .form-control,
+.modal-add-new-address textarea.form-control,
+.modal-add-new-address .form-select {
+    border: 1.5px solid rgba(var(--color-brand-primary-rgb), 0.16) !important;
+    border-radius: 12px !important;
+    padding: 0.75rem 1rem !important;
+    background: rgba(var(--color-brand-primary-rgb), 0.03) !important;
+    transition: border-color .2s ease, background .2s ease, box-shadow .2s ease !important;
+    box-shadow: none !important;
+}
+.modal-add-new-address .form-control:focus,
+.modal-add-new-address textarea.form-control:focus,
+.modal-add-new-address .form-select:focus {
+    border-color: var(--color-brand-primary) !important;
+    background: var(--bs-body-bg, #fff) !important;
+    box-shadow: 0 0 0 3px rgba(var(--color-brand-primary-rgb), 0.18) !important;
+}
+.modal-add-new-address textarea.form-control {
+    resize: vertical;
+    min-height: 110px;
+}
+
+/* Submit + Cancel buttons — pill shape, refined */
+.modal-add-new-address .btn-primary {
+    padding: 0.62rem 2.25rem !important;
+    border-radius: 999px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 6px 20px rgba(var(--color-brand-primary-rgb), 0.32) !important;
+    letter-spacing: 0.01em;
+    transition: transform .18s var(--ease-bounce), box-shadow .18s ease !important;
+}
+.modal-add-new-address .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(var(--color-brand-primary-rgb), 0.45) !important;
+}
+.modal-add-new-address .btn-label-danger {
+    padding: 0.62rem 1.85rem !important;
+    border-radius: 999px !important;
+    font-weight: 600 !important;
+    transition: transform .18s var(--ease-bounce) !important;
+}
+.modal-add-new-address .btn-label-danger:hover {
+    transform: translateY(-2px);
+}
+
+/* Help-block (validation errors) inside the modal — match auth.css advanced style */
+.modal-add-new-address .help-block li {
+    color: #ff7d99;
+    font-size: 0.78rem;
+    margin-top: 0.3rem;
+}
+
+/* ── Dark-mode tuning ──────────────────────────────────── */
+[data-theme*='dark'] .modal-add-new-address .modal-content,
+.dark-style .modal-add-new-address .modal-content {
+    background:
+        linear-gradient(135deg,
+            rgba(var(--color-brand-primary-rgb), 0.20) 0%,
+            rgba(30, 26, 64, 0.96) 100%);
+    border-color: rgba(var(--color-brand-primary-rgb), 0.36);
+    color: #f3f4ff;
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.55),
+        0 8px 24px rgba(0, 0, 0, 0.32),
+        0 0 36px rgba(var(--color-brand-primary-rgb), 0.20);
+}
+[data-theme*='dark'] .modal-add-new-address .address-title,
+.dark-style .modal-add-new-address .address-title {
+    color: #ffffff;
+    text-shadow: 0 0 28px rgba(var(--color-brand-primary-rgb), 0.45);
+}
+[data-theme*='dark'] .modal-add-new-address .address-subtitle,
+.dark-style .modal-add-new-address .address-subtitle {
+    color: rgba(255, 255, 255, 0.60);
+}
+[data-theme*='dark'] .modal-add-new-address .form-label,
+.dark-style .modal-add-new-address .form-label {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+[data-theme*='dark'] .modal-add-new-address .form-control,
+[data-theme*='dark'] .modal-add-new-address textarea.form-control,
+[data-theme*='dark'] .modal-add-new-address .form-select,
+.dark-style .modal-add-new-address .form-control,
+.dark-style .modal-add-new-address textarea.form-control,
+.dark-style .modal-add-new-address .form-select {
+    background: rgba(15, 12, 40, 0.50) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+}
+[data-theme*='dark'] .modal-add-new-address .form-control:focus,
+[data-theme*='dark'] .modal-add-new-address textarea.form-control:focus,
+[data-theme*='dark'] .modal-add-new-address .form-select:focus,
+.dark-style .modal-add-new-address .form-control:focus,
+.dark-style .modal-add-new-address textarea.form-control:focus,
+.dark-style .modal-add-new-address .form-select:focus {
+    background: rgba(15, 12, 40, 0.70) !important;
+    border-color: var(--color-brand-primary) !important;
+    color: #ffffff !important;
+}
+[data-theme*='dark'] .modal-add-new-address.modal-simple .btn-close,
+[data-theme*='dark'] .modal-add-new-address .btn-close,
+.dark-style .modal-add-new-address.modal-simple .btn-close,
+.dark-style .modal-add-new-address .btn-close {
+    background-color: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.22);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M11 3 3 11M3 3l8 8' stroke='%23ffffff' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+[data-theme*='dark'] .modal-add-new-address.modal-simple .btn-close:hover,
+[data-theme*='dark'] .modal-add-new-address .btn-close:hover,
+.dark-style .modal-add-new-address.modal-simple .btn-close:hover,
+.dark-style .modal-add-new-address .btn-close:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.40);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .modal-add-new-address .modal-content {
+        animation: none !important;
+    }
+    .modal-add-new-address .modal-content::before {
+        animation: none !important;
+    }
+}

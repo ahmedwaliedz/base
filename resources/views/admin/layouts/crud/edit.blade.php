@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{{ asset('style/admin/vendor/libs/sweetalert2/sweetalert2.css') }}" />
     <link rel="stylesheet" href="{{ asset('style/admin/vendor/libs/select2/select2.css') }}" />
     <link rel="stylesheet" href="{{ asset('style/admin/css/single-upload.css') }}" />
+    <link rel="stylesheet" href="{{ asset('style/admin/css/user-crud.css') }}" />
 @endpush
 
 @section('content')

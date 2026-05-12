@@ -20,20 +20,20 @@ $(document).on('submit', '.validated-form', function(e) {
             submitButton.html(rotateIcon).attr('disabled', true);
         },
         success: (response) => {
-            removeValidationError(form ,submitButton,submitButtonHtml)
-            Swal.fire({
-                icon: 'success',
-                position: 'top-start',
-                text: response.message,
-                showConfirmButton: false,
-                timer: 2000
-            }).then((result) => {
+            removeValidationError(form, submitButton, submitButtonHtml);
+            var waitMs = 2000;
+            try {
+                if (typeof showTopToast === 'function') {
+                    showTopToast(response.message, 'success', waitMs);
+                }
+            } catch (_) {}
+            setTimeout(function () {
                 if (response.data && response.data.route) {
                     window.location.replace(response.data.route);
                 } else {
                     window.location.reload();
                 }
-            });
+            }, waitMs);
         },
         error: (xhr) => {
             removeValidationError(form ,submitButton,submitButtonHtml)

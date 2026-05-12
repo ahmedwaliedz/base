@@ -9,6 +9,16 @@
  * All colors source from tokens.css.
  */
 
+/* Sneat sets .layout-content-navbar .layout-menu to z-index:1080 and the navbar to 1075,
+   so dropdowns (brand, theme, profile) paint under the fixed sidebar — especially in RTL
+   where the menu sits on the same edge as the left cluster. Sit navbar just above the menu
+   (1081) but below collapsed-hover menu (1085) so flyout menus still stack correctly. */
+.layout-navbar-fixed body:not(.modal-open) .layout-content-navbar .layout-navbar,
+.layout-menu-fixed body:not(.modal-open) .layout-content-navbar .layout-navbar,
+.layout-menu-fixed-offcanvas body:not(.modal-open) .layout-content-navbar .layout-navbar {
+    z-index: 1081;
+}
+
 /* ═══════════════════════════════════════════════════════════
    NAVBAR SHELL — glass
 ═══════════════════════════════════════════════════════════ */
