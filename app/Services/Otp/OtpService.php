@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace App\Services\Otp;
 
+use App\Contracts\CodeSenderInterface;
 use App\Enums\OtpStatus;
 use App\Enums\OtpType;
 use App\Models\Otp;
+use App\Support\PhoneNormalizer;
 use Illuminate\Database\Eloquent\Model;
 
 class OtpService
 {
+    public function __construct(
+        private readonly CodeSenderInterface $codeSender
+    ) {}
+
     /**
      * Send OTP to the given model.
      */
@@ -21,7 +27,7 @@ class OtpService
         // Generate code
         $code = $this->generateCode();
         // Create OTP record
-        return $otpable->otps()->create([
+        $otp = $otpable->otps()->create([
             'type'                          => $type,
             'changed_value'                 => $changedValue ?? null,
             'country_code'                  => $countryCode ?? null,
@@ -29,6 +35,10 @@ class OtpService
             'verification_code_expire_at'   => now()->addMinutes(config('auth_codes.ttl_minutes', 10)),
             'status'                        => OtpStatus::ACTIVE,
         ]);
+
+        $this->codeSender->sendCode($this->resolveFullPhone($otpable, $changedValue, $countryCode), $code);
+
+        return $otp;
     }
 
     /**
@@ -102,9 +112,11 @@ class OtpService
      */
     private function generateCode(): string
     {
-        return (string) 1234;
-        // $length = config('auth_codes.length', 4);
-        // return str_pad((string) random_int(0, (10 ** x   $length) - 1), $length, '0', STR_PAD_LEFT);
+        return '123456';
+
+        // $length = (int) config('auth_codes.length', 6);
+
+        // return str_pad((string) random_int(0, (10 ** $length) - 1), $length, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -116,5 +128,13 @@ class OtpService
             ->where('type', $type)
             ->where('status', OtpStatus::ACTIVE)
             ->update(['status' => OtpStatus::FINISHED]);
+    }
+
+    private function resolveFullPhone(Model $otpable, ?string $changedValue, ?string $countryCode): string
+    {
+        $phone = PhoneNormalizer::normalize($changedValue ?? (string) ($otpable->phone ?? ''));
+        $countryCode = PhoneNormalizer::normalize($countryCode ?? (string) ($otpable->country_code ?? ''));
+
+        return $countryCode . $phone;
     }
 }

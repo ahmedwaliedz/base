@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ModelNotificationType;
 use App\Traits\Models\BaseAuthModelTrait;
 use App\Traits\Models\CanRetrieve;
+use App\Traits\HandleNumbersTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use BaseAuthModelTrait, CanRetrieve, HasApiTokens, HasFactory, SoftDeletes;
+    use BaseAuthModelTrait, CanRetrieve, HasApiTokens, HasFactory, SoftDeletes, HandleNumbersTrait;
 
     /**
      * Available notification types for users
@@ -91,7 +92,8 @@ class User extends Authenticatable
 
     public function setPhoneNormalizedAttribute()
     {
-        $this->attributes['phone_normalized'] = $this->fixPhone($this->attributes['country_code']).$this->fixPhone($this->attributes['phone']);
+        $countryCode = $this->attributes['country_code'] ?? '20';
+        $this->attributes['phone_normalized'] = $this->fixPhone($countryCode) . $this->fixPhone($this->attributes['phone']);
     }
 
     /**

@@ -22,11 +22,15 @@ class LoginCodeController extends Controller
 
     public function loginCode(CodeLoginRequest $request): JsonResponse
     {
-        $result = $this->authService->loginWithCode($request->validated());
+        try {
+            $result = $this->authService->loginWithCode($request->validated());
 
-        return $this->respondWithSuccess(__('responses.logged_in_successfully'), [
-            'token' => $result['token'],
-            'user' => new UserResource($result['user'])
-        ]);
+            return $this->respondWithSuccess(__('responses.logged_in_successfully'), [
+                'token' => $result['token'],
+                'user' => new UserResource($result['user'])
+            ]);
+        } catch (\Illuminate\Auth\AuthenticationException $e) {
+            return $this->respondWithFail($e->getMessage(), [], 401);
+        }
     }
 }

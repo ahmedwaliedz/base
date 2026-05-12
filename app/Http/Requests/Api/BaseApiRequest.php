@@ -28,8 +28,12 @@ class BaseApiRequest extends FormRequest
     protected function normalizeCommonInputs(): void
     {
         if ($this->filled('phone') || $this->filled('login_value')) {
+            $loginValue = $this->login_value;
+            if ($this->login_type() !== LoginType::EMAIL->value) {
+                $loginValue = PhoneNormalizer::normalize($loginValue);
+            }
             $this->merge([
-                'login_value' => $this->login_type() === LoginType::EMAIL->value ? $this->login_value : PhoneNormalizer::normalize($this->login_value),
+                'login_value' => $loginValue,
                 'country_code' => PhoneNormalizer::normalize($this->input('country_code')),
             ]);
         }

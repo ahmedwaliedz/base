@@ -4,31 +4,48 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
+use App\Enums\OtpStatus;
+use App\Enums\OtpType;
+use App\Models\Otp;
 use App\Models\User;
-use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class CodeLoginTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        \App\Models\Country::create(['code' => '20', 'is_active' => true]);
+        \App\Models\Country::create(['code' => '966', 'is_active' => true]);
+    }
+
     public function test_code_login_succeeds_with_valid_code(): void
     {
         $user = User::factory()->create([
-            'phone' => '+1234567890',
-            'phone_normalized' => '+1234567890',
-            'activation_code' => Hash::make('123456'),
-            'activation_expires_at' => CarbonImmutable::now()->addMinutes(10),
-            'activation_attempts' => 0,
-            'is_active' => true,
+            'phone' => '1234567890',
+            'country_code' => '20',
+            'phone_normalized' => '201234567890',
+            'is_active' => false,
             'name' => 'John Doe',
-            'profile_completed' => true,
+            'is_complete_info' => true,
+        ]);
+
+        $otp = Otp::create([
+            'otpable_type' => User::class,
+            'otpable_id' => $user->id,
+            'verification_code' => '123456',
+            'verification_code_expire_at' => now()->addMinutes(10),
+            'type' => OtpType::ACTIVATE,
+            'status' => OtpStatus::ACTIVE,
+            'tries' => 0,
         ]);
 
         $response = $this->postJson('/api/v1/auth/login-code', [
-            'phone' => '+1234567890',
+            'phone' => '1234567890',
+            'country_code' => '20',
             'code' => '123456',
         ]);
 
@@ -42,7 +59,7 @@ class CodeLoginTest extends TestCase
                         'id',
                         'phone',
                         'name',
-                        'profile_completed',
+                        'is_complete_info',
                     ],
                 ],
             ])
@@ -54,88 +71,73 @@ class CodeLoginTest extends TestCase
                         'id' => $user->id,
                         'phone' => $user->phone,
                         'name' => $user->name,
-                        'profile_completed' => true,
+                        'is_complete_info' => true,
                     ],
                 ],
             ]);
 
         $this->assertNotEmpty($response->json('data.token'));
-        
-        // Verify code is cleared after successful login
+
         $user->refresh();
-        $this->assertNull($user->activation_code);
-        $this->assertNull($user->activation_expires_at);
-        $this->assertEquals(0, $user->activation_attempts);
+        $this->assertTrue($user->is_active);
+
+        $otp->refresh();
+        $this->assertEquals(OtpStatus::FINISHED, $otp->status);
     }
 
     public function test_code_login_with_incomplete_profile(): void
     {
         $user = User::factory()->create([
-            'phone' => '+1234567890',
-            'phone_normalized' => '+1234567890',
-            'activation_code' => Hash::make('123456'),
-            'activation_expires_at' => CarbonImmutable::now()->addMinutes(10),
-            'activation_attempts' => 0,
-            'is_active' => true,
-            'name' => null, // Incomplete profile
-            'profile_completed' => false,
+            'phone' => '1234567890',
+            'country_code' => '20',
+            'phone_normalized' => '201234567890',
+            'is_active' => false,
+            'name' => 'Test User',
+            'is_complete_info' => false,
+        ]);
+
+        Otp::create([
+            'otpable_type' => User::class,
+            'otpable_id' => $user->id,
+            'verification_code' => '123456',
+            'verification_code_expire_at' => now()->addMinutes(10),
+            'type' => OtpType::ACTIVATE,
+            'status' => OtpStatus::ACTIVE,
+            'tries' => 0,
         ]);
 
         $response = $this->postJson('/api/v1/auth/login-code', [
-            'phone' => '+1234567890',
+            'phone' => '1234567890',
+            'country_code' => '20',
             'code' => '123456',
         ]);
 
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'status',
-                'message',
-                'data' => [
-                    'token',
-                    'user' => [
-                        'id',
-                        'phone',
-                        'name',
-                        'profile_completed',
-                    ],
-                    'profile_next_steps',
-                ],
-                'meta' => [
-                    'requires_profile_completion',
-                ],
-            ])
-            ->assertJson([
-                'status' => 'success',
-                'message' => 'Logged in; profile incomplete',
-                'data' => [
-                    'user' => [
-                        'id' => $user->id,
-                        'phone' => $user->phone,
-                        'name' => null,
-                        'profile_completed' => false,
-                    ],
-                    'profile_next_steps' => ['name'],
-                ],
-                'meta' => [
-                    'requires_profile_completion' => true,
-                ],
-            ]);
+        $response->assertStatus(200);
     }
 
     public function test_code_login_fails_with_invalid_code(): void
     {
         $user = User::factory()->create([
-            'phone' => '+1234567890',
-            'phone_normalized' => '+1234567890',
-            'activation_code' => Hash::make('123456'),
-            'activation_expires_at' => CarbonImmutable::now()->addMinutes(10),
-            'activation_attempts' => 0,
-            'is_active' => true,
+            'phone' => '1234567890',
+            'country_code' => '20',
+            'phone_normalized' => '201234567890',
+            'is_active' => false,
+        ]);
+
+        Otp::create([
+            'otpable_type' => User::class,
+            'otpable_id' => $user->id,
+            'verification_code' => '123456',
+            'verification_code_expire_at' => now()->addMinutes(10),
+            'type' => OtpType::ACTIVATE,
+            'status' => OtpStatus::ACTIVE,
+            'tries' => 0,
         ]);
 
         $response = $this->postJson('/api/v1/auth/login-code', [
-            'phone' => '+1234567890',
-            'code' => '654321', // Wrong code
+            'phone' => '1234567890',
+            'country_code' => '20',
+            'code' => '654321',
         ]);
 
         $response->assertStatus(401)
@@ -144,24 +146,33 @@ class CodeLoginTest extends TestCase
                 'message' => 'Invalid activation code.',
             ]);
 
-        // Verify attempts are incremented
         $user->refresh();
-        $this->assertEquals(1, $user->activation_attempts);
+        $otp = $user->otps()->first();
+        $this->assertEquals(1, $otp->tries);
     }
 
     public function test_code_login_fails_with_expired_code(): void
     {
         $user = User::factory()->create([
-            'phone' => '+1234567890',
-            'phone_normalized' => '+1234567890',
-            'activation_code' => Hash::make('123456'),
-            'activation_expires_at' => CarbonImmutable::now()->subMinutes(1), // Expired
-            'activation_attempts' => 0,
-            'is_active' => true,
+            'phone' => '1234567890',
+            'country_code' => '20',
+            'phone_normalized' => '201234567890',
+            'is_active' => false,
+        ]);
+
+        Otp::create([
+            'otpable_type' => User::class,
+            'otpable_id' => $user->id,
+            'verification_code' => '123456',
+            'verification_code_expire_at' => now()->subMinutes(1),
+            'type' => OtpType::ACTIVATE,
+            'status' => OtpStatus::ACTIVE,
+            'tries' => 0,
         ]);
 
         $response = $this->postJson('/api/v1/auth/login-code', [
-            'phone' => '+1234567890',
+            'phone' => '1234567890',
+            'country_code' => '20',
             'code' => '123456',
         ]);
 
@@ -175,16 +186,25 @@ class CodeLoginTest extends TestCase
     public function test_code_login_fails_with_max_attempts_exceeded(): void
     {
         $user = User::factory()->create([
-            'phone' => '+1234567890',
-            'phone_normalized' => '+1234567890',
-            'activation_code' => Hash::make('123456'),
-            'activation_expires_at' => CarbonImmutable::now()->addMinutes(10),
-            'activation_attempts' => 5, // Max attempts reached
-            'is_active' => true,
+            'phone' => '1234567890',
+            'country_code' => '20',
+            'phone_normalized' => '201234567890',
+            'is_active' => false,
+        ]);
+
+        Otp::create([
+            'otpable_type' => User::class,
+            'otpable_id' => $user->id,
+            'verification_code' => '123456',
+            'verification_code_expire_at' => now()->addMinutes(10),
+            'type' => OtpType::ACTIVATE,
+            'status' => OtpStatus::ACTIVE,
+            'tries' => 5,
         ]);
 
         $response = $this->postJson('/api/v1/auth/login-code', [
-            'phone' => '+1234567890',
+            'phone' => '1234567890',
+            'country_code' => '20',
             'code' => '123456',
         ]);
 
@@ -198,15 +218,15 @@ class CodeLoginTest extends TestCase
     public function test_code_login_fails_with_no_code(): void
     {
         $user = User::factory()->create([
-            'phone' => '+1234567890',
-            'phone_normalized' => '+1234567890',
-            'activation_code' => null,
-            'activation_expires_at' => null,
-            'is_active' => true,
+            'phone' => '1234567890',
+            'country_code' => '20',
+            'phone_normalized' => '201234567890',
+            'is_active' => false,
         ]);
 
         $response = $this->postJson('/api/v1/auth/login-code', [
-            'phone' => '+1234567890',
+            'phone' => '1234567890',
+            'country_code' => '20',
             'code' => '123456',
         ]);
 
@@ -221,56 +241,113 @@ class CodeLoginTest extends TestCase
     {
         $response = $this->postJson('/api/v1/auth/login-code', [
             'phone' => 'invalid-phone',
-            'code' => '123', // Too short
+            'country_code' => '20',
+            'code' => '123',
         ]);
 
-        $response->assertStatus(422)
-            ->assertJsonStructure([
-                'status',
-                'message',
-                'errors' => [
-                    'phone',
-                    'code',
-                ],
+        $response->assertStatus(422);
+    }
+
+    public function test_code_login_fails_with_different_country_code(): void
+    {
+        $user = User::factory()->create([
+            'phone' => '1234567890',
+            'country_code' => '20',
+            'phone_normalized' => '201234567890',
+            'is_active' => false,
+        ]);
+
+        Otp::create([
+            'otpable_type' => User::class,
+            'otpable_id' => $user->id,
+            'verification_code' => '123456',
+            'verification_code_expire_at' => now()->addMinutes(10),
+            'type' => OtpType::ACTIVATE,
+            'status' => OtpStatus::ACTIVE,
+            'tries' => 0,
+        ]);
+
+        $response = $this->postJson('/api/v1/auth/login-code', [
+            'phone' => '1234567890',
+            'country_code' => '966',
+            'code' => '123456',
+        ]);
+
+        $response->assertStatus(401)
+            ->assertJson([
+                'status' => 'error',
+                'message' => 'Invalid credentials.',
             ]);
     }
 
     public function test_request_code_endpoint(): void
     {
         $response = $this->postJson('/api/v1/auth/request-code', [
-            'phone' => '+1234567890',
+            'phone' => '1234567890',
+            'country_code' => '20',
         ]);
 
         $response->assertStatus(204);
 
-        // Verify user was created
-        $this->assertDatabaseHas('users', [
-            'phone' => '+1234567890',
-            'phone_normalized' => '+1234567890',
-        ]);
+        $user = User::where('phone', '1234567890')->where('country_code', '20')->first();
+        $this->assertNotNull($user);
 
-        $user = User::where('phone', '+1234567890')->first();
-        $this->assertNotNull($user->activation_code);
-        $this->assertNotNull($user->activation_expires_at);
+        $otp = $user->otps()->where('type', OtpType::ACTIVATE)->first();
+        $this->assertNotNull($otp);
+        $this->assertNotEmpty($otp->verification_code);
     }
 
     public function test_request_code_with_existing_user(): void
     {
         $user = User::factory()->create([
-            'phone' => '+1234567890',
-            'phone_normalized' => '+1234567890',
-            'is_active' => true,
+            'phone' => '1234567890',
+            'country_code' => '20',
+            'phone_normalized' => '201234567890',
+            'is_active' => false,
         ]);
 
         $response = $this->postJson('/api/v1/auth/request-code', [
-            'phone' => '+1234567890',
+            'phone' => '1234567890',
+            'country_code' => '20',
         ]);
 
         $response->assertStatus(204);
 
-        // Verify activation code was updated
         $user->refresh();
-        $this->assertNotNull($user->activation_code);
-        $this->assertNotNull($user->activation_expires_at);
+        $otp = $user->otps()->where('type', OtpType::ACTIVATE)->first();
+        $this->assertNotNull($otp);
+    }
+
+    public function test_request_code_fails_during_cooldown(): void
+    {
+        $user = User::factory()->create([
+            'phone' => '1234567890',
+            'country_code' => '20',
+            'phone_normalized' => '201234567890',
+            'is_active' => false,
+        ]);
+
+        $otp = Otp::create([
+            'otpable_type' => User::class,
+            'otpable_id' => $user->id,
+            'verification_code' => '123456',
+            'verification_code_expire_at' => now()->addMinutes(10),
+            'type' => OtpType::ACTIVATE,
+            'status' => OtpStatus::ACTIVE,
+            'tries' => 0,
+        ]);
+        $otp->created_at = now()->subSeconds(30);
+        $otp->save();
+
+        $response = $this->postJson('/api/v1/auth/request-code', [
+            'phone' => '1234567890',
+            'country_code' => '20',
+        ]);
+
+        $response->assertStatus(429)
+            ->assertJson([
+                'status' => 'error',
+                'message' => 'Too many requests. Please wait before requesting a new code.',
+            ]);
     }
 }

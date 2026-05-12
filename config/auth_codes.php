@@ -13,7 +13,7 @@ return [
     */
 
     // Length of activation code (number of digits)
-    'length' => env('AUTH_CODE_LENGTH', 4),
+    'length' => env('AUTH_CODE_LENGTH', 6),
 
     // Time to live in minutes
     'ttl_minutes' => env('AUTH_CODE_TTL_MINUTES', 1),

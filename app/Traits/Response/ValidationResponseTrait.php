@@ -29,6 +29,7 @@ trait ValidationResponseTrait
     public function renderValidationErrors(array $errors = [], ?string $message = null): JsonResponse
     {
         return $this->mainRespond([
+            'status' => 'error',
             'message' => $message ?? __('validation.invalid_data'),
             'errors' => $errors,
         ], Response::HTTP_UNPROCESSABLE_ENTITY);

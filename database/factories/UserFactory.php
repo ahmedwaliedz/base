@@ -24,10 +24,16 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $country = Country::inRandomOrder()->first() ?? Country::create([
+            'code' => '20',
+            'name' => 'Egypt',
+            'is_active' => true,
+        ]);
+
         return [
             'name' => fake()->name(),
             'phone' => PhoneNormalizer::normalize($this->faker->unique()->regexify('\05[0-9]{8}')),
-            'country_code' => Country::inRandomOrder()->first()->code,
+            'country_code' => $country->code,
             'email' => fake()->unique()->userName().'@gmail.com',
             'email_verified_at' => now(),
             'password' => 'password',

@@ -16,9 +16,9 @@ trait SuccessResponseTrait
 
     protected function respondWithSuccess(?string $message = null, $data = null): JsonResponse
     {
-        // This method is used to respond with a JSON response for success.
         return $this->mainRespond(
             [
+                'status' => 'success',
                 'message' => $message ?? __('Success'),
                 'data' => $data,
             ],

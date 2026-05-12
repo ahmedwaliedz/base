@@ -18,7 +18,8 @@ class LoginWithPasswordController extends Controller
     {
         $result = $this->authService->loginWithPassword($request->validated());
         return match ($result['status']) {
-            'validationError'   => $this->respondValidationErrors([ 'login_value' => [$result['message']],'password'=> [$result['message']],]),
+            'failed'            => $this->respondWithFail($result['message'], [], 401),
+            'validationError'   => $this->respondValidationErrors([ 'login_value' => [$result['message']]]),
             'notActive'         => $this->respondNotActive($result['message'], $result['user']),
             'blocked'           => $this->respondBlocked($result['message']),
             'success'           => $this->respondWithSuccess(__('api/auth.logged_in_successfully'), new UserResource($result['user'], $result['token'])),

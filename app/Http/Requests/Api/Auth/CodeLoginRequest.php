@@ -23,6 +23,11 @@ class CodeLoginRequest extends FormRequest
                 'regex:/^[\+]?[1-9][\d]{0,15}$/',
                 'max:20',
             ],
+            'country_code' => [
+                'required',
+                'string',
+                'max:5',
+            ],
             'code' => [
                 'required',
                 'string',
@@ -37,6 +42,8 @@ class CodeLoginRequest extends FormRequest
             'phone.required' => 'Phone number is required.',
             'phone.regex' => 'Phone number format is invalid.',
             'phone.max' => 'Phone number cannot exceed 20 characters.',
+            'country_code.required' => 'Country code is required.',
+            'country_code.max' => 'Country code cannot exceed 5 characters.',
             'code.required' => 'Activation code is required.',
             'code.regex' => 'Activation code must be exactly 6 digits.',
         ];
@@ -47,6 +54,11 @@ class CodeLoginRequest extends FormRequest
         if ($this->has('phone')) {
             $this->merge([
                 'phone' => PhoneNormalizer::normalize($this->input('phone'))
+            ]);
+        }
+        if ($this->has('country_code')) {
+            $this->merge([
+                'country_code' => PhoneNormalizer::normalize($this->input('country_code'))
             ]);
         }
     }

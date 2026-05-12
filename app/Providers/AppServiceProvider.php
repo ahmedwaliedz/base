@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
         // Auth service bindings
         $this->app->bind(
             \App\Contracts\AuthServiceInterface::class,
-            \App\Services\AuthService::class
+            \App\Services\Auth\AuthService::class
         );
 
         $this->app->bind(

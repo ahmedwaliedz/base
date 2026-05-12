@@ -23,7 +23,10 @@ class OtpSeeder extends Seeder
             return;
         }
 
-        User::query()->orderBy('id')->chunkById(500, function ($users) use ($min, $max): void {
+        $codeLength = (int) config('auth_codes.length', 6);
+        $maxCode = (10 ** $codeLength) - 1;
+
+        User::query()->orderBy('id')->chunkById(500, function ($users) use ($min, $max, $codeLength, $maxCode): void {
             $rows = [];
             $now = now();
             foreach ($users as $user) {
@@ -36,7 +39,7 @@ class OtpSeeder extends Seeder
                         'otpable_type' => User::class,
                         'changed_value' => null,
                         'country_code' => '966',
-                        'verification_code' => str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT),
+                        'verification_code' => str_pad((string) random_int(0, $maxCode), $codeLength, '0', STR_PAD_LEFT),
                         'verification_code_expire_at' => $created->copy()->addMinutes(10),
                         'type' => OtpType::ACTIVATE->value,
                         'status' => $status->value,

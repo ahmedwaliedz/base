@@ -20,6 +20,7 @@ Route::prefix('auth')->group(function () {
 
     // Public routes (no authentication required)
     // Login with password
+    Route::post('/login', [LoginWithPasswordController::class, 'login']);
     Route::post('/login-with-password', [LoginWithPasswordController::class, 'login']);
 
     // Login with activation code

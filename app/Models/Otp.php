@@ -71,7 +71,7 @@ class Otp extends Model
      */
     public function markAsFailed(): self
     {
-        $this->update(['status' => OtpStatus::FAIL]);
+        $this->update(['status' => OtpStatus::FAILED]);
         return $this;
     }
 

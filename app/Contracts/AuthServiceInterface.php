@@ -30,9 +30,10 @@ interface AuthServiceInterface
      * Request activation code for phone number
      *
      * @param string $phone
+     * @param string $countryCode
      * @return void
      */
-    public function requestActivationCode(string $phone): void;
+    public function requestActivationCode(string $phone, string $countryCode): void;
 
     /**
      * Logout user and revoke token

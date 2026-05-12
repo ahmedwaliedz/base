@@ -16,7 +16,10 @@ trait FailResponseTrait
      */
     protected function respondWithFail(string|null $message = null , array  $data = [] , int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR ): JsonResponse
     {
-        $response = ['message' => $message];
+        $response = [
+            'status' => 'error',
+            'message' => $message,
+        ];
 
         if (!empty($data)) {
             $response['data'] = $data;

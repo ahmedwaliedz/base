@@ -20,8 +20,13 @@ class RequestCodeController extends Controller
 
     public function requestCode(RequestCodeRequest $request): JsonResponse
     {
-        $this->authService->requestActivationCode($request->validated()['phone']);
+        try {
+            $validated = $request->validated();
+            $this->authService->requestActivationCode($validated['phone'], $validated['country_code']);
 
-        return response()->json([], 204);
+            return response()->json([], 204);
+        } catch (\Illuminate\Http\Exceptions\ThrottleRequestsException $e) {
+            return $this->respondWithFail($e->getMessage(), [], 429);
+        }
     }
 }
