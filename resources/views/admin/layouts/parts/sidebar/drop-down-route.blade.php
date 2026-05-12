@@ -1,5 +1,5 @@
-<li class="menu-item {{$route['is_active'] ? 'open' : ''}}" style="">
-    <a href="javascript:void(0);" class="menu-link menu-toggle">
+<li class="menu-item {{ !empty($route['is_active']) ? 'open active' : '' }}" style="">
+    <a href="javascript:void(0);" class="menu-link menu-toggle {{ !empty($route['is_active']) ? 'active' : '' }}">
         {!!  $route['icon']!!}
         <div>{{  __("admin/routes.admin.{$route['title']}.index") }} </div>
     </a>

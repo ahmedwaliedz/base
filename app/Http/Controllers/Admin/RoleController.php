@@ -5,23 +5,22 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Role\Store;
 use App\Http\Requests\Admin\Role\Update;
+use App\Models\Admin;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Services\Admin\Roles\RoleService;
 use App\Traits\Response\ResponseTrait;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class RoleController extends Controller
 {
     use ResponseTrait;
 
-    /**
-     * @param RoleService $roleService
-     */
-    public function __construct(protected RoleService $roleService)
-    {
-    }
+    public function __construct(protected RoleService $roleService) {}
 
     /**
      * Display a listing of the roles
@@ -31,17 +30,50 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-//            $roles = $this->roleService->getAllRoles();
+            //            $roles = $this->roleService->getAllRoles();
             $roles = Role::search($request->filters)->paginate($request->filters['per_page'] ?? 9);
+
             return view('admin.roles.parts.cards', compact('roles'))->render();
         }
+
         return view('admin.roles.index');
     }
 
     /**
+     * Aggregated statistics for the roles listing page.
+     * Mirrors UserController::statistics: returns a Blade partial of stat cards
+     * for injection into the shared <x-table.statistics> container.
+     */
+    public function statistics(Request $request): Response
+    {
+        $now = Carbon::now();
+
+        $totalRoles = Role::query()->count();
+        $assignedAdmins = Admin::whereNotNull('role_id')->count();
+        $unassignedRoles = Role::query()->doesntHave('admins')->count();
+        $avgPermissions = (int) round(
+            Role::query()->withCount('permissions')->get()->avg('permissions_count') ?? 0
+        );
+        $mostPopulated = Role::query()
+            ->withCount('admins')
+            ->orderByDesc('admins_count')
+            ->first();
+        $createdThisMonth = Role::query()
+            ->where('created_at', '>=', $now->copy()->startOfMonth())
+            ->count();
+
+        return response()->view('admin.roles.parts.statistics', compact(
+            'totalRoles',
+            'assignedAdmins',
+            'unassignedRoles',
+            'avgPermissions',
+            'mostPopulated',
+            'createdThisMonth'
+        ));
+    }
+
+    /**
      * Show the form for creating a new role
-     *
-     * @return View
      */
     public function create(): View
     {
@@ -50,9 +82,6 @@ class RoleController extends Controller
 
     /**
      * Store a newly created role
-     *
-     * @param Store $request
-     * @return JsonResponse
      */
     public function store(Store $request): JsonResponse
     {
@@ -65,27 +94,28 @@ class RoleController extends Controller
 
     /**
      * Display the specified role
-     *
-     * @param int $id
-     * @return View
      */
     public function show(int $id): View
     {
         $role = $this->roleService->getRoleById($id);
         $viewData = $this->roleService->getFormViewData($role);
 
+        $totalPermissions = Permission::count();
+        $granted = count($viewData['permissions'] ?? []);
+        $coverage = $totalPermissions > 0
+            ? (int) round(($granted / $totalPermissions) * 100)
+            : 0;
+
         return view('admin.roles.show', [
-            'role'                => $role,
-            'permissions'         => $viewData['permissions'],
-            'permissionsByGroup'  => $viewData['permissionsByGroup'],
+            'role' => $role,
+            'permissions' => $viewData['permissions'],
+            'permissionsByGroup' => $viewData['permissionsByGroup'],
+            'coverage' => $coverage,
         ]);
     }
 
     /**
      * Show the form for editing the specified role
-     *
-     * @param int $id
-     * @return View
      */
     public function edit(int $id): View
     {
@@ -97,10 +127,6 @@ class RoleController extends Controller
 
     /**
      * Update the specified role
-     *
-     * @param Update $request
-     * @param int $id
-     * @return JsonResponse
      */
     public function update(Update $request, int $id): JsonResponse
     {
@@ -113,9 +139,6 @@ class RoleController extends Controller
 
     /**
      * Remove the specified role
-     *
-     * @param int $id
-     * @return JsonResponse
      */
     public function destroy(int $id): JsonResponse
     {
@@ -126,9 +149,6 @@ class RoleController extends Controller
 
     /**
      * Get the role form partial
-     *
-     * @param int|null $id
-     * @return View
      */
     public function getForm(?int $id = null): View
     {
@@ -140,15 +160,12 @@ class RoleController extends Controller
 
     /**
      * Prepare role data from request
-     *
-     * @param Request $request
-     * @return array
      */
     private function prepareRoleData(Request $request): array
     {
         return [
             'role' => $request->only(['ar', 'en']),
-            'permissions' => $request->input('permissions', [])
+            'permissions' => $request->input('permissions', []),
         ];
     }
 }

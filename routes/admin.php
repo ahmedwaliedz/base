@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\LanguageController;
@@ -57,6 +58,7 @@ Route::middleware([AdminSetLocale::class, 'web'])->group(function () {
             Route::delete('admins/destroy-all', [AdminController::class, 'destroyAll'])->name('admins.destroyAll');
             Route::put('admins/{id}/switch-block', [AdminController::class, 'switchBlock'])->name('admins.switchBlock');
             Route::put('admins/{id}/restore', [AdminController::class, 'restore'])->name('admins.restore');
+            Route::get('admins/statistics', [AdminController::class, 'statistics'])->name('admins.statistics');
             Route::resource('admins', AdminController::class);
 
             // users routes
@@ -67,7 +69,15 @@ Route::middleware([AdminSetLocale::class, 'web'])->group(function () {
             Route::get('users/diagrams', [UserController::class, 'diagrams'])->name('users.diagrams');
             Route::resource('users', UserController::class);
 
+            // countries routes
+            Route::delete('countries/destroy-all', [CountryController::class, 'destroyAll'])->name('countries.destroyAll');
+            Route::put('countries/{id}/switch-active', [CountryController::class, 'switchActive'])->name('countries.switchActive');
+            Route::put('countries/{id}/restore', [CountryController::class, 'restore'])->name('countries.restore');
+            Route::get('countries/statistics', [CountryController::class, 'statistics'])->name('countries.statistics');
+            Route::resource('countries', CountryController::class);
+
             // roles routes
+            Route::get('roles/statistics', [RoleController::class, 'statistics'])->name('roles.statistics');
             Route::get('roles/form/{id?}', [RoleController::class, 'getForm'])->name('roles.getForm');
             Route::resource('roles', RoleController::class);
 

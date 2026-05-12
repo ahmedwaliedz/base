@@ -4,7 +4,11 @@ return [
     'admin' => [
         'loginPage' => 'Login',
         'home' => 'Home',
-        'profile' => 'Profile',
+        'profile' => [
+            'index' => 'Profile',
+            'update' => 'Update Profile',
+            'update-password' => 'Change Password',
+        ],
         'settings' => [
             'index' => 'Settings',
             'update' => 'Update Settings',
@@ -45,6 +49,19 @@ return [
             'statistics' => 'User Statistics',
             'diagrams' => 'User Diagrams',
         ],
+        'countries' => [
+            'index' => 'Countries',
+            'create' => 'Create Country Page',
+            'store' => 'Create Country',
+            'update' => 'Update Country Page',
+            'edit' => 'Edit Country',
+            'show' => 'Show Country',
+            'destroy' => 'Delete Country',
+            'destroyAll' => 'Delete Countries',
+            'restore' => 'Restore Country',
+            'statistics' => 'Country Statistics',
+            'switchActive' => 'Toggle Country Active',
+        ],
         'roles' => [
             'index' => 'Permissions',
             'create' => 'Create Role Page',
@@ -54,6 +71,7 @@ return [
             'show' => 'Show Role',
             'destroy' => 'Delete Role',
             'delete_all' => 'Delete Roles',
+            'statistics' => 'Role Statistics',
             'getForm' => 'Role Form',
         ],
     ],

@@ -313,6 +313,23 @@
         'updated_at' => 'تاريخ التحديث',
         'deleted_at' => 'تاريخ الحذف',
 
+        // Countries CRUD
+        'code' => 'الرمز',
+        'flag' => 'العلم',
+        'country_details' => 'تفاصيل الدولة',
+        'active_countries' => 'نشطة',
+        'inactive_countries' => 'غير نشطة',
+        'regions' => 'المناطق',
+        'cities' => 'المدن',
+        'regions_preview' => 'مناطق (عينة)',
+        'related_regions' => 'المناطق التابعة لهذه الدولة',
+        'related_cities' => 'المدن التابعة لهذه الدولة',
+        'no_regions_for_country' => 'لا توجد مناطق مرتبطة بهذه الدولة بعد.',
+        'no_cities_for_country' => 'لا توجد مدن مرتبطة بهذه الدولة بعد.',
+        'region' => 'المنطقة',
+        'set_active' => 'تفعيل',
+        'set_inactive' => 'إلغاء التفعيل',
+
         'home_welcome_back' => 'مرحبًا بعودتك :name',
         'home_welcome_subtitle' => 'نظرة عامة سريعة على المستخدمين والمحتوى والنشاط في المنصة.',
 
@@ -401,4 +418,25 @@
         'home_badge_processing' => 'جاري المعالجة',
         'home_badge_completed' => 'مكتمل',
         'home_badge_rejected' => 'مرفوض',
+
+        // Admins CRUD — parity with users
+        'super_admins' => 'مدراء النظام',
+        'roles_in_use' => 'أدوار مستخدمة',
+        'protected_super_admin' => 'مدير النظام الأساسي محمي ولا يمكن حذفه',
+        'identity' => 'الهوية',
+        'role_and_type' => 'الدور ونوع الوصول',
+        'preferences' => 'التفضيلات',
+        'account_state' => 'حالة الحساب',
+
+        // Roles CRUD statistics + show page
+        'total_roles' => 'إجمالي الأدوار',
+        'assigned_admins' => 'مشرفون معيّنون',
+        'unassigned_roles' => 'أدوار غير مستخدمة',
+        'avg_permissions' => 'متوسط الصلاحيات',
+        'most_populated' => 'الأكثر مشرفين',
+        'created_this_month' => 'منشأة هذا الشهر',
+        'no_admins_assigned' => 'لا يوجد مشرفون',
+        'role_details' => 'تفاصيل الدور',
+        'granted_permissions' => 'الصلاحيات الممنوحة',
+        'coverage' => 'نسبة التغطية',
     ];
