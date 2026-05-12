@@ -48,10 +48,13 @@
         </li>
         <li><div class="dropdown-divider"></div></li>
         <li>
-            <a class="dropdown-item text-danger" href="{{ route('admin.logout') }}">
-                <i class="ti ti-logout me-2" aria-hidden="true"></i>
-                <span class="align-middle">{{ __('admin/auth.logout') }}</span>
-            </a>
+            <form method="POST" action="{{ route('admin.logout') }}" class="d-inline">
+                @csrf
+                <button type="submit" class="dropdown-item text-danger w-100 text-start">
+                    <i class="ti ti-logout me-2" aria-hidden="true"></i>
+                    <span class="align-middle">{{ __('admin/auth.logout') }}</span>
+                </button>
+            </form>
         </li>
     </ul>
 </li>

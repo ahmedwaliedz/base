@@ -23,12 +23,12 @@ Route::middleware([AdminSetLocale::class, 'web'])->group(function () {
         // login page
         Route::get('/login', [AuthController::class, 'loginPage'])->name('loginPage');
         // login request
-        Route::post('/login', [AuthController::class, 'login'])->name('login');
+        Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:admin.login')->name('login');
     });
     // authenticated routes
     Route::middleware('auth:admin')->group(function () {
         // logout route
-        Route::any('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         // profile routes
         Route::group(['prefix' => 'profile'], function () {
             Route::get('', [ProfileController::class, 'profile'])->name('profile');

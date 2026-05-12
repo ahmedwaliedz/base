@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\CodeLoginRequest;
+use App\Http\Requests\Api\Auth\CodeLoginRequest;
 use App\Contracts\AuthServiceInterface;
 use App\Http\Resources\Auth\UserResource;
 use App\Traits\Response\ResponseTrait;
