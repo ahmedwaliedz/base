@@ -297,6 +297,20 @@ class CodeLoginTest extends TestCase
         $this->assertNotEmpty($otp->verification_code);
     }
 
+    public function test_request_code_accepts_plus_prefixed_country_code(): void
+    {
+        $response = $this->postJson('/api/v1/auth/request-code', [
+            'phone' => '1234567890',
+            'country_code' => '+20',
+        ]);
+
+        $response->assertStatus(204);
+
+        $this->assertNotNull(
+            User::where('phone', '1234567890')->where('country_code', '20')->first()
+        );
+    }
+
     public function test_request_code_with_existing_user(): void
     {
         $user = User::factory()->create([

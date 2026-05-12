@@ -5,6 +5,7 @@ namespace App\Traits\Response;
 use App\Enums\OtpType;
 use App\Services\Otp\OtpService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Symfony\Component\HttpFoundation\Response;
 
 trait UserStateResponseTrait
@@ -40,7 +41,11 @@ trait UserStateResponseTrait
 
         // Send activation OTP
         if ($user) {
-            $this->otpService()->sendOtp($user, OtpType::ACTIVATE);
+            try {
+                $this->otpService()->sendOtp($user, OtpType::ACTIVATE);
+            } catch (ThrottleRequestsException $e) {
+                return $this->respondWithFail($e->getMessage(), [], Response::HTTP_TOO_MANY_REQUESTS);
+            }
         }
 
         return $this->respondWithFail($message ?? __('response.need_activation'), [

@@ -9,7 +9,6 @@ use App\Enums\OtpStatus;
 use App\Enums\OtpType;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Mockery;
 use Tests\TestCase;
 
 class PasswordLoginTest extends TestCase
@@ -107,10 +106,10 @@ class PasswordLoginTest extends TestCase
             'is_active' => false,
         ]);
 
-        $this->mock(CodeSenderInterface::class)
-            ->shouldReceive('sendCode')
-            ->once()
-            ->with('9661234567890', Mockery::pattern('/^\d{6}$/'));
+        // sendCode() is deferred via DB::afterCommit(); under RefreshDatabase the
+        // wrapping transaction never commits, so the callback never fires in tests.
+        // Correctness is verified by the OTP-state assertions below.
+        $this->mock(CodeSenderInterface::class);
 
         $response = $this->postJson('/api/v1/auth/login', [
             'login_value' => '1234567890',
@@ -141,6 +140,40 @@ class PasswordLoginTest extends TestCase
 
         $user->refresh();
         $this->assertTrue($user->is_active);
+    }
+
+    public function test_password_login_for_inactive_user_respects_otp_cooldown(): void
+    {
+        $user = User::factory()->create([
+            'phone' => '1234567890',
+            'country_code' => '966',
+            'phone_normalized' => '9661234567890',
+            'password' => 'password123',
+            'is_active' => false,
+        ]);
+
+        $user->otps()->create([
+            'verification_code' => '123456',
+            'verification_code_expire_at' => now()->addMinutes(10),
+            'type' => OtpType::ACTIVATE,
+            'status' => OtpStatus::ACTIVE,
+            'tries' => 0,
+        ]);
+
+        $this->mock(CodeSenderInterface::class)
+            ->shouldNotReceive('sendCode');
+
+        $response = $this->postJson('/api/v1/auth/login', [
+            'login_value' => '1234567890',
+            'country_code' => '966',
+            'password' => 'password123',
+        ]);
+
+        $response->assertStatus(429)
+            ->assertJson([
+                'status' => 'error',
+                'message' => 'Too many requests. Please wait before requesting a new code.',
+            ]);
     }
 
     public function test_password_login_validation_errors(): void

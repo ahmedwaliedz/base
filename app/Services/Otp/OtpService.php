@@ -10,6 +10,8 @@ use App\Enums\OtpType;
 use App\Models\Otp;
 use App\Support\PhoneNormalizer;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Support\Facades\DB;
 
 class OtpService
 {
@@ -22,23 +24,37 @@ class OtpService
      */
     public function sendOtp(Model $otpable, OtpType $type, ?string $changedValue = null , ?string $countryCode = null): Otp
     {
-        // Invalidate previous OTPs of the same type
-        $this->invalidatePreviousOtps($otpable, $type);
-        // Generate code
-        $code = $this->generateCode();
-        // Create OTP record
-        $otp = $otpable->otps()->create([
-            'type'                          => $type,
-            'changed_value'                 => $changedValue ?? null,
-            'country_code'                  => $countryCode ?? null,
-            'verification_code'             => $code,
-            'verification_code_expire_at'   => now()->addMinutes(config('auth_codes.ttl_minutes', 10)),
-            'status'                        => OtpStatus::ACTIVE,
-        ]);
+        return DB::transaction(function () use ($otpable, $type, $changedValue, $countryCode) {
+            // Lock the otpable row so concurrent requests for the same user are serialized
+            $otpable->newQuery()
+                ->where($otpable->getKeyName(), $otpable->getKey())
+                ->lockForUpdate()
+                ->first();
 
-        $this->codeSender->sendCode($this->resolveFullPhone($otpable, $changedValue, $countryCode), $code);
+            if (!$this->canResend($otpable, $type)) {
+                throw new ThrottleRequestsException(
+                    'Too many requests. Please wait before requesting a new code.'
+                );
+            }
 
-        return $otp;
+            // Invalidate previous OTPs of the same type
+            $this->invalidatePreviousOtps($otpable, $type);
+            // Generate code
+            $code = $this->generateCode();
+            // Create OTP record
+            $otp = $otpable->otps()->create([
+                'type'                          => $type,
+                'changed_value'                 => $changedValue ?? null,
+                'country_code'                  => $countryCode ?? null,
+                'verification_code'             => $code,
+                'verification_code_expire_at'   => now()->addMinutes(config('auth_codes.ttl_minutes', 10)),
+                'status'                        => OtpStatus::ACTIVE,
+            ]);
+
+            $this->sendCodeAfterCommit($this->resolveFullPhone($otpable, $changedValue, $countryCode), $code);
+
+            return $otp;
+        });
     }
 
     /**
@@ -136,5 +152,16 @@ class OtpService
         $countryCode = PhoneNormalizer::normalize($countryCode ?? (string) ($otpable->country_code ?? ''));
 
         return $countryCode . $phone;
+    }
+
+    private function sendCodeAfterCommit(string $phone, string $code): void
+    {
+        if (DB::connection()->transactionLevel() > 0) {
+            DB::afterCommit(fn () => $this->codeSender->sendCode($phone, $code));
+
+            return;
+        }
+
+        $this->codeSender->sendCode($phone, $code);
     }
 }
