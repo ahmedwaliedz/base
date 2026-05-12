@@ -16,7 +16,7 @@
                     <ul class="list-unstyled d-flex align-items-center avatar-group mb-1">
                         @foreach($role->admins as $admin)
                             <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-sm pull-up" aria-label="{{$admin->name}}" data-bs-original-title="{{$admin->name}}">
-                                <img class="rounded-circle" src="{{$admin->image_url}}" alt="{{$admin->name}}" >
+                                <img class="rounded-circle" src="{{ $admin->image_url ?: asset('site/imgs/default.webp') }}" alt="{{$admin->name}}" >
                             </li>
                         @endforeach
                     </ul>

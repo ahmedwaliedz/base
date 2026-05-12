@@ -28,6 +28,23 @@ trait BaseFilesTrait {
         $uploadCollection = defined(static::class . '::UPLOAD_COLLECTION') ? constant(static::class . '::UPLOAD_COLLECTION') : 'default';
         $uploadType       = defined(static::class . '::UPLOAD_TYPE') ? constant(static::class . '::UPLOAD_TYPE') : 'custom';
 
+        if (str_ends_with($key, '_url')) {
+            $fileKey = substr($key, 0, -4);
+
+            if (
+                in_array($fileKey, static::FILES, true) &&
+                ! $this->hasGetMutator($fileKey) &&
+                ! method_exists($this, 'get' . str_replace(' ', '', ucwords(str_replace('_', ' ', $fileKey))) . 'Attribute') &&
+                ! method_exists($this, $fileKey)
+            ) {
+                if (! empty($this->attributes[$fileKey])) {
+                    return $this->handleImagePath($this->attributes[$fileKey], $uploadDirectory, $uploadCollection, $uploadType);
+                }
+
+                return asset('site/imgs/default.webp');
+            }
+        }
+
         if (
             in_array($key, static::FILES, true) &&
             ! $this->hasGetMutator($key) &&
@@ -59,7 +76,7 @@ trait BaseFilesTrait {
     }
 
     protected function handleFileAssignment($key, $value) {
-        
+
         $uploadDirectory  = defined(static::class . '::UPLOAD_DIRECTORY') ? constant(static::class . '::UPLOAD_DIRECTORY') : 'default';
         $uploadCollection = defined(static::class . '::UPLOAD_COLLECTION') ? constant(static::class . '::UPLOAD_COLLECTION') : 'default';
         $uploadType       = defined(static::class . '::UPLOAD_TYPE') ? constant(static::class . '::UPLOAD_TYPE') : 'custom';

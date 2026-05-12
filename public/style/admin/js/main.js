@@ -622,8 +622,26 @@ if (typeof $ !== 'undefined') {
 
 // Page Loader
 // Hide the loader when the page is fully loaded
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        document.getElementById('page-loader').style.display = 'none';
-    }, 1800);
-});
+function hidePageLoader() {
+    const loader = document.getElementById('page-loader');
+    if (!loader || loader.dataset.hiding === 'true') {
+        return;
+    }
+
+    loader.dataset.hiding = 'true';
+    loader.style.transition = 'opacity 0.25s ease';
+    loader.style.opacity = '0';
+
+    window.setTimeout(function() {
+        loader.style.display = 'none';
+        loader.style.opacity = '';
+        loader.style.transition = '';
+        delete loader.dataset.hiding;
+    }, 300);
+}
+
+if (document.readyState === 'complete') {
+    hidePageLoader();
+} else {
+    window.addEventListener('load', hidePageLoader, { once: true });
+}
