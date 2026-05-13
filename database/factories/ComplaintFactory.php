@@ -27,8 +27,8 @@ class ComplaintFactory extends Factory
             'complaint'             => $this->faker->paragraph(),
             'type'                  => $this->faker->randomElement(ComplaintType::cases()),
             'status'                => $this->faker->randomElement(ComplaintStatus::cases()),
-            'complaiantable_type'   => 'App\Models\User',
-            'complaiantable_id'     => rand(1 , User::count()),
+            'complainantable_type' => 'App\Models\User',
+            'complainantable_id'   => rand(1 , User::count()),
         ];
     }
 }

@@ -31,7 +31,7 @@
         :hasStartDate="true"
         :hasEndDate="true"
         :hasOrderBy="true"
-        :hasRetrieve="$is_retreivable"
+        :hasRetrieve="$is_retrievable"
         :filters="[
             ['type' => 'text', 'name' => 'name'],
             ['type' => 'text', 'name' => 'phone'],

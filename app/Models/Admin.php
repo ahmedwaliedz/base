@@ -40,7 +40,7 @@ class Admin extends Authenticatable /* implements HasMedia */
         ['key' => 'id', 'label' => 'admin/main.id'],
         ['key' => 'name', 'label' => 'admin/main.name'],
         ['key' => 'email', 'label' => 'admin/main.email'],
-        ['key' => 'full_phone', 'label' => 'admin/main.phone'],
+        ['key' => 'full_phone', 'label' => 'admin/main.full_phone'],
         ['key' => 'country_code', 'label' => 'admin/main.country_code'],
         ['key' => 'role_name', 'label' => 'admin/main.role'],
         ['key' => 'type_label', 'label' => 'admin/main.type'],

@@ -35,11 +35,11 @@ class AdminBaseController extends Controller {
             return $this->service->export($request);
         }
 
-        $is_retreivable = $this->service->getIsRetreivable();
+        $is_retrievable = $this->service->getIsRetrievable();
 
         if (request()->ajax()) {
             ${$this->smallPluralName} = $this->service->index($request)->paginate($request->filters['per_page'] ?? 30);
-            return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => ${$this->smallPluralName}, 'is_retreivable' => $is_retreivable])->render();
+            return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => ${$this->smallPluralName}, 'is_retrievable' => $is_retrievable])->render();
         }
         return view('admin.' . $this->smallPluralName . '.index', $this->service->indexVars() + [ ...get_defined_vars()]);
     }

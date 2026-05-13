@@ -20,11 +20,11 @@ class Complaint extends Model
         'complaint',
         'type',
         'status',
-        'complaiantable_id',
-        'complaiantable_type',
+        'complainantable_id',
+        'complainantable_type',
     ];
 
-    public function complaiantable()
+    public function complainantable()
     {
         return $this->morphTo();
     }

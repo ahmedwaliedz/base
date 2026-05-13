@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('complaint');
             $table->string('type')->nullable()->index();
             $table->string('status')->nullable()->index();
-            $table->morphs('complaiantable');
+            $table->morphs('complainantable');
             $table->timestamps();
         });
     }

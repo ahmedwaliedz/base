@@ -29,7 +29,7 @@ class AdminService extends AuthenticatableBaseService
     {
         $query = $this->model::query()->with(['role.permissions']);
 
-        if ($this->getIsRetreivable()) {
+        if ($this->getIsRetrievable()) {
             $query = $query->withTrashed();
         }
 

@@ -76,17 +76,16 @@ trait CanRetrieve {
         static::$retrievableState[static::class] = $isRetrievable;
     }
 
-    public static function is_retreivable(): bool {
+    public static function is_retrievable(): bool {
         if (! array_key_exists(static::class, static::$retrievableState)) {
-            // Ensure validation runs even if the model hasn't been retrieved/booted in this request
             static::validateModelAndRelations();
         }
         return static::$retrievableState[static::class] ?? false;
     }
 
     public function __get($key) {
-        if ($key === 'is_retreivable') {
-            return static::is_retreivable();
+        if ($key === 'is_retrievable') {
+            return static::is_retrievable();
         }
 
         return parent::__get($key);

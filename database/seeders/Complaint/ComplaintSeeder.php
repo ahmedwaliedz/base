@@ -57,8 +57,8 @@ class ComplaintSeeder extends Seeder
                 'complaint' => fake()->paragraph(),
                 'type' => fake()->randomElement($types),
                 'status' => fake()->randomElement($statuses),
-                'complaiantable_type' => User::class,
-                'complaiantable_id' => fake()->randomElement($userIds),
+                'complainantable_type' => User::class,
+                'complainantable_id' => fake()->randomElement($userIds),
                 'created_at' => $now,
                 'updated_at' => $now,
             ];

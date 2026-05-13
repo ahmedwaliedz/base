@@ -85,7 +85,7 @@ class User extends Authenticatable
         ['key' => 'is_blocked', 'label' => 'admin/main.is_blocked'],
         ['key' => 'is_notify', 'label' => 'admin/main.is_notify'],
         ['key' => 'is_active', 'label' => 'admin/main.is_active'],
-        ['key' => 'is_completed', 'label' => 'admin/main.is_completed'],
+        ['key' => 'is_complete_info', 'label' => 'admin/main.is_complete_info'],
         ['key' => 'email_verified_at', 'label' => 'admin/main.email_verified_at'],
         ['key' => 'phone_verified_at', 'label' => 'admin/main.phone_verified_at'],
     ];
@@ -117,7 +117,7 @@ class User extends Authenticatable
      */
     public function complaints(): MorphMany
     {
-        return $this->morphMany(Complaint::class, 'complaiantable');
+        return $this->morphMany(Complaint::class, 'complainantable');
     }
 
     /**

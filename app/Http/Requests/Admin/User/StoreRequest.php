@@ -16,8 +16,8 @@ class StoreRequest extends BaseAdminRequest
     {
         $this->prepareNullableBooleans();
         $this->merge([
-            'is_active'    => true,
-            'is_completed' => true,
+            'is_active'         => true,
+            'is_complete_info'  => true,
         ]);
     }
 
@@ -32,7 +32,7 @@ class StoreRequest extends BaseAdminRequest
             'image'             => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'is_notify'         => ['nullable', 'boolean'],
             'is_active'         => ['nullable', 'boolean'],
-            'is_completed'      => ['nullable', 'boolean'],
+            'is_complete_info'  => ['nullable', 'boolean'],
         ];
     }
 }

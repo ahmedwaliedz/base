@@ -292,7 +292,7 @@ class BaseQueryService
      */
     public function completed(): self
     {
-        $this->query = $this->query->where('is_completed', true);
+        $this->query = $this->query->where('is_complete_info', true);
         return $this;
     }
 
@@ -301,7 +301,7 @@ class BaseQueryService
      */
     public function notCompleted(): self
     {
-        $this->query = $this->query->where('is_completed', false);
+        $this->query = $this->query->where('is_complete_info', false);
         return $this;
     }
 

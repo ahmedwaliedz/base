@@ -37,7 +37,6 @@ class CrudBaseService {
         DB::transaction(function () use ($request, &$object) {
             $object = $this->model::create($request->validated());
             $this->modelService->storeRelations($object, $request->validated());
-            // ReportTrait::addToLog(__('log.added', ['id' => $object->id, 'model' => $this->lowerClassName, 'by' => auth('admin')->user()->name]));
         });
         return $object;
     }
@@ -46,7 +45,7 @@ class CrudBaseService {
 
         $query = $this->model::with($this->model::RELATIONS);
 
-        if ($this->getIsRetreivable()) {
+        if ($this->getIsRetrievable()) {
             $query = $query->withTrashed();
         }
 
@@ -59,7 +58,7 @@ class CrudBaseService {
     public function show($id) {
         $query = $this->model::with($this->model::RELATIONS);
 
-        if ($this->getIsRetreivable()) {
+        if ($this->getIsRetrievable()) {
             $query = $query->withTrashed();
         }
 
@@ -73,7 +72,7 @@ class CrudBaseService {
     public function update(Request $request, $id) {
         $query = $this->model::with($this->model::RELATIONS);
 
-        if ($this->getIsRetreivable()) {
+        if ($this->getIsRetrievable()) {
             $query = $query->withTrashed();
         }
 
@@ -82,7 +81,6 @@ class CrudBaseService {
         DB::transaction(function () use ($request, &$object) {
             $object->update($request->validated());
             $this->modelService->updateRelations($object, $request->validated());
-            // ReportTrait::addToLog(__('log.updated', ['id' => $object->id, 'model' => $this->lowerClassName, 'by' => auth('admin')->user()->name]));
         });
         return $object;
     }
@@ -95,7 +93,6 @@ class CrudBaseService {
                 call_user_func($function, $object);
             }
             $object->delete();
-            // ReportTrait::addToLog(__('log.deleted', ['id' => $object->id, 'model' => $this->lowerClassName, 'by' => auth('admin')->user()->name]));
         });
         return $objectCopy;
     }
@@ -131,7 +128,6 @@ class CrudBaseService {
     public function switchActive($id) {
         $object = $this->model::findOrFail($id);
         $object->update(['is_active' => ! $object->is_active]);
-        // ReportTrait::addToLog(__('log.switched_active', ['id' => $object->id, 'model' => $this->lowerClassName, 'by' => auth('admin')->user()->name]));
         return response()->json(['msg' => 'success', 'is_active' => $object->is_active]);
     }
 
@@ -161,15 +157,15 @@ class CrudBaseService {
         return $this->model;
     }
 
-    public function getIsRetreivable() {
-        $is_retreivable = false;
+    public function getIsRetrievable() {
+        $is_retrievable = false;
         try {
-            $is_retreivable = $this->model::is_retreivable();
+            $is_retrievable = $this->model::is_retrievable();
         } catch (Exception $e) {
-            $is_retreivable = false;
+            $is_retrievable = false;
         }
 
-        return $is_retreivable;
+        return $is_retrievable;
     }
 
     public function export(Request $request) {
