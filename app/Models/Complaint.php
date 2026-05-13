@@ -6,6 +6,7 @@ use App\Enums\ComplaintStatus;
 use App\Enums\ComplaintType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Complaint extends Model
 {
@@ -28,14 +29,45 @@ class Complaint extends Model
         return $this->morphTo();
     }
 
-    public function getStatusAttribute($value)
+    public function getStatusAttribute($value): ?ComplaintStatus
     {
-        return ComplaintStatus::from($value);
+        if ($value === null) {
+            return null;
+        }
+
+        $status = ComplaintStatus::tryFrom((string) $value);
+
+        if ($status === null) {
+            $this->logInvalidEnumValue('status', $value);
+            return null;
+        }
+
+        return $status;
     }
 
-    public function getTypeAttribute($value)
+    public function getTypeAttribute($value): ?ComplaintType
     {
-        return ComplaintType::from($value);
+        if ($value === null) {
+            return null;
+        }
+
+        $type = ComplaintType::tryFrom((string) $value);
+
+        if ($type === null) {
+            $this->logInvalidEnumValue('type', $value);
+            return null;
+        }
+
+        return $type;
+    }
+
+    private function logInvalidEnumValue(string $attribute, mixed $value): void
+    {
+        Log::warning('Invalid complaint enum value encountered', [
+            'complaint_id' => $this->getKey(),
+            'attribute' => $attribute,
+            'value' => $value,
+        ]);
     }
 
     public function images()

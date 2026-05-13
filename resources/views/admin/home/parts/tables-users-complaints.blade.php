@@ -114,8 +114,11 @@
                             'processing' => ['class' => 'dqt__badge--process', 'icon' => 'ti-refresh',      'label' => __('admin/main.home_badge_processing')],
                             'completed'  => ['class' => 'dqt__badge--done',    'icon' => 'ti-circle-check', 'label' => __('admin/main.home_badge_completed')],
                             'rejected'   => ['class' => 'dqt__badge--reject',  'icon' => 'ti-x',            'label' => __('admin/main.home_badge_rejected')],
+                            'unknown'    => ['class' => 'dqt__badge--blocked', 'icon' => 'ti-alert-triangle', 'label' => __('admin/main.home_badge_unknown')],
                         ];
-                        $st = $statusMap[$c->status] ?? $statusMap['pending'];
+                        $status = $c->status;
+                        $statusValue = $status instanceof \App\Enums\ComplaintStatus ? $status->value : null;
+                        $st = $statusMap[$statusValue] ?? $statusMap['unknown'];
                     @endphp
                     <tr>
                         <td>

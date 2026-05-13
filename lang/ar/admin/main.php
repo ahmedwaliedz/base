@@ -418,6 +418,7 @@
         'home_badge_processing' => 'جاري المعالجة',
         'home_badge_completed' => 'مكتمل',
         'home_badge_rejected' => 'مرفوض',
+        'home_badge_unknown' => 'غير معروف',
 
         // Admins CRUD — parity with users
         'super_admins' => 'مدراء النظام',

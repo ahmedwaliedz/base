@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\Admin\Base;
 
-use Exception;
+use App\Exceptions\ServiceException;
 
 class AuthenticatableBaseService extends CrudBaseService {
 
@@ -12,7 +12,7 @@ class AuthenticatableBaseService extends CrudBaseService {
     public function switchBlock($id) {
         $object = $this->model::findOrFail($id);
         if (! array_key_exists('is_blocked', $object->getAttributes()) && ! $object->offsetExists('is_blocked')) {
-            throw new Exception('This model does not support block status.');
+            throw ServiceException::forModel($this->model, 'switchBlock', 'This model does not support block status.');
         }
         $object->update(['is_blocked' => ! $object->is_blocked]);
         return $object->is_blocked;

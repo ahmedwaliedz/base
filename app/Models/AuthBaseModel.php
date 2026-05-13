@@ -14,6 +14,8 @@ class AuthBaseModel extends Authenticatable {
     use HasFactory, Notifiable, SoftDeletes, GeneralTrait, HandleNumbersTrait, FilterableTrait;
 
     public function setFullPhoneAttribute(string $value): void {
-        $this->attributes['full_phone'] = $this->attributes['country_code'] . $this->attributes['phone'];
+        $countryCode = $this->attributes['country_code'] ?? '';
+        $phone = $this->attributes['phone'] ?? '';
+        $this->attributes['full_phone'] = $countryCode . $phone;
     }
 }

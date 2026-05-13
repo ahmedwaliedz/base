@@ -24,7 +24,7 @@
                     @php
                         $statusValue = $complaint->status instanceof ComplaintStatus
                             ? $complaint->status->value
-                            : (string) $complaint->status;
+                            : null;
 
                         $statusClass = match ($statusValue) {
                             'pending'    => 'bg-label-warning',
@@ -38,7 +38,7 @@
                         <td>#{{ $complaint->id }}</td>
                         <td class="text-truncate" style="max-width: 280px;">{{ Str::limit($complaint->subject, 60) }}</td>
                         <td><span class="badge bg-label-secondary">{{ $complaint->type->value ?? '—' }}</span></td>
-                        <td><span class="badge {{ $statusClass }}">{{ $statusValue }}</span></td>
+                        <td><span class="badge {{ $statusClass }}">{{ $statusValue ?? __('admin/main.home_badge_unknown') }}</span></td>
                         <td>
                             {{ $complaint->created_at?->format('Y-m-d H:i') }}
                             @if ($complaint->created_at)

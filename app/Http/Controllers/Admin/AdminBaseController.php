@@ -1,10 +1,11 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\ServiceException;
 use App\Http\Controllers\Controller;
 use App\Traits\Response\ResponseTrait;
-use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AdminBaseController extends Controller {
     use ResponseTrait;
@@ -30,7 +31,6 @@ class AdminBaseController extends Controller {
     }
 
     public function index(Request $request) {
-        // Export full filtered dataset (no pagination)
         if ($request->has('export')) {
             return $this->service->export($request);
         }
@@ -57,8 +57,23 @@ class AdminBaseController extends Controller {
             return $this->respondWithSuccess(__('admin/main.created_successfully'), [
                 'route' => route('admin.' . $this->smallPluralName . '.index'),
             ]);
-        } catch (Exception $e) {
-            return $this->respondWithFail($e->getMessage());
+        } catch (ServiceException $e) {
+            Log::warning('ServiceException in store', [
+                'controller' => static::class,
+                'model' => $this->modelBaseName,
+                'message' => $e->getMessage(),
+                'status_code' => $e->getStatusCode(),
+                'context' => $e->getContext(),
+            ]);
+            return $this->respondWithFail($e->getMessage(), [], $e->getStatusCode());
+        } catch (\Throwable $e) {
+            Log::error('Unexpected error in store', [
+                'controller' => static::class,
+                'model' => $this->modelBaseName,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return $this->respondInternalError();
         }
     }
 
@@ -74,8 +89,25 @@ class AdminBaseController extends Controller {
             return $this->respondWithSuccess(__('admin/main.updated_successfully'), [
                 'route' => route('admin.' . $this->smallPluralName . '.index'),
             ]);
-        } catch (Exception $e) {
-            return $this->respondWithFail($e->getMessage());
+        } catch (ServiceException $e) {
+            Log::warning('ServiceException in update', [
+                'controller' => static::class,
+                'model' => $this->modelBaseName,
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'status_code' => $e->getStatusCode(),
+                'context' => $e->getContext(),
+            ]);
+            return $this->respondWithFail($e->getMessage(), [], $e->getStatusCode());
+        } catch (\Throwable $e) {
+            Log::error('Unexpected error in update', [
+                'controller' => static::class,
+                'model' => $this->modelBaseName,
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return $this->respondInternalError();
         }
     }
 
@@ -88,8 +120,25 @@ class AdminBaseController extends Controller {
         try {
             $this->service->destroy($id);
             return $this->respondWithSuccess(__('admin/main.deleted_successfully'));
-        } catch (Exception $e) {
-            return $this->respondWithFail($e->getMessage());
+        } catch (ServiceException $e) {
+            Log::warning('ServiceException in destroy', [
+                'controller' => static::class,
+                'model' => $this->modelBaseName,
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'status_code' => $e->getStatusCode(),
+                'context' => $e->getContext(),
+            ]);
+            return $this->respondWithFail($e->getMessage(), [], $e->getStatusCode());
+        } catch (\Throwable $e) {
+            Log::error('Unexpected error in destroy', [
+                'controller' => static::class,
+                'model' => $this->modelBaseName,
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return $this->respondInternalError();
         }
     }
 
@@ -97,8 +146,25 @@ class AdminBaseController extends Controller {
         try {
             $this->service->destroyAll($request->ids);
             return $this->respondWithSuccess(__('admin/main.delete_selected_successfully'));
-        } catch (Exception $e) {
-            return $this->respondWithFail($e->getMessage());
+        } catch (ServiceException $e) {
+            Log::warning('ServiceException in destroyAll', [
+                'controller' => static::class,
+                'model' => $this->modelBaseName,
+                'ids' => $request->ids,
+                'message' => $e->getMessage(),
+                'status_code' => $e->getStatusCode(),
+                'context' => $e->getContext(),
+            ]);
+            return $this->respondWithFail($e->getMessage(), [], $e->getStatusCode());
+        } catch (\Throwable $e) {
+            Log::error('Unexpected error in destroyAll', [
+                'controller' => static::class,
+                'model' => $this->modelBaseName,
+                'ids' => $request->ids ?? [],
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return $this->respondInternalError();
         }
     }
 
@@ -106,8 +172,25 @@ class AdminBaseController extends Controller {
         try {
             $this->service->restore($id);
             return $this->respondWithSuccess(__('admin/main.restored_successfully'));
-        } catch (Exception $e) {
-            return $this->respondWithFail($e->getMessage());
+        } catch (ServiceException $e) {
+            Log::warning('ServiceException in restore', [
+                'controller' => static::class,
+                'model' => $this->modelBaseName,
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'status_code' => $e->getStatusCode(),
+                'context' => $e->getContext(),
+            ]);
+            return $this->respondWithFail($e->getMessage(), [], $e->getStatusCode());
+        } catch (\Throwable $e) {
+            Log::error('Unexpected error in restore', [
+                'controller' => static::class,
+                'model' => $this->modelBaseName,
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return $this->respondInternalError();
         }
     }
 

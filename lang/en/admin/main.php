@@ -298,6 +298,7 @@
         'home_badge_processing' => 'Processing',
         'home_badge_completed' => 'Completed',
         'home_badge_rejected' => 'Rejected',
+        'home_badge_unknown' => 'Unknown',
 
         // User CRUD — form sections + profile
         'id' => 'ID',
