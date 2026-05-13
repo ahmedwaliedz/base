@@ -109,7 +109,7 @@ class PasswordLoginTest extends TestCase
         // sendCode() is deferred via DB::afterCommit(); under RefreshDatabase the
         // wrapping transaction never commits, so the callback never fires in tests.
         // Correctness is verified by the OTP-state assertions below.
-        $this->mock(CodeSenderInterface::class);
+        $this->mock(CodeSenderInterface::class)->shouldIgnoreMissing();
 
         $response = $this->postJson('/api/v1/auth/login', [
             'login_value' => '1234567890',
@@ -161,6 +161,7 @@ class PasswordLoginTest extends TestCase
         ]);
 
         $this->mock(CodeSenderInterface::class)
+            ->shouldIgnoreMissing()
             ->shouldNotReceive('sendCode');
 
         $response = $this->postJson('/api/v1/auth/login', [
@@ -173,7 +174,13 @@ class PasswordLoginTest extends TestCase
             ->assertJson([
                 'status' => 'error',
                 'message' => 'Too many requests. Please wait before requesting a new code.',
-            ]);
+            ])
+            ->assertJsonMissingPath('data.token');
+
+        $this->assertDatabaseMissing('personal_access_tokens', [
+            'tokenable_id' => $user->id,
+            'name' => 'activation',
+        ]);
     }
 
     public function test_password_login_validation_errors(): void

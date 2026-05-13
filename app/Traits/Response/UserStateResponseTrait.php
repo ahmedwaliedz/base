@@ -37,19 +37,20 @@ trait UserStateResponseTrait
      */
     public function respondNotActive(string $message = null, $user = null): JsonResponse
     {
-        $token = $user?->createToken('activation', ['activation'], now()->addMinutes(5))->plainTextToken;
-
-        // Send activation OTP
         if ($user) {
             try {
                 $this->otpService()->sendOtp($user, OtpType::ACTIVATE);
             } catch (ThrottleRequestsException $e) {
                 return $this->respondWithFail($e->getMessage(), [], Response::HTTP_TOO_MANY_REQUESTS);
             }
+
+            $token = $user->createToken('activation', ['activation'], now()->addMinutes(5))->plainTextToken;
+
+            return $this->respondWithFail($message ?? __('response.need_activation'), [
+                'token' => $token,
+            ], Response::HTTP_NON_AUTHORITATIVE_INFORMATION);
         }
 
-        return $this->respondWithFail($message ?? __('response.need_activation'), [
-            'token' => $token,
-        ], Response::HTTP_NON_AUTHORITATIVE_INFORMATION);
+        return $this->respondWithFail($message ?? __('response.need_activation'), [], Response::HTTP_NON_AUTHORITATIVE_INFORMATION);
     }
 }
