@@ -20,9 +20,8 @@ class AdminController extends AuthenticatableBaseController
      */
     public function statistics(Request $request): Response
     {
-        $base = $this->service->index($request);
-
         $now = Carbon::now();
+        $base = $this->service->index($request);
 
         $total = (clone $base)->count();
         $active = (clone $base)->where('is_blocked', false)->count();
@@ -43,7 +42,15 @@ class AdminController extends AuthenticatableBaseController
 
         return response()->view(
             'admin.admins.parts.statistics',
-            compact('total', 'active', 'blocked', 'superAdmins', 'rolesInUse', 'thisMonth', 'growth')
+            [
+                'total' => $total,
+                'active' => $active,
+                'blocked' => $blocked,
+                'superAdmins' => $superAdmins,
+                'rolesInUse' => $rolesInUse,
+                'thisMonth' => $thisMonth,
+                'growth' => $growth,
+            ]
         );
     }
 }

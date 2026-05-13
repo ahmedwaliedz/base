@@ -54,7 +54,6 @@ class UserController extends AuthenticatableBaseController
 
         $complaintsCount = $user->complaints()->count();
         $complaints = $user->complaints()->latest()->take(20)->get();
-
         $contactsCount = $user->contactMessages()->count();
         $contacts = $user->contactMessages()->latest()->take(20)->get();
 
@@ -80,9 +79,8 @@ class UserController extends AuthenticatableBaseController
 
     public function statistics(Request $request)
     {
-        $base = $this->service->index($request);
-
         $now = Carbon::now();
+        $base = $this->service->index($request);
 
         $total = (clone $base)->count();
         $active = (clone $base)->where('is_blocked', false)->count();
@@ -103,7 +101,15 @@ class UserController extends AuthenticatableBaseController
 
         return response()->view(
             'admin.users.parts.statistics',
-            compact('total', 'active', 'blocked', 'today', 'thisWeek', 'thisMonth', 'growth')
+            [
+                'total' => $total,
+                'active' => $active,
+                'blocked' => $blocked,
+                'today' => $today,
+                'thisWeek' => $thisWeek,
+                'thisMonth' => $thisMonth,
+                'growth' => $growth,
+            ]
         );
     }
 }

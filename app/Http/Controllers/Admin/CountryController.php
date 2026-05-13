@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\ServiceException;
 use App\Services\Admin\CountryService;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class CountryController extends AdminBaseController
 {
@@ -23,12 +24,20 @@ class CountryController extends AdminBaseController
     {
         try {
             $isActive = $this->service->switchIsActive($id);
-
             return $this->respondWithSuccess(__('admin/main.updated_successfully'), [
                 'is_active' => $isActive,
             ]);
-        } catch (Exception $e) {
-            return $this->respondWithFail($e->getMessage());
+        } catch (ServiceException $e) {
+            return $this->respondWithFail($e->getMessage(), [], $e->getStatusCode());
+        } catch (\Throwable $e) {
+            Log::error('Unexpected error in switchActive', [
+                'controller' => static::class,
+                'model' => 'Country',
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return $this->respondInternalError();
         }
     }
 
@@ -37,9 +46,8 @@ class CountryController extends AdminBaseController
      */
     public function statistics(Request $request): Response
     {
-        $base = $this->service->statisticsBaseQuery($request);
-
         $now = Carbon::now();
+        $base = $this->service->statisticsBaseQuery($request);
 
         $total = (clone $base)->count();
         $active = (clone $base)->where('is_active', true)->count();
@@ -58,14 +66,14 @@ class CountryController extends AdminBaseController
             ? round((($thisMonth - $lastMonth) / $lastMonth) * 100, 1)
             : ($thisMonth > 0 ? 100.0 : 0.0);
 
-        return response()->view('admin.countries.parts.statistics', compact(
-            'total',
-            'active',
-            'inactive',
-            'today',
-            'thisWeek',
-            'thisMonth',
-            'growth'
-        ));
+        return response()->view('admin.countries.parts.statistics', [
+            'total' => $total,
+            'active' => $active,
+            'inactive' => $inactive,
+            'today' => $today,
+            'thisWeek' => $thisWeek,
+            'thisMonth' => $thisMonth,
+            'growth' => $growth,
+        ]);
     }
 }
