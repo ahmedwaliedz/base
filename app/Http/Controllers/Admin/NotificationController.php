@@ -33,8 +33,9 @@ class NotificationController extends Controller
     {
         $data = $request->validated();
         $notificationType = isset($data['type']) && $data['type'] === 'mail' ? 'mail' : 'admin_notification';
+        $data['notification_type'] = $notificationType;
 
-        $success = $this->notificationService->send($data + ['notification_type' => $notificationType]);
+        $success = $this->notificationService->send($data);
 
         if ($success)
             return $this->respondWithSuccess(__('admin/main.notification_sent_successfully'));

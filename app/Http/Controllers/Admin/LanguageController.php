@@ -12,15 +12,11 @@ class LanguageController extends Controller
 {
     public function changeLang($lang)
     {
-        // Check if the language is supported
-        if (in_array($lang, languages())) {
-            // Set the session variable for the selected language
+        if (in_array($lang, languages(), true)) {
             Session::put('admin-lang', $lang);
+            App::setLocale($lang);
+            Carbon::setLocale($lang);
         }
-        // Set the application locale and Carbon locale
-        App::setLocale($lang);
-        // Set the Carbon locale
-        Carbon::setLocale($lang);
         return redirect()->back()->with('success', __('admin.language_changed_successfully'));
     }
 }

@@ -6,10 +6,6 @@ use Illuminate\Support\Facades\Log;
 
 class AuthenticatableBaseController extends AdminBaseController {
 
-    public function __construct($service) {
-        parent::__construct($service);
-    }
-
     public function switchBlock($id) {
         try {
             $result = $this->service->switchBlock($id);

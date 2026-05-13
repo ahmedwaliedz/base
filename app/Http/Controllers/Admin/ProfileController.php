@@ -34,7 +34,7 @@ class ProfileController extends Controller
 
     public function updatePassword(UpdatePasswordRequest $request)
     {
-        auth()->user()->update(['password' => $request->password]);
+        auth('admin')->user()->update(['password' => $request->validated()['password']]);
         return $this->respondWithSuccess(__('admin/main.password_updated_successfully'), [
             'route' => route('admin.profile'),
         ]);

@@ -3,11 +3,11 @@
         {{-- render the crumb --}}
         @if($crumb['active'])
             <span class="breadcrumb-current active-breadcrumb" aria-current="page">
-                {!! $crumb['icon'] !!} {{ __('admin/routes.admin.'.$crumb['title']) }}
+                {!! $crumb['icon'] !!} {{ adminRouteLabel($crumb['title']) }}
             </span>
         @else
             <a href="{{ $crumb['url'] }}">
-                {!! $crumb['icon'] !!} {{ __('admin/routes.admin.'.$crumb['title']) }}
+                {!! $crumb['icon'] !!} {{ adminRouteLabel($crumb['title']) }}
             </a>
         @endif
 
@@ -19,4 +19,3 @@
         @endunless
     @endforeach
 </div>
-
