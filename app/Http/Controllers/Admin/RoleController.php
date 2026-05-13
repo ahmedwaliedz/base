@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\ServiceException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Role\Store;
-use App\Http\Requests\Admin\Role\Update;
+use App\Http\Requests\Admin\Role\StoreRequest;
+use App\Http\Requests\Admin\Role\UpdateRequest;
 use App\Models\Admin;
 use App\Models\Permission;
 use App\Models\Role;
@@ -14,6 +15,8 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class RoleController extends Controller
@@ -51,9 +54,14 @@ class RoleController extends Controller
         $totalRoles = Role::query()->count();
         $assignedAdmins = Admin::whereNotNull('role_id')->count();
         $unassignedRoles = Role::query()->doesntHave('admins')->count();
+
         $avgPermissions = (int) round(
-            Role::query()->withCount('permissions')->get()->avg('permissions_count') ?? 0
+            DB::table('roles')
+                ->leftJoin(DB::raw('(SELECT role_id, COUNT(*) as permission_count FROM permission_role GROUP BY role_id) as pr'), 'roles.id', '=', 'pr.role_id')
+                ->selectRaw('AVG(COALESCE(pr.permission_count, 0)) as avg_permissions')
+                ->first()?->avg_permissions ?? 0
         );
+
         $mostPopulated = Role::query()
             ->withCount('admins')
             ->orderByDesc('admins_count')
@@ -83,13 +91,31 @@ class RoleController extends Controller
     /**
      * Store a newly created role
      */
-    public function store(Store $request): JsonResponse
+    public function store(StoreRequest $request): JsonResponse
     {
-        $this->roleService->createRole($this->prepareRoleData($request));
-
-        return $this->respondWithSuccess(__('admin/main.role_created'), [
-            'route' => route('admin.roles.index'),
-        ]);
+        try {
+            $this->roleService->createRole($this->prepareRoleData($request));
+            return $this->respondWithSuccess(__('admin/main.role_created'), [
+                'route' => route('admin.roles.index'),
+            ]);
+        } catch (ServiceException $e) {
+            Log::warning('ServiceException in store', [
+                'controller' => static::class,
+                'model' => 'Role',
+                'message' => $e->getMessage(),
+                'status_code' => $e->getStatusCode(),
+                'context' => $e->getContext(),
+            ]);
+            return $this->respondWithFail($e->getMessage(), [], $e->getStatusCode());
+        } catch (\Throwable $e) {
+            Log::error('Unexpected error in store', [
+                'controller' => static::class,
+                'model' => 'Role',
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return $this->respondInternalError();
+        }
     }
 
     /**
@@ -128,13 +154,41 @@ class RoleController extends Controller
     /**
      * Update the specified role
      */
-    public function update(Update $request, int $id): JsonResponse
+    public function update(UpdateRequest $request, int $id): JsonResponse
     {
-        $this->roleService->updateRole($id, $this->prepareRoleData($request));
-
-        return $this->respondWithSuccess(__('admin/main.role_updated'), [
-            'route' => route('admin.roles.index'),
-        ]);
+        try {
+            $this->roleService->updateRole($id, $this->prepareRoleData($request));
+            return $this->respondWithSuccess(__('admin/main.role_updated'), [
+                'route' => route('admin.roles.index'),
+            ]);
+        } catch (ServiceException $e) {
+            Log::warning('ServiceException in update', [
+                'controller' => static::class,
+                'model' => 'Role',
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'status_code' => $e->getStatusCode(),
+                'context' => $e->getContext(),
+            ]);
+            return $this->respondWithFail($e->getMessage(), [], $e->getStatusCode());
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::warning('ModelNotFoundException in update', [
+                'controller' => static::class,
+                'model' => 'Role',
+                'id' => $id,
+                'message' => $e->getMessage(),
+            ]);
+            return $this->respondWithFail(__('admin/main.role_not_found'), [], 404);
+        } catch (\Throwable $e) {
+            Log::error('Unexpected error in update', [
+                'controller' => static::class,
+                'model' => 'Role',
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return $this->respondInternalError();
+        }
     }
 
     /**
@@ -142,9 +196,37 @@ class RoleController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $this->roleService->deleteRole($id);
-
-        return $this->respondWithSuccess(__('admin/main.role_deleted'));
+        try {
+            $this->roleService->deleteRole($id);
+            return $this->respondWithSuccess(__('admin/main.role_deleted'));
+        } catch (ServiceException $e) {
+            Log::warning('ServiceException in destroy', [
+                'controller' => static::class,
+                'model' => 'Role',
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'status_code' => $e->getStatusCode(),
+                'context' => $e->getContext(),
+            ]);
+            return $this->respondWithFail($e->getMessage(), [], $e->getStatusCode());
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::warning('ModelNotFoundException in destroy', [
+                'controller' => static::class,
+                'model' => 'Role',
+                'id' => $id,
+                'message' => $e->getMessage(),
+            ]);
+            return $this->respondWithFail(__('admin/main.role_not_found'), [], 404);
+        } catch (\Throwable $e) {
+            Log::error('Unexpected error in destroy', [
+                'controller' => static::class,
+                'model' => 'Role',
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return $this->respondInternalError();
+        }
     }
 
     /**

@@ -112,6 +112,7 @@
         'unassigned_permissions' => 'Unassigned Permissions',
         'role_updated' => 'Role updated successfully',
         'role_deleted' => 'Role deleted successfully',
+        'role_not_found' => 'Role not found',
 
         // SMTP Settings
         'smtp_settings' => 'SMTP Settings',

@@ -117,19 +117,35 @@ class RoleService
     }
 
     /**
-     * Get permission IDs from permission names
+     * Get permission IDs from permission names (validates against allowlist)
      *
      * @param array $permissionNames
      * @return array
+     * @throws \InvalidArgumentException
      */
     private function getPermissionIds(array $permissionNames): array
     {
-        return collect($permissionNames)
-            ->map(function (string $permissionName) {
-                return Permission::firstOrCreate(
-                    ['permission' => $permissionName]
-                )->id;
-            })->toArray();
+        $validPermissions = self::getValidPermissionNames();
+
+        $invalidPermissions = array_diff($permissionNames, $validPermissions);
+        if (!empty($invalidPermissions)) {
+            throw new \InvalidArgumentException(
+                __('admin/validation.invalid_permissions') . ': ' . implode(', ', $invalidPermissions)
+            );
+        }
+
+        $permissionIds = [];
+        foreach ($permissionNames as $permissionName) {
+            $permission = Permission::where('permission', $permissionName)->first();
+            if ($permission) {
+                $permissionIds[] = $permission->id;
+            } else {
+                $permission = Permission::create(['permission' => $permissionName]);
+                $permissionIds[] = $permission->id;
+            }
+        }
+
+        return $permissionIds;
     }
 
     /**
@@ -161,5 +177,38 @@ class RoleService
         }
 
         return $data;
+    }
+
+    /**
+     * Get all valid permission names (from admin routes + existing database permissions)
+     *
+     * @return array
+     */
+    public static function getValidPermissionNames(): array
+    {
+        $routePermissions = collect(self::getAdminRoutesFromFile())->toArray();
+
+        $dbPermissions = Permission::pluck('permission')->toArray();
+
+        return array_unique(array_merge($routePermissions, $dbPermissions));
+    }
+
+    /**
+     * Get admin route names from file (static version for validation)
+     *
+     * @return array
+     */
+    public static function getAdminRoutesFromFile(): array
+    {
+        $except = ['admin.logout', 'admin.lang.change', 'admin.loginPage', 'admin.login', 'admin.profile', 'admin.roles.getForm'];
+
+        return collect(\Illuminate\Support\Facades\Route::getRoutes('admin'))
+            ->filter(fn($route) => $route->getName() !== null)
+            ->filter(fn($route) => \Illuminate\Support\Str::startsWith($route->getName(), 'admin.'))
+            ->filter(fn($route) => in_array('auth:admin', $route->gatherMiddleware()))
+            ->map(fn($route) => $route->getName())
+            ->filter(fn(string $fullName) => !in_array($fullName, $except, true))
+            ->values()
+            ->toArray();
     }
 }
