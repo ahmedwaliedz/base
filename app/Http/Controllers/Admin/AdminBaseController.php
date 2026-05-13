@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\ServiceException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\DestroyAllRequest;
 use App\Traits\Response\ResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -37,11 +38,16 @@ class AdminBaseController extends Controller {
 
         $is_retrievable = $this->service->getIsRetrievable();
 
-        if (request()->ajax()) {
-            ${$this->smallPluralName} = $this->service->index($request)->paginate($request->filters['per_page'] ?? 30);
-            return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => ${$this->smallPluralName}, 'is_retrievable' => $is_retrievable])->render();
+        if ($request->ajax()) {
+            $items = $this->service->index($request)->paginate($request->filters['per_page'] ?? 30);
+            return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => $items, 'is_retrievable' => $is_retrievable])->render();
         }
-        return view('admin.' . $this->smallPluralName . '.index', $this->service->indexVars() + [ ...get_defined_vars()]);
+
+        $vars = $this->service->indexVars();
+        $vars['is_retrievable'] = $is_retrievable;
+        $vars['inputs'] = $this->inputs;
+
+        return view('admin.' . $this->smallPluralName . '.index', $vars);
     }
 
     public function create() {
@@ -142,15 +148,15 @@ class AdminBaseController extends Controller {
         }
     }
 
-    public function destroyAll(Request $request) {
+    public function destroyAll(DestroyAllRequest $request) {
         try {
-            $this->service->destroyAll($request->ids);
+            $this->service->destroyAll($request->validated()['ids']);
             return $this->respondWithSuccess(__('admin/main.delete_selected_successfully'));
         } catch (ServiceException $e) {
             Log::warning('ServiceException in destroyAll', [
                 'controller' => static::class,
                 'model' => $this->modelBaseName,
-                'ids' => $request->ids,
+                'ids' => $request->validated()['ids'],
                 'message' => $e->getMessage(),
                 'status_code' => $e->getStatusCode(),
                 'context' => $e->getContext(),
@@ -160,7 +166,7 @@ class AdminBaseController extends Controller {
             Log::error('Unexpected error in destroyAll', [
                 'controller' => static::class,
                 'model' => $this->modelBaseName,
-                'ids' => $request->ids ?? [],
+                'ids' => $request->validated()['ids'],
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);

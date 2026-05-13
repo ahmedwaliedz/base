@@ -3,12 +3,12 @@
 namespace App\Services\Admin;
 
 use App\Enums\AdminType;
+use App\Exceptions\ServiceException;
 use App\Models\Admin;
 use App\Models\Country;
 use App\Models\Role;
 use App\Services\Admin\Base\AuthenticatableBaseService;
 use App\Traits\Role\RoleTrait;
-use Exception;
 
 class AdminService extends AuthenticatableBaseService
 {
@@ -90,8 +90,29 @@ class AdminService extends AuthenticatableBaseService
     {
         return parent::destroy($id, function ($object) {
             if ($object->id == 1) {
-                throw new Exception(__('admin/main.you_cannot_delete_the_super_admin'));
+                throw ServiceException::forModel(
+                    $this->model,
+                    'destroy',
+                    __('admin/main.you_cannot_delete_the_super_admin'),
+                    403,
+                    ['id' => $object->id]
+                );
             }
         });
+    }
+
+    public function destroyAll($ids, $function = null)
+    {
+        if (in_array(1, array_map('intval', $ids), true)) {
+            throw ServiceException::forModel(
+                $this->model,
+                'destroyAll',
+                __('admin/main.you_cannot_delete_the_super_admin'),
+                403,
+                ['ids' => $ids]
+            );
+        }
+
+        return parent::destroyAll($ids, $function);
     }
 }
