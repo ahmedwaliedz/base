@@ -24,14 +24,8 @@
                 $optText = is_array($option)
                     ? ($option[$optionTextKey] ?? null)
                     : data_get($option, $optionTextKey, null);
-                $normalizedOptValue = is_bool($optValue)
-                    ? ($optValue ? '1' : '0')
-                    : $optValue;
-                $normalizedValue = is_bool($value)
-                    ? ($value ? '1' : '0')
-                    : $value;
             @endphp
-            <option value="{{ $normalizedOptValue }}" {{ (string)$normalizedValue === (string)$normalizedOptValue ? 'selected' : '' }}>
+            <option value="{{ $optValue }}" {{ (string)$value === (string)$optValue ? 'selected' : '' }}>
                 {{ $optText }}
             </option>
         @endforeach

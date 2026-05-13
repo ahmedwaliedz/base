@@ -26,5 +26,9 @@ return [
     'latitude' => 'Latitude',
     'longitude' => 'Longitude',
     'country_code' => 'Country Code',
+    'code' => 'Dial code',
+    'flag' => 'Flag image',
+    'is_active' => 'Active',
     'is_notify' => 'Receive Notifications',
+    'get_deleted' => 'Show deleted',
 ];

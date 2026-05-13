@@ -187,6 +187,39 @@ $(document).on('change', '.switch-block', function() {
     });
 });
 
+// Toggle country is_active (table row switch; mirrors switch-block table behavior)
+$(document).on('change', '.switch-active', function() {
+    var $switch = $(this);
+    var url = $switch.data('route');
+    $.ajax({
+        type: 'PUT',
+        url: url,
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        success: function() {
+            var inTable = $switch.closest('tr').length > 0;
+            if (inTable) {
+                $switch.prop('checked', !$switch.prop('checked'));
+                try { showTableLoader(); } catch (_) {}
+                try {
+                    var filters = getFilters();
+                    loadTable({ 'filters': filters });
+                } catch (_) {}
+                return;
+            }
+        },
+        error: function(xhr) {
+            $switch.prop('checked', !$switch.prop('checked'));
+            if (typeof handelErrorByStatus === 'function') {
+                handelErrorByStatus(xhr);
+            }
+        }
+    });
+});
+
 // Block / unblock from profile danger-zone (button, not checkbox)
 $(document).on('click', 'button.switch-block', function (e) {
     e.preventDefault();

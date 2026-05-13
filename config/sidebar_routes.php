@@ -24,6 +24,11 @@ return [
 
             ],
         ],
+        'countries' => [
+            'has_child' => true,
+            'icon'      => '<i class="ti ti-world me-2"></i>',
+            'childes'   => [],
+        ],
         'admins' => [
             'group'        => 'admin_roles_management',
             'has_child'    => true,

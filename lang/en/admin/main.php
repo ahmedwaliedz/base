@@ -370,4 +370,43 @@
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',
         'deleted_at' => 'Deleted at',
+
+        // Countries CRUD
+        'code' => 'Code',
+        'flag' => 'Flag',
+        'country_details' => 'Country details',
+        'active_countries' => 'Active',
+        'inactive_countries' => 'Inactive',
+        'regions' => 'Regions',
+        'cities' => 'Cities',
+        'regions_preview' => 'Regions (sample)',
+        'related_regions' => 'Regions in this country',
+        'related_cities' => 'Cities in this country',
+        'no_regions_for_country' => 'No regions linked to this country yet.',
+        'no_cities_for_country' => 'No cities linked to this country yet.',
+        'region' => 'Region',
+        'set_active' => 'Activate',
+        'set_inactive' => 'Deactivate',
+
+        // Admins CRUD — parity with users
+        'admin_details' => 'Administrator details',
+        'super_admins' => 'Super admins',
+        'roles_in_use' => 'Roles in use',
+        'protected_super_admin' => 'Protected primary super admin — cannot be deleted',
+        'identity' => 'Identity',
+        'role_and_type' => 'Role & access type',
+        'preferences' => 'Preferences',
+        'account_state' => 'Account state',
+
+        // Roles CRUD statistics + show page
+        'total_roles' => 'Total Roles',
+        'assigned_admins' => 'Assigned Admins',
+        'unassigned_roles' => 'Unassigned Roles',
+        'avg_permissions' => 'Avg Permissions',
+        'most_populated' => 'Most Populated',
+        'created_this_month' => 'Created This Month',
+        'no_admins_assigned' => 'No admins assigned',
+        'role_details' => 'Role Details',
+        'granted_permissions' => 'Granted Permissions',
+        'coverage' => 'Coverage',
     ];

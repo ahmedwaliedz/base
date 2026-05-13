@@ -23,7 +23,6 @@ public function definition(): array
             'password' => 'Password@123',
             'type' => AdminType::SUPER_ADMIN,
             'is_notify' => $this->faker->boolean,
-            'created_at' => now()->subDays(rand(1, 30)),
         ];
     }
 
