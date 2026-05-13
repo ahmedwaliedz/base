@@ -8,8 +8,7 @@ return [
     'email' => 'يجب اضافة عنوان بريد إلكتروني صحيح.',
     'name' => 'الاسم',
     'one_or_more_permissions_required' => ' يجب أن تحتوي على إذن واحد على الأقل.',
+    'invalid_permission' => 'الإذن ":value" غير صالح.',
     'number' => 'يجب اضافة ارقام فقط ',
     'country_code' => 'رمز الدولة',
-    '' => '',
-    '' => '',
 ];

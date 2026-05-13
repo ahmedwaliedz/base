@@ -120,6 +120,7 @@
         'unassigned_permissions' => 'الصلاحيات غير المسندة',
         'role_updated' => 'تم تحديث الصلاحية بنجاح',
         'role_deleted' => 'تم حذف الصلاحية بنجاح',
+        'role_not_found' => 'الصلاحية غير موجودة',
 
         // SMTP Settings
         'smtp_settings' => 'إعدادات SMTP',

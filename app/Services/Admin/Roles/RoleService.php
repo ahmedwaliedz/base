@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin\Roles;
 
+use App\Exceptions\ServiceException;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Traits\Role\RoleTrait;
@@ -121,7 +122,7 @@ class RoleService
      *
      * @param array $permissionNames
      * @return array
-     * @throws \InvalidArgumentException
+     * @throws ServiceException
      */
     private function getPermissionIds(array $permissionNames): array
     {
@@ -129,8 +130,9 @@ class RoleService
 
         $invalidPermissions = array_diff($permissionNames, $validPermissions);
         if (!empty($invalidPermissions)) {
-            throw new \InvalidArgumentException(
-                __('admin/validation.invalid_permissions') . ': ' . implode(', ', $invalidPermissions)
+            throw ServiceException::validation(
+                __('admin/validation.invalid_permission'),
+                ['permissions' => array_values($invalidPermissions)]
             );
         }
 

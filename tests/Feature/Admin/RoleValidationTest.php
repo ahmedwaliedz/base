@@ -131,4 +131,20 @@ class RoleValidationTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_service_level_invalid_permissions_return_422_not_500(): void
+    {
+        $this->superAdmin->role_id = null;
+        $this->superAdmin->save();
+
+        $response = $this->actingAsSuperAdmin()->postJson('/admin/roles', [
+            'ar' => ['name' => 'Test Role'],
+            'en' => ['name' => 'Test Role'],
+            'permissions' => ['this.is.definitely.not.valid'],
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['message', 'errors']);
+        $response->assertJsonFragment(['message' => __('admin/validation.invalid_permission')]);
+    }
 }
