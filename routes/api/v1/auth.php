@@ -16,7 +16,7 @@ use App\Http\Controllers\Api\V1\Auth\MeController;
 |
 */
 // Route::post('auth/login-with-password', [LoginPasswordController::class, 'login']);
-Route::prefix('auth')->group(function () {
+Route::prefix('auth')->middleware('throttle:5,1')->group(function () {
 
     // Public routes (no authentication required)
     // Login with password

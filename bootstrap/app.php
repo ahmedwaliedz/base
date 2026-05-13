@@ -15,7 +15,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         then: function () {
             // Load versioned API routes dynamically
-            Route::prefix('api')->middleware(['api.lang'])->group(function () {
+            Route::prefix('api')->middleware(['api.lang', 'throttle:60,1'])->group(function () {
                 // Helper function to load routes from version folder
                 $loadVersionRoutes = function ($version) {
                     $routesPath = base_path("routes/api/{$version}");
@@ -90,7 +90,11 @@ $app = Application::configure(basePath: dirname(__DIR__))
             'admin.api' => \App\Http\Middleware\AdminApiMiddleware::class,
             'api.lang' => \App\Http\Middleware\ApiLangMiddleware::class,
             'complete.info' => \App\Http\Middleware\CheckCompleteInfo::class,
+            'security.headers' => \App\Http\Middleware\SecurityHeadersMiddleware::class,
         ]);
+
+        // Global middleware stack - apply security headers to all requests
+        $middleware->append(\App\Http\Middleware\SecurityHeadersMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
     $exceptions->render(function (\Throwable $e, Request $request) {

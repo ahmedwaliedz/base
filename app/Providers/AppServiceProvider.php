@@ -36,6 +36,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Force HTTPS in production
+        if ($this->app->environment('production')) {
+            \URL::forceScheme('https');
+        }
+
         RateLimiter::for('admin.login', function ($request) {
             return Limit::perMinute(5)->by($request->email . $request->ip());
         });
