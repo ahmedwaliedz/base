@@ -69,7 +69,7 @@ Output:
 ### Step 4: Validate Regression Risk
 Use:
 - testing skill
-- code-review skill when needed
+- feature-finalization-and-validation skill when needed
 
 Goals:
 - test the broken flow

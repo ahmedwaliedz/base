@@ -1,51 +1,212 @@
 # Auth and Permissions Skill
 
 ## Purpose
-Implement authentication and authorization in a secure and structured way.
+
+Implement authentication and authorization following project security standards.
 
 ---
 
-## Process
+## When to Use
 
-### Authentication
-- Use Laravel built-in auth (Sanctum / Passport / session)
-- Protect routes using middleware
-
----
-
-### Authorization
-- Use Policies or Gates
-- Do not mix authorization with business logic
+- Adding authentication to new features
+- Implementing role-based access control
+- Creating protected routes
+- Setting up authorization policies
+- Adding permission checks
 
 ---
 
-### Roles & Permissions
-- Define clear roles (admin, user, etc.)
-- Use consistent naming
-- Store roles/permissions properly
+## Authentication
+
+### Project Uses
+
+This project uses **Laravel Sanctum** for authentication.
+
+### Sanctum Setup
+
+- Config: `config/sanctum.php`
+- Token model: `App\Models\PersonalAccessToken`
+- Stateful domains: configured in `config/sanctum.php`
+
+### Middleware Protection
+
+Protect routes using middleware:
+```php
+// API routes
+Route::middleware('auth:sanctum')->group(function () {
+    // Protected endpoints
+});
+
+// Admin routes
+Route::middleware('auth:admin')->group(function () {
+    // Protected admin endpoints
+});
+```
+
+### Login Flow
+
+1. Receive credentials (email, password)
+2. Validate with Form Request
+3. Authenticate via Service
+4. Create Sanctum token: `$user->createToken('token-name')`
+5. Return token to client
 
 ---
 
-### Controller Rules
-- Do not handle permissions manually inside controller
-- Use policies or middleware
+## Authorization
+
+### Policies
+
+Use Laravel Policies in `app/Policies/`:
+```php
+// php artisan make:policy PostPolicy
+// Register in AuthServiceProvider
+```
+
+### Gates
+
+For simple checks, use Gates in service providers:
+```php
+Gate::define('update-post', function ($user, $post) {
+    return $user->id === $post->user_id;
+});
+```
+
+### Policy Binding
+
+Register policies in `app/Providers/AuthServiceProvider`:
+```php
+protected $policies = [
+    Post::class => PostPolicy::class,
+];
+```
+
+### Using Policies
+
+In Controller:
+```php
+$this->authorize('update', $post);
+```
+
+In Blade:
+```php
+@can('update', $post)
+    <button>Edit</button>
+@endcan
+```
 
 ---
 
-### Security
-- Never trust client input
-- Validate all auth-related data
+## Roles & Permissions
+
+### Existing Roles
+
+- **Super Admin** - Full access
+- **Admin** - Admin panel access
+- **User** - Regular user
+
+### Permission Structure
+
+Permissions stored in database:
+- `roles` table
+- `permissions` table (if used)
+- Role-permission relationship
+
+### Checking Permissions
+
+In Service:
+```php
+// Check if user has role
+$user->hasRole('admin');
+
+// Check if user has permission
+$user->hasPermissionTo('view_posts');
+```
+
+---
+
+## Project Auth Services
+
+This project has these auth-related services:
+- `app/Services/Admin/Auth/LoginService.php` - Admin login
+- `app/Services/Admin/Auth/LoginRateLimiter.php` - Rate limiting
+- `app/Services/Admin/Auth/CheckStatus.php` - Status checking
+- `app/Services/Auth/AuthService.php` - General auth logic
+- `app/Services/Otp/OtpService.php` - OTP handling
+
+---
+
+## Security Rules
+
+| Rule | Description |
+|------|-------------|
+| Never trust client input | Validate everything server-side |
+| Use Form Requests | Validate auth data properly |
+| Hash passwords | Use bcrypt/Hash::make() |
+| Use Sanctum tokens | Don't roll custom tokens |
+| Rate limit login | Prevent brute force |
+| Log auth events | Track login attempts |
+| Use policies | Don't hardcode permissions |
+
+---
+
+## Controller Rules
+
+- **Never handle permissions manually** in controllers
+- **Use middleware** for route protection
+- **Use policies** for resource authorization
+- **Keep auth logic in services** - don't put in controllers
+
+---
+
+## Common Auth Patterns
+
+### Login with Password
+```
+1. FormRequest validates email/password
+2. Service checks credentials
+3. Service creates Sanctum token
+4. Controller returns token
+```
+
+### Login with OTP
+```
+1. FormRequest validates phone
+2. Service generates OTP
+3. Service sends OTP (SMS/Email)
+4. User submits OTP
+5. Service verifies and creates token
+```
+
+### Role-based Access
+```
+1. Middleware checks role
+2. Policy checks permission on resource
+3. Service checks permission for business logic
+```
+
+---
+
+## Completion Standard
+
+Auth implementation is NOT complete until:
+
+- [ ] Routes properly protected with middleware
+- [ ] Form Request validates auth input
+- [ ] Service handles auth logic (not controller)
+- [ ] Policies defined for resources
+- [ ] Permissions checked in services
+- [ ] Passwords properly hashed
+- [ ] Rate limiting implemented
+- [ ] Token generation follows Sanctum pattern
 
 ---
 
 ## Output Format
-- Auth setup
-- Middleware usage
-- Policies/Gates
-- Role structure
-- Example usage
 
-## Policy Enforcement
-
-- All sensitive actions must be protected by policies or permissions.
-- Do not rely on frontend checks for authorization.
+- Auth setup (guards, providers)
+- Middleware configuration
+- Policy structure
+- Permission structure
+- Service methods for auth operations
+- Example usage in controller/Blade

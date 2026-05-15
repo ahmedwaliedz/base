@@ -75,9 +75,7 @@ Choose based on feature type.
 
 #### If API
 Use:
-- api-design skill
-- api-end-to-end-execution skill
-- create-api-with-postman skill when documentation/examples are needed
+- create-api-with-postman skill
 
 Goals:
 - define endpoints
@@ -128,7 +126,6 @@ Output:
 ### Step 6: Finalize and Validate the Feature
 Use:
 - feature-finalization-and-validation skill
-- code-review skill
 
 Goals:
 - verify architecture compliance

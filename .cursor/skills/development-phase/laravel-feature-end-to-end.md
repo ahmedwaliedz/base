@@ -87,7 +87,6 @@ Use: database-design skill
 ### If API:
 
 Use:
-- api-design skill
 - create-api-with-postman skill
 
 Implement:
@@ -154,7 +153,7 @@ Use: testing skill
 
 ## Step 8: Review & Validation
 
-Use: code-review skill
+Use: 22-code-review.mdc (rule) or feature-finalization-and-validation skill
 
 - Ensure:
   - architecture compliance

@@ -30,4 +30,4 @@ alwaysApply: true
 ## Reuse and Consistency
 
 - Always follow existing patterns in the project.
-- Do not introduce alternative implementations for the same functionality.خلين
+- Do not introduce alternative implementations for the same functionality.

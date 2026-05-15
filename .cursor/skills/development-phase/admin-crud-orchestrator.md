@@ -402,7 +402,7 @@ Output:
 
 Use:
 - feature-finalization-and-validation skill
-- code-review skill
+- 22-code-review.mdc (rule)
 
 Validate:
 - architecture compliance
