@@ -18,143 +18,112 @@ This workflow ensures each feature is analyzed, structured, implemented, documen
 ## Workflow Steps
 
 ### Step 1: Analyze the Feature
-Use:
-- feature-analysis skill
-
-Goals:
-- understand the feature goal
-- identify affected modules
-- identify schema needs
-- identify API/UI requirements
-- identify validation, states, and edge cases
-
-Output:
-- feature analysis
-- affected layers
-- implementation plan
+- **Trigger:** `feature-analysis` skill
+- **Must follow:** `rules/02-architecture.mdc`, `rules/05-database-rules.mdc`
+- **Goals:**
+  - Understand the feature goal and business intent
+  - Identify affected modules and layers
+  - Define schema needs and validation rules
+  - Identify API/UI requirements
+  - Map edge cases and state transitions
+- **Output:** Structured analysis doc
 
 ---
 
 ### Step 2: Map Feature to Module
-Use:
-- feature-to-module-execution skill
-- or create-module skill when a full module is needed
-
-Goals:
-- decide whether to extend an existing module or create a new one
-- map the feature to the correct layers
-- prepare execution order
-
-Output:
-- module mapping
-- execution plan
-- required layers
+- **Trigger:** `feature-to-module-execution` skill OR `create-module` skill (if new module needed)
+- **Must follow:** `rules/02-architecture.mdc`
+- **Goals:**
+  - Decide: extend existing module or create new one?
+  - Map feature to correct layers (Service, Controller, Request, Routes)
+  - Prepare execution order
+  - Identify required templates
+- **Output:** Module mapping document, execution order
 
 ---
 
 ### Step 3: Implement Backend
-Use:
-- backend-feature-implementation skill
-
-Goals:
-- create or update Form Requests
-- create or update Service classes
-- keep controllers thin
-- implement business logic in the correct layer
-
-Output:
-- backend implementation
-- validation structure
-- service logic
-- controller orchestration
+- **Trigger:** `backend-feature-implementation` skill
+- **Must follow:** `rules/04-backend-rules.mdc`, `rules/08-custom-rbac.mdc`
+- **Goals:**
+  - Create or update Form Requests for validation
+  - Create or update Service classes (business logic)
+  - Keep controllers thin (orchestration only)
+  - Implement RBAC checks if needed
+  - Write database migrations
+- **Output:** Service, FormRequest, Controller (thin), Migration
 
 ---
 
 ### Step 4: Implement API or UI
 Choose based on feature type.
 
-#### If API
-Use:
-- create-api-with-postman skill
+#### If API:
+- **Trigger:** `create-api-with-postman` skill
+- **Must follow:** `rules/07-api-postman-mcp-documentation-rules.mdc`
+- **Goals:**
+  - Define endpoints (routes)
+  - Implement consistent response format
+  - Document params, body, enums, responses
+  - Prepare Postman examples
+- **Output:** Routes, JsonResource, Postman docs, examples
 
-Goals:
-- define endpoints
-- implement consistent responses
-- document params/body/enums/responses
-- prepare Postman examples
-
-Output:
-- endpoints
-- response format
-- examples
-- documentation
-
-#### If UI
-Use:
-- ui-page-build skill
-
-Goals:
-- build pages, forms, lists, or actions
-- keep UI consistent
-- keep Blade presentation-only
-
-Output:
-- page structure
-- form structure
-- table/list behavior
-- UI actions
+#### If UI:
+- **Trigger:** `ui-page-build` skill
+- **Must follow:** `rules/03-frontend-rules.mdc`
+- **Goals:**
+  - Build pages, forms, lists, or actions
+  - Keep UI consistent with existing design
+  - Keep Blade for presentation only
+  - Implement form validation feedback
+- **Output:** Page structure, form structure, list behavior, UI actions
 
 ---
 
 ### Step 5: Test the Feature
-Use:
-- testing skill
-
-Goals:
-- test success cases
-- test validation failures
-- test permission/auth failures
-- test edge cases
-- protect against regressions
-
-Output:
-- test cases
-- coverage notes
+- **Trigger:** `testing` skill
+- **Must follow:** `rules/16-testing-qa.mdc`
+- **Goals:**
+  - Test success cases and happy path
+  - Test validation failures
+  - Test permission/auth failures
+  - Test edge cases and state transitions
+  - Protect against regressions
+- **Output:** Feature test class, test coverage report
 
 ---
 
-### Step 6: Finalize and Validate the Feature
-Use:
-- feature-finalization-and-validation skill
-
-Goals:
-- verify architecture compliance
-- verify correctness
-- verify naming consistency
-- verify documentation/tests are complete
-
-Output:
-- final validation report
-- issues list
-- ready/not ready decision
+### Step 6: Finalize and Validate
+- **Trigger:** `feature-finalization-and-validation` skill
+- **Must follow:** `rules/01-code-quality.mdc`, `rules/22-code-review.mdc`
+- **Goals:**
+  - Verify architecture compliance
+  - Verify correctness and edge cases
+  - Verify naming consistency
+  - Verify documentation is complete
+  - Verify tests cover critical flows
+- **Output:** Validation report, issues list, ready/not ready decision
 
 ---
 
 ## Rules Enforcement
 - Do not skip feature analysis.
+- Do not skip module mapping (decide module scope before implementation).
 - Do not write business logic in controllers or Blade.
 - Do not skip testing or final validation.
 - Do not create undocumented APIs when documentation is required.
 - Keep implementation aligned with project rules and context.
+- Always verify RBAC and permissions for protected resources.
 
 ---
 
 ## Completion Standard
 A development workflow is complete only when:
-- the feature has been analyzed
-- the correct module/layers are identified
-- backend is implemented correctly
-- API or UI is complete
-- tests are included
-- final validation is complete
+- the feature has been analyzed thoroughly
+- the correct module (new or existing) has been identified
+- backend is implemented correctly with proper service/controller separation
+- API or UI is complete and documented
+- all critical paths have tests
+- final validation passes all checks
+- no rule violations remain
 - the feature is ready for delivery

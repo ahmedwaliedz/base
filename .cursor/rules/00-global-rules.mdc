@@ -2,6 +2,16 @@
 alwaysApply: true
 ---
 
+# 📌 AI Execution Priority
+
+1. Read `context/project-context.md` first (project identity and structure)
+2. Read `rules/08-custom-rbac.mdc` before any permission-related changes
+3. Follow `workflows/` sequence for new features (don't skip analysis or validation)
+4. Prefer existing patterns in `app/Services/`, `app/Http/Requests/`, `app/Http/Resources/`
+5. If rule conflict occurs, `00-global-rules.mdc` overrides others
+
+---
+
 # Global Rules
 
 ## Project stack

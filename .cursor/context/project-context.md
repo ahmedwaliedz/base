@@ -223,6 +223,46 @@ tests/
 
 ---
 
+## Database Schema Highlights
+
+| Table | Key Fields |
+|-------|------------|
+| `admins` | id, name, email, password, role_id, type, status, remember_token |
+| `permissions` | id, permission (string), created_at, updated_at |
+| `permission_role` | role_id, permission_id |
+| `roles` | id, name, guard_name |
+
+---
+
+## Middleware Aliases
+
+| Alias | Class |
+|-------|-------|
+| `check.role.permission` | CheckRolePermission |
+| `auth:sanctum` | Laravel Sanctum |
+| `api.lang` | ApiLang |
+
+---
+
+## API Response Standard
+
+- Always use traits from `app/Traits/Response/`
+- Format: `{ "success": true|false, "data": {...}|null, "message": "..." }`
+- Pagination: Laravel default (`paginate(15)`)
+
+---
+
+## Security Hardening (Active)
+
+| Security Layer | Configuration |
+|----------------|---------------|
+| Rate Limiting (Auth) | `throttle:5,1` |
+| Rate Limiting (API) | `throttle:60,1` |
+| Production HTTPS | `URL::forceScheme('https')` enforced |
+| Headers | `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff` |
+
+---
+
 ## Notes
 
 - This is a base project for new Laravel applications
