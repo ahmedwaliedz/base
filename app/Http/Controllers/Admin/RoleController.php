@@ -18,7 +18,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
-
+ 
 class RoleController extends Controller
 {
     use ResponseTrait;
