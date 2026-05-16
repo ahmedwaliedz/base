@@ -10,6 +10,8 @@ class District extends Model
 {
     use HasFactory, Translatable;
 
+    public const RELATIONS = ['translations', 'city'];
+
     protected $fillable = ['city_id','is_active'];
 
     public $translatedAttributes = ['name'];

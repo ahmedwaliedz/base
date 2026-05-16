@@ -10,6 +10,8 @@ class Slider extends Model
 {
     use HasFactory , Translatable;
 
+    public const RELATIONS = ['translations'];
+
     protected $fillable = ['image', 'link', 'is_active', 'type'];
 
     public $translatedAttributes = ['title', 'description'];

@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class IntroPage extends Model
 {
     use  Translatable ;
+
+    public const RELATIONS = ['translations'];
+
     protected $fillable = ['image', 'link', 'is_active'];
 
     public $translatedAttributes = ['title', 'description'];

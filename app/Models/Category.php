@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model {
     use HasFactory, Translatable, BaseModelTrait;
+
+    public const RELATIONS = ['translations', 'parent', 'children'];
+
     protected $fillable = ['slug', 'icon', 'is_active', 'parent_id'];
 
     protected $casts = [

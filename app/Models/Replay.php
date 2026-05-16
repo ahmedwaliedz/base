@@ -9,6 +9,8 @@ class Replay extends Model
 {
     use HasFactory;
 
+    public const RELATIONS = ['replayable', 'replaybyable'];
+
     protected $fillable = [
         'replay',
         'replayable_id',
@@ -18,6 +20,11 @@ class Replay extends Model
     ];
 
     public function replayable()
+    {
+        return $this->morphTo();
+    }
+
+    public function replaybyable()
     {
         return $this->morphTo();
     }

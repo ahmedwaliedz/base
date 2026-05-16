@@ -9,6 +9,8 @@ class ContactMessage extends Model
 {
     use HasFactory;
 
+    public const RELATIONS = ['contactable', 'replays'];
+
     protected $fillable = [
         'name',
         'phone',

@@ -10,6 +10,8 @@ class Seo extends Model
 {
     use HasFactory , Translatable;
 
+    public const RELATIONS = ['translations', 'seoable'];
+
     protected $fillable = ['image'];
     public $translatedAttributes = ['meta_title', 'meta_description', 'meta_keywords'];
 

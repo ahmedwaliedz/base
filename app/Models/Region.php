@@ -10,6 +10,8 @@ class Region extends Model
 {
     use HasFactory, Translatable;
 
+    public const RELATIONS = ['translations', 'country', 'cities'];
+
     protected $fillable = [
         'country_id',
         'is_active',

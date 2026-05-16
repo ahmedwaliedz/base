@@ -10,5 +10,9 @@ class Post extends Model
 {
     use HasFactory, Translatable;
 
+    public const RELATIONS = ['translations'];
+
+    protected $fillable = ['image', 'is_active'];
+
     public $translatedAttributes = ['title', 'content'];
 }

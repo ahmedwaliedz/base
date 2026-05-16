@@ -11,6 +11,8 @@ class Page extends Model
 {
     use HasFactory, Translatable;
 
+    public const RELATIONS = ['translations'];
+
     protected $fillable = ['slug', 'icon', 'type'];
 
     public $translatedAttributes = ['title', 'content'];

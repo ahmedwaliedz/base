@@ -10,6 +10,8 @@ class City extends Model
 {
     use HasFactory, Translatable;
 
+    public const RELATIONS = ['translations', 'country', 'region', 'districts'];
+
     protected $fillable = ['country_id', 'region_id', 'is_active'];
 
     protected $casts = [

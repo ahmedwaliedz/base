@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Services\Admin;
+
+use App\Models\City;
+use App\Services\Admin\Base\CrudBaseService;
+
+class CityService extends CrudBaseService
+{
+    public function __construct()
+    {
+        parent::__construct(City::class);
+    }
+
+    public function index($request, $where = [])
+    {
+        return parent::index($request, $where)
+            ->with(['region' => fn ($q) => $q->with('translations')])
+            ->withCount('districts');
+    }
+
+    public function switchIsActive(int|string $id): bool
+    {
+        $city = City::query()->findOrFail($id);
+        $city->update(['is_active' => ! $city->is_active]);
+
+        return (bool) $city->fresh()->is_active;
+    }
+}

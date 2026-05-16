@@ -12,6 +12,8 @@ class Complaint extends Model
 {
     use HasFactory;
 
+    public const RELATIONS = ['complainantable', 'images', 'replays'];
+
     protected $fillable = [
         'name',
         'phone',

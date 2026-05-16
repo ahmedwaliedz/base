@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Social extends Model
 {
+    public const RELATIONS = [];
+
     protected $fillable = ['image', 'link', 'is_active'];
 
     protected $casts = [
