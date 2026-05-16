@@ -194,25 +194,30 @@ The plan MUST include:
 
 ### 4. Service Layer (MANDATORY)
 
-Create service class:
+Create service class extending CrudBaseService:
 
 Example:
 
 ```php
-class Create<Model>Service
+// app/Services/Admin/<Model>Service.php
+class <Model>Service extends CrudBaseService
 {
-    public function execute(array $data)
+    // Business logic here
+    // Inherits: index, store, update, delete from CrudBaseService
+    // Override or add methods as needed
+
+    public function store(array $data): Model
     {
-        // business logic here
+        return DB::transaction(fn () => <Model>::create($data));
     }
 }
 ```
 
 Rules:
 
-* All logic here
-* reusable
-* testable
+* Extend CrudBaseService for standard CRUD
+* All business logic in service, not controller
+* Reusable and testable
 
 ---
 
@@ -227,11 +232,14 @@ Rules:
 Example:
 
 ```php
-public function store(StoreRequest $request, CreateService $service)
-{
-    $data = $service->execute($request->validated());
+// Controller extends AuthenticatableBaseController or AdminBaseController
+// Service is injected via parent::__construct($service)
 
-    return $this->successResponse($data);
+public function store(StoreRequest $request)
+{
+    $data = $this->service->store($request->validated());
+
+    return redirect()->route('admin.<model>.index');
 }
 ```
 

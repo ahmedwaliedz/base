@@ -60,7 +60,7 @@ Route::middleware('auth:admin')->group(function () {
 Use Laravel Policies in `app/Policies/`:
 ```php
 // php artisan make:policy PostPolicy
-// Register in AuthServiceProvider
+// Laravel 11 auto-discovers policies - no manual registration needed
 ```
 
 ### Gates
@@ -74,12 +74,7 @@ Gate::define('update-post', function ($user, $post) {
 
 ### Policy Binding
 
-Register policies in `app/Providers/AuthServiceProvider`:
-```php
-protected $policies = [
-    Post::class => PostPolicy::class,
-];
-```
+Laravel 11 auto-discovers policies in `app/Policies/`. No manual registration needed.
 
 ### Using Policies
 
@@ -99,28 +94,34 @@ In Blade:
 
 ## Roles & Permissions
 
+> ⚠️ **CRITICAL:** This project uses a **custom RBAC system** (see `rules/08-custom-rbac.mdc`). Do NOT use Spatie or any external permission package. Route names must exactly match permission strings.
+
 ### Existing Roles
 
-- **Super Admin** - Full access
+- **Super Admin** - Full access (bypasses all permission checks)
 - **Admin** - Admin panel access
 - **User** - Regular user
 
 ### Permission Structure
 
-Permissions stored in database:
-- `roles` table
-- `permissions` table (if used)
-- Role-permission relationship
+This project uses a **custom RBAC system** with these tables:
+- `admins` - id, name, email, password, role_id, type, status
+- `roles` - id, name, guard_name
+- `permissions` - id, permission (string)
+- `permission_role` - role_id, permission_id (pivot)
 
 ### Checking Permissions
 
-In Service:
 ```php
-// Check if user has role
-$user->hasRole('admin');
+// Permission is checked automatically via CheckRolePermission middleware
+// Route name must match permission string exactly:
+// Route: admin.users.index → Permission: admin.users.index
 
-// Check if user has permission
-$user->hasPermissionTo('view_posts');
+// SuperAdmin bypasses all permission checks automatically
+// AdminType::SUPER_ADMIN skips CheckRolePermission middleware
+
+// For routes excluded from permission checks:
+// See exceptedRoutesFromRoles() in CheckRolePermission middleware
 ```
 
 ---
@@ -156,6 +157,8 @@ This project has these auth-related services:
 - **Use middleware** for route protection
 - **Use policies** for resource authorization
 - **Keep auth logic in services** - don't put in controllers
+- **Never bypass CheckRolePermission middleware** without explicit confirmation
+- **Route name = permission string** — always verify this mapping
 
 ---
 
