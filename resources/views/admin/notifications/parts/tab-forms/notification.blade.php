@@ -37,7 +37,7 @@
                     <div class="row g-3">
                         <input type="hidden" class="notification_id" name="id" value="group">
                         <div class="col-md-6">
-                            <label class="form-label" for="notif-class-push">{{ __('admin/inputs.notification_user_ype') }}</label>
+                            <label class="form-label" for="notif-class-push">{{ __('admin/inputs.user_type') }}</label>
                             <select class="form-select user-class-select" id="notif-class-push" name="class" required>
                                 <option value="App\Models\User">{{ __('admin/main.users') }}</option>
                                 <option value="App\Models\Admin">{{ __('admin/main.admins') }}</option>

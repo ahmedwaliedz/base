@@ -28,6 +28,8 @@ return [
     'country_code' => 'Country Code',
     'code' => 'Dial code',
     'flag' => 'Flag image',
+    'user_type' => 'User Type',
+    'is_blocked' => 'Blocked',
     'is_active' => 'Active',
     'is_notify' => 'Receive Notifications',
     'get_deleted' => 'Show deleted',

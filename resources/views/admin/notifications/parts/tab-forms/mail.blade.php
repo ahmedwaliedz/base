@@ -38,7 +38,7 @@
                         <input type="hidden" class="notification_id" name="id" value="group">
                         <input type="hidden" name="type" value="mail">
                         <div class="col-md-6">
-                            <label class="form-label" for="notif-class-mail">{{ __('admin/inputs.notification_user_ype') }}</label>
+                            <label class="form-label" for="notif-class-mail">{{ __('admin/inputs.user_type') }}</label>
                             <select class="form-select user-class-select" id="notif-class-mail" name="class" required>
                                 <option value="App\Models\User">{{ __('admin/main.users') }}</option>
                                 <option value="App\Models\Admin">{{ __('admin/main.admins') }}</option>

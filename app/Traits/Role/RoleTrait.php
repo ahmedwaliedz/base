@@ -9,17 +9,34 @@ trait RoleTrait
 {
     use RouteTrait;
     public static function translateRouteName(string $fullRouteName): string
-{
-    $key    = Str::after($fullRouteName, 'admin.');
-    $exact = "admin/routes.admin.{$key}";
-    if (Lang::has($exact)) {
-        $val = Lang::get($exact);
-        if (is_string($val)) {
-            return $val;
+    {
+        $key = Str::after($fullRouteName, 'admin.');
+        $translated = static::getRouteTranslation($key);
+        if ($translated !== null) {
+            return $translated;
         }
+
+        return Str::headline(Str::afterLast($key, '.'));
     }
-    return __('admin/routes.admin.' . $key. '.index');
-}
+
+    protected static function getRouteTranslation(string $key): ?string
+    {
+        foreach ([
+            "admin/routes.admin.{$key}",
+            "admin/routes.admin.{$key}.index",
+        ] as $translationKey) {
+            if (! Lang::has($translationKey)) {
+                continue;
+            }
+
+            $value = Lang::get($translationKey);
+            if (is_string($value)) {
+                return $value;
+            }
+        }
+
+        return null;
+    }
 
     public static function getAdminRoutesGrouped(): array
     {

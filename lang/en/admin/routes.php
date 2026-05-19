@@ -29,6 +29,7 @@ return [
             'update' => 'Update Admin Page',
             'edit' => 'Edit Admin',
             'show' => 'Show Admin',
+            'statistics' => 'Admins Statistics',
             'destroy' => 'Delete Admin',
             'destroyAll' => 'Delete Admins',
             'restore' => 'Restore Admin',
