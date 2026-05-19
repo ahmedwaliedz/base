@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\IntroPageController;
 use App\Http\Controllers\Admin\LanguageController;
+use App\Http\Controllers\Admin\AppNotificationController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
@@ -60,6 +61,14 @@ Route::middleware([AdminSetLocale::class, 'web'])->group(function () {
                 Route::get('/send-email', [NotificationController::class, 'sendEmail'])->name('notifications.sendEmail');
                 Route::get('/send-sms', [NotificationController::class, 'sendSms'])->name('notifications.sendSms');
                 Route::post('/send-notifications', [NotificationController::class, 'sendNotifications'])->name('notifications.sendNotifications');
+            });
+
+            Route::group(['prefix' => 'app-notifications'], function () {
+                Route::get('', [AppNotificationController::class, 'index'])->name('app-notifications.index');
+                Route::post('{notification}/read', [AppNotificationController::class, 'markAsRead'])->name('app-notifications.markAsRead');
+                Route::patch('{notification}/read', [AppNotificationController::class, 'markAsRead']);
+                Route::post('mark-all-as-read', [AppNotificationController::class, 'markAllAsRead'])->name('app-notifications.markAllAsRead');
+                Route::patch('mark-all-as-read', [AppNotificationController::class, 'markAllAsRead']);
             });
 
             // settings routes

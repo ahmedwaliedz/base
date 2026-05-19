@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -59,7 +60,27 @@ class AppServiceProvider extends ServiceProvider
                 ->prepend(database_path('migrations'))
                 ->toArray()
         );
+        View::composer([
+            'admin.layouts.nav',
+            'admin.layouts.parts.notifications',
+        ], function ($view) {
+            $admin = auth('admin')->user();
 
+            if (! $admin) {
+                $view->with([
+                    'adminNotificationSummary' => [
+                        'total' => 0,
+                        'unread' => 0,
+                        'read' => 0,
+                    ],
+                    'adminLatestNotifications' => collect(),
+                ]);
 
+                return;
+            }
+
+            $data = app(\App\Services\Admin\AppNotificationService::class)->dashboardData($admin);
+            $view->with($data);
+        });
     }
 }
