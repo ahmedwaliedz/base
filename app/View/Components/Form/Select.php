@@ -38,7 +38,7 @@ class Select extends Component
         $this->isRequired = $options['isRequired'] ?? false;
         $this->requiredMessage = $options['requiredMessage'] ?? __(self::VALIDATION_REQUIRED, ['attribute' => $this->label]);
         $this->disabled = $options['disabled'] ?? false;
-        $this->options = $options['options'] ?? [];
+        $this->options = collect($options['options'] ?? [])->all();
         $this->optionValueKey = $options['optionValueKey'] ?? 'id';
         $this->optionTextKey = $options['optionTextKey'] ?? 'name';
     }

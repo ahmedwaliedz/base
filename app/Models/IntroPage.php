@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\GeneralTrait;
 
 class IntroPage extends Model
 {
-    use  Translatable ;
+    use Translatable, GeneralTrait;
 
     public const RELATIONS = ['translations'];
 

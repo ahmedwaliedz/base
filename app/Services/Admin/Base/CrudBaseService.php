@@ -125,10 +125,10 @@ class CrudBaseService {
         return $object;
     }
 
-    public function switchActive($id) {
+    public function switchActive(int|string $id): bool {
         $object = $this->model::findOrFail($id);
         $object->update(['is_active' => ! $object->is_active]);
-        return response()->json(['msg' => 'success', 'is_active' => $object->is_active]);
+        return (bool) $object->fresh()->is_active;
     }
 
     public function storeRelations(Request $request) {

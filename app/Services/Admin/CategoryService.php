@@ -14,7 +14,7 @@ class CategoryService extends CrudBaseService
 
     public function index($request, $where = [])
     {
-        return parent::index($request, $where)->withCount(['children', 'posts']);
+        return parent::index($request, $where)->withCount(['children']);
     }
 
     public function switchIsActive(int|string $id): bool
