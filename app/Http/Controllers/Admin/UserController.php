@@ -24,7 +24,10 @@ class UserController extends AuthenticatableBaseController
 
         $now = Carbon::now();
 
-        $accountAgeDays = $user->created_at?->diffInDays($now) ?? 0;
+        // Use integer timestamp math so the account age card always renders a whole number of days.
+        $accountAgeDays = $user->created_at
+            ? max(0, intdiv($now->timestamp - $user->created_at->timestamp, 86400))
+            : 0;
 
         $sessionsCount = 0;
         $sessions = collect();

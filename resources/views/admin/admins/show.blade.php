@@ -83,7 +83,7 @@
                     <div class="min-w-0">
                         <div class="admin-stat-card__label">{{ __('admin/main.account_age') }}</div>
                         <div class="admin-stat-card__value">
-                            {{ $admin->created_at?->diffForHumans(null, true) ?? '—' }}
+                            {{ $admin->created_at ? intdiv(now()->timestamp - $admin->created_at->timestamp, 86400) . ' ' . __('admin/main.days') : '—' }}
                         </div>
                     </div>
                 </div>

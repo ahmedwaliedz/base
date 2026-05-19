@@ -5,13 +5,12 @@ namespace App\Services\Admin\Settings;
 use App\Enums\SettingTypeEnum;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 
 class SettingService
 {
     public function getSettings(): mixed
     {
-        return cache()->get('settings');
+        return settings();
     }
 
     public function updateSettings(array $data): void
@@ -49,7 +48,7 @@ class SettingService
     {
         cache()->forget('settings');
         Cache::rememberForever('settings', function () {
-            return Setting::get()->pluck('value', 'key');
+            return Setting::get()->pluck('value', 'key')->toArray();
         });
     }
 }

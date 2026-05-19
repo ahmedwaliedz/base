@@ -4,7 +4,7 @@
 
     <div class="app-brand demo">
         <a href="{{route('admin.home')}}" class="app-brand-link w-100 h-100 d-flex align-items-center justify-content-center">
-            <img class="mw-100 h-100" style="object-fit: contain" src="{{cache()->get('settings')['logo']}}" alt="{{cache()->get('settings')['name'][adminLang()]}}">
+            <img class="mw-100 h-100" style="object-fit: contain" src="{{ settings('logo', asset('style/admin/img/branding/logo.png')) }}" alt="{{ settings('name.' . adminLang(), config('app.name')) }}">
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">

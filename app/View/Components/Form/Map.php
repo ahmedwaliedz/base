@@ -30,7 +30,7 @@ class Map extends Component
         $this->requiredMessage = $options['requiredMessage'] ?? __(self::VALIDATION_REQUIRED, ['attribute' => $this->label]);
         $this->lat = isset($options['lat']) ? $options['lat'] : null;
         $this->lng = isset($options['lng']) ? $options['lng'] : null;
-        $this->apiKey = $options['apiKey'] ?? cache()->get('settings')['google_map_api_key'];
+        $this->apiKey = $options['apiKey'] ?? settings('google_map_api_key', '');
     }
 
     public function render(): View|Closure|string
