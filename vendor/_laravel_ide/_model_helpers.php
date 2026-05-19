@@ -4157,6 +4157,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Faq>|Faq whereTranslation(string $translationField, mixed $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=') {@see App\Models\Faq::scopeWhereTranslation()}
      * @method static \Illuminate\Database\Eloquent\Builder<Faq>|Faq whereTranslationLike(string $translationField, mixed $value, ?string $locale = null) {@see App\Models\Faq::scopeWhereTranslationLike()}
      * @method static \Illuminate\Database\Eloquent\Builder<Faq>|Faq withTranslation(?string $locale = null) {@see App\Models\Faq::scopeWithTranslation()}
+     * @method static \Illuminate\Database\Eloquent\Builder<Faq>|Faq forSelect(array $fields) {@see App\Models\Faq::scopeForSelect()}
      * @method static mixed select($columns)
      * @method static mixed selectSub($query, $as)
      * @method static mixed selectRaw($expression, array $bindings)
@@ -4786,6 +4787,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<IntroPage>|IntroPage whereTranslation(string $translationField, mixed $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=') {@see App\Models\IntroPage::scopeWhereTranslation()}
      * @method static \Illuminate\Database\Eloquent\Builder<IntroPage>|IntroPage whereTranslationLike(string $translationField, mixed $value, ?string $locale = null) {@see App\Models\IntroPage::scopeWhereTranslationLike()}
      * @method static \Illuminate\Database\Eloquent\Builder<IntroPage>|IntroPage withTranslation(?string $locale = null) {@see App\Models\IntroPage::scopeWithTranslation()}
+     * @method static \Illuminate\Database\Eloquent\Builder<IntroPage>|IntroPage forSelect(array $fields) {@see App\Models\IntroPage::scopeForSelect()}
      * @method static mixed select($columns)
      * @method static mixed selectSub($query, $as)
      * @method static mixed selectRaw($expression, array $bindings)
@@ -5734,6 +5736,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Page>|Page whereTranslation(string $translationField, mixed $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=') {@see App\Models\Page::scopeWhereTranslation()}
      * @method static \Illuminate\Database\Eloquent\Builder<Page>|Page whereTranslationLike(string $translationField, mixed $value, ?string $locale = null) {@see App\Models\Page::scopeWhereTranslationLike()}
      * @method static \Illuminate\Database\Eloquent\Builder<Page>|Page withTranslation(?string $locale = null) {@see App\Models\Page::scopeWithTranslation()}
+     * @method static \Illuminate\Database\Eloquent\Builder<Page>|Page forSelect(array $fields) {@see App\Models\Page::scopeForSelect()}
      * @method static mixed select($columns)
      * @method static mixed selectSub($query, $as)
      * @method static mixed selectRaw($expression, array $bindings)
@@ -9183,6 +9186,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Slider>|Slider whereTranslation(string $translationField, mixed $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=') {@see App\Models\Slider::scopeWhereTranslation()}
      * @method static \Illuminate\Database\Eloquent\Builder<Slider>|Slider whereTranslationLike(string $translationField, mixed $value, ?string $locale = null) {@see App\Models\Slider::scopeWhereTranslationLike()}
      * @method static \Illuminate\Database\Eloquent\Builder<Slider>|Slider withTranslation(?string $locale = null) {@see App\Models\Slider::scopeWithTranslation()}
+     * @method static \Illuminate\Database\Eloquent\Builder<Slider>|Slider forSelect(array $fields) {@see App\Models\Slider::scopeForSelect()}
      * @method static mixed select($columns)
      * @method static mixed selectSub($query, $as)
      * @method static mixed selectRaw($expression, array $bindings)

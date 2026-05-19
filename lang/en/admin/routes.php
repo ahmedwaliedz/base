@@ -19,6 +19,11 @@ return [
             'sendSms' => 'Send SMS',
             'sendNotifications' => 'Send Notification',
         ],
+        'app-notifications' => [
+            'index' => 'App Notifications',
+            'markAsRead' => 'Mark Notification As Read',
+            'markAllAsRead' => 'Mark All Notifications As Read',
+        ],
         'admin_roles_management' => [
             'index' => 'Admin & Roles Management',
         ],

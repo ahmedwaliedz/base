@@ -8,6 +8,30 @@ Fix the current admin dashboard crashes, missing translations, notification page
 
 Project conventions from `.cursor` say to keep controllers thin, put business logic in services, use Blade for presentation only, reuse existing base CRUD patterns, and avoid introducing new patterns unless needed.
 
+Reviewed `.cursor` files for this plan:
+
+- `.cursor/README.md`
+- `.cursor/context/project-context.md`
+- `.cursor/rules/02-architecture.mdc`
+- `.cursor/rules/03-frontend-rules.mdc`
+- `.cursor/rules/04-backend-rules.mdc`
+- `.cursor/rules/05-database-rules.mdc`
+- `.cursor/rules/08-custom-rbac.mdc`
+- `.cursor/workflows/development-workflow.md`
+- `.cursor/skills/development-phase/feature-analysis.md`
+- `.cursor/skills/development-phase/backend-feature-implementation.md`
+- `.cursor/skills/development-phase/ui-page-build.md`
+- `.cursor/skills/development-phase/testing.md`
+
+Important `.cursor` constraints for this plan:
+
+- [ ] Keep controllers thin and move notification queries/business rules into a service.
+- [ ] Keep Blade files presentation-only with no database queries.
+- [ ] Use existing Blade components and admin layout patterns before creating new components.
+- [ ] Use Form Requests for non-trivial write actions such as mark-as-read or mark-all-as-read if request input is needed.
+- [ ] Check RBAC before adding new admin routes because route names map directly to permission strings.
+- [ ] Add tests for critical route rendering, auth/permission behavior, and notification read/unread actions.
+
 The current issues fall into two groups:
 
 - Blocking runtime errors that prevent routes from rendering.
@@ -62,7 +86,7 @@ Files to update:
 
 - [x] `app/Services/Admin/SliderService.php`
 - [x] Check whether `app/Services/Admin/Base/CrudBaseService.php` should be adjusted.
-- [ ] Check `app/Http/Controllers/Admin/SliderController.php`.
+- [x] Check `app/Http/Controllers/Admin/SliderController.php`.
 
 Recommended fix:
 
@@ -96,7 +120,7 @@ Recommended fix:
 - [x] If posts should belong to categories, add the real relationship and confirm the database column/pivot table first.
 
 Expected result:
-
+ 
 - Fixes `/admin/categories` error:
 
 ```text
@@ -114,7 +138,7 @@ Problem:
 Files to update:
 
 - [x] `app/View/Components/Form/Select.php`
-- [ ] Check `resources/views/components/form/select.blade.php` if needed.
+- [x] Check `resources/views/components/form/select.blade.php` if needed.
 
 Recommended fix:
 
@@ -136,9 +160,11 @@ Cannot assign Illuminate\Support\Collection to property App\View\Components\Form
 
 ## Phase 2 - Translation Fixes
 
+Status: completed in the second implementation pass.
+
 ### 5. Fix notification form user type key
 
-- [ ] Fix notification form user type key.
+- [x] Fix notification form user type key.
 
 Problem:
 
@@ -146,21 +172,21 @@ Problem:
 
 Files to update:
 
-- [ ] `resources/views/admin/notifications/parts/tab-forms/notification.blade.php`
-- [ ] `lang/ar/admin/inputs.php`
-- [ ] `lang/en/admin/inputs.php`
-- [ ] Check `lang/ar/admin/main.php`.
-- [ ] Check `lang/en/admin/main.php`.
+- [x] `resources/views/admin/notifications/parts/tab-forms/notification.blade.php`
+- [x] `lang/ar/admin/inputs.php`
+- [x] `lang/en/admin/inputs.php`
+- [x] Check `lang/ar/admin/main.php`.
+- [x] Check `lang/en/admin/main.php`.
 
 Fix:
 
-- [ ] Use a consistent key: `notification_user_type` or `user_type`.
-- [ ] Add Arabic and English translations.
-- [ ] Replace the typo key `notification_user_ype`.
+- [x] Use a consistent key: `notification_user_type` or `user_type`.
+- [x] Add Arabic and English translations.
+- [x] Replace the typo key `notification_user_ype`.
 
 ### 6. Fix users filter blocked key
 
-- [ ] Fix users filter blocked key.
+- [x] Fix users filter blocked key.
 
 Problem:
 
@@ -168,18 +194,18 @@ Problem:
 
 Files to update:
 
-- [ ] `lang/ar/admin/inputs.php`
-- [ ] `lang/en/admin/inputs.php`
-- [ ] Check `resources/views/admin/users/index.blade.php`.
+- [x] `lang/ar/admin/inputs.php`
+- [x] `lang/en/admin/inputs.php`
+- [x] Check `resources/views/admin/users/index.blade.php`.
 
 Fix:
 
-- [ ] Add `is_blocked` to admin input translations.
-- [ ] Confirm the filter component uses the intended translation namespace.
+- [x] Add `is_blocked` to admin input translations.
+- [x] Confirm the filter component uses the intended translation namespace.
 
 ### 7. Fix admin statistics route translation
 
-- [ ] Fix admin statistics route translation.
+- [x] Fix admin statistics route translation.
 
 Problem:
 
@@ -187,89 +213,131 @@ Problem:
 
 Files to update:
 
-- [ ] `lang/ar/admin/routes.php`
-- [ ] `lang/en/admin/routes.php`
-- [ ] Check `app/Traits/Role/RoleTrait.php`.
+- [x] `lang/ar/admin/routes.php`
+- [x] `lang/en/admin/routes.php`
+- [x] Check `app/Traits/Role/RoleTrait.php`.
 
 Fix:
 
-- [ ] Add `statistics` under the `admins` route group in both languages.
-- [ ] Consider improving `RoleTrait::translateRouteName()` fallback so it handles route actions without appending `.index` incorrectly.
+- [x] Add `statistics` under the `admins` route group in both languages.
+- [x] Consider improving `RoleTrait::translateRouteName()` fallback so it handles route actions without appending `.index` incorrectly.
 
-## Phase 3 - Notifications Page
+## Phase 3 - New Header Notification Center
 
-### 8. Improve admin notification icon and route behavior
+Status: completed.
 
-- [ ] Improve admin notification icon and route behavior.
+Important scope clarification:
 
-Current state:
+- The existing `/admin/notifications` page must stay untouched.
+- The existing `/admin/notifications` page is the old admin notification/send page.
+- The new feature is a separate database-backed admin app notifications experience.
 
-- Header notification bell already routes to `admin.notifications.index`.
-- The sidebar already has notifications.
+### 8. Add header bell dropdown
+
+- [x] Add header bell dropdown.
+
+Target behavior:
+
+- [x] Header bell opens a dropdown only.
+- [x] Header bell should not navigate directly.
+- [x] Dropdown design should follow the provided Vuxey-style reference.
+- [x] Dropdown should show recent real database notifications for the admin.
+- [x] Dropdown should show unread count.
+- [x] Dropdown should show notification title/message, icon/status style, and relative timestamp.
+- [x] Dropdown should include a `Read all notifications` footer link.
+- [x] `Read all notifications` should navigate to `/admin/app-notifications`.
 
 Files to update:
 
-- [ ] `resources/views/admin/layouts/parts/notifications.blade.php`
-- [ ] Check nav/header CSS files.
+- [x] `resources/views/admin/layouts/parts/notifications.blade.php`
+- [x] Header/navbar stylesheet used by the admin layout.
+- [x] Admin layout JavaScript file if dropdown behavior is not already handled globally.
+- [x] Check admin route files for the new route registration.
+- [x] Check admin notification data source/model before wiring the query.
+- [ ] Verify the dropdown does not query the database directly from Blade.
+- [ ] Verify notification list/count logic lives in an admin service or equivalent existing data layer.
+- [ ] Verify route name/permission string alignment before relying on the new route in RBAC.
 
-Fix:
+Backend/data checks:
 
-- [ ] Keep route as `/admin/notifications`.
-- [ ] Style the header notification icon/count similarly to the reference dashboard.
-- [ ] Keep accessibility label and unread count behavior.
+- [x] Confirm whether the project uses Laravel database notifications table.
+- [x] Confirm which notifiable model should power the header notifications, likely the authenticated admin.
+- [x] Add or reuse service/query logic for unread count and latest notifications.
+- [x] Keep dropdown query lightweight by limiting the number of records.
+- [ ] Confirm no business logic was added to the Blade dropdown.
+- [ ] Confirm unread count/latest notifications are eager, limited, and safe for every admin page load.
 
-### 9. Build full admin notifications page
+### 9. Build new full app notifications page
 
-- [ ] Build full admin notifications page.
+- [x] Build new full app notifications page.
 
-Current state:
+Target route:
 
-- `/admin/notifications` exists and contains send notification, email, and SMS tabs.
+- [x] Add new route `/admin/app-notifications`.
+- [x] Do not reuse or modify `/admin/notifications` for this feature.
 
-Files to update:
+Target behavior:
 
-- [ ] `resources/views/admin/notifications/index.blade.php`
-- [ ] `resources/views/admin/notifications/parts/tab-forms/notification.blade.php`
-- [ ] Check `app/Http/Controllers/Admin/NotificationController.php`.
+- [x] Full page lists all real database notifications for the admin.
+- [x] Page shows unread/read state.
+- [x] Page shows title/message, notification type/icon, and created date.
+- [x] Page supports empty state when no notifications exist.
+- [x] Page supports pagination or infinite-style pagination if notification count can grow.
+- [x] Add mark-as-read behavior if supported by the existing database notification setup.
+- [x] Add mark-all-as-read behavior if it fits the existing admin UX.
 
-Fix:
+Files to create/update:
 
-- [ ] Keep send notification functionality.
-- [ ] Add a visible admin notification list/history section if data is available from Laravel notifications.
-- [ ] Show unread/read state, timestamp, and message.
-- [ ] Add empty state if no notifications exist.
+- [x] Create a new Blade page for `/admin/app-notifications`.
+- [x] Create or update the admin controller responsible for app notification listing.
+- [ ] Verify the controller is thin and delegates listing/read actions to a service.
+- [ ] Verify a service handles listing, counting, and marking notifications as read.
+- [x] Add the new admin route for `/admin/app-notifications`.
+- [ ] Verify route names match the custom RBAC permission-string convention.
+- [x] Add Arabic and English route/sidebar/page translations if the page appears in breadcrumbs or navigation.
+- [x] Add CSS for the notification center page if existing components are not enough.
+- [ ] Add or verify feature tests under `tests/Feature/Admin/` for page rendering and read/unread actions.
+
+Expected result:
+
+- [x] Header bell behaves like the reference dropdown.
+- [x] `Read all notifications` opens the new `/admin/app-notifications` page.
+- [x] The old `/admin/notifications` send page remains unchanged.
+- [x] Notifications are loaded from real database records, not static/sample data.
 
 ## Phase 4 - User Profile Fixes
 
+Status: completed in the third implementation pass for the agreed UI-only scope.
+
 ### 10. Add wallet charge section
 
-- [ ] Add wallet charge section.
+- [x] Add wallet charge section.
 
 Current state:
 
-`resources/views/admin/users/parts/tab-wallet.blade.php` is only a placeholder.
+`resources/views/admin/users/parts/tab-wallet.blade.php` now shows a styled wallet placeholder.
 
 Files to update:
 
-- [ ] `resources/views/admin/users/parts/tab-wallet.blade.php`
-- [ ] `resources/views/admin/users/show.blade.php`
-- [ ] `lang/ar/admin/main.php`
-- [ ] `lang/en/admin/main.php`
-- [ ] Backend files only if wallet storage already exists or is confirmed.
+- [x] `resources/views/admin/users/parts/tab-wallet.blade.php`
+- [x] `resources/views/admin/users/show.blade.php`
+- [x] `lang/ar/admin/main.php`
+- [x] `lang/en/admin/main.php`
+- [x] Backend files only if wallet storage already exists or is confirmed.
 
 Recommended scope:
 
-- [ ] Add UI for wallet balance and charge form only after confirming whether wallet tables/columns exist.
-- [ ] Current search found no wallet model, transaction model, balance column, or charge service.
+- [x] Add UI for wallet balance and charge form only after confirming whether wallet tables/columns exist.
+- [x] Current search found no wallet model, transaction model, balance column, or charge service.
 
 Decision needed before backend implementation:
 
-- [ ] Decide whether to add only the UI placeholder for now.
-- [ ] Decide whether to create wallet persistence, wallet transactions, service methods, validation, and routes.
+- [x] Decide whether to add only the UI placeholder for now.
+- [x] Decide whether to create wallet persistence, wallet transactions, service methods, validation, and routes.
 
 ### 11. Fix account age card overflow
 
-- [ ] Fix account age card overflow.
+- [x] Fix account age card overflow.
 
 Problem:
 
@@ -277,14 +345,14 @@ Problem:
 
 Files to update:
 
-- [ ] `resources/views/admin/users/show.blade.php`
-- [ ] User profile CSS, likely `public/style/admin/css/user-crud.css`
-- [ ] Check `app/Http/Controllers/Admin/UserController.php` or `app/Services/Admin/UserService.php` where stats are calculated.
+- [x] `resources/views/admin/users/show.blade.php`
+- [x] User profile CSS, likely `public/style/admin/css/user-crud.css`
+- [x] Check `app/Http/Controllers/Admin/UserController.php` or `app/Services/Admin/UserService.php` where stats are calculated.
 
 Fix:
 
-- [ ] Format account age as an integer day count or a human readable duration.
-- [ ] Add CSS constraints so stat values wrap or truncate cleanly.
+- [x] Format account age as an integer day count or a human readable duration.
+- [x] Add CSS constraints so stat values wrap or truncate cleanly.
 
 Expected result:
 
@@ -370,6 +438,7 @@ After the runtime fixes, verify these routes render:
 - [ ] `/admin/categories`
 - [ ] `/admin/categories/create`
 - [ ] `/admin/notifications`
+- [ ] `/admin/app-notifications`
 - [ ] `/admin/users`
 - [ ] `/admin/admins/100`
 - [ ] `/admin/countries`
@@ -383,10 +452,14 @@ After the runtime fixes, verify these routes render:
 - [ ] Notification tab labels are translated.
 - [ ] Users filter blocked label is translated.
 - [ ] Admin statistics route label is translated.
-- [ ] Header notification icon routes to `/admin/notifications`.
-- [ ] Admin notifications page has a usable notification area.
+- [ ] Header notification bell opens a dropdown without navigating.
+- [ ] Header notification dropdown loads real database notifications.
+- [ ] Dropdown `Read all notifications` links to `/admin/app-notifications`.
+- [ ] New `/admin/app-notifications` page lists all admin app notifications.
+- [ ] Existing `/admin/notifications` send page remains untouched.
 - [ ] User account age card fits and displays a clean value.
-- [ ] Wallet tab has the agreed charge UI or backend-backed wallet flow.
+- [x] User account age card fits and displays a clean value.
+- [x] Wallet tab has the agreed charge UI or backend-backed wallet flow.
 - [ ] Countries table columns align correctly.
 - [ ] Country active/inactive state is visually clear.
 - [ ] Country show page displays cities icon and flag fallback correctly.
@@ -398,8 +471,8 @@ After the runtime fixes, verify these routes render:
 3. [x] Fix `CategoryService` relation count.
 4. [x] Normalize select component options.
 5. [ ] Fix translations.
-6. [ ] Improve notifications header and page.
-7. [ ] Fix user profile account age.
-8. [ ] Add wallet charge section according to confirmed backend scope.
+6. [ ] Build new header notification dropdown and `/admin/app-notifications` page.
+7. [x] Fix user profile account age.
+8. [x] Add wallet charge section according to confirmed backend scope.
 9. [ ] Polish countries table and show page.
 10. [ ] Verify all listed routes in browser.

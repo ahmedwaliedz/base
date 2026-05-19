@@ -265,5 +265,10 @@ return [
             'destroyAll' => 'حذف الردود',
             'restore' => 'استعادة رد',
         ],
+        'app-notifications' => [
+            'index' => 'إشعارات التطبيق',
+            'markAsRead' => 'تحديد الإشعار كمقروء',
+            'markAllAsRead' => 'تحديد كل الإشعارات كمقروء',
+        ],
     ],
 ];

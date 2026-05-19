@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Database\Seeders\Admin\AdminSeeder;
+use Database\Seeders\Admin\AdminNotificationSeeder;
 use Database\Seeders\Admin\PermissionSeeder;
 use Database\Seeders\Admin\RoleSeeder;
 use Database\Seeders\Category\CategorySeeder;
@@ -34,6 +35,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             CountrySeeder::class,
             AdminSeeder::class,
+            AdminNotificationSeeder::class,
             RegionSeeder::class,
             CitySeeder::class,
             DistrictSeeder::class,
