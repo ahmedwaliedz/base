@@ -45,6 +45,13 @@
 
 .countries-status-cell {
     vertical-align: middle;
+    text-align: center;
+    min-width: 8rem;
+}
+
+.countries-status-cell .badge {
+    font-size: 0.6875rem;
+    padding: 0.25rem 0.5rem;
 }
 
 .countries-active-switch .form-check-input {

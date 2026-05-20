@@ -14,7 +14,9 @@ use Spatie\MediaLibrary\HasMedia;
 
 class Country extends Model implements HasMedia
 {
-    use BaseFileWithTranslations, BaseModelTrait ,CanRetrieve ,FilterableTrait ,GeneralTrait , HasFactory, SoftDeletes;
+    use BaseFileWithTranslations, BaseModelTrait, CanRetrieve, FilterableTrait, GeneralTrait, HasFactory, SoftDeletes;
+
+    public const DEFAULT_IMAGE = 'default.png';
 
     public const RELATIONS = [];
 
@@ -53,6 +55,12 @@ class Country extends Model implements HasMedia
     ];
 
     public $translatedAttributes = ['name'];
+
+    public function getFlagUrlAttribute(): string
+    {
+        $fileName = $this->attributes['flag'] ?? self::DEFAULT_IMAGE;
+        return $this->getCustomUploadUrl($fileName, static::UPLOAD_DIRECTORY, self::DEFAULT_IMAGE) ?? asset('defaults/default.png');
+    }
 
     public function regions()
     {

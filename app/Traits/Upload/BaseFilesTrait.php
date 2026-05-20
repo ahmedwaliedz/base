@@ -41,7 +41,7 @@ trait BaseFilesTrait {
                     return $this->handleImagePath($this->attributes[$fileKey], $uploadDirectory, $uploadCollection, $uploadType);
                 }
 
-                return asset('site/imgs/default.webp');
+                return asset('defaults/default.png');
             }
         }
 
@@ -55,7 +55,7 @@ trait BaseFilesTrait {
                 return $this->handleImagePath($this->attributes[$key], $uploadDirectory, $uploadCollection, $uploadType);
             }
 
-            return asset('site/imgs/default.webp');
+            return asset('defaults/default.png');
         }
 
         return parent::getAttribute($key);

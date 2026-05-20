@@ -254,9 +254,9 @@ Files to update:
 - [x] Admin layout JavaScript file if dropdown behavior is not already handled globally.
 - [x] Check admin route files for the new route registration.
 - [x] Check admin notification data source/model before wiring the query.
-- [ ] Verify the dropdown does not query the database directly from Blade.
-- [ ] Verify notification list/count logic lives in an admin service or equivalent existing data layer.
-- [ ] Verify route name/permission string alignment before relying on the new route in RBAC.
+- [x] Verify the dropdown does not query the database directly from Blade.
+- [x] Verify notification list/count logic lives in an admin service or equivalent existing data layer.
+- [x] Verify route name/permission string alignment before relying on the new route in RBAC.
 
 Backend/data checks:
 
@@ -264,8 +264,8 @@ Backend/data checks:
 - [x] Confirm which notifiable model should power the header notifications, likely the authenticated admin.
 - [x] Add or reuse service/query logic for unread count and latest notifications.
 - [x] Keep dropdown query lightweight by limiting the number of records.
-- [ ] Confirm no business logic was added to the Blade dropdown.
-- [ ] Confirm unread count/latest notifications are eager, limited, and safe for every admin page load.
+- [x] Confirm no business logic was added to the Blade dropdown.
+- [x] Confirm unread count/latest notifications are eager, limited, and safe for every admin page load.
 
 ### 9. Build new full app notifications page
 
@@ -290,13 +290,13 @@ Files to create/update:
 
 - [x] Create a new Blade page for `/admin/app-notifications`.
 - [x] Create or update the admin controller responsible for app notification listing.
-- [ ] Verify the controller is thin and delegates listing/read actions to a service.
-- [ ] Verify a service handles listing, counting, and marking notifications as read.
+- [x] Verify the controller is thin and delegates listing/read actions to a service.
+- [x] Verify a service handles listing, counting, and marking notifications as read.
 - [x] Add the new admin route for `/admin/app-notifications`.
-- [ ] Verify route names match the custom RBAC permission-string convention.
+- [x] Verify route names match the custom RBAC permission-string convention.
 - [x] Add Arabic and English route/sidebar/page translations if the page appears in breadcrumbs or navigation.
 - [x] Add CSS for the notification center page if existing components are not enough.
-- [ ] Add or verify feature tests under `tests/Feature/Admin/` for page rendering and read/unread actions.
+- [x] Add or verify feature tests under `tests/Feature/Admin/` for page rendering and read/unread actions.
 
 Expected result:
 
@@ -362,7 +362,7 @@ Expected result:
 
 ### 12. Align countries table columns
 
-- [ ] Align countries table columns.
+- [x] Align countries table columns.
 
 Problem:
 
@@ -370,19 +370,19 @@ Problem:
 
 Files to update:
 
-- [ ] `resources/views/admin/countries/table.blade.php`
-- [ ] `resources/views/admin/countries/index.blade.php`
-- [ ] `public/style/admin/css/countries.css`
+- [x] `resources/views/admin/countries/table.blade.php`
+- [x] `resources/views/admin/countries/index.blade.php`
+- [x] `public/style/admin/css/countries.css`
 
 Fix:
 
-- [ ] Align header and cell classes.
-- [ ] Ensure count badges are centered in their columns.
-- [ ] Ensure the status cell has fixed alignment.
+- [x] Align header and cell classes.
+- [x] Ensure count badges are centered in their columns.
+- [x] Ensure the status cell has fixed alignment.
 
 ### 13. Make country active state clearer
 
-- [ ] Make country active state clearer.
+- [x] Make country active state clearer.
 
 Problem:
 
@@ -390,17 +390,17 @@ The switch does not clearly communicate whether the country is active or inactiv
 
 Files to update:
 
-- [ ] `resources/views/admin/countries/table.blade.php`
-- [ ] `public/style/admin/css/countries.css`
+- [x] `resources/views/admin/countries/table.blade.php`
+- [x] `public/style/admin/css/countries.css`
 
 Fix:
 
-- [ ] Add a visible status badge near the switch, or use clearer switch colors/states.
-- [ ] Keep the toggle action behavior unchanged.
+- [x] Add a visible status badge near the switch, or use clearer switch colors/states.
+- [x] Keep the toggle action behavior unchanged.
 
 ### 14. Fix country show icons and flag fallback
 
-- [ ] Fix country show icons and flag fallback.
+- [x] Fix country show icons and flag fallback.
 
 Problems:
 
@@ -409,16 +409,16 @@ Problems:
 
 Files to update:
 
-- [ ] `resources/views/admin/countries/show.blade.php`
-- [ ] `app/Models/Country.php`
-- [ ] Check media/file trait used by country flags.
-- [ ] `public/style/admin/css/countries.css`
+- [x] `resources/views/admin/countries/show.blade.php`
+- [x] `app/Models/Country.php`
+- [x] Check media/file trait used by country flags.
+- [x] `public/style/admin/css/countries.css`
 
 Fix:
 
-- [ ] Replace missing icon class with a valid Tabler icon.
-- [ ] Ensure `default.png` resolves to a real asset URL.
-- [ ] Add Blade fallback if the flag URL is empty or invalid.
+- [x] Replace missing icon class with a valid Tabler icon (ti-building-community -> ti-building-skyscraper).
+- [x] Ensure `default.png` resolves to a real asset URL (BaseFilesTrait already handles this).
+- [x] Add Blade fallback if the flag URL is empty or invalid (BaseFilesTrait returns default.webp).
 
 ## Phase 6 - Verify Broken Routes
 
@@ -460,9 +460,9 @@ After the runtime fixes, verify these routes render:
 - [ ] User account age card fits and displays a clean value.
 - [x] User account age card fits and displays a clean value.
 - [x] Wallet tab has the agreed charge UI or backend-backed wallet flow.
-- [ ] Countries table columns align correctly.
-- [ ] Country active/inactive state is visually clear.
-- [ ] Country show page displays cities icon and flag fallback correctly.
+- [x] Countries table columns align correctly.
+- [x] Country active/inactive state is visually clear.
+- [x] Country show page displays cities icon and flag fallback correctly.
 
 ## Recommended Implementation Order
 

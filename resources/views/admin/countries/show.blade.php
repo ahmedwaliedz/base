@@ -47,7 +47,7 @@
             </div>
             <div class="col-6 col-md-3">
                 <div class="admin-stat-card admin-stat-card--success">
-                    <div class="admin-stat-card__icon"><i class="ti ti-buildings"></i></div>
+                    <div class="admin-stat-card__icon"><i class="ti ti-building"></i></div>
                     <div class="min-w-0">
                         <div class="admin-stat-card__label">{{ __('admin/main.cities') }}</div>
                         <div class="admin-stat-card__value">{{ number_format($cities_count ?? 0) }}</div>
@@ -84,11 +84,13 @@
     <div class="col-xl-4 col-md-5 mb-4">
         <div class="admin-profile-card">
             <div class="admin-profile-card__avatar-frame">
-                <img src="{{ $country->flag }}" alt="" class="admin-profile-card__avatar">
+                <img src="{{ $country->flag_url }}"
+                     alt="{{ $country->translate('ar')?->name ?? $country->translate('en')?->name ?? '—' }}"
+                     class="admin-profile-card__avatar">
             </div>
-            <div class="role-identity-card__name text-center mb-1">{{ $country->translate('ar')->name ?? '—' }}</div>
+            <div class="role-identity-card__name text-center mb-1">{{ $country->translate('ar')?->name ?? '—' }}</div>
             <div class="text-muted small text-center mb-2">{{ __('admin/inputs.ar') }}</div>
-            <div class="role-identity-card__name text-center mb-1">{{ $country->translate('en')->name ?? '—' }}</div>
+            <div class="role-identity-card__name text-center mb-1">{{ $country->translate('en')?->name ?? '—' }}</div>
             <div class="text-muted small text-center">{{ __('admin/inputs.en') }}</div>
         </div>
     </div>
@@ -111,17 +113,17 @@
                     @include('admin.admins.parts.detail-row', [
                         'icon' => 'ti-language',
                         'label' => __('admin/main.name') . ' (' . __('admin/inputs.ar') . ')',
-                        'value' => $country->translate('ar')->name ?? '—',
+                        'value' => $country->translate('ar')?->name ?? '—',
                     ])
                     @include('admin.admins.parts.detail-row', [
                         'icon' => 'ti-language',
                         'label' => __('admin/main.name') . ' (' . __('admin/inputs.en') . ')',
-                        'value' => $country->translate('en')->name ?? '—',
+                        'value' => $country->translate('en')?->name ?? '—',
                     ])
-                    @include('admin.admins.parts.detail-row', [
+                    @include('admin.admins.parts.file-detail-row', [
                         'icon' => 'ti-photo',
                         'label' => __('admin/main.flag'),
-                        'value' => $country->flag,
+                        'value' => $country->flag_url,
                     ])
                     @include('admin.admins.parts.detail-row', [
                         'icon' => 'ti-calendar',
@@ -166,8 +168,8 @@
                                 @foreach ($country_regions as $region)
                                     <tr>
                                         <td class="text-nowrap text-muted small">{{ $region->id }}</td>
-                                        <td>{{ $region->translate('ar')->name ?? '—' }}</td>
-                                        <td>{{ $region->translate('en')->name ?? '—' }}</td>
+                                        <td>{{ $region->translate('ar')?->name ?? '—' }}</td>
+                                        <td>{{ $region->translate('en')?->name ?? '—' }}</td>
                                         <td class="text-center">
                                             <span class="countries-count-badge countries-count-badge--sm">{{ number_format($region->cities_count) }}</span>
                                         </td>
@@ -192,7 +194,7 @@
         <div class="admin-details-card">
             <div class="admin-details-card__head d-flex align-items-center justify-content-between flex-wrap gap-2">
                 <h6 class="mb-0">
-                    <i class="ti ti-building-community me-1" style="color: var(--color-brand-primary);"></i>
+                    <i class="ti ti-map-pin me-1" style="color: var(--color-brand-primary);"></i>
                     {{ __('admin/main.related_cities') }}
                 </h6>
                 <span class="badge bg-label-success">{{ number_format($country_cities->count() ?? 0) }}</span>
@@ -216,8 +218,8 @@
                                 @foreach ($country_cities as $city)
                                     <tr>
                                         <td class="text-nowrap text-muted small">{{ $city->id }}</td>
-                                        <td>{{ $city->translate('ar')->name ?? '—' }}</td>
-                                        <td>{{ $city->translate('en')->name ?? '—' }}</td>
+                                        <td>{{ $city->translate('ar')?->name ?? '—' }}</td>
+                                        <td>{{ $city->translate('en')?->name ?? '—' }}</td>
                                         <td class="text-truncate" style="max-width: 14rem;" title="{{ $city->region?->name }}">
                                             {{ $city->region?->name ?? '—' }}
                                         </td>

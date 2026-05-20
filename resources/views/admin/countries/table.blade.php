@@ -21,7 +21,7 @@
                 <div class="d-flex product-name align-items-center gap-2">
                     <div class="avatar-wrapper flex-shrink-0">
                         <div class="avatar rounded-2 countries-flag-avatar">
-                            <img src="{{ $country->flag }}" alt="" class="rounded-2">
+                            <img src="{{ $country->flag_url }}" alt="" class="rounded-2">
                         </div>
                     </div>
                     <div class="d-flex flex-column min-w-0">
@@ -49,15 +49,20 @@
                 <span class="countries-count-badge" title="{{ __('admin/main.cities') }}">{{ number_format($country->cities_count ?? 0) }}</span>
             </td>
 
-            <td class="countries-status-cell">
-                @if (! $country->deleted_at)
-                    <div class="form-check form-switch countries-active-switch mb-0 d-flex justify-content-center">
-                        <input class="form-check-input switch-active" type="checkbox" role="switch"
-                               data-id="{{ $country->id }}"
-                               data-route="{{ route('admin.countries.switchActive', ['id' => $country->id]) }}"
-                               {{ $country->is_active ? 'checked' : '' }}
-                               title="{{ $country->is_active ? __('admin/main.set_inactive') : __('admin/main.set_active') }}"
-                               aria-label="{{ __('admin/main.is_active') }}">
+<td class="countries-status-cell">
+                @if (!$country->deleted_at)
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <span class="badge bg-label-{{ $country->is_active ? 'success' : 'secondary' }}">
+                            {{ $country->is_active ? __('admin/main.active') : __('admin/main.inactive') }}
+                        </span>
+                        <div class="form-check form-switch countries-active-switch mb-0 p-0">
+                            <input class="form-check-input switch-active" type="checkbox" role="switch"
+                                   data-id="{{ $country->id }}"
+                                   data-route="{{ route('admin.countries.switchActive', ['id' => $country->id]) }}"
+                                   {{ $country->is_active ? 'checked' : '' }}
+                                   title="{{ $country->is_active ? __('admin/main.set_inactive') : __('admin/main.set_active') }}"
+                                   aria-label="{{ __('admin/main.is_active') }}">
+                        </div>
                     </div>
                 @else
                     <span class="text-muted small">—</span>
