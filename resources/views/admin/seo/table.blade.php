@@ -1,7 +1,7 @@
-@extends('admin.layouts.crud.table', ['rows' => $seos, 'createRoute' => route('admin.seo.create')])
+@extends('admin.layouts.crud.table', ['rows' => $seo, 'createRoute' => route('admin.seo.create')])
 
 @section('table')
-    @foreach ($seos as $seo)
+    @foreach ($seo as $seo)
         <tr class="data-rows {{ $seo->deleted_at ? 'deleted-table-row' : '' }}" data-seo-id="{{ $seo->id }}">
             @if (!$seo->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $seo->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
             <td>{{ Str::limit($seo->meta_title, 40) }}</td>
