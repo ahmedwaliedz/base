@@ -25,12 +25,12 @@ class FaqSeeder extends Seeder
             [
                 'type' => FaqType::PUBLIC,
                 'en' => [
-                    'question' => 'What is Awamer AlShabaka?',
-                    'answer' => 'Awamer AlShabaka is a leading software company specializing in innovative solutions.',
+                    'question' => 'What is SGA?',
+                    'answer' => 'SGA is a leading software company specializing in innovative solutions.',
                 ],
                 'ar' => [
-                    'question' => 'ما هي أوامر الشبكة؟',
-                    'answer' => 'أوامر الشبكة هي شركة برمجيات رائدة متخصصة في الحلول المبتكرة.',
+                    'question' => 'ما هي SGA؟',
+                    'answer' => 'SGA هي شركة برمجيات رائدة متخصصة في الحلول المبتكرة.',
                 ],
             ],
             [

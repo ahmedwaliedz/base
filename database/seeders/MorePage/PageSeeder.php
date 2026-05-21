@@ -20,11 +20,11 @@ class PageSeeder extends Seeder
                 "type"       => PageType::USER,
                 "en"         => [
                     "title"   => "Terms and Conditions",
-                    "content" => "These are the terms and conditions of Awamer AlShabaka Software Company. Please read them carefully before using our services."
+                    "content" => "These are the terms and conditions of SGA Software Company. Please read them carefully before using our services."
                 ],
                 "ar"         => [
                     "title"   => "شروط الاستخدام",
-                    "content" => "هذه هي شروط الاستخدام الخاصة بشركة أوامر الشبكة للبرمجيات. يرجى قراءتها بعناية قبل استخدام خدماتنا."
+                    "content" => "هذه هي شروط الاستخدام الخاصة بSGA. يرجى قراءتها بعناية قبل استخدام خدماتنا."
                 ],
             ],
             [
@@ -33,11 +33,11 @@ class PageSeeder extends Seeder
                 "type"       => PageType::USER,
                 "en"         => [
                     "title"   => "Privacy Policy",
-                    "content" => "This privacy policy describes how Awamer AlShabaka Software Company collects, uses, and protects your personal information."
+                    "content" => "This privacy policy describes how SGA Software Company collects, uses, and protects your personal information."
                 ],
                 "ar"         => [
                     "title"   => "سياسة الخصوصية",
-                    "content" => "توضح سياسة الخصوصية هذه كيفية جمع واستخدام وحماية المعلومات الشخصية لدى شركة أوامر الشبكة للبرمجيات."
+                    "content" => "توضح سياسة الخصوصية هذه كيفية جمع واستخدام وحماية المعلومات الشخصية لدى SGA."
                 ],
             ],
             [
@@ -46,11 +46,11 @@ class PageSeeder extends Seeder
                 "type"       => PageType::USER,
                 "en"         => [
                     "title"   => "About Us",
-                    "content" => "Awamer AlShabaka is a leading software company specialized in innovative solutions. We pride ourselves on quality and excellence."
+                    "content" => "SGA is a leading software company specialized in innovative solutions. We pride ourselves on quality and excellence."
                 ],
                 "ar"         => [
                     "title"   => "من نحن",
-                    "content" => "تعد شركة أوامر الشبكة من الشركات الرائدة في مجال البرمجيات المتطورة والحلول المبتكرة. نفخر بجودة خدماتنا وتميزنا."
+                    "content" => "SGA هي شركة رائدة في مجال البرمجيات المتطورة والحلول المبتكرة. نفخر بجودة خدماتنا وتميزنا."
                 ],
             ],
             [
@@ -59,11 +59,11 @@ class PageSeeder extends Seeder
                 "type"       => PageType::USER,
                 "en"         => [
                     "title"   => "Contact Us",
-                    "content" => "Feel free to contact Awamer AlShabaka Software Company for any inquiries or support. You can reach us via email, phone, or our contact form."
+                    "content" => "Feel free to contact SGA Software Company for any inquiries or support. You can reach us via email, phone, or our contact form."
                 ],
                 "ar"         => [
                     "title"   => "اتصل بنا",
-                    "content" => "لا تتردد في التواصل مع شركة أوامر الشبكة للبرمجيات لأي استفسارات أو دعم. يمكنك التواصل معنا عبر البريد الإلكتروني أو الهاتف أو نموذج الاتصال."
+                    "content" => "لا تتردد في التواصل مع SGA لأي استفسارات أو دعم. يمكنك التواصل معنا عبر البريد الإلكتروني أو الهاتف أو نموذج الاتصال."
                 ],
             ],
         ];

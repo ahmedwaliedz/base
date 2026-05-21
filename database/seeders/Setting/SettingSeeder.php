@@ -19,11 +19,11 @@ class SettingSeeder extends Seeder
         $mainData = [
             [
                 'key' => 'name',
-                'value' => json_encode(['ar' => 'أوامر الشبكه', 'en' => 'Awamer Alshbakah']),
+                'value' => json_encode(['ar' => 'SGA', 'en' => 'SGA']),
                 'type' => SettingTypeEnum::JSON,
             ], [
                 'key' => 'email',
-                'value' => 'aait@info.com',
+                'value' => 'SGA@gmail.com',
                 'type' => SettingTypeEnum::STRING,
             ], [
                 'key' => 'whatsapp',

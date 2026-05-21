@@ -36,7 +36,7 @@ public function definition(): array
                     'type' => $isFirst ? AdminType::SUPER_ADMIN : AdminType::ADMIN,
                     'is_blocked' => $isFirst ? 0 : $this->faker->boolean(),
                     'role_id' => $isFirst ? null : Role::inRandomOrder()->value('id'),
-                    'email' => $isFirst ? env('DASHBOARDEMAIL', 'aait@info.com') : $this->faker->unique()->safeEmail(),
+                    'email' => $isFirst ? env('DASHBOARDEMAIL', 'SGA@gmail.com') : $this->faker->unique()->safeEmail(),
                     'password' => $isFirst ? 'Admin@123' : 'Password@123',
                 ];
             }

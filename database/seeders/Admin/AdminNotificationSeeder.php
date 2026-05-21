@@ -16,7 +16,7 @@ class AdminNotificationSeeder extends Seeder
     public function run(): void
     {
         $admin = Admin::query()
-            ->where('email', env('DASHBOARDEMAIL', 'aait@info.com'))
+            ->where('email', env('DASHBOARDEMAIL', 'SGA@gmail.com'))
             ->first()
             ?? Admin::query()->orderBy('id')->first();
 
