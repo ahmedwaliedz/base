@@ -37,7 +37,7 @@
             <td>
                 <div class="d-flex align-items-center gap-2 flex-nowrap">
                     <a href="{{ route('admin.pages.show', ['page' => $page]) }}"
-                       class="custom-icon admins-action-btn admins-action-view"
+                       class="custom-icon pages-action-btn pages-action-view"
                        data-bs-toggle="tooltip" data-bs-placement="top"
                        title="@lang('admin/main.show')"
                        aria-label="@lang('admin/main.show')">
@@ -46,7 +46,7 @@
 
                     @if (! $page->deleted_at)
                         <a href="{{ route('admin.pages.edit', ['page' => $page]) }}"
-                           class="custom-icon admins-action-btn admins-action-edit"
+                           class="custom-icon pages-action-btn pages-action-edit"
                            data-bs-toggle="tooltip" data-bs-placement="top"
                            title="@lang('admin/main.edit')"
                            aria-label="@lang('admin/main.edit')">
@@ -57,7 +57,7 @@
                     @if ($page->deleted_at)
                         <a href="javascript:void(0);" data-id="{{ $page->id }}"
                            data-route="{{ route('admin.pages.restore', ['id' => $page->id]) }}"
-                           class="custom-icon admins-action-btn admins-action-restore restore-row"
+                           class="custom-icon pages-action-btn pages-action-restore restore-row"
                            data-bs-toggle="tooltip" data-bs-placement="top"
                            title="@lang('admin/main.restore')"
                            aria-label="@lang('admin/main.restore')">
@@ -66,7 +66,7 @@
                     @else
                         <a href="javascript:void(0);" data-id="{{ $page->id }}"
                            data-route="{{ route('admin.pages.destroy', ['page' => $page]) }}"
-                           class="custom-icon admins-action-btn admins-action-delete delete-record"
+                           class="custom-icon pages-action-btn pages-action-delete delete-record"
                            data-bs-toggle="tooltip" data-bs-placement="top"
                            title="@lang('admin/main.delete')"
                            aria-label="@lang('admin/main.delete')">

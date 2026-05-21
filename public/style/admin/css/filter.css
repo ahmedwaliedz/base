@@ -1073,3 +1073,106 @@
     box-shadow: 0 0 0 3px rgba(var(--color-brand-primary-rgb), 0.18);
     border-color: var(--color-brand-primary);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   GENERIC SECTION ACTION BUTTONS
+   Matches the users/admins colored button pattern for all
+   CRUD tables: categories, sliders, faqs, intro-pages,
+   socials, seo, regions, cities, districts, posts,
+   contact-messages, complaints, pages.
+   Uses attribute selectors to match {section}-action-{type}.
+═══════════════════════════════════════════════════════════ */
+
+/* Base button shape — shared across all section tables */
+[class*="-action-btn"] {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    transition:
+        background var(--duration-fast) var(--ease-smooth),
+        border-color var(--duration-fast) var(--ease-smooth),
+        color var(--duration-fast) var(--ease-smooth),
+        transform var(--duration-fast) var(--ease-smooth);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+[class*="-action-btn"]:hover {
+    transform: scale(1.08);
+}
+
+[class*="-action-btn"] i {
+    font-size: 1rem;
+}
+
+/* View — blue/cyan */
+[class*="-action-view"] {
+    background: rgba(var(--color-brand-primary-rgb), 0.10);
+    border-color: rgba(var(--color-brand-primary-rgb), 0.22);
+    color: var(--color-brand-primary);
+}
+
+[class*="-action-view"]:hover {
+    background: rgba(var(--color-brand-primary-rgb), 0.18);
+    color: var(--color-brand-primary);
+}
+
+/* Edit — green */
+[class*="-action-edit"] {
+    background: var(--color-success-soft);
+    border-color: rgba(var(--color-success-rgb), 0.28);
+    color: var(--color-success);
+}
+
+[class*="-action-edit"]:hover {
+    background: rgba(var(--color-success-rgb), 0.20);
+    color: var(--color-success);
+}
+
+/* Delete — red */
+[class*="-action-delete"] {
+    background: var(--color-danger-soft);
+    border-color: rgba(var(--color-danger-rgb), 0.28);
+    color: var(--color-danger);
+}
+
+[class*="-action-delete"]:hover {
+    background: rgba(var(--color-danger-rgb), 0.20);
+    color: var(--color-danger);
+}
+
+/* Restore — teal/brand-secondary */
+[class*="-action-restore"] {
+    background: var(--color-info-soft);
+    border-color: rgba(var(--color-brand-secondary-rgb), 0.28);
+    color: var(--color-brand-secondary);
+}
+
+[class*="-action-restore"]:hover {
+    background: rgba(var(--color-brand-secondary-rgb), 0.18);
+    color: var(--color-brand-secondary);
+}
+
+/* Hover shadows for view/edit/delete/restore */
+[class*="-action-edit"]:hover,
+[class*="-action-edit"]:focus       { box-shadow: 0 5px 12px rgba(var(--color-success-rgb), 0.25); }
+
+[class*="-action-view"]:hover,
+[class*="-action-view"]:focus       { box-shadow: 0 5px 12px rgba(var(--color-brand-secondary-rgb), 0.25); }
+
+[class*="-action-delete"]:hover,
+[class*="-action-delete"]:focus     { box-shadow: 0 5px 12px rgba(var(--color-danger-rgb), 0.24); }
+
+[class*="-action-restore"]:hover,
+[class*="-action-restore"]:focus    { box-shadow: 0 5px 12px rgba(var(--color-success-rgb), 0.25); }
+
+/* Reduce motion safety */
+@media (prefers-reduced-motion: reduce) {
+    [class*="-action-btn"]:hover {
+        transform: none;
+    }
+}
