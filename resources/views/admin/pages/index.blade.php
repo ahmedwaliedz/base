@@ -60,6 +60,6 @@
 
 @push('js')
     <script>
-        var statsUrl = "{{ route('admin.pages.statistics') }}";
+        var statsUrl = "";
     </script>
 @endpush

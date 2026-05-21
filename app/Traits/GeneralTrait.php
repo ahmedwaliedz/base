@@ -28,11 +28,22 @@ trait GeneralTrait {
     }
 
     public static function smallPluralName(): string {
-        return Str::plural(strtolower(class_basename(static::class)));
+        if (defined(static::class . '::PATH_NAME')) {
+            return constant(static::class . '::PATH_NAME');
+        }
+        $plural = Str::plural(strtolower(class_basename(static::class)));
+        $withHyphens = strtolower(preg_replace('/(?<!^)([A-Z])/', '-$1', $plural));
+        $trimmed = ltrim($withHyphens, '-');
+        return str_replace('s-', '-', $trimmed);
     }
 
     public static function smallSingularName(): string {
-        return strtolower(class_basename(static::class));
+        if (defined(static::class . '::PATH_NAME')) {
+            return Str::singular(constant(static::class . '::PATH_NAME'));
+        }
+        $singular = strtolower(class_basename(static::class));
+        $withHyphens = strtolower(preg_replace('/(?<!^)([A-Z])/', '-$1', $singular));
+        return ltrim($withHyphens, '-');
     }
 
     public function scopeForSelect($query, array $fields) {

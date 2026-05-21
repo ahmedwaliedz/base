@@ -22,7 +22,9 @@ class CrudBaseService {
 
     public function index($request, $where = []) {
         $query = $this->model::query()->when($request->filters, function ($query) use ($request) {
-            return $query->search($request->filters);
+            if (method_exists($this->model, 'scopeSearch')) {
+                return $query->search($request->filters);
+            }
         })->where($where);
 
         return $query;
@@ -62,10 +64,13 @@ class CrudBaseService {
             $query = $query->withTrashed();
         }
 
+        $item = $query->findOrFail($id);
+
         return array_merge($this->showVars(), [
-            $this->lowerClassName => $query->findOrFail($id),
+            $this->lowerClassName => $item,
             'id'                  => $id,
             'lowerClassName'      => $this->lowerClassName,
+            'model'               => $item,
         ]);
     }
 

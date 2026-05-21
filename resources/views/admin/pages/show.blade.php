@@ -17,8 +17,8 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label">{{ __('admin/main.type') }}</label>
-                <span class="badge bg-label-{{ $page->type === 'public' ? 'success' : ($page->type === 'user' ? 'primary' : 'warning') }}">
-                    {{ __('admin/main.' . $page->type) }}
+                <span class="badge bg-label-{{ $page->type->value === 'public' ? 'success' : ($page->type->value === 'user' ? 'primary' : 'warning') }}">
+                    {{ __('admin/main.' . $page->type->value) }}
                 </span>
             </div>
             @if ($page->icon)
@@ -50,6 +50,6 @@
 
 @push('js')
     <script>
-        var statsUrl = "{{ route('admin.pages.statistics') }}";
+        var statsUrl = "";
     </script>
 @endpush

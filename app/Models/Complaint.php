@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Enums\ComplaintStatus;
 use App\Enums\ComplaintType;
+use App\Traits\Filters\FilterableTrait;
+use App\Traits\GeneralTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 
 class Complaint extends Model
 {
-    use HasFactory;
+    use GeneralTrait, HasFactory, FilterableTrait;
 
     public const RELATIONS = ['complainantable', 'images', 'replays'];
 

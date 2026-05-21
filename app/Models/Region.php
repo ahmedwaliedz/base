@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\Filters\FilterableTrait;
+use App\Traits\GeneralTrait;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Region extends Model
 {
-    use HasFactory, Translatable;
+    use GeneralTrait, HasFactory, Translatable, FilterableTrait;
 
     public const RELATIONS = ['translations', 'country', 'cities'];
 

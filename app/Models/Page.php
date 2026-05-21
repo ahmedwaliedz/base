@@ -6,11 +6,12 @@ use App\Enums\PageType;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Filters\FilterableTrait;
 use App\Traits\GeneralTrait;
 
 class Page extends Model
 {
-    use HasFactory, Translatable, GeneralTrait;
+    use HasFactory, Translatable, GeneralTrait, FilterableTrait;
 
     public const RELATIONS = ['translations'];
 

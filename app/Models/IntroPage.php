@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use Astrotomic\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Filters\FilterableTrait;
 use App\Traits\GeneralTrait;
 
 class IntroPage extends Model
 {
-    use Translatable, GeneralTrait;
+    use HasFactory, GeneralTrait, Translatable, FilterableTrait;
+
+    public const PATH_NAME = 'intro-pages';
 
     public const RELATIONS = ['translations'];
 

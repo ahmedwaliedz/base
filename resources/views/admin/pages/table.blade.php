@@ -29,8 +29,8 @@
             <td class="text-nowrap">{{ $page->slug }}</td>
 
             <td>
-                <span class="badge bg-label-{{ $page->type === 'public' ? 'success' : ($page->type === 'user' ? 'primary' : 'warning') }}">
-                    {{ __('admin/main.' . $page->type) }}
+                <span class="badge bg-label-{{ $page->type->value === 'public' ? 'success' : ($page->type->value === 'user' ? 'primary' : 'warning') }}">
+                    {{ __('admin/main.' . $page->type->value) }}
                 </span>
             </td>
 

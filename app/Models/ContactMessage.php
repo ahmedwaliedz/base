@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\Filters\FilterableTrait;
+use App\Traits\GeneralTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ContactMessage extends Model
 {
-    use HasFactory;
+    use GeneralTrait, HasFactory, FilterableTrait;
 
     public const RELATIONS = ['contactable', 'replays'];
+
+    public const PATH_NAME = 'contact-messages';
 
     protected $fillable = [
         'name',
