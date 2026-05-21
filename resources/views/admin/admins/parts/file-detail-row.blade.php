@@ -14,7 +14,7 @@
                          alt="{{ $alt ?? $label }}"
                          style="height: {{ $height ?? '2rem' }}; width: auto; object-fit: contain;">
                 @else
-                    —
+                    &mdash;
                 @endif
             </div>
         </div>

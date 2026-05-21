@@ -451,6 +451,26 @@
         'home_badge_rejected' => 'مرفوض',
         'home_badge_unknown' => 'غير معروف',
 
+        // Section detail pages
+        'page_details' => 'تفاصيل الصفحة',
+        'category_details' => 'تفاصيل التصنيف',
+        'slider_details' => 'تفاصيل السلايدر',
+        'faq_details' => 'تفاصيل السؤال الشائع',
+        'intro_page_details' => 'تفاصيل صفحة التعريف',
+        'seo_details' => 'تفاصيل تحسين محركات البحث',
+        'post_details' => 'تفاصيل المنشور',
+        'message_details' => 'تفاصيل الرسالة',
+        'complaint_details' => 'تفاصيل الشكوى',
+        'social_details' => 'تفاصيل الرابط الاجتماعي',
+        'related_subcategories' => 'التصنيفات الفرعية',
+        'related_districts' => 'الأحياء',
+        'no_subcategories' => 'لا توجد تصنيفات فرعية.',
+        'no_cities_for_region' => 'لا توجد مدن في هذه المنطقة.',
+        'no_districts_for_city' => 'لا توجد أحياء في هذه المدينة.',
+        'no_messages' => 'لا توجد رسائل.',
+        'no_complaints' => 'لا توجد شكاوى.',
+        'country' => 'الدولة',
+
         // Admins CRUD — parity with users
         'super_admins' => 'مدراء النظام',
         'roles_in_use' => 'أدوار مستخدمة',

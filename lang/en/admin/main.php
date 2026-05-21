@@ -404,6 +404,26 @@
         'meta_description' => 'Meta Description',
         'meta_keywords' => 'Meta Keywords',
 
+        // Section detail pages
+        'page_details' => 'Page details',
+        'category_details' => 'Category details',
+        'slider_details' => 'Slider details',
+        'faq_details' => 'FAQ details',
+        'intro_page_details' => 'Intro Page details',
+        'seo_details' => 'SEO details',
+        'post_details' => 'Post details',
+        'message_details' => 'Message details',
+        'complaint_details' => 'Complaint details',
+        'social_details' => 'Social Link details',
+        'related_subcategories' => 'Subcategories',
+        'related_districts' => 'Districts',
+        'no_subcategories' => 'No subcategories found.',
+        'no_cities_for_region' => 'No cities found in this region.',
+        'no_districts_for_city' => 'No districts found in this city.',
+        'no_messages' => 'No messages found.',
+        'no_complaints' => 'No complaints found.',
+        'country' => 'Country',
+
         // Countries CRUD
         'code' => 'Code',
         'flag' => 'Flag',

@@ -15,9 +15,9 @@ class PageController extends AdminBaseController
     public function switchType(Request $request, $id)
     {
         try {
-            $isActive = $this->service->switchType($id);
+            $type = $this->service->switchType($id);
             return $this->respondWithSuccess(__('admin/main.updated_successfully'), [
-                'is_active' => $isActive,
+                'type' => $type->value,
             ]);
         } catch (\Throwable $e) {
             return $this->respondInternalError();
