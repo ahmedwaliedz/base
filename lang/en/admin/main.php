@@ -445,7 +445,9 @@
         'related_cities' => 'Cities in this country',
         'no_regions_for_country' => 'No regions linked to this country yet.',
         'no_cities_for_country' => 'No cities linked to this country yet.',
+        'content' => 'Content',
         'region' => 'Region',
+        'city' => 'City',
         'set_active' => 'Activate',
         'set_inactive' => 'Deactivate',
 
