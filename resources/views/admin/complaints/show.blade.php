@@ -33,30 +33,30 @@
     <div class="col-12 mb-3">
         <div class="row g-3">
             <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--{{ $complaint->type === 'suggestion' ? 'info' : 'warning' }}">
+                <div class="admin-stat-card admin-stat-card--{{ $complaint->type?->value === 'suggestion' ? 'info' : 'warning' }}">
                     <div class="admin-stat-card__icon">
-                        <i class="ti {{ $complaint->type === 'suggestion' ? 'ti-bulb' : 'ti-alert-triangle' }}"></i>
+                        <i class="ti {{ $complaint->type?->value === 'suggestion' ? 'ti-bulb' : 'ti-alert-triangle' }}"></i>
                     </div>
                     <div class="min-w-0">
                         <div class="admin-stat-card__label">{{ __('admin/main.type') }}</div>
                         <div class="admin-stat-card__value">
-                            <span class="badge bg-label-{{ $complaint->type === 'suggestion' ? 'info' : 'warning' }}">
-                                {{ __('admin/main.' . $complaint->type) }}
+                            <span class="badge bg-label-{{ $complaint->type?->value === 'suggestion' ? 'info' : 'warning' }}">
+                                {{ __('admin/main.' . ($complaint->type?->value ?? 'complaint')) }}
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--{{ $complaint->status === 'solved' ? 'success' : 'danger' }}">
+                <div class="admin-stat-card admin-stat-card--{{ $complaint->status?->value === 'completed' ? 'success' : 'danger' }}">
                     <div class="admin-stat-card__icon">
-                        <i class="ti {{ $complaint->status === 'solved' ? 'ti-circle-check' : 'ti-clock' }}"></i>
+                        <i class="ti {{ $complaint->status?->value === 'completed' ? 'ti-circle-check' : 'ti-clock' }}"></i>
                     </div>
                     <div class="min-w-0">
                         <div class="admin-stat-card__label">{{ __('admin/main.status') }}</div>
                         <div class="admin-stat-card__value">
-                            <span class="badge bg-label-{{ $complaint->status === 'solved' ? 'success' : 'danger' }}">
-                                {{ __('admin/main.' . $complaint->status) }}
+                            <span class="badge bg-label-{{ $complaint->status?->value === 'completed' ? 'success' : 'danger' }}">
+                                {{ __('admin/main.' . ($complaint->status?->value ?? 'pending')) }}
                             </span>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-user', 'label' => __('admin/main.name'), 'value' => $complaint->name])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-mail', 'label' => __('admin/main.email'), 'value' => $complaint->email])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-phone', 'label' => __('admin/main.phone'), 'value' => $complaint->phone])
-                    @include('admin.admins.parts.detail-row', ['icon' => 'ti-tag', 'label' => __('admin/main.type'), 'value' => __('admin/main.' . $complaint->type)])
+                    @include('admin.admins.parts.detail-row', ['icon' => 'ti-tag', 'label' => __('admin/main.type'), 'value' => __('admin/main.' . ($complaint->type?->value ?? 'complaint'))])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-article', 'label' => __('admin/main.subject'), 'value' => $complaint->subject])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-message', 'label' => __('admin/main.complaint'), 'value' => $complaint->complaint])
                 </div>

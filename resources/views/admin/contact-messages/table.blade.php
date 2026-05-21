@@ -7,7 +7,7 @@
             <td>{{ $message->name }}</td>
             <td>{{ $message->email }}</td>
             <td>{{ Str::limit($message->subject, 30) }}</td>
-            <td>@if(!$message->deleted_at)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $message->id }}" data-route="{{ route('admin.contact-messages.switchIsRead', ['id' => $message->id]) }}" {{ $message->is_read ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
+            <td>@if(!$message->deleted_at)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $message->id }}" data-route="{{ route('admin.contact-messages.switchIsRead', ['id' => $message->id]) }}" {{ $message->is_read ? 'checked' : '' }}></div>@else<span class="text-muted">&mdash;</span>@endif</td>
             <td>
                 <div class="d-flex align-items-center gap-2 flex-nowrap contact-messages-row-actions">
                     <a href="{{ route('admin.contact-messages.show', ['contact_message' => $message]) }}"

@@ -7,16 +7,8 @@ use App\Enums\ComplaintType;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Complaint>
- */
 class ComplaintFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
@@ -25,10 +17,10 @@ class ComplaintFactory extends Factory
             'email'                 => $this->faker->unique()->safeEmail(),
             'subject'               => $this->faker->sentence(),
             'complaint'             => $this->faker->paragraph(),
-            'type'                  => $this->faker->randomElement(ComplaintType::cases()),
-            'status'                => $this->faker->randomElement(ComplaintStatus::cases()),
-            'complainantable_type' => 'App\Models\User',
-            'complainantable_id'   => rand(1 , User::count()),
+            'type'                  => $this->faker->randomElement(ComplaintType::cases())->value,
+            'status'                => $this->faker->randomElement(ComplaintStatus::cases())->value,
+            'complainantable_type'  => 'App\Models\User',
+            'complainantable_id'    => User::factory(),
         ];
     }
 }

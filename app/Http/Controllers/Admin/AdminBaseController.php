@@ -40,7 +40,8 @@ class AdminBaseController extends Controller {
 
         if ($request->ajax()) {
             $items = $this->service->index($request)->paginate($request->filters['per_page'] ?? 30);
-            return view('admin.' . $this->smallPluralName . '.table', [$this->smallPluralName => $items, 'is_retrievable' => $is_retrievable])->render();
+            $tableKey = lcfirst(str_replace(' ', '', ucwords(str_replace('-', ' ', $this->smallPluralName))));
+            return view('admin.' . $this->smallPluralName . '.table', [$tableKey => $items, 'is_retrievable' => $is_retrievable])->render();
         }
 
         $vars = $this->service->indexVars();

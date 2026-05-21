@@ -14,12 +14,12 @@ class ContactMessageService extends CrudBaseService
 
     public function index($request, $where = [])
     {
-        return parent::index($request, $where)->withCount('replays');
+        return parent::index($request, $where)->withTrashed()->withCount('replays');
     }
 
     public function switchIsRead(int|string $id): bool
     {
-        $message = ContactMessage::query()->findOrFail($id);
+        $message = ContactMessage::query()->withTrashed()->findOrFail($id);
         $message->update(['is_read' => ! $message->is_read]);
 
         return (bool) $message->fresh()->is_read;

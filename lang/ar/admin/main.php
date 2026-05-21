@@ -344,6 +344,14 @@
         'meta_description' => 'وصف ميتا',
         'meta_keywords' => 'كلمات ميتا',
 
+        // Complaint type & status values
+        'complaint' => 'شكوى',
+        'suggestion' => 'اقتراح',
+        'pending' => 'معلق',
+        'processing' => 'قيد المعالجة',
+        'completed' => 'مكتمل',
+        'rejected' => 'مرفوض',
+
         // Countries CRUD
         'code' => 'الرمز',
         'flag' => 'العلم',

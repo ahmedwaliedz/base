@@ -6,8 +6,8 @@
             @if (!$complaint->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $complaint->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
             <td>{{ $complaint->name }}</td>
             <td>{{ Str::limit($complaint->subject, 30) }}</td>
-            <td><span class="badge bg-label-{{ $complaint->type === 'suggestion' ? 'info' : 'warning' }}">{{ __('admin/main.' . $complaint->type) }}</span></td>
-            <td><span class="badge bg-label-{{ $complaint->status === 'solved' ? 'success' : 'danger' }}">{{ __('admin/main.' . $complaint->status) }}</span></td>
+            <td><span class="badge bg-label-{{ $complaint->type?->value === 'suggestion' ? 'info' : 'warning' }}">{{ __('admin/main.' . ($complaint->type?->value ?? 'complaint')) }}</span></td>
+            <td><span class="badge bg-label-{{ $complaint->status?->value === 'completed' ? 'success' : 'danger' }}">{{ __('admin/main.' . ($complaint->status?->value ?? 'pending')) }}</span></td>
             <td>
                 <div class="d-flex align-items-center gap-2 flex-nowrap complaints-row-actions">
                     <a href="{{ route('admin.complaints.show', ['complaint' => $complaint]) }}"

@@ -27,9 +27,9 @@ class ComplaintController extends AdminBaseController
     public function switchStatus(Request $request, $id)
     {
         try {
-            $status = $this->service->switchStatus($id);
+            $statusValue = $this->service->switchStatus($id);
             return $this->respondWithSuccess(__('admin/main.updated_successfully'), [
-                'status' => $status,
+                'status' => $statusValue,
             ]);
         } catch (\Throwable $e) {
             return $this->respondInternalError();

@@ -424,6 +424,14 @@
         'no_complaints' => 'No complaints found.',
         'country' => 'Country',
 
+        // Complaint type & status values
+        'complaint' => 'Complaint',
+        'suggestion' => 'Suggestion',
+        'pending' => 'Pending',
+        'processing' => 'Processing',
+        'completed' => 'Completed',
+        'rejected' => 'Rejected',
+
         // Countries CRUD
         'code' => 'Code',
         'flag' => 'Flag',

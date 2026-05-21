@@ -8,10 +8,12 @@ use App\Traits\Filters\FilterableTrait;
 use App\Traits\GeneralTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 
 class Complaint extends Model
 {
-    use GeneralTrait, HasFactory, FilterableTrait;
+    use GeneralTrait, HasFactory, FilterableTrait, SoftDeletes;
 
     public const RELATIONS = ['complainantable', 'images', 'replays'];
 
@@ -23,9 +25,15 @@ class Complaint extends Model
         'complaint',
         'type',
         'status',
+        'is_read',
         'complainantable_id',
         'complainantable_type',
     ];
+
+    public static function is_retrievable(): bool
+    {
+        return true;
+    }
 
     public function complainantable()
     {
@@ -41,7 +49,11 @@ class Complaint extends Model
         $status = ComplaintStatus::tryFrom((string) $value);
 
         if ($status === null) {
-            $this->logInvalidEnumValue('status', $value);
+            Log::warning('Invalid complaint status enum value encountered', [
+                'complaint_id' => $this->getKey(),
+                'attribute' => 'status',
+                'value' => $value,
+            ]);
             return null;
         }
 
@@ -57,20 +69,15 @@ class Complaint extends Model
         $type = ComplaintType::tryFrom((string) $value);
 
         if ($type === null) {
-            $this->logInvalidEnumValue('type', $value);
+            Log::warning('Invalid complaint type enum value encountered', [
+                'complaint_id' => $this->getKey(),
+                'attribute' => 'type',
+                'value' => $value,
+            ]);
             return null;
         }
 
         return $type;
-    }
-
-    private function logInvalidEnumValue(string $attribute, mixed $value): void
-    {
-        Log::warning('Invalid complaint enum value encountered', [
-            'complaint_id' => $this->getKey(),
-            'attribute' => $attribute,
-            'value' => $value,
-        ]);
     }
 
     public function images()
