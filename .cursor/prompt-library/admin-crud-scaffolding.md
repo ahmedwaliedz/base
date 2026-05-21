@@ -259,6 +259,21 @@ Special:
 * statistics cards dynamic
 * charts animated
 
+### CSS/Styling Checklist for Generated Views
+
+- [ ] Action buttons use section-specific CSS classes: `{section}-action-view`, `{section}-action-edit`, `{section}-action-delete`, `{section}-action-restore` (with base `{section}-action-btn`)
+- [ ] Color source: view (blue via `[class*="-action-view"]`), edit (green), delete (red), restore (teal)
+- [ ] Show page: header + 4 stat cards + profile card (left, 4 cols) + details card (right, 8 cols)
+- [ ] Detail rows use `@include('admin.{section}.parts.detail-row')` partial
+- [ ] Fallback for empty values uses `&mdash;` HTML entity
+- [ ] Form labels are plain keys (e.g. `'name'`), NOT `__('admin/main.name')`
+- [ ] Form uses `admins-form-section` divs for field grouping
+- [ ] File uploads at top of create/edit forms
+- [ ] All UI text uses `__()` with `admin/main` or `admin/inputs` keys
+- [ ] Stat cards use color variants: `bg-primary`, `bg-success`, `bg-info`, `bg-warning`
+- [ ] Soft-delete handling: check `deleted_at`, show restore button, add `table-danger` class
+- [ ] Reference `.cursor/styles/admin-ui-standards.md` for full design patterns
+
 ---
 
 ### 7. Routes

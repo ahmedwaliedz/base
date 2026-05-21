@@ -63,6 +63,10 @@ Create a complete new module with all required layers (database, model, validati
 - Create views in `resources/views/admin/{module}/`
 - Index, create, edit, show pages
 - Use existing Blade components
+- Follow admin styling standards in `.cursor/styles/admin-ui-standards.md`
+- Apply section-specific action button CSS classes: `{section}-action-view/edit/delete/restore` (with base `{section}-action-btn`)
+- Use `admins-form-section` divs to group form fields
+- Form component labels must be plain keys (e.g. `'name'`), NOT `__('admin/main.name')`
 
 ### Step 9: Create Translations
 

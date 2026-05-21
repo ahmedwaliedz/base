@@ -51,6 +51,26 @@ Build admin UI pages using Blade templates following project conventions. Pages 
 - Use consistent button styles and placements
 - Use consistent table structures
 - Follow existing form layouts
+- Reference `.cursor/styles/admin-ui-standards.md` for design patterns
+
+### Show Page Pattern
+
+- Header with icon + title + action buttons
+- Stat cards row (4 cards: primary, success, info, warning)
+- Profile card (left, 4 cols) + details card (right, 8 cols) - side by side
+- Related data section (optional, below cards)
+- Use `include('admin.{section}.parts.detail-row')` for field rows
+
+### Action Button Classes
+
+| Button | CSS Class | Example |
+|--------|-----------|---------|
+| View | `{section}-action-view` | `{section}-action-view` (blue) |
+| Edit | `{section}-action-edit` | `{section}-action-edit` (green) |
+| Delete | `{section}-action-delete` | `{section}-action-delete` (red) |
+| Restore | `{section}-action-restore` | `{section}-action-restore` (teal) |
+
+Each button also includes the base shape class `{section}-action-btn`. Generic selectors in `filter.css`: `[class*="-action-btn"]`, `[class*="-action-view/edit/delete/restore"]`.
 
 ---
 

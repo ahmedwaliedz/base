@@ -4,12 +4,12 @@ alwaysApply: true
 
 # Frontend Rules
 
-## Scope of “frontend” in this project
+## Scope of "frontend" in this project
 
 - **Blade templates:** `resources/views/` (admin under `resources/views/admin/`).
-- **View components:** `app/View/Components/` — use tags such as `<x-form.*>`, `<x-table.*>` consistent with existing components.
+- **View components:** `app/View/Components/` - use tags such as `<x-form.*>`, `<x-table.*>` consistent with existing components.
 - **Admin theme assets:** `public/style/admin/` (vendor theme, template customizer, RTL/LTR).
-- **App JS/CSS via Vite:** `vite.config.js`, `resources/js`, `resources/css`, `package.json` — use when adding build-pipeline assets, not for duplicating the whole admin theme.
+- **App JS/CSS via Vite:** `vite.config.js`, `resources/js`, `resources/css`, `package.json` - use when adding build-pipeline assets, not for duplicating the whole admin theme.
 
 ## UI principles
 
@@ -35,3 +35,40 @@ alwaysApply: true
 ## RTL / LTR
 
 - Admin supports RTL; test layout and alignment when changing structure or global CSS so template-customizer / RTL behavior is not broken unintentionally.
+
+## Admin Dashboard Component Styling Standards
+
+### Action Buttons
+All table action buttons must use the pattern `{section}-action-{type}`:
+
+| Button | CSS Classes | Visual |
+|--------|-------------|--------|
+| Show | `{section}-action-btn {section}-action-view` | Blue icon button |
+| Edit | `{section}-action-btn {section}-action-edit` | Green icon button |
+| Delete | `{section}-action-btn {section}-action-delete` | Red icon button |
+| Restore | `{section}-action-btn {section}-action-restore` | Teal icon button |
+
+Generic selectors in `filter.css`: `[class*="-action-btn"]`, `[class*="-action-view/edit/delete/restore"]`.
+
+### Show Page Layout
+1. **Header** - icon + title + edit/back buttons
+2. **Stat Cards Row** - 4 cards using `bg-primary`, `bg-success`, `bg-info`, `bg-warning`
+3. **Profile Card** - left column (4 cols), avatar + name + metadata
+4. **Details Card** - right column (8 cols), field rows via `detail-row` partial
+5. **Related Data** - optional section below cards
+
+### Detail Row Partial
+Use `resources/views/admin/admins/parts/detail-row.blade.php` with `&mdash;` fallback for empty values.
+
+### Form Labels
+Form component labels must be plain keys (e.g. `'name'`, `'slug'`) - NOT `__('admin/main.name')`. Components translate labels via `admin/inputs.{key}`.
+
+### CSS Classes Reference
+- `admins-show-header`, `admins-show-header-icon`, `admins-show-header-actions`
+- `admin-stat-card` (combined with `bg-{variant} text-white`)
+- `admin-profile-card`, `admin-avatar`, `admin-avatar-placeholder`
+- `admin-details-card`
+- `admins-form-section`
+- `{section}-action-{type}` (view/edit/delete/restore)
+
+See `.cursor/styles/admin-ui-standards.md` for full documentation.

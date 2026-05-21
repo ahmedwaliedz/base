@@ -233,6 +233,9 @@ Output:
 
 Use:
 - ui-page-build skill
+- `.cursor/styles/admin-ui-standards.md` for design patterns
+- `.cursor/templates/show-view-template.md` for show page structure
+- `.cursor/templates/table-view-template.md` for table page structure
 
 Required views when enabled:
 - index
@@ -249,6 +252,11 @@ Rules:
 - statistics cards must be dynamic
 - charts must be animated if enabled
 - map must be shown in read-only mode on show page when enabled
+- Use section-specific action button CSS classes: `{section}-action-view/edit/delete/restore` (with base `{section}-action-btn`)
+- Color source: view (blue via `[class*="-action-view"]`), edit (green via `[class*="-action-edit"]`), delete (red via `[class*="-action-delete"]`), restore (teal via `[class*="-action-restore"]`)
+- Show page: header + stat cards row (4) + profile card (left, 4 cols) + details card (right, 8 cols)
+- Form labels must be plain keys (not `__()` calls), components translate via `admin/inputs.{key}`
+- Use `admins-form-section` divs to group related fields
 
 Output:
 - views structure

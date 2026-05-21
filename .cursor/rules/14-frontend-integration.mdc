@@ -1,0 +1,76 @@
+---
+alwaysApply: false
+description: "Frontend integration patterns — use when working with Blade components, Livewire, Inertia, Vue, React, Vite, Tailwind, or frontend asset management"
+globs: ["resources/views/**", "resources/js/**", "resources/css/**", "app/View/**", "vite.config.*"]
+---
+
+> **Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. All new code must use **Laravel 11** idioms. Skills referencing Laravel 12+ or 13+ features are included for forward awareness only -- do NOT use them in current code unless the project has been upgraded to that version.
+
+# Frontend Integration Skills (2025–2026)
+
+## How to Use This File
+
+This file catalogs 20 foundational-to-advanced skills specific to frontend integration within Laravel. Each skill includes a concise definition, a real-world usage trigger, and a source reference.
+
+When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Always prefer Laravel 11 idioms for new code. Skills referencing Laravel 12/13 features are forward-awareness only -- do not use them unless the project has been upgraded.
+
+Source URLs default to Laravel 11.x docs (the current project version). Where a feature is only documented in 13.x, the 13.x URL is noted as a forward reference.
+
+## Skill Catalog
+
+- **Blade Components (Anonymous & Class-Based)** — creates reusable UI fragments with slots, attributes, and scoped logic. *Use when:* extracting repeated markup, implementing design system tokens, or enabling theme customization. *Source:* https://laravel.com/docs/11.x/blade#components
+- **Component Slots & Attribute Passthrough** — defines content injection points and forwards HTML attributes to child elements. *Use when:* building flexible layouts, supporting wrapper components, or enabling compositional UI patterns. *Source:* https://laravel.com/docs/11.x/blade#slots
+- **Livewire 3 Lifecycle Hooks** — responds to component mount, update, and render events for reactive server-side logic. *Use when:* implementing real-time forms, dynamic filters, or progressive enhancement without SPA complexity. *Source:* https://livewire.laravel.com/docs/3.x/lifecycle
+- **wire:model.live & Deferred Binding (Livewire 3+)** — controls when input changes sync to server via live, blur, or deferred modes. *Use when:* optimizing network usage, implementing instant search, or reducing server load for frequent updates. *Source:* https://livewire.laravel.com/docs/3.x/properties
+- **Computed Properties & wire:loading (Livewire 3)** — derives reactive values and shows loading states during async operations. *Use when:* formatting display values, calculating aggregates, or providing UX feedback during requests. *Source:* https://livewire.laravel.com/docs/3.x/properties
+- **Full-Page Components & wire:navigate (Livewire 3)** — enables SPA-like navigation with server-rendered pages and prefetching. *Use when:* building admin panels, dashboards, or content sites requiring fast client-side transitions. *Source:* https://livewire.laravel.com/docs/3.x/navigation
+- **Inertia.js v2 Foundation (SPA + Laravel Routing)** — bridges Vue or React SPAs to Laravel controllers and routes without a separate API layer. *Use when:* building modern SPAs that reuse Laravel's auth, validation, and routing, or migrating Blade apps to a JS-first frontend incrementally. *Source:* https://inertiajs.com
+- **Inertia.js v2 Async Requests & Polling** — enables non-blocking page loads, background data refresh, and deferred prop loading. *Use when:* building interactive SPAs with Laravel controllers, implementing infinite scroll, or reducing payload size. *Source:* training
+- **Deferred Props & Prefetching (Inertia 2+)** — loads expensive data after initial render or pre-fetches likely next pages. *Use when:* optimizing perceived performance, reducing server load for optional data, or enabling seamless navigation. *Source:* training
+- **Vue 3 Composition API & Reactivity** — uses ref, computed, and watch for fine-grained reactive state management. *Use when:* building complex client-side interactions, sharing logic via composables, or integrating with Inertia. *Source:* training
+- **React 18 Hooks & Concurrent Features** — leverages useState, useEffect, and transitions for responsive UIs. *Use when:* implementing dynamic forms, real-time updates, or integrating with Laravel APIs via Inertia. *Source:* training
+- **Vite Configuration & HMR** — bundles assets with hot module replacement for rapid frontend development. *Use when:* developing with Vue/React, optimizing production builds, or managing CSS/JS dependencies. *Source:* https://laravel.com/docs/11.x/vite
+- **Frontend Asset Optimization (Lazy Loading, WebP, CDN)** — improves Core Web Vitals via deferred image loading, modern image formats, and edge delivery. *Use when:* tuning LCP/CLS, reducing bandwidth on image-heavy pages, or preparing apps for production traffic. *Source:* training
+- **Tailwind CSS Utility-First Styling** — applies responsive, theme-aware classes directly in markup for rapid UI development. *Use when:* prototyping interfaces, maintaining design consistency, or enabling JIT compilation. *Source:* https://tailwindcss.com
+- **Vanilla ES6+ Modules & Async Patterns** — uses native imports, async/await, and fetch for lightweight client logic. *Use when:* avoiding framework overhead, enhancing Blade pages progressively, or integrating with Livewire. *Source:* training
+- **AJAX Patterns with CSRF Handling** — sends asynchronous requests with proper token inclusion and error handling. *Use when:* building dynamic forms, implementing live search, or updating UI without full page reloads. *Source:* https://laravel.com/docs/11.x/csrf
+- **JSON Contracts & Type Safety** — defines shared interfaces for API request/response shapes between frontend and backend. *Use when:* enabling TypeScript integration, preventing runtime errors, or documenting client expectations. *Source:* training
+- **SPA Authentication Flows** — manages session cookies vs. token storage, refresh logic, and protected route handling. *Use when:* building Inertia/Vue/React apps with Laravel Sanctum or Passport. *Source:* https://laravel.com/docs/11.x/sanctum
+- **Client-Side Validation & Error Display** — mirrors server validation rules in frontend for immediate user feedback. *Use when:* improving UX, reducing roundtrips, or ensuring form completeness before submission. *Source:* training
+- **Form Handling with Livewire/Inertia** — binds form state, handles submission, and displays validation errors reactively. *Use when:* building complex multi-step forms, implementing real-time validation, or reducing boilerplate. *Source:* training
+
+## Project-Specific Admin UI Design Tokens
+
+### Color Palette
+- **Primary** (blue): `btn-info`, `bg-primary` — View action, stat cards
+- **Success** (green): `btn-success`, `bg-success` — Edit action, stat cards
+- **Danger** (red): `btn-danger`, `bg-danger` — Delete action, stat cards
+- **Warning** (yellow): `bg-warning` — Stat cards
+- **Info** (teal): `btn-teal` — Restore action
+- **Secondary** (gray): `btn-secondary` — Back/reset buttons
+
+### Spacing
+- Card body padding: `p-3`
+- Row gap: `g-3` in Bootstrap grid
+- Section spacing: `mb-4` between major sections
+
+### Icon Set
+- Use Tabler Icons (`ti ti-{name}`) for all admin UI icons
+- Common icons: `eye`, `pencil`, `trash`, `refresh`, `arrow-left`, `user`, `mail`, `phone`, `settings`, `dashboard`, `list`, `plus`, `filter`, `search`, `download`
+
+### Typography
+- Card headers: `h5` with `mb-0`
+- Stat values: `h3` with `mb-0`
+- Labels: `fw-bold text-muted`
+- Body: default Bootstrap size
+
+### Admin View Paths
+- Show views: `resources/views/admin/{section}/show.blade.php`
+- Detail partials: `resources/views/admin/admins/parts/detail-row.blade.php`, `file-detail-row.blade.php`
+- Form components: `resources/views/components/form/`
+- CSS overrides: `public/style/admin/css/filter.css`
+
+### Template Reference
+- Show view template: `.cursor/templates/show-view-template.md`
+- Table view template: `.cursor/templates/table-view-template.md`
+- Full standards doc: `.cursor/styles/admin-ui-standards.md`
