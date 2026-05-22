@@ -33,69 +33,7 @@
 @endpush
 
 @push('content')
-    <div class="col-12 mb-3">
-        <div class="row g-3">
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--{{ $social->is_active ? 'info' : 'warning' }}">
-                    <div class="admin-stat-card__icon">
-                        <i class="ti {{ $social->is_active ? 'ti-circle-check' : 'ti-circle-off' }}"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.status') }}</div>
-                        <div class="admin-stat-card__value">
-                            {{ $social->is_active ? __('admin/main.active') : __('admin/main.inactive') }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--primary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-link"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.link') }}</div>
-                        <div class="admin-stat-card__value text-truncate" title="{{ $social->link }}">
-                            {{ $social->link ? Str::limit($social->link, 30) : '-' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--success">
-                    <div class="admin-stat-card__icon"><i class="ti ti-photo"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.image') }}</div>
-                        <div class="admin-stat-card__value">{{ $social->image ? __('admin/main.yes') : '-' }}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--secondary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-calendar"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.created_at') }}</div>
-                        <div class="admin-stat-card__value">
-                            {{ $social->created_at?->format('Y-m-d') ?? '-' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4 col-md-5 mb-4">
-        <div class="admin-profile-card">
-            <div class="admin-profile-card__avatar-frame">
-                @if ($social->image)
-                    <img src="{{ $social->image }}" alt="{{ $social->link }}" class="admin-profile-card__avatar">
-                @else
-                    <i class="ti ti-share" style="font-size: 2rem; color: var(--color-brand-primary);"></i>
-                @endif
-            </div>
-            <h5 class="admin-profile-card__name">{{ $social->link ? Str::limit($social->link, 40) : '-' }}</h5>
-        </div>
-    </div>
-
-    <div class="col-xl-8 col-md-7 mb-4">
+    <div class="col-12 mb-4">
         <div class="admin-details-card">
             <div class="admin-details-card__head">
                 <h6 class="mb-0">
@@ -106,6 +44,7 @@
             <div class="admin-details-card__body">
                 <div class="row g-3">
                     @include('admin.admins.parts.file-detail-row', ['icon' => 'ti-photo', 'label' => __('admin/main.image'), 'value' => $social->image])
+                    @include('admin.admins.parts.detail-row', ['icon' => 'ti-circle-check', 'label' => __('admin/main.status'), 'value' => $social->is_active ? __('admin/main.active') : __('admin/main.inactive')])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-link', 'label' => __('admin/main.link'), 'value' => $social->link])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-calendar', 'label' => __('admin/main.created_at'), 'value' => $social->created_at?->format('Y-m-d H:i')])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-calendar-event', 'label' => __('admin/main.updated_at'), 'value' => $social->updated_at?->format('Y-m-d H:i')])

@@ -30,77 +30,7 @@
 @endpush
 
 @push('content')
-    <div class="col-12 mb-3">
-        <div class="row g-3">
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--{{ $complaint->type?->value === 'suggestion' ? 'info' : 'warning' }}">
-                    <div class="admin-stat-card__icon">
-                        <i class="ti {{ $complaint->type?->value === 'suggestion' ? 'ti-bulb' : 'ti-alert-triangle' }}"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.type') }}</div>
-                        <div class="admin-stat-card__value">
-                            <span class="badge bg-label-{{ $complaint->type?->value === 'suggestion' ? 'info' : 'warning' }}">
-                                {{ __('admin/main.' . ($complaint->type?->value ?? 'complaint')) }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--{{ $complaint->status?->value === 'completed' ? 'success' : 'danger' }}">
-                    <div class="admin-stat-card__icon">
-                        <i class="ti {{ $complaint->status?->value === 'completed' ? 'ti-circle-check' : 'ti-clock' }}"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.status') }}</div>
-                        <div class="admin-stat-card__value">
-                            <span class="badge bg-label-{{ $complaint->status?->value === 'completed' ? 'success' : 'danger' }}">
-                                {{ __('admin/main.' . ($complaint->status?->value ?? 'pending')) }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--primary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-user"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.name') }}</div>
-                        <div class="admin-stat-card__value text-truncate" title="{{ $complaint->name }}">
-                            {{ $complaint->name }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--secondary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-calendar"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.created_at') }}</div>
-                        <div class="admin-stat-card__value">
-                            {{ $complaint->created_at?->format('Y-m-d') ?? '-' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4 col-md-5 mb-4">
-        <div class="admin-profile-card">
-            <div class="admin-profile-card__avatar-frame">
-                <i class="ti ti-alert-triangle" style="font-size: 2rem; color: var(--color-brand-primary);"></i>
-            </div>
-            <h5 class="admin-profile-card__name">{{ $complaint->name }}</h5>
-            <div class="admin-profile-card__email">{{ $complaint->email }}</div>
-            @if ($complaint->phone)
-                <div class="text-muted small">{{ $complaint->phone }}</div>
-            @endif
-        </div>
-    </div>
-
-    <div class="col-xl-8 col-md-7 mb-4">
+    <div class="col-12 mb-4">
         <div class="admin-details-card">
             <div class="admin-details-card__head">
                 <h6 class="mb-0">
@@ -113,9 +43,13 @@
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-user', 'label' => __('admin/main.name'), 'value' => $complaint->name])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-mail', 'label' => __('admin/main.email'), 'value' => $complaint->email])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-phone', 'label' => __('admin/main.phone'), 'value' => $complaint->phone])
+                    @include('admin.admins.parts.detail-row', ['icon' => 'ti-clock', 'label' => __('admin/main.status'), 'value' => __('admin/main.' . ($complaint->status?->value ?? 'pending'))])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-tag', 'label' => __('admin/main.type'), 'value' => __('admin/main.' . ($complaint->type?->value ?? 'complaint'))])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-article', 'label' => __('admin/main.subject'), 'value' => $complaint->subject])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-message', 'label' => __('admin/main.complaint'), 'value' => $complaint->complaint])
+                    @include('admin.admins.parts.detail-row', ['icon' => $complaint->is_read ? 'ti-mail-opened' : 'ti-mail', 'label' => __('admin/main.read'), 'value' => $complaint->is_read ? __('admin/main.read') : __('admin/main.unread')])
+                    @include('admin.admins.parts.detail-row', ['icon' => 'ti-calendar', 'label' => __('admin/main.created_at'), 'value' => $complaint->created_at?->format('Y-m-d H:i')])
+                    @include('admin.admins.parts.detail-row', ['icon' => 'ti-calendar-event', 'label' => __('admin/main.updated_at'), 'value' => $complaint->updated_at?->format('Y-m-d H:i')])
                 </div>
             </div>
         </div>

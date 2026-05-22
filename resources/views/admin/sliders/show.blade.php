@@ -33,71 +33,7 @@
 @endpush
 
 @push('content')
-    <div class="col-12 mb-3">
-        <div class="row g-3">
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--{{ $slider->is_active ? 'info' : 'warning' }}">
-                    <div class="admin-stat-card__icon">
-                        <i class="ti {{ $slider->is_active ? 'ti-circle-check' : 'ti-circle-off' }}"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.status') }}</div>
-                        <div class="admin-stat-card__value">
-                            {{ $slider->is_active ? __('admin/main.active') : __('admin/main.inactive') }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--primary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-link"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.link') }}</div>
-                        <div class="admin-stat-card__value text-truncate" title="{{ $slider->link }}">
-                            {{ $slider->link ? Str::limit($slider->link, 30) : '-' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--success">
-                    <div class="admin-stat-card__icon"><i class="ti ti-article"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.title') }}</div>
-                        <div class="admin-stat-card__value text-truncate" title="{{ $slider->title }}">
-                            {{ $slider->title ? Str::limit($slider->title, 30) : '-' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--secondary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-calendar"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.created_at') }}</div>
-                        <div class="admin-stat-card__value">
-                            {{ $slider->created_at?->format('Y-m-d') ?? '-' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4 col-md-5 mb-4">
-        <div class="admin-profile-card">
-            <div class="admin-profile-card__avatar-frame">
-                @if ($slider->image)
-                    <img src="{{ $slider->image }}" alt="{{ $slider->title }}" class="admin-profile-card__avatar">
-                @else
-                    <i class="ti ti-slideshow" style="font-size: 2rem; color: var(--color-brand-primary);"></i>
-                @endif
-            </div>
-            <h5 class="admin-profile-card__name">{{ $slider->title ?: '-' }}</h5>
-        </div>
-    </div>
-
-    <div class="col-xl-8 col-md-7 mb-4">
+    <div class="col-12 mb-4">
         <div class="admin-details-card">
             <div class="admin-details-card__head">
                 <h6 class="mb-0">
@@ -108,6 +44,8 @@
             <div class="admin-details-card__body">
                 <div class="row g-3">
                     @include('admin.admins.parts.file-detail-row', ['icon' => 'ti-photo', 'label' => __('admin/main.image'), 'value' => $slider->image])
+                    @include('admin.admins.parts.detail-row', ['icon' => 'ti-circle-check', 'label' => __('admin/main.status'), 'value' => $slider->is_active ? __('admin/main.active') : __('admin/main.inactive')])
+                    @include('admin.admins.parts.detail-row', ['icon' => 'ti-tag', 'label' => __('admin/main.type'), 'value' => $slider->type ? __('admin/main.' . $slider->type) : null])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-link', 'label' => __('admin/main.link'), 'value' => $slider->link])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-article', 'label' => __('admin/main.title'), 'value' => $slider->title])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-align-left', 'label' => __('admin/main.description'), 'value' => $slider->description])

@@ -33,66 +33,7 @@
 @endpush
 
 @push('content')
-    <div class="col-12 mb-3">
-        <div class="row g-3">
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--{{ $city->is_active ? 'info' : 'warning' }}">
-                    <div class="admin-stat-card__icon">
-                        <i class="ti {{ $city->is_active ? 'ti-circle-check' : 'ti-circle-off' }}"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.status') }}</div>
-                        <div class="admin-stat-card__value">
-                            {{ $city->is_active ? __('admin/main.active') : __('admin/main.inactive') }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--primary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-location"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.related_districts') }}</div>
-                        <div class="admin-stat-card__value">{{ number_format($city->districts->count()) }}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--success">
-                    <div class="admin-stat-card__icon"><i class="ti ti-map-pin"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.region') }}</div>
-                        <div class="admin-stat-card__value text-truncate" title="{{ $city->region?->name }}">
-                            {{ $city->region?->name ?? '-' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--secondary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-calendar"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.created_at') }}</div>
-                        <div class="admin-stat-card__value">
-                            {{ $city->created_at?->format('Y-m-d') ?? '-' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4 col-md-5 mb-4">
-        <div class="admin-profile-card">
-            <div class="admin-profile-card__avatar-frame">
-                <i class="ti ti-building" style="font-size: 2rem; color: var(--color-brand-primary);"></i>
-            </div>
-            <h5 class="admin-profile-card__name">{{ $city->name }}</h5>
-            <div class="text-muted small">{{ $city->region?->name ?? '-' }}</div>
-        </div>
-    </div>
-
-    <div class="col-xl-8 col-md-7 mb-4">
+    <div class="col-12 mb-4">
         <div class="admin-details-card">
             <div class="admin-details-card__head">
                 <h6 class="mb-0">
@@ -102,6 +43,7 @@
             </div>
             <div class="admin-details-card__body">
                 <div class="row g-3">
+                    @include('admin.admins.parts.detail-row', ['icon' => 'ti-circle-check', 'label' => __('admin/main.status'), 'value' => $city->is_active ? __('admin/main.active') : __('admin/main.inactive')])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-tag', 'label' => __('admin/main.name'), 'value' => $city->name])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-map-pin', 'label' => __('admin/main.region'), 'value' => $city->region?->name])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-location', 'label' => __('admin/main.related_districts'), 'value' => number_format($city->districts->count())])

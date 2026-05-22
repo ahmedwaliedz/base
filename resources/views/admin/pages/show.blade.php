@@ -25,72 +25,7 @@
 @endpush
 
 @push('content')
-    <div class="col-12 mb-3">
-        <div class="row g-3">
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--primary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-file-type"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.type') }}</div>
-                        <div class="admin-stat-card__value text-truncate">
-                            <span class="badge bg-label-{{ $page->type->value === 'public' ? 'success' : ($page->type->value === 'user' ? 'primary' : 'warning') }}">
-                                {{ __('admin/main.' . $page->type->value) }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--secondary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-hash"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.id') }}</div>
-                        <div class="admin-stat-card__value">{{ $page->id }}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--success">
-                    <div class="admin-stat-card__icon"><i class="ti ti-link"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.slug') }}</div>
-                        <div class="admin-stat-card__value text-truncate" title="{{ $page->slug }}">
-                            {{ $page->slug }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--secondary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-calendar"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.created_at') }}</div>
-                        <div class="admin-stat-card__value">
-                            {{ $page->created_at?->format('Y-m-d') ?? '-' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4 col-md-5 mb-4">
-        <div class="admin-profile-card">
-            <div class="admin-profile-card__avatar-frame">
-                @if ($page->icon)
-                    <div class="d-flex align-items-center justify-content-center h-100" style="font-size: 2rem;">
-                        <i class="{{ $page->icon }}"></i>
-                    </div>
-                @else
-                    <i class="ti ti-file-text" style="font-size: 2rem; color: var(--color-brand-primary);"></i>
-                @endif
-            </div>
-            <h5 class="admin-profile-card__name">{{ $page->title }}</h5>
-            <div class="text-muted small">{{ $page->slug }}</div>
-        </div>
-    </div>
-
-    <div class="col-xl-8 col-md-7 mb-4">
+    <div class="col-12 mb-4">
         <div class="admin-details-card">
             <div class="admin-details-card__head">
                 <h6 class="mb-0">

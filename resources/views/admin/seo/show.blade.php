@@ -33,70 +33,7 @@
 @endpush
 
 @push('content')
-    <div class="col-12 mb-3">
-        <div class="row g-3">
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--primary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-link"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.type') }}</div>
-                        <div class="admin-stat-card__value text-truncate">
-                            <span class="badge bg-label-info">{{ $seo->seoable_type ? class_basename($seo->seoable_type) : '-' }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--success">
-                    <div class="admin-stat-card__icon"><i class="ti ti-article"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.meta_title') }}</div>
-                        <div class="admin-stat-card__value text-truncate" title="{{ $seo->meta_title }}">
-                            {{ Str::limit($seo->meta_title, 40) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--info">
-                    <div class="admin-stat-card__icon"><i class="ti ti-align-left"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.meta_description') }}</div>
-                        <div class="admin-stat-card__value text-truncate" title="{{ $seo->meta_description }}">
-                            {{ Str::limit($seo->meta_description, 40) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="admin-stat-card admin-stat-card--secondary">
-                    <div class="admin-stat-card__icon"><i class="ti ti-calendar"></i></div>
-                    <div class="min-w-0">
-                        <div class="admin-stat-card__label">{{ __('admin/main.created_at') }}</div>
-                        <div class="admin-stat-card__value">
-                            {{ $seo->created_at?->format('Y-m-d') ?? '-' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4 col-md-5 mb-4">
-        <div class="admin-profile-card">
-            <div class="admin-profile-card__avatar-frame">
-                @if ($seo->image)
-                    <img src="{{ $seo->image }}" alt="{{ $seo->meta_title }}" class="admin-profile-card__avatar">
-                @else
-                    <i class="ti ti-seo" style="font-size: 2rem; color: var(--color-brand-primary);"></i>
-                @endif
-            </div>
-            <h5 class="admin-profile-card__name">{{ Str::limit($seo->meta_title, 60) }}</h5>
-            <div class="text-muted small">{{ $seo->seoable_type ? class_basename($seo->seoable_type) : '-' }}</div>
-        </div>
-    </div>
-
-    <div class="col-xl-8 col-md-7 mb-4">
+    <div class="col-12 mb-4">
         <div class="admin-details-card">
             <div class="admin-details-card__head">
                 <h6 class="mb-0">
