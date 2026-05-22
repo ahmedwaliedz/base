@@ -4,7 +4,7 @@
     @foreach ($socials as $social)
         <tr class="data-rows {{ $social->deleted_at ? 'deleted-table-row' : '' }}" data-social-id="{{ $social->id }}">
             @if (!$social->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $social->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
-            <td><div class="avatar-wrapper"><img src="{{ $social->image }}" class="rounded-2" alt=""></div></td>
+            <td><div class="avatar-wrapper"><img src="{{ $social->image ?: asset('style/admin/img/placeholder.png') }}" class="rounded-2" alt="" style="width:36px;height:36px;object-fit:cover"></div></td>
             <td class="text-nowrap">{{ $social->link }}</td>
             <td>@if(!$social->deleted_at)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $social->id }}" data-route="{{ route('admin.socials.switchIsActive', ['id' => $social->id]) }}" {{ $social->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
             <td>

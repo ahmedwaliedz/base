@@ -840,87 +840,13 @@
     color: var(--color-brand-primary);
 }
 
-/* ═══ Row action buttons — visible by default, lift on hover ═ */
+/* ═══ Row action buttons — uses generic [class*="-action-btn"] styles ═ */
 .users-row-actions {
     gap: 0.4rem !important;
     flex-wrap: nowrap;
 }
 
-.users-row-actions .users-action-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-md);
-    color: var(--text-body);
-    background-color: var(--surface-raised);
-    border: 1px solid var(--surface-border);
-    transition:
-        transform    var(--duration-fast) var(--ease-bounce),
-        box-shadow   var(--duration-base) var(--ease-smooth),
-        color        var(--duration-fast) var(--ease-smooth),
-        background   var(--duration-fast) var(--ease-smooth),
-        border-color var(--duration-fast) var(--ease-smooth);
-}
 
-.users-row-actions .users-action-btn i {
-    font-size: 1rem;
-}
-
-.users-row-actions .users-action-btn:hover,
-.users-row-actions .users-action-btn:focus {
-    transform: translateY(-2px);
-    color: var(--text-strong);
-}
-
-/* Typed variants — colors source from tokens.css */
-.users-row-actions .users-action-edit {
-    color: var(--color-success);
-    background-color: var(--color-success-soft);
-    border-color: rgba(var(--color-success-rgb), 0.28);
-}
-
-.users-row-actions .users-action-view {
-    color: var(--color-info);
-    background-color: var(--color-info-soft);
-    border-color: rgba(var(--color-brand-secondary-rgb), 0.28);
-}
-
-.users-row-actions .users-action-notify {
-    color: var(--color-brand-tertiary);
-    background-color: rgba(var(--color-brand-tertiary-rgb), 0.12);
-    border-color: rgba(var(--color-brand-tertiary-rgb), 0.30);
-}
-
-.users-row-actions .users-action-email {
-    color: var(--color-brand-primary);
-    background-color: rgba(var(--color-brand-primary-rgb), 0.12);
-    border-color: rgba(var(--color-brand-primary-rgb), 0.30);
-}
-
-.users-row-actions .users-action-delete {
-    color: var(--color-danger);
-    background-color: var(--color-danger-soft);
-    border-color: rgba(var(--color-danger-rgb), 0.28);
-}
-
-.users-row-actions .users-action-restore {
-    color: var(--color-success);
-    background-color: var(--color-success-soft);
-    border-color: rgba(var(--color-success-rgb), 0.28);
-}
-
-/* Hover glows */
-.users-row-actions .users-action-edit:hover,
-.users-row-actions .users-action-edit:focus       { box-shadow: 0 5px 12px rgba(var(--color-success-rgb), 0.25); }
-.users-row-actions .users-action-view:hover,
-.users-row-actions .users-action-view:focus       { box-shadow: 0 5px 12px rgba(var(--color-brand-secondary-rgb), 0.25); }
-.users-row-actions .users-action-notify:hover,
-.users-row-actions .users-action-notify:focus     { box-shadow: 0 5px 12px rgba(var(--color-brand-tertiary-rgb), 0.24); }
-.users-row-actions .users-action-email:hover,
-.users-row-actions .users-action-email:focus      { box-shadow: 0 5px 12px rgba(var(--color-brand-primary-rgb), 0.28); }
-.users-row-actions .users-action-delete:hover,
-.users-row-actions .users-action-delete:focus     { box-shadow: 0 5px 12px rgba(var(--color-danger-rgb), 0.24); }
-.users-row-actions .users-action-restore:hover,
-.users-row-actions .users-action-restore:focus    { box-shadow: 0 5px 12px rgba(var(--color-success-rgb), 0.25); }
 
 /* ═══ Avatar wrapper in name cell ════════════════════════ */
 .users-table-row .product-name .avatar img {

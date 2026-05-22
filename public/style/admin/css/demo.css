@@ -348,3 +348,19 @@
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
     }
 }
+
+/* Hide the template-customizer gear icon (floating button rendered by template-customizer.js) */
+.template-customizer-open-btn {
+    display: none !important;
+}
+
+/* ═══ RTL pagination: swap chevron icons so arrows point correctly ═══ */
+[dir="rtl"] .page-item.prev i,
+[dir="rtl"] .page-item.prev .ti-chevrons-left {
+    transform: scaleX(-1);
+}
+
+[dir="rtl"] .page-item.next i,
+[dir="rtl"] .page-item.next .ti-chevrons-right {
+    transform: scaleX(-1);
+}

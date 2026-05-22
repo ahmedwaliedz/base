@@ -4,7 +4,7 @@
     @foreach ($introPages as $introPage)
         <tr class="data-rows {{ $introPage->deleted_at ? 'deleted-table-row' : '' }}" data-intro-page-id="{{ $introPage->id }}">
             @if (!$introPage->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $introPage->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
-            <td><div class="avatar-wrapper"><img src="{{ $introPage->image }}" class="rounded-2" alt=""></div></td>
+            <td><div class="avatar-wrapper"><img src="{{ $introPage->image ?: asset('style/admin/img/placeholder.png') }}" class="rounded-2" alt="" style="width:36px;height:36px;object-fit:cover"></div></td>
             <td>{{ $introPage->title }}</td>
             <td class="text-nowrap">{{ $introPage->link }}</td>
             <td>@if(!$introPage->deleted_at)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $introPage->id }}" data-route="{{ route('admin.intro-pages.switchIsActive', ['id' => $introPage->id]) }}" {{ $introPage->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>

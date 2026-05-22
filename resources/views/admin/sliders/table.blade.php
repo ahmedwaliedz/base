@@ -4,7 +4,7 @@
     @foreach ($sliders as $slider)
         <tr class="data-rows {{ $slider->deleted_at ? 'deleted-table-row' : '' }}" data-slider-id="{{ $slider->id }}">
             @if (!$slider->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $slider->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
-            <td><div class="avatar-wrapper"><img src="{{ $slider->image }}" class="rounded-2" alt=""></div></td>
+            <td><div class="avatar-wrapper"><img src="{{ $slider->image ?: asset('style/admin/img/placeholder.png') }}" class="rounded-2" alt="" style="width:36px;height:36px;object-fit:cover"></div></td>
             <td>{{ $slider->title }}</td>
             <td class="text-nowrap">{{ $slider->link }}</td>
             <td>@if(!$slider->deleted_at)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $slider->id }}" data-route="{{ route('admin.sliders.switchActive', ['id' => $slider->id]) }}" {{ $slider->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>

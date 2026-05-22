@@ -4,6 +4,7 @@
     @foreach ($seo as $seo)
         <tr class="data-rows {{ $seo->deleted_at ? 'deleted-table-row' : '' }}" data-seo-id="{{ $seo->id }}">
             @if (!$seo->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $seo->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
+            <td><div class="avatar-wrapper"><img src="{{ $seo->image ?: asset('style/admin/img/placeholder.png') }}" class="rounded-2" alt="" style="width:36px;height:36px;object-fit:cover"></div></td>
             <td>{{ Str::limit($seo->meta_title, 40) }}</td>
             <td>{{ Str::limit($seo->meta_description, 60) }}</td>
             <td><span class="badge bg-label-info">{{ $seo->seoable_type ? class_basename($seo->seoable_type) : '-' }}</span></td>

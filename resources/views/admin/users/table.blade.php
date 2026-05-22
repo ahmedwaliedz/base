@@ -108,26 +108,34 @@
                         </a>
                     @endif
 
-                    {{-- Secondary actions inline — no dropdown --}}
+                    {{-- Secondary actions in dropdown — matches admins table pattern --}}
                     @if (!$user->deleted_at)
-                        <button type="button"
-                                class="custom-icon users-action-btn users-action-notify send-notification"
-                                data-bs-toggle="modal"
-                                data-bs-target="#notificationModal"
-                                data-id="{{ $user->id }}"
-                                title="@lang('admin/main.send_notification')"
-                                aria-label="@lang('admin/main.send_notification')">
-                            <i class="ti ti-bell-plus" aria-hidden="true"></i>
-                        </button>
-                        <button type="button"
-                                class="custom-icon users-action-btn users-action-email"
-                                data-bs-toggle="modal"
-                                data-bs-target="#emailModal"
-                                data-id="{{ $user->id }}"
-                                title="@lang('admin/main.send_email')"
-                                aria-label="@lang('admin/main.send_email')">
-                            <i class="ti ti-mail-plus" aria-hidden="true"></i>
-                        </button>
+                        <div class="dropdown user-more-dropdown">
+                            <button type="button"
+                                    class="custom-icon users-action-btn users-action-more"
+                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                    aria-label="@lang('admin/main.more_actions')">
+                                <i class="ti ti-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end user-more-menu">
+                                <li>
+                                    <button type="button" class="dropdown-item send-notification"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#notificationModal"
+                                            data-id="{{ $user->id }}">
+                                        <i class="ti ti-bell-plus me-2"></i>@lang('admin/main.send_notification')
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#emailModal"
+                                            data-id="{{ $user->id }}">
+                                        <i class="ti ti-mail-plus me-2"></i>@lang('admin/main.send_email')
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     @endif
                 </div>
             </td>

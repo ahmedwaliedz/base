@@ -44,4 +44,14 @@ return [
         'country' => 'Country',
         'region' => 'Region',
         'city' => 'City',
-];
+        'link' => 'Link',
+        'description' => 'Description',
+        'parent' => 'Parent',
+        'question' => 'Question',
+        'answer' => 'Answer',
+        'meta_title' => 'Meta Title',
+        'meta_description' => 'Meta Description',
+        'meta_keywords' => 'Meta Keywords',
+        'role' => 'Role',
+        'receive_notifications' => 'Receive Notifications',
+    ];
