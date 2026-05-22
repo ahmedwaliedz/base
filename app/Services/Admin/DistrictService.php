@@ -18,6 +18,13 @@ class DistrictService extends CrudBaseService
             ->with(['city' => fn ($q) => $q->with('translations')]);
     }
 
+    public function editVars($id = null): array
+    {
+        return [
+            'cities' => \App\Models\City::get()->map(fn($c) => ['id' => $c->id, 'name' => $c->name])->toArray(),
+        ];
+    }
+
     public function switchIsActive(int|string $id): bool
     {
         $district = District::query()->findOrFail($id);

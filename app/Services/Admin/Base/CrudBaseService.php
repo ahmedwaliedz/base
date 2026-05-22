@@ -51,7 +51,7 @@ class CrudBaseService {
             $query = $query->withTrashed();
         }
 
-        return array_merge($this->editVars(), [
+        return array_merge($this->editVars($id), [
             $this->lowerClassName => $query->findOrFail($id),
             'id'                  => $id,
         ]);
@@ -194,7 +194,7 @@ class CrudBaseService {
         return [];
     }
 
-    public function editVars(): array {
+    public function editVars($id = null): array {
         return [];
     }
 

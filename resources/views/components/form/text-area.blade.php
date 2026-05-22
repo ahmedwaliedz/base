@@ -22,8 +22,7 @@
                     data-validation-required-message="{{  $requiredMessage . __('admin/inputs.'.$lang)  }} "
                 @endif
                 placeholder="{{__('admin/inputs.enter')}} {{ $placeholder  }} {{ __('admin/inputs.'.$lang) }}"
-            >{{ $value && isset($value[$lang]['name']) ? $value[$lang]['name'] : '' }}
-            </textarea>
+            >{{ old($lang.'.'.$name, $value[$lang][$name] ?? '') }}</textarea>
         </div>
     @endforeach
 @else
@@ -49,6 +48,6 @@
                 data-validation-required-message="{{  $requiredMessage }}"
             @endif
             placeholder="{{__('admin/inputs.enter')}}{{ $placeholder }}"
-        >{{ $value }}</textarea>
+        >{{ old($name, $value) }}</textarea>
     </div>
 @endif

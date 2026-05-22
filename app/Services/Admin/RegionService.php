@@ -17,6 +17,13 @@ class RegionService extends CrudBaseService
         return parent::index($request, $where)->with(['country' => fn ($q) => $q->with('translations')])->withCount('cities');
     }
 
+    public function editVars($id = null): array
+    {
+        return [
+            'countries' => \App\Models\Country::get()->map(fn($c) => ['id' => $c->id, 'name' => $c->name])->toArray(),
+        ];
+    }
+
     public function switchIsActive(int|string $id): bool
     {
         $region = Region::query()->findOrFail($id);

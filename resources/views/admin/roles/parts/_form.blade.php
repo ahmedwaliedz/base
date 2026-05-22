@@ -24,6 +24,10 @@
             </div>
         </div>
 
+        @php
+            $selectedPermissions = old('permissions', $permissions ?? []);
+        @endphp
+
         @foreach($permissionsByGroup as $groupKey => $routes)
             <div class="col-xl-4 col-md-6">
                 <div class="perm-group">
@@ -51,7 +55,7 @@
                         >
                             @foreach($routes as $route)
                                 <option value="{{ $route['name'] }}"
-                                    {{ isset($permissions) && in_array($route['name'], $permissions) ? 'selected' : '' }}>
+                                    {{ in_array($route['name'], $selectedPermissions, true) ? 'selected' : '' }}>
                                     {{ $route['label'] }}
                                 </option>
                             @endforeach

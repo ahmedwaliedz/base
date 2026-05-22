@@ -73,7 +73,7 @@ class AdminService extends AuthenticatableBaseService
         ];
     }
 
-    public function editVars(): array
+    public function editVars($id = null): array
     {
         return [
             'roles' => Role::forSelect(['id', 'name'])->toArray(),

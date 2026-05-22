@@ -21,7 +21,7 @@ class UserService extends AuthenticatableBaseService {
         ];
     }
 
-    public function editVars(): array {
+    public function editVars($id = null): array {
         return $this->createVars();
     }
 

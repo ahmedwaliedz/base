@@ -11,8 +11,8 @@
     </div>
     <div class="admins-form-section">
         <div class="row g-3">
-            <x-form.text :options="['name' => 'title', 'label' => 'title', 'class' => 'col-md-12', 'isRequired' => true, 'isMultiLanguage' => true, 'value' => $post->title]" />
-            <x-form.text-area :options="['name' => 'content', 'label' => 'content', 'class' => 'col-md-12', 'isRequired' => true, 'isMultiLanguage' => true, 'value' => $post->content]" />
+            <x-form.text :options="['name' => 'title', 'label' => 'title', 'class' => 'col-md-12', 'isRequired' => true, 'isMultiLanguage' => true, 'value' => $post->getTranslationsArray()]" />
+            <x-form.text-area :options="['name' => 'content', 'label' => 'content', 'class' => 'col-md-12', 'isRequired' => true, 'isMultiLanguage' => true, 'value' => $post->getTranslationsArray()]" />
         </div>
     </div>
     <div class="pt-4 d-flex justify-content-center mt-3"><button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy me-1"></i>{{ __('admin/main.update') }}</button></div>

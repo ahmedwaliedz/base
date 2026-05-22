@@ -17,6 +17,17 @@ class CategoryService extends CrudBaseService
         return parent::index($request, $where)->withCount(['children']);
     }
 
+    public function editVars($id = null): array
+    {
+        $parents = $id
+            ? \App\Models\Category::whereNull('parent_id')->where('id', '!=', $id)->get()
+            : \App\Models\Category::whereNull('parent_id')->get();
+
+        return [
+            'parents' => $parents->map(fn($c) => ['id' => $c->id, 'name' => $c->name])->toArray(),
+        ];
+    }
+
     public function switchIsActive(int|string $id): bool
     {
         $category = Category::query()->findOrFail($id);

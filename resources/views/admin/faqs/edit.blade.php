@@ -6,8 +6,8 @@
     <div class="admins-form-section">
         <div class="row g-3">
             <x-form.select :options="['name' => 'is_active', 'label' => 'is_active', 'class' => 'col-md-12', 'isRequired' => true, 'value' => $faq->is_active, 'options' => [['id' => 1, 'name' => __('admin/main.yes')], ['id' => 0, 'name' => __('admin/main.no')]]]" />
-            <x-form.text :options="['name' => 'question', 'label' => 'question', 'class' => 'col-md-12', 'isRequired' => true, 'isMultiLanguage' => true, 'value' => $faq->question]" />
-            <x-form.text-area :options="['name' => 'answer', 'label' => 'answer', 'class' => 'col-md-12', 'isRequired' => true, 'isMultiLanguage' => true, 'value' => $faq->answer]" />
+            <x-form.text :options="['name' => 'question', 'label' => 'question', 'class' => 'col-md-12', 'isRequired' => true, 'isMultiLanguage' => true, 'value' => $faq->getTranslationsArray()]" />
+            <x-form.text-area :options="['name' => 'answer', 'label' => 'answer', 'class' => 'col-md-12', 'isRequired' => true, 'isMultiLanguage' => true, 'value' => $faq->getTranslationsArray()]" />
         </div>
     </div>
     <div class="pt-4 d-flex justify-content-center mt-3"><button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy me-1"></i>{{ __('admin/main.update') }}</button></div>

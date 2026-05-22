@@ -12,7 +12,7 @@
             <input
                 type="text"
                 name="{{ $lang }}[{{ $name }}]"
-                value="{{ $value && isset($value[$lang]['name']) ? $value[$lang]['name'] : '' }}"
+                value="{{ old($lang.'.'.$name, $value[$lang][$name] ?? '') }}"
                 placeholder="{{__('admin/inputs.enter')}} {{ $placeholder  }} {{ __('admin/inputs.'.$lang) }}"
                 class="form-control"
                 {{ $isRequired ? 'required' : '' }}
@@ -39,7 +39,7 @@
         <input
             type="text"
             name="{{ $name }}"
-            value="{{ $value }}"
+            value="{{ old($name, $value) }}"
             placeholder="{{__('admin/inputs.enter')}}{{ $placeholder }}"
             class="form-control"
             {{ $isRequired ? 'required' : '' }}

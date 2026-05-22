@@ -7,9 +7,9 @@
         <div class="row g-3">
             <x-form.text :options="['name' => 'slug', 'label' => 'slug', 'class' => 'col-md-12', 'isRequired' => true, 'value' => $category->slug]" />
             <x-form.text :options="['name' => 'icon', 'label' => 'icon', 'class' => 'col-md-12', 'value' => $category->icon]" />
-            <x-form.select :options="['name' => 'parent_id', 'label' => 'parent', 'class' => 'col-md-12', 'value' => $category->parent_id, 'options' => App\Models\Category::whereNull('parent_id')->where('id', '!=', $category->id)->get()->map(fn($c) => ['id' => $c->id, 'name' => $c->name])]" />
+            <x-form.select :options="['name' => 'parent_id', 'label' => 'parent', 'class' => 'col-md-12', 'value' => $category->parent_id, 'options' => $parents]" />
             <x-form.select :options="['name' => 'is_active', 'label' => 'is_active', 'class' => 'col-md-12', 'isRequired' => true, 'value' => $category->is_active, 'options' => [['id' => 1, 'name' => __('admin/main.yes')], ['id' => 0, 'name' => __('admin/main.no')]]]" />
-            <x-form.text :options="['name' => 'name', 'label' => 'name', 'class' => 'col-md-12', 'isRequired' => true, 'isMultiLanguage' => true, 'value' => $category->name]" />
+            <x-form.text :options="['name' => 'name', 'label' => 'name', 'class' => 'col-md-12', 'isRequired' => true, 'isMultiLanguage' => true, 'value' => $category->getTranslationsArray()]" />
         </div>
     </div>
     <div class="pt-4 d-flex justify-content-center mt-3"><button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy me-1"></i>{{ __('admin/main.update') }}</button></div>

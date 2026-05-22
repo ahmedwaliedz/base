@@ -57,7 +57,7 @@
                     'class' => 'col-md-12',
                     'isRequired' => true,
                     'isMultiLanguage' => true,
-                    'value' => $page->title,
+                    'value' => $page->getTranslationsArray(),
                 ]" />
                 <x-form.text-area :options="[
                     'name' => 'content',
@@ -65,7 +65,7 @@
                     'class' => 'col-md-12',
                     'isRequired' => true,
                     'isMultiLanguage' => true,
-                    'value' => $page->content,
+                    'value' => $page->getTranslationsArray(),
                 ]" />
             </div>
         </div>

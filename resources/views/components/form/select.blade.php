@@ -25,7 +25,7 @@
                     ? ($option[$optionTextKey] ?? null)
                     : data_get($option, $optionTextKey, null);
             @endphp
-            <option value="{{ $optValue }}" {{ (string)$value === (string)$optValue ? 'selected' : '' }}>
+            <option value="{{ $optValue }}" {{ (string)old($name, $value) === (string)$optValue ? 'selected' : '' }}>
                 {{ $optText }}
             </option>
         @endforeach
