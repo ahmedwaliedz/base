@@ -5,6 +5,7 @@ use App\Exceptions\ServiceException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DestroyAllRequest;
 use App\Traits\Response\ResponseTrait;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -106,6 +107,8 @@ class AdminBaseController extends Controller {
                 'context' => $e->getContext(),
             ]);
             return $this->respondWithFail($e->getMessage(), [], $e->getStatusCode());
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
         } catch (\Throwable $e) {
             Log::error('Unexpected error in update', [
                 'controller' => static::class,
@@ -137,6 +140,8 @@ class AdminBaseController extends Controller {
                 'context' => $e->getContext(),
             ]);
             return $this->respondWithFail($e->getMessage(), [], $e->getStatusCode());
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
         } catch (\Throwable $e) {
             Log::error('Unexpected error in destroy', [
                 'controller' => static::class,
@@ -189,6 +194,8 @@ class AdminBaseController extends Controller {
                 'context' => $e->getContext(),
             ]);
             return $this->respondWithFail($e->getMessage(), [], $e->getStatusCode());
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
         } catch (\Throwable $e) {
             Log::error('Unexpected error in restore', [
                 'controller' => static::class,

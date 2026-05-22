@@ -136,6 +136,24 @@ class ContactComplaintToggleTest extends TestCase
         $this->assertNull($complaint->fresh()->deleted_at);
     }
 
+    public function test_delete_missing_contact_message_returns_404(): void
+    {
+        $response = $this->actingAsSuperAdmin()->deleteJson(
+            route('admin.contact-messages.destroy', ['contact_message' => 99999])
+        );
+
+        $response->assertStatus(404);
+    }
+
+    public function test_restore_missing_contact_message_returns_404(): void
+    {
+        $response = $this->actingAsSuperAdmin()->putJson(
+            route('admin.contact-messages.restore', 99999)
+        );
+
+        $response->assertStatus(404);
+    }
+
     public function test_guest_cannot_toggle_read(): void
     {
         $message = ContactMessage::factory()->create();

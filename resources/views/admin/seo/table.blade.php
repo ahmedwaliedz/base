@@ -6,7 +6,7 @@
             @if (!$seo->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $seo->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
             <td>{{ Str::limit($seo->meta_title, 40) }}</td>
             <td>{{ Str::limit($seo->meta_description, 60) }}</td>
-            <td><span class="badge bg-label-info">{{ class_basename($seo->seoable_type) }}</span></td>
+            <td><span class="badge bg-label-info">{{ $seo->seoable_type ? class_basename($seo->seoable_type) : '-' }}</span></td>
             <td>
                 <div class="d-flex align-items-center gap-2 flex-nowrap seo-row-actions">
                     <a href="{{ route('admin.seo.show', ['seo' => $seo]) }}"

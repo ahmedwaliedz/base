@@ -15,11 +15,31 @@ class Faq extends Model
 
     public const RELATIONS = ['translations'];
 
-    protected $fillable = ['slug', 'icon', 'type'];
+    protected $fillable = ['type', 'is_active'];
 
     public $translatedAttributes = ['question', 'answer'];
 
     protected $casts = [
-        'type' => FaqType::class,
+        'type'      => FaqType::class,
+        'is_active' => 'boolean',
     ];
+
+    protected $attributes = [
+        'is_active' => true,
+    ];
+
+    protected function applyColumnFilter($query, $column, $value): void
+    {
+        if ($column === 'is_active') {
+            if ($value === 'active_only') {
+                $query->where('is_active', true);
+            } elseif ($value === 'inactive_only') {
+                $query->where('is_active', false);
+            }
+
+            return;
+        }
+
+        $query->where($column, 'like', '%'.$value.'%');
+    }
 }

@@ -41,7 +41,7 @@
                     <div class="min-w-0">
                         <div class="admin-stat-card__label">{{ __('admin/main.type') }}</div>
                         <div class="admin-stat-card__value text-truncate">
-                            <span class="badge bg-label-info">{{ class_basename($seo->seoable_type) }}</span>
+                            <span class="badge bg-label-info">{{ $seo->seoable_type ? class_basename($seo->seoable_type) : '-' }}</span>
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                 @endif
             </div>
             <h5 class="admin-profile-card__name">{{ Str::limit($seo->meta_title, 60) }}</h5>
-            <div class="text-muted small">{{ class_basename($seo->seoable_type) }}</div>
+            <div class="text-muted small">{{ $seo->seoable_type ? class_basename($seo->seoable_type) : '-' }}</div>
         </div>
     </div>
 
@@ -110,7 +110,7 @@
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-article', 'label' => __('admin/main.meta_title'), 'value' => $seo->meta_title])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-align-left', 'label' => __('admin/main.meta_description'), 'value' => $seo->meta_description])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-tag', 'label' => __('admin/main.meta_keywords'), 'value' => $seo->meta_keywords])
-                    @include('admin.admins.parts.detail-row', ['icon' => 'ti-link', 'label' => __('admin/main.type'), 'value' => class_basename($seo->seoable_type) . ' #' . $seo->seoable_id])
+                    @include('admin.admins.parts.detail-row', ['icon' => 'ti-link', 'label' => __('admin/main.type'), 'value' => $seo->seoable_type ? class_basename($seo->seoable_type) . ' #' . $seo->seoable_id : '-'])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-calendar', 'label' => __('admin/main.created_at'), 'value' => $seo->created_at?->format('Y-m-d H:i')])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-calendar-event', 'label' => __('admin/main.updated_at'), 'value' => $seo->updated_at?->format('Y-m-d H:i')])
                 </div>
