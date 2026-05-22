@@ -37,6 +37,8 @@
         'mail_from_address'         => 'البريد المرسل',
         'mail_from_name'            => 'اسم المرسل',
         'search_location'           => 'ابحث عن موقع',
+        'location'                  => 'الموقع',
+        'location_map'              => 'الموقع على الخريطة',
         'latitude'                  => 'خط العرض',
         'longitude'                 => 'خط الطول',
         'select'                    => 'اختر',
