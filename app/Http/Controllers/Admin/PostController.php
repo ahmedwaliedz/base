@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Services\Admin\PostService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class PostController extends AdminBaseController
@@ -19,6 +20,8 @@ class PostController extends AdminBaseController
             return $this->respondWithSuccess(__('admin/main.updated_successfully'), [
                 'is_active' => $isActive,
             ]);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
         } catch (\Throwable $e) {
             return $this->respondInternalError();
         }

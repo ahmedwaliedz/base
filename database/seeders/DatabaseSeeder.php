@@ -16,6 +16,7 @@ use Database\Seeders\Country\RegionSeeder;
 use Database\Seeders\MorePage\FaqSeeder;
 use Database\Seeders\MorePage\IntroPageSeeder;
 use Database\Seeders\MorePage\PageSeeder;
+use Database\Seeders\MorePage\PostSeeder;
 use Database\Seeders\MorePage\SliderSeeder;
 use Database\Seeders\MorePage\SocialSeeder;
 use Database\Seeders\Setting\SettingSeeder;
@@ -43,6 +44,7 @@ class DatabaseSeeder extends Seeder
             PageSeeder::class,
             FaqSeeder::class,
             SliderSeeder::class,
+            PostSeeder::class,
             SocialSeeder::class,
             IntroPageSeeder::class,
             UserSeeder::class,
