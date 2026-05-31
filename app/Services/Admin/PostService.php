@@ -12,6 +12,11 @@ class PostService extends CrudBaseService
         parent::__construct(Post::class);
     }
 
+    public function index($request, $where = [])
+    {
+        return parent::index($request, $where)->with('translations');
+    }
+
     public function switchIsActive(int|string $id): bool
     {
         $post = Post::query()->findOrFail($id);

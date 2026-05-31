@@ -11,4 +11,9 @@ class SeoService extends CrudBaseService
     {
         parent::__construct(Seo::class);
     }
+
+    public function index($request, $where = [])
+    {
+        return parent::index($request, $where)->with('translations');
+    }
 }

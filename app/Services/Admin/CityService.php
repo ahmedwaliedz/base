@@ -15,7 +15,7 @@ class CityService extends CrudBaseService
     public function index($request, $where = [])
     {
         return parent::index($request, $where)
-            ->with(['region' => fn ($q) => $q->with('translations')])
+            ->with(['translations', 'region' => fn ($q) => $q->with('translations')])
             ->withCount('districts');
     }
 

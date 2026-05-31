@@ -12,6 +12,11 @@ class FaqService extends CrudBaseService
         parent::__construct(Faq::class);
     }
 
+    public function index($request, $where = [])
+    {
+        return parent::index($request, $where)->with('translations');
+    }
+
     public function switchIsActive(int|string $id): bool
     {
         $faq = Faq::query()->findOrFail($id);

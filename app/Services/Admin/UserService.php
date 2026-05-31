@@ -13,7 +13,7 @@ class UserService extends AuthenticatableBaseService {
 
     public function createVars(): array {
         return [
-            'countries'                   => Country::where('is_active', true)->forSelect(['code as id', 'code as name'])->toArray(),
+            'countries'                   => Country::where('is_active', true)->with('translations')->forSelect(['code as id', 'code as name'])->toArray(),
             'receiveNotificationsOptions' => [
                 ['id' => true, 'name' => __('admin/main.yes')],
                 ['id' => false, 'name' => __('admin/main.no')],

@@ -25,9 +25,14 @@ class AdminService extends AuthenticatableBaseService
      * @param  int|string  $id
      * @return array<string, mixed>
      */
+    public function index($request, $where = [])
+    {
+        return parent::index($request, $where)->with(['role.translations']);
+    }
+
     public function show($id): array
     {
-        $query = $this->model::query()->with(['role.permissions']);
+        $query = $this->model::query()->with(['role.translations', 'role.permissions']);
 
         if ($this->getIsRetrievable()) {
             $query = $query->withTrashed();
@@ -53,17 +58,17 @@ class AdminService extends AuthenticatableBaseService
         ]);
     }
 
-    public function indexVars(): array
+public function indexVars(): array
     {
         return [
-            'roles' => Role::forSelect(['id', 'name'])->toArray(),
+            'roles' => Role::with('translations')->forSelect(['id', 'name'])->toArray(),
         ];
     }
 
     public function createVars(): array
     {
         return [
-            'roles' => Role::forSelect(['id', 'name'])->toArray(),
+            'roles' => Role::with('translations')->forSelect(['id', 'name'])->toArray(),
             'countries' => Country::where('is_active', true)->forSelect(['code as id', 'code as name'])->toArray(),
             'types' => AdminType::forSelect(),
             'receiveNotificationsOptions' => [
@@ -76,8 +81,8 @@ class AdminService extends AuthenticatableBaseService
     public function editVars($id = null): array
     {
         return [
-            'roles' => Role::forSelect(['id', 'name'])->toArray(),
-            'countries' => Country::where('is_active', true)->forSelect(['code as id', 'code as name'])->toArray(),
+            'roles' => Role::with('translations')->forSelect(['id', 'name'])->toArray(),
+            'countries' => Country::where('is_active', true)->with('translations')->forSelect(['code as id', 'code as name'])->toArray(),
             'types' => AdminType::forSelect(),
             'receiveNotificationsOptions' => [
                 ['id' => true, 'name' => __('admin/main.yes')],

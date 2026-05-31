@@ -34,7 +34,7 @@ class RoleController extends Controller
     {
         if ($request->ajax()) {
             //            $roles = $this->roleService->getAllRoles();
-            $roles = Role::search($request->filters)->paginate($request->filters['per_page'] ?? 9);
+            $roles = Role::with('translations')->search($request->filters)->paginate($request->filters['per_page'] ?? 9);
 
             return view('admin.roles.parts.cards', compact('roles'))->render();
         }
@@ -63,6 +63,7 @@ class RoleController extends Controller
         );
 
         $mostPopulated = Role::query()
+            ->with('translations')
             ->withCount('admins')
             ->orderByDesc('admins_count')
             ->first();

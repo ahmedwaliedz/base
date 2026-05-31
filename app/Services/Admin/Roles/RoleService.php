@@ -22,7 +22,7 @@ class RoleService
      */
     public function getAllRoles()
     {
-        return Role::with(['admins' => function ($query) {
+        return Role::with(['translations', 'admins' => function ($query) {
             $query->limit(5);
         }])->paginate(9);
     }
@@ -35,7 +35,7 @@ class RoleService
      */
     public function getRoleById(int $id): Role
     {
-        return Role::with('permissions')->findOrFail($id);
+        return Role::with(['translations', 'permissions'])->findOrFail($id);
     }
 
     /**

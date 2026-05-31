@@ -12,6 +12,11 @@ class SliderService extends CrudBaseService
         parent::__construct(Slider::class);
     }
 
+    public function index($request, $where = [])
+    {
+        return parent::index($request, $where)->with('translations');
+    }
+
     public function switchActive(int|string $id): bool
     {
         $slider = Slider::query()->findOrFail($id);

@@ -13,6 +13,11 @@ class PageService extends CrudBaseService
         parent::__construct(Page::class);
     }
 
+    public function index($request, $where = [])
+    {
+        return parent::index($request, $where)->with('translations');
+    }
+
     public function switchType(int|string $id): PageType
     {
         $page = Page::query()->findOrFail($id);

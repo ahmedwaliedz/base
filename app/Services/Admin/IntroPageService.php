@@ -12,6 +12,11 @@ class IntroPageService extends CrudBaseService
         parent::__construct(IntroPage::class);
     }
 
+    public function index($request, $where = [])
+    {
+        return parent::index($request, $where)->with('translations');
+    }
+
     public function switchIsActive(int|string $id): bool
     {
         $introPage = IntroPage::query()->findOrFail($id);

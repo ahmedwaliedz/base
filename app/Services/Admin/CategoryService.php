@@ -14,7 +14,7 @@ class CategoryService extends CrudBaseService
 
     public function index($request, $where = [])
     {
-        return parent::index($request, $where)->withCount(['children']);
+        return parent::index($request, $where)->with('translations')->withCount(['children']);
     }
 
     public function editVars($id = null): array

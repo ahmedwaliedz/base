@@ -15,7 +15,7 @@ class DistrictService extends CrudBaseService
     public function index($request, $where = [])
     {
         return parent::index($request, $where)
-            ->with(['city' => fn ($q) => $q->with('translations')]);
+            ->with(['translations', 'city' => fn ($q) => $q->with('translations')]);
     }
 
     public function editVars($id = null): array

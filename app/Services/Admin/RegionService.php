@@ -14,7 +14,7 @@ class RegionService extends CrudBaseService
 
     public function index($request, $where = [])
     {
-        return parent::index($request, $where)->with(['country' => fn ($q) => $q->with('translations')])->withCount('cities');
+        return parent::index($request, $where)->with(['translations', 'country' => fn ($q) => $q->with('translations')])->withCount('cities');
     }
 
     public function show($id)
