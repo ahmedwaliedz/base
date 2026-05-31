@@ -24,6 +24,13 @@
                     'isRequired' => true,
                     'value' => $user->name,
                 ]" />
+                <x-form.email :options="[
+                    'name' => 'email',
+                    'label' => 'email',
+                    'class' => 'col-md-6',
+                    'isRequired' => true,
+                    'value' => $user->email,
+                ]" />
             </div>
         </div>
 
@@ -33,17 +40,10 @@
                 <span>{{ __('admin/main.section_contact') }}</span>
             </div>
             <div class="row g-3">
-                <x-form.email :options="[
-                    'name' => 'email',
-                    'label' => 'email',
-                    'class' => 'col-md-6',
-                    'isRequired' => true,
-                    'value' => $user->email,
-                ]" />
                 <x-form.number :options="[
                     'name' => 'phone',
                     'label' => 'phone',
-                    'class' => 'col-md-4',
+                    'class' => 'col-md-6',
                     'isRequired' => true,
                     'minLength' => 9,
                     'maxLength' => 15,
@@ -52,7 +52,7 @@
                 <x-form.select :options="[
                     'name' => 'country_code',
                     'label' => 'country_code',
-                    'class' => 'col-md-2',
+                    'class' => 'col-md-6',
                     'isRequired' => true,
                     'options' => $countries,
                     'value' => $user->country_code,

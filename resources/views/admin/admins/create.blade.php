@@ -17,10 +17,20 @@
             <div class="row g-3">
                 <x-form.image :options="['name' => 'image', 'label' => 'image', 'class' => 'col-md-12']" />
                 <x-form.text :options="['name' => 'name', 'label' => 'name', 'class' => 'col-md-6', 'isRequired' => true]" />
+                <x-form.email :options="['name' => 'email', 'label' => 'email', 'class' => 'col-md-6', 'isRequired' => true]" />
+            </div>
+        </div>
+
+        <div class="admins-form-section">
+            <div class="admins-form-section__head">
+                <i class="ti ti-address-book"></i>
+                <span>{{ __('admin/main.section_contact') }}</span>
+            </div>
+            <div class="row g-3">
                 <x-form.number :options="[
                     'name' => 'phone',
                     'label' => 'phone',
-                    'class' => 'col-md-4',
+                    'class' => 'col-md-6',
                     'isRequired' => true,
                     'minLength' => 9,
                     'maxLength' => 15,
@@ -28,7 +38,7 @@
                 <x-form.select :options="[
                     'name' => 'country_code',
                     'label' => 'country_code',
-                    'class' => 'col-md-2',
+                    'class' => 'col-md-6',
                     'isRequired' => true,
                     'options' => $countries,
                 ]" />
@@ -41,7 +51,6 @@
                 <span>{{ __('admin/main.authentication') }}</span>
             </div>
             <div class="row g-3">
-                <x-form.email :options="['name' => 'email', 'label' => 'email', 'class' => 'col-md-6', 'isRequired' => true]" />
                 <x-form.password :options="[
                     'name' => 'password',
                     'label' => 'password',
