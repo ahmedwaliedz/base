@@ -6,7 +6,13 @@
             @if (!$post->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $post->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
             <td><div class="avatar-wrapper"><img src="{{ $post->image ?: asset('style/admin/img/placeholder.png') }}" class="rounded-2" alt="" style="width:36px;height:36px;object-fit:cover"></div></td>
             <td>{{ Str::limit($post->title, 50) }}</td>
-            <td>@if(!$post->deleted_at)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $post->id }}" data-route="{{ route('admin.posts.switchIsActive', ['id' => $post->id]) }}" {{ $post->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
+            <td>
+                @if(!$post->deleted_at)
+                <div class="form-switch d-flex w-100 p-0">
+                  <input class="form-check-input switch-active m-0"
+                  type="checkbox" role="switch"
+                  data-id="{{ $post->id }}"
+                  data-route="{{ route('admin.posts.switchIsActive', ['id' => $post->id]) }}" {{ $post->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
             <td>
                 <div class="d-flex align-items-center gap-2 flex-nowrap posts-row-actions">
                     <a href="{{ route('admin.posts.show', ['post' => $post]) }}"
