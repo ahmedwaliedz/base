@@ -33,8 +33,11 @@ class PhoneNormalizer
     {
         $normalized = self::normalize($phone);
 
-        // Basic validation: starts with +, followed by country code and number
-        return preg_match('/^\+[1-9]\d{6,14}$/', $normalized) === 1;
+        if ($normalized === '') {
+            return false;
+        }
+
+        return preg_match('/^\+[1-9]\d{6,14}$/', '+' . $normalized) === 1;
     }
 
     /**
@@ -45,11 +48,7 @@ class PhoneNormalizer
      */
     public static function getCountryCode(string $phone): ?string
     {
-        $normalized = self::normalize($phone);
-
-        if (!str_starts_with($normalized, '+')) {
-            return null;
-        }
+        $normalized = '+' . self::normalize($phone);
 
         // Common country codes (simplified)
         $countryCodes = [

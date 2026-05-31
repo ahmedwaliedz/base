@@ -12,11 +12,9 @@ class AppNotificationService
 {
     public function dashboardData(Admin $admin, int $limit = 5): array
     {
-        $data = $this->getNotificationsData($admin, $limit, 15);
-
         return [
-            'adminNotificationSummary' => $data['summary'],
-            'adminLatestNotifications' => $data['latestNotifications'],
+            'adminNotificationSummary' => $this->getSummary($admin),
+            'adminLatestNotifications' => $this->latestNotifications($admin, $limit),
         ];
     }
 
