@@ -80,16 +80,18 @@ class PostSeeder extends Seeder
                 'updated_at' => now(),
             ]);
 
+            $translations = [];
             foreach (['en', 'ar'] as $locale) {
-                DB::table('post_translations')->insert([
+                $translations[] = [
                     'post_id' => $id,
                     'locale' => $locale,
                     'title' => $data[$locale]['title'],
                     'content' => $data[$locale]['content'],
                     'created_at' => now(),
                     'updated_at' => now(),
-                ]);
+                ];
             }
+            DB::table('post_translations')->insert($translations);
         }
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders\MorePage;
 
-use App\Models\IntroPage;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class IntroPageSeeder extends Seeder
 {
@@ -54,7 +54,26 @@ class IntroPageSeeder extends Seeder
             ],
         ];
         foreach ($introPages as $pageData) {
-            IntroPage::create($pageData);
+            $id = DB::table('intro_pages')->insertGetId([
+                'image' => $pageData['image'],
+                'link' => $pageData['link'],
+                'is_active' => $pageData['is_active'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $translations = [];
+            foreach (['en', 'ar'] as $locale) {
+                $translations[] = [
+                    'intro_page_id' => $id,
+                    'locale' => $locale,
+                    'title' => $pageData[$locale]['title'],
+                    'description' => $pageData[$locale]['description'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+            DB::table('intro_page_translations')->insert($translations);
         }
     }
 }

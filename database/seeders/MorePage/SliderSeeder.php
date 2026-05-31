@@ -3,8 +3,8 @@
 namespace Database\Seeders\MorePage;
 
 use App\Enums\SliderType;
-use App\Models\Slider;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class SliderSeeder extends Seeder
 {
@@ -84,7 +84,27 @@ class SliderSeeder extends Seeder
             ],
         ];
         foreach ($sliders as $sliderData) {
-            Slider::create($sliderData);
+            $id = DB::table('sliders')->insertGetId([
+                'image' => $sliderData['image'],
+                'link' => $sliderData['link'],
+                'type' => $sliderData['type'] instanceof SliderType ? $sliderData['type']->value : $sliderData['type'],
+                'is_active' => $sliderData['is_active'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $translations = [];
+            foreach (['en', 'ar'] as $locale) {
+                $translations[] = [
+                    'slider_id' => $id,
+                    'locale' => $locale,
+                    'title' => $sliderData[$locale]['title'],
+                    'description' => $sliderData[$locale]['description'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+            DB::table('slider_translations')->insert($translations);
         }
     }
 }
