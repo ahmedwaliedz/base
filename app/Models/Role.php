@@ -2,13 +2,14 @@
 namespace App\Models;
 
 use App\Traits\Filters\FilterableTrait;
-use App\Traits\Models\BaseFileWithTranslations;
 use App\Traits\GeneralTrait;
+use App\Traits\Models\HasConfiguredTranslations;
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model {
-    use FilterableTrait, HasFactory, BaseFileWithTranslations ,GeneralTrait;
+    use FilterableTrait, HasFactory, Translatable, GeneralTrait, HasConfiguredTranslations;
 
     public $translatedAttributes = ['name'];
 

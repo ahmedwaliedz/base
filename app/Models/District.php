@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Traits\Filters\FilterableTrait;
 use App\Traits\GeneralTrait;
+use App\Traits\Models\HasConfiguredTranslations;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class District extends Model
 {
-    use HasFactory, GeneralTrait, Translatable, FilterableTrait;
+    use HasFactory, GeneralTrait, Translatable, FilterableTrait, HasConfiguredTranslations;
 
     public const RELATIONS = ['translations', 'city'];
 

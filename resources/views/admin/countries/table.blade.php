@@ -49,13 +49,13 @@
                 <span class="countries-count-badge" title="{{ __('admin/main.cities') }}">{{ number_format($country->cities_count ?? 0) }}</span>
             </td>
 
-<td class="countries-status-cell">
+<td class="countries-status-cell text-center">
                 @if (!$country->deleted_at)
                     <div class="d-flex align-items-center justify-content-center gap-2">
-                        <span class="badge bg-label-{{ $country->is_active ? 'success' : 'secondary' }}">
+                        <span class="badge bg-label-{{ $country->is_active ? 'success' : 'secondary' }} fs-tiny">
                             {{ $country->is_active ? __('admin/main.active') : __('admin/main.inactive') }}
                         </span>
-                        <div class="form-check form-switch countries-active-switch mb-0 p-0">
+                        <div class="form-check form-switch countries-active-switch mb-0 d-flex justify-content-center">
                             <input class="form-check-input switch-active" type="checkbox" role="switch"
                                    data-id="{{ $country->id }}"
                                    data-route="{{ route('admin.countries.switchActive', ['id' => $country->id]) }}"

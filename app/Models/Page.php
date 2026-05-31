@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PageType;
+use App\Traits\Models\HasConfiguredTranslations;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use App\Traits\GeneralTrait;
 
 class Page extends Model
 {
-    use HasFactory, Translatable, GeneralTrait, FilterableTrait;
+    use HasFactory, Translatable, GeneralTrait, FilterableTrait, HasConfiguredTranslations;
 
     public const RELATIONS = ['translations'];
 

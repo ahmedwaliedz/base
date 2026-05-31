@@ -21,6 +21,9 @@
                 $optValue = is_array($option)
                     ? ($option[$optionValueKey] ?? null)
                     : data_get($option, $optionValueKey, null);
+                if (is_bool($optValue)) {
+                    $optValue = $optValue ? 1 : 0;
+                }
                 $optText = is_array($option)
                     ? ($option[$optionTextKey] ?? null)
                     : data_get($option, $optionTextKey, null);

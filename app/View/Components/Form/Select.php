@@ -31,6 +31,9 @@ class Select extends Component
         if ($value instanceof \BackedEnum) {
             $value = $value->value;
         }
+        if (is_bool($value)) {
+            $value = $value ? 1 : 0;
+        }
         $this->value = (is_string($value) || is_int($value) || is_null($value)) ? $value : (string) $value;
         $this->label = isset($options['label']) ? __(self::ADMIN_INPUTS_PREFIX . $options['label']) : __(self::ADMIN_INPUTS_PREFIX . $this->name);
         $this->placeholder = isset($options['placeholder']) ? __(self::ADMIN_INPUTS_PREFIX . $options['placeholder']) : $this->label;

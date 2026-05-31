@@ -4,9 +4,10 @@ namespace App\Models;
 
 use App\Traits\Filters\FilterableTrait;
 use App\Traits\GeneralTrait;
-use App\Traits\Models\BaseFileWithTranslations;
 use App\Traits\Models\BaseModelTrait;
 use App\Traits\Models\CanRetrieve;
+use App\Traits\Models\HasConfiguredTranslations;
+use App\Traits\Models\InteractsWithFilesAndTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +15,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class Country extends Model implements HasMedia
 {
-    use BaseFileWithTranslations, BaseModelTrait, CanRetrieve, FilterableTrait, GeneralTrait, HasFactory, SoftDeletes;
+    use InteractsWithFilesAndTranslations, BaseModelTrait, CanRetrieve, FilterableTrait, GeneralTrait, HasFactory, SoftDeletes, HasConfiguredTranslations;
 
     public const DEFAULT_IMAGE = 'default.png';
 

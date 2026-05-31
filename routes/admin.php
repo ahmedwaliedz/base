@@ -173,19 +173,19 @@ Route::middleware([AdminSetLocale::class, 'web'])->group(function () {
             Route::delete('contact-messages/destroy-all', [ContactMessageController::class, 'destroyAll'])->name('contact-messages.destroyAll');
             Route::put('contact-messages/{id}/switch-is-read', [ContactMessageController::class, 'switchIsRead'])->name('contact-messages.switchIsRead');
             Route::put('contact-messages/{id}/restore', [ContactMessageController::class, 'restore'])->name('contact-messages.restore');
-            Route::resource('contact-messages', ContactMessageController::class);
+            Route::resource('contact-messages', ContactMessageController::class)->except(['create', 'store', 'edit', 'update']);
 
             // complaints routes
             Route::delete('complaints/destroy-all', [ComplaintController::class, 'destroyAll'])->name('complaints.destroyAll');
             Route::put('complaints/{id}/switch-is-read', [ComplaintController::class, 'switchIsRead'])->name('complaints.switchIsRead');
             Route::put('complaints/{id}/switch-status', [ComplaintController::class, 'switchStatus'])->name('complaints.switchStatus');
             Route::put('complaints/{id}/restore', [ComplaintController::class, 'restore'])->name('complaints.restore');
-            Route::resource('complaints', ComplaintController::class);
+            Route::resource('complaints', ComplaintController::class)->except(['create', 'store', 'edit', 'update']);
 
             // replays routes
             Route::delete('replays/destroy-all', [ReplayController::class, 'destroyAll'])->name('replays.destroyAll');
             Route::put('replays/{id}/restore', [ReplayController::class, 'restore'])->name('replays.restore');
-            Route::resource('replays', ReplayController::class);
+            Route::resource('replays', ReplayController::class)->except(['create', 'store', 'edit', 'update']);
 
         });
     });

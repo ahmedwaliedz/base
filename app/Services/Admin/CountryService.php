@@ -14,7 +14,7 @@ class CountryService extends CrudBaseService
 
     public function index($request, $where = [])
     {
-        return parent::index($request, $where)->withCount(['regions', 'cities']);
+        return parent::index($request, $where)->with('translations')->withCount(['regions', 'cities']);
     }
 
     /**
@@ -41,6 +41,7 @@ class CountryService extends CrudBaseService
         $data = parent::show($id);
         /** @var Country $country */
         $country = $data[$this->lowerClassName];
+        $country->load('translations');
 
         $data['regions_count'] = $country->regions()->count();
         $data['cities_count'] = $country->cities()->count();

@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Traits\GeneralTrait;
+use App\Traits\Models\HasConfiguredTranslations;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class City extends Model
 {
-    use HasFactory, GeneralTrait, Translatable;
+    use HasFactory, GeneralTrait, Translatable, HasConfiguredTranslations;
 
     public const RELATIONS = ['translations', 'country', 'region', 'districts'];
 
@@ -23,8 +24,6 @@ class City extends Model
     ];
 
     public $translatedAttributes = ['name'];
-
-
 
     public function country()
     {

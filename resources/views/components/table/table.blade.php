@@ -10,7 +10,7 @@
                     @endif
 
                     @foreach($headers as $header)
-                        <th class="align-center">{{ $header }}</th>
+                        <th class="text-center">{{ $header }}</th>
                     @endforeach
 
                     @if($hasActions)

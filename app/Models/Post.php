@@ -4,14 +4,15 @@ namespace App\Models;
 
 use App\Traits\Filters\FilterableTrait;
 use App\Traits\GeneralTrait;
-use App\Traits\Models\BaseFileWithTranslations;
+use App\Traits\Models\HasConfiguredTranslations;
+use App\Traits\Models\InteractsWithFilesAndTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use BaseFileWithTranslations, FilterableTrait, GeneralTrait, HasFactory, SoftDeletes;
+    use InteractsWithFilesAndTranslations, FilterableTrait, GeneralTrait, HasFactory, SoftDeletes, HasConfiguredTranslations;
 
     public const RELATIONS = ['translations'];
 
