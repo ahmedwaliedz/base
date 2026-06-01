@@ -17,6 +17,29 @@ class RoleService
     use RoleTrait;
 
     /**
+     * Get prepared view data for the role show page.
+     */
+    public function getShowViewData(int $id): array
+    {
+        $role = $this->getRoleById($id);
+        $viewData = $this->getFormViewData($role);
+
+        $totalPermissions = Permission::count();
+        $granted = count($viewData['permissions'] ?? []);
+        $coverage = $totalPermissions > 0
+            ? (int) round(($granted / $totalPermissions) * 100)
+            : 0;
+
+        return [
+            'role' => $role,
+            'permissions' => $viewData['permissions'],
+            'permissionsByGroup' => $viewData['permissionsByGroup'],
+            'permissionGroupLabels' => $viewData['permissionGroupLabels'],
+            'coverage' => $coverage,
+        ];
+    }
+
+    /**
      * Get all roles with their associated admins
      *
      * @param array $filters

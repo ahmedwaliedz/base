@@ -227,10 +227,11 @@ tests/
 
 | Table | Key Fields |
 |-------|------------|
-| `admins` | id, name, email, password, role_id, type, status, remember_token |
+| `admins` | id, image, name, phone, country_code, email, password, is_blocked, is_notify, type, role_id, created_at, updated_at |
 | `permissions` | id, permission (string), created_at, updated_at |
 | `permission_role` | role_id, permission_id |
-| `roles` | id, name, guard_name |
+| `roles` | id, created_at, updated_at |
+| `role_translations` | id, role_id, locale, name, created_at, updated_at |
 
 ---
 

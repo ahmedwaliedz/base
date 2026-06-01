@@ -96,6 +96,21 @@ public function indexVars(): array
         ];
     }
 
+    /**
+     * Get active country options as [id => code, name => code]
+     * for profile and form select dropdowns.
+     */
+    public function getActiveCountryCodeOptions(): array
+    {
+        return Country::where('is_active', true)
+            ->get()
+            ->map(fn ($country) => [
+                'id' => $country->code,
+                'name' => $country->code,
+            ])
+            ->toArray();
+    }
+
     public function destroy($id, $function = null)
     {
         return parent::destroy($id, function ($object) {

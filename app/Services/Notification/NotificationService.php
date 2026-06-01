@@ -2,6 +2,9 @@
 
 namespace App\Services\Notification;
 
+use App\Models\Admin;
+use App\Models\User;
+
 readonly class NotificationService
 {
     /**
@@ -14,6 +17,17 @@ readonly class NotificationService
         private GroupNotificationSender  $groupSender,
         private SingleNotificationSender $singleSender
     ) {
+    }
+
+    /**
+     * Get view data for the notification index page.
+     */
+    public function getNotificationPageData(): array
+    {
+        return [
+            'availableUserNotificationTypes' => User::getAvailableNotificationTypes(),
+            'availableAdminNotificationTypes' => Admin::getAvailableNotificationTypes(),
+        ];
     }
 
     /**

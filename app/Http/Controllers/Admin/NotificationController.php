@@ -50,9 +50,6 @@ class NotificationController extends Controller
      */
     public function index(): View
     {
-        return view('admin.notifications.index', [
-            'availableUserNotificationTypes' => \App\Models\User::getAvailableNotificationTypes(),
-            'availableAdminNotificationTypes' => \App\Models\Admin::getAvailableNotificationTypes(),
-        ]);
+        return view('admin.notifications.index', $this->notificationService->getNotificationPageData());
     }
 }

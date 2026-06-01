@@ -6,7 +6,6 @@ use App\Exceptions\ServiceException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Role\StoreRequest;
 use App\Http\Requests\Admin\Role\UpdateRequest;
-use App\Models\Permission;
 use App\Services\Admin\Roles\RoleService;
 use App\Traits\Response\ResponseTrait;
 use Illuminate\Http\JsonResponse;
@@ -90,22 +89,7 @@ class RoleController extends Controller
      */
     public function show(int $id): View
     {
-        $role = $this->roleService->getRoleById($id);
-        $viewData = $this->roleService->getFormViewData($role);
-
-        $totalPermissions = Permission::count();
-        $granted = count($viewData['permissions'] ?? []);
-        $coverage = $totalPermissions > 0
-            ? (int) round(($granted / $totalPermissions) * 100)
-            : 0;
-
-        return view('admin.roles.show', [
-            'role' => $role,
-            'permissions' => $viewData['permissions'],
-            'permissionsByGroup' => $viewData['permissionsByGroup'],
-            'permissionGroupLabels' => $viewData['permissionGroupLabels'],
-            'coverage' => $coverage,
-        ]);
+        return view('admin.roles.show', $this->roleService->getShowViewData($id));
     }
 
     /**

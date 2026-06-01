@@ -105,10 +105,13 @@ In Blade:
 ### Permission Structure
 
 This project uses a **custom RBAC system** with these tables:
-- `admins` - id, name, email, password, role_id, type, status
-- `roles` - id, name, guard_name
-- `permissions` - id, permission (string)
+- `admins` - id, image, name, phone, country_code, email, password, is_blocked, is_notify, type, role_id, created_at, updated_at
+- `roles` - id, created_at, updated_at
+- `role_translations` - id, role_id, locale, name, created_at, updated_at
+- `permissions` - id, permission (string), created_at, updated_at
 - `permission_role` - role_id, permission_id (pivot)
+
+Role names are stored in `role_translations`, not on the `roles` table. Do not add `guard_name`.
 
 ### Checking Permissions
 
