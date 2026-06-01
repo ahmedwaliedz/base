@@ -211,7 +211,7 @@
     </section>
 
     <x-model.notification :route="route('admin.notifications.sendNotifications')" :class="'App\Models\User'" />
-    <x-model.email />
+    <x-model.email :class="'App\Models\User'" />
 @endsection
 
 @push('js')

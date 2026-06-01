@@ -58,8 +58,8 @@ Route::middleware([AdminSetLocale::class, 'web'])->group(function () {
             // notifications route
             Route::group(['prefix' => 'notifications'], function () {
                 Route::get('', [NotificationController::class, 'index'])->name('notifications.index');
-                Route::get('/send-email', [NotificationController::class, 'sendEmail'])->name('notifications.sendEmail');
-                Route::get('/send-sms', [NotificationController::class, 'sendSms'])->name('notifications.sendSms');
+                Route::post('/send-email', [NotificationController::class, 'sendNotifications'])->name('notifications.sendEmail');
+                Route::post('/send-sms', [NotificationController::class, 'sendNotifications'])->name('notifications.sendSms');
                 Route::post('/send-notifications', [NotificationController::class, 'sendNotifications'])->name('notifications.sendNotifications');
             });
 

@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Admin\Notification;
 
+use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SendNotificationsRequest extends FormRequest
 {
@@ -17,9 +20,9 @@ class SendNotificationsRequest extends FormRequest
             'message'   => 'required|array',
             'message.*' => 'required|string|max:255',
             'id'        => 'required',
-            'class'     => 'required|string|max:255',
+            'class'     => ['required', 'string', Rule::in([User::class, Admin::class])],
             'user_type' => 'required|string|max:255',
-            'type'      => 'nullable|string|in:mail',
+            'type'      => 'nullable|string|in:mail,sms',
         ];
     }
 }

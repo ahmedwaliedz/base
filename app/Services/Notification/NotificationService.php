@@ -38,6 +38,10 @@ readonly class NotificationService
      */
     public function send(array $data): bool
     {
+        if (isset($data['notification_type']) && $data['notification_type'] === 'sms') {
+            return false;
+        }
+
         if (is_string($data['id']) && strtolower($data['id']) === 'group') {
             $this->groupSender->sendToAll(
                 modelClass           : $data['class'],

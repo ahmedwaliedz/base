@@ -151,6 +151,8 @@
         'send_email' => 'Send Email',
         'send_mail' => 'Send Mail',
         'send_sms' => 'Send SMS',
+        'sms_not_configured' => 'SMS notifications are not configured.',
+
         'send' => 'Send',
         'notification_history' => 'Notification history',
         'latest_notifications' => 'Latest notifications',
@@ -173,12 +175,14 @@
         'notif_push_desc' => 'In-app push notifications',
         'notif_mail_desc' => 'Bulk email broadcasts',
         'notif_sms_desc' => 'Text-message broadcasts',
+
         'notif_page_desc' => 'Reach users across in-app, email, and SMS channels',
         'notif_message_section' => 'Message body',
         'notif_audience_section' => 'Audience',
         'in_app' => 'In-app',
         'email_channel' => 'Email channel',
         'sms_channel' => 'SMS channel',
+
         'restore' => 'Restore',
         'delete_selected' => 'Delete Selected',
         'reload' => 'Reload',

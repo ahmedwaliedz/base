@@ -1,3 +1,5 @@
+@props(['class' => 'App\Models\User', 'userType' => 'all'])
+
 <div class="modal fade" id="emailModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-simple modal-add-new-address">
         <div class="modal-content">
@@ -12,6 +14,9 @@
                       id="sendEmailForm" class="row g-3 validated-form" novalidate>
                     @csrf
                     <input type="hidden" class="email_target_id" name="id" value="group">
+                    <input type="hidden" name="type" value="mail">
+                    <input type="hidden" name="class" value="{{ $class }}">
+                    <input type="hidden" name="user_type" value="{{ $userType }}">
                     <x-form.text-area :options="['name' => 'message[ar]', 'label' => 'message_ar', 'class' => 'col-md-12', 'isRequired' => true]" />
                     <x-form.text-area :options="['name' => 'message[en]', 'label' => 'message_en', 'class' => 'col-md-12', 'isRequired' => true]" />
 
@@ -32,6 +37,6 @@
 <script>
     $(document).on('click', '[data-bs-target="#emailModal"]', function () {
         var id = $(this).data('id');
-        if (id) $('.email_target_id').val(id);
+        $('.email_target_id').val(id || 'group');
     });
 </script>

@@ -9,12 +9,12 @@
                 <p class="settings-card__desc">{{ __('admin/main.notif_sms_desc') }}</p>
             </div>
             <span class="settings-card__head-meta">
-                <i class="ti ti-device-mobile-message" aria-hidden="true"></i>
+                <i class="ti ti-device-mobile" aria-hidden="true"></i>
                 {{ __('admin/main.sms_channel') }}
             </span>
         </header>
 
-        <form class="validated-form form" action="{{ route('admin.notifications.sendNotifications') }}" method="POST" novalidate>
+        <form class="validated-form form" action="{{ route('admin.notifications.sendSms') }}" method="POST" novalidate>
             @csrf
 
             <div class="settings-card__body">
@@ -35,13 +35,20 @@
                         {{ __('admin/main.notif_audience_section') }}
                     </div>
                     <div class="row g-3">
+                        <input type="hidden" class="notification_id" name="id" value="group">
                         <input type="hidden" name="type" value="sms">
-                        <input type="hidden" name="class" value="App\Models\User">
                         <div class="col-md-6">
-                            <label class="form-label" for="notif-user-type-sms">{{ __('admin/inputs.user_type') }}</label>
-                            <select class="form-select" id="notif-user-type-sms" name="user_type" required>
-                                <option value="users">{{ __('admin/main.users') }}</option>
-                                <option value="admins">{{ __('admin/main.admins') }}</option>
+                            <label class="form-label" for="notif-class-sms">{{ __('admin/inputs.user_type') }}</label>
+                            <select class="form-select user-class-select" id="notif-class-sms" name="class" required>
+                                <option value="App\Models\User">{{ __('admin/main.users') }}</option>
+                                <option value="App\Models\Admin">{{ __('admin/main.admins') }}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 notification-type-select">
+                            <label class="form-label" for="notif-type-sms">{{ __('admin/main.notification_user_status') }}</label>
+                            <select name="user_type" id="notif-type-sms" class="form-select notification-types">
+                                <option selected value="all">{{ __('admin/main.all') }}</option>
+                                {{-- Populated dynamically by index.blade.php JS --}}
                             </select>
                         </div>
                     </div>

@@ -17,6 +17,9 @@ class SingleNotificationSender
      */
     public function sendToUserId( string $modelClass = User::class , int $userId = 1 , array $message = [] , string $notification_type = 'admin_notification'): void
     {
-        $modelClass::find($userId)?->notify(new UserNotification($message));
+        $modelClass::find($userId)?->notify(new UserNotification([
+            'message' => $message,
+            'notification_type' => $notification_type,
+        ]));
     }
 }

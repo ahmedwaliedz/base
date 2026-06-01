@@ -14,7 +14,7 @@
             </span>
         </header>
 
-        <form class="validated-form form" action="{{ route('admin.notifications.sendNotifications') }}" method="POST" novalidate>
+        <form class="validated-form form" action="{{ route('admin.notifications.sendEmail') }}" method="POST" novalidate>
             @csrf
 
             <div class="settings-card__body">

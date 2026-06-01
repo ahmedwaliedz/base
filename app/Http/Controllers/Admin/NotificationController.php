@@ -32,15 +32,22 @@ class NotificationController extends Controller
     public function sendNotifications(SendNotificationsRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $notificationType = isset($data['type']) && $data['type'] === 'mail' ? 'mail' : 'admin_notification';
+        $notificationType = match ($data['type'] ?? null) {
+            'mail' => 'mail',
+            'sms'  => 'sms',
+            default => 'admin_notification',
+        };
         $data['notification_type'] = $notificationType;
 
         $success = $this->notificationService->send($data);
 
         if ($success)
             return $this->respondWithSuccess(__('admin/main.notification_sent_successfully'));
-        else
-            return $this->respondWithFail(__('admin/main.failed_to_send_notification'));
+
+        if ($notificationType === 'sms')
+            return $this->respondWithFail(__('admin/main.sms_not_configured'));
+
+        return $this->respondWithFail(__('admin/main.failed_to_send_notification'));
     }
 
     /**

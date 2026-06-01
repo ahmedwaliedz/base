@@ -76,7 +76,7 @@
         :route="route('admin.notifications.sendNotifications')"
         :class="'App\Models\Admin'"
     />
-    <x-model.email />
+    <x-model.email :class="'App\Models\Admin'" />
 @endpush
 
 @push('js')

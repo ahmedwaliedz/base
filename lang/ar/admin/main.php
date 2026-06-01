@@ -147,6 +147,8 @@
         'send_email' => 'إرسال بريد إلكتروني',
         'send_mail' => 'إرسال بريد',
         'send_sms' => 'إرسال SMS',
+        'sms_not_configured' => 'إشعارات الرسائل النصية غير مفعلة.',
+
         'send' => 'إرسال',
         'notification_history' => 'سجل الإشعارات',
         'latest_notifications' => 'آخر الإشعارات',
@@ -163,12 +165,14 @@
         'notif_push_desc' => 'إشعارات داخل التطبيق',
         'notif_mail_desc' => 'إرسال جماعي بالبريد',
         'notif_sms_desc' => 'إرسال جماعي بالرسائل النصية',
+
         'notif_page_desc' => 'الوصول للمستخدمين عبر التطبيق والبريد والـ SMS',
         'notif_message_section' => 'محتوى الرسالة',
         'notif_audience_section' => 'الفئة المستهدفة',
         'in_app' => 'داخل التطبيق',
         'email_channel' => 'قناة البريد',
         'sms_channel' => 'قناة SMS',
+
         'restore' => 'استعادة',
         'delete_selected' => 'حذف المحدد',
         'reload' => 'إعادة تحميل',

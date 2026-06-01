@@ -22,13 +22,13 @@ class UserNotification extends Notification implements ShouldQueue
 
     public function via($notifiable): array
     {
-        $channels = ['database'];
+        $type = $this->notifyData['notification_type'] ?? 'admin_notification';
 
-        if (isset($this->notifyData['notification_type']) && $this->notifyData['notification_type'] === 'mail') {
-            $channels[] = 'mail';
-        }
-
-        return $channels;
+        return match ($type) {
+            'mail' => ['database', 'mail'],
+            'sms'  => [],
+            default => ['database'],
+        };
     }
 
     public function toMail($notifiable): \Illuminate\Notifications\Messages\MailMessage
