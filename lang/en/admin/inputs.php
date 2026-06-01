@@ -36,6 +36,7 @@ return [
     'is_notify' => 'Receive Notifications',
         'get_deleted' => 'Show deleted',
         'slug' => 'Slug',
+        'subject' => 'Subject',
         'icon' => 'Icon',
         'type' => 'Type',
         'title' => 'Title',

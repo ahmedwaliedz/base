@@ -1,5 +1,14 @@
 @extends('admin.layouts.crud.table', ['rows' => $complaints, 'createRoute' => null])
 
+@php
+$statusClassMap = [
+    'pending'    => 'warning',
+    'processing' => 'info',
+    'completed'  => 'success',
+    'rejected'   => 'danger',
+];
+@endphp
+
 @section('table')
     @foreach ($complaints as $complaint)
         <tr class="data-rows {{ $complaint->deleted_at ? 'deleted-table-row' : '' }}" data-complaint-id="{{ $complaint->id }}">
@@ -7,7 +16,7 @@
             <td>{{ $complaint->name }}</td>
             <td>{{ Str::limit($complaint->subject, 30) }}</td>
             <td><span class="badge bg-label-{{ $complaint->type?->value === 'suggestion' ? 'info' : 'warning' }}">{{ __('admin/main.' . ($complaint->type?->value ?? 'complaint')) }}</span></td>
-            <td><span class="badge bg-label-{{ $complaint->status?->value === 'completed' ? 'success' : 'danger' }}">{{ __('admin/main.' . ($complaint->status?->value ?? 'pending')) }}</span></td>
+            <td><span class="badge bg-label-{{ $statusClassMap[$complaint->status?->value] ?? 'secondary' }}">{{ __('admin/main.' . ($complaint->status?->value ?? 'pending')) }}</span></td>
             <td>
                 <div class="d-flex align-items-center gap-2 flex-nowrap complaints-row-actions">
                     <a href="{{ route('admin.complaints.show', ['complaint' => $complaint]) }}"

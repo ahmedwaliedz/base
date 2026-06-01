@@ -17,6 +17,7 @@
                     {{ __('admin/main.home_table_view_all') }} <span class="dqt__arrow">{{ $arrow }}</span>
                 </a>
             </div>
+            <div class="dqt__table-scroll">
             <table class="dqt__table">
                 <thead>
                     <tr>
@@ -60,7 +61,7 @@
                         </td>
                         <td><span class="dqt__date">{{ $u->created_at->diffForHumans() }}</span></td>
                         <td>
-                            <a href="{{ route('admin.users.index') }}" class="dqt__action"
+                            <a href="{{ route('admin.users.show', $u->id) }}" class="dqt__action"
                                aria-label="{{ __('admin/main.home_action_view') }}">
                                 <i class="ti ti-eye" aria-hidden="true"></i>
                             </a>
@@ -78,6 +79,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>{{-- .dqt__table-scroll --}}
         </div>
     </div>
 
@@ -92,10 +94,11 @@
                     </div>
                     <span class="dqt__title">{{ __('admin/main.home_table_pending_complaints') }}</span>
                 </div>
-                <span class="dqt__view-all dqt__view-all--disabled">
-                    {{ __('admin/main.home_table_view_all') }}
-                </span>
+                <a href="{{ route('admin.complaints.index') }}" class="dqt__view-all">
+                    {{ __('admin/main.home_table_view_all') }} <span class="dqt__arrow">{{ $arrow }}</span>
+                </a>
             </div>
+            <div class="dqt__table-scroll">
             <table class="dqt__table">
                 <thead>
                     <tr>
@@ -116,9 +119,7 @@
                             'rejected'   => ['class' => 'dqt__badge--reject',  'icon' => 'ti-x',            'label' => __('admin/main.home_badge_rejected')],
                             'unknown'    => ['class' => 'dqt__badge--blocked', 'icon' => 'ti-alert-triangle', 'label' => __('admin/main.home_badge_unknown')],
                         ];
-                        $status = $c->status;
-                        $statusValue = $status instanceof \App\Enums\ComplaintStatus ? $status->value : null;
-                        $st = $statusMap[$statusValue] ?? $statusMap['unknown'];
+                        $st = $statusMap[$c->status_value] ?? $statusMap['unknown'];
                     @endphp
                     <tr>
                         <td>
@@ -134,9 +135,10 @@
                         </td>
                         <td><span class="dqt__date">{{ \Carbon\Carbon::parse($c->created_at)->diffForHumans() }}</span></td>
                         <td>
-                            <span class="dqt__action dqt__action--disabled" aria-hidden="true">
-                                <i class="ti ti-eye"></i>
-                            </span>
+                            <a href="{{ route('admin.complaints.show', $c->id) }}" class="dqt__action"
+                               aria-label="{{ __('admin/main.home_action_view') }}">
+                                <i class="ti ti-eye" aria-hidden="true"></i>
+                            </a>
                         </td>
                     </tr>
                     @empty
@@ -151,6 +153,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>{{-- .dqt__table-scroll --}}
         </div>
     </div>
 

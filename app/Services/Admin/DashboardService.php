@@ -163,6 +163,10 @@ class DashboardService
                     ->latest()
                     ->take(6)
                     ->get(['id', 'name', 'phone', 'email', 'subject', 'type', 'status', 'created_at'])
+                    ->map(function ($row) {
+                        $row->status_value = $row->status;
+                        return $row;
+                    })
                 : collect(),
             'latest_contacts' => $this->hasTable('contact_messages')
                 ? DB::table('contact_messages')

@@ -11,11 +11,12 @@
                     </div>
                     <span class="dqt__title">{{ __('admin/main.home_table_latest_contacts') }}</span>
                 </div>
-                <span class="dqt__view-all dqt__view-all--disabled">
-                    {{ __('admin/main.home_table_view_all') }}
-                </span>
-            </div>
-            <table class="dqt__table">
+                <a href="{{ route('admin.contact-messages.index') }}" class="dqt__view-all">
+                    {{ __('admin/main.home_table_view_all') }} <span class="dqt__arrow">{{ $arrow }}</span>
+                </a>
+                </div>
+                <div class="dqt__table-scroll">
+                <table class="dqt__table">
                 <thead>
                     <tr>
                         <th>{{ __('admin/main.home_table_col_name') }}</th>
@@ -43,9 +44,10 @@
                         <td><span class="dqt__cell-clip">{{ $m->subject }}</span></td>
                         <td><span class="dqt__date">{{ \Carbon\Carbon::parse($m->created_at)->diffForHumans() }}</span></td>
                         <td>
-                            <span class="dqt__action dqt__action--disabled" aria-hidden="true">
-                                <i class="ti ti-eye"></i>
-                            </span>
+                            <a href="{{ route('admin.contact-messages.show', $m->id) }}" class="dqt__action"
+                               aria-label="{{ __('admin/main.home_action_view') }}">
+                                <i class="ti ti-eye" aria-hidden="true"></i>
+                            </a>
                         </td>
                     </tr>
                     @empty
@@ -60,6 +62,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>{{-- .dqt__table-scroll --}}
         </div>
     </div>
 

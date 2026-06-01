@@ -68,7 +68,7 @@
                     <div class="row g-3">
                         @foreach ($complaint->images as $image)
                             <div class="col-6 col-md-3 col-lg-2">
-                                <img src="{{ $image->image }}" class="rounded-2 img-fluid" alt="">
+                                <img src="{{ asset('storage/uploads/complaints/' . $image->file_name) }}" class="rounded-2 img-fluid" alt="">
                             </div>
                         @endforeach
                     </div>

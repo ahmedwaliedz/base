@@ -20,9 +20,10 @@
                 <div class="dsc__sub">{{ $stats['pending_complaints'] }} {{ __('admin/main.home_stat_pending') }}</div>
             </div>
             <div class="dsc__foot">
-                <span class="dsc__link" style="opacity:.5;cursor:default">
-                    {{ __('admin/main.home_card_view') }}
-                </span>
+                <a href="{{ route('admin.complaints.index') }}" class="dsc__link"
+                   aria-label="{{ __('admin/main.home_card_view_complaints') }}">
+                    {{ __('admin/main.home_card_view') }} <span class="dsc__arrow">{{ $arrow }}</span>
+                </a>
                 <div class="dsc__bar-wrap" aria-hidden="true">
                     <div class="dsc__bar-fill" data-width="{{ $stats['ratio_complaints'] }}"></div>
                 </div>
@@ -47,9 +48,10 @@
                 <div class="dsc__sub">+{{ $stats['new_contacts_month'] }} {{ __('admin/main.home_stat_this_month') }}</div>
             </div>
             <div class="dsc__foot">
-                <span class="dsc__link" style="opacity:.5;cursor:default">
-                    {{ __('admin/main.home_card_view') }}
-                </span>
+                <a href="{{ route('admin.contact-messages.index') }}" class="dsc__link"
+                   aria-label="{{ __('admin/main.home_card_view_contacts') }}">
+                    {{ __('admin/main.home_card_view') }} <span class="dsc__arrow">{{ $arrow }}</span>
+                </a>
                 <div class="dsc__bar-wrap" aria-hidden="true">
                     <div class="dsc__bar-fill"
                          data-width="{{ $stats['total_contacts'] > 0
@@ -73,9 +75,10 @@
                 <div class="dsc__sub">{{ $stats['active_categories'] }} {{ __('admin/main.home_stat_active') }}</div>
             </div>
             <div class="dsc__foot">
-                <span class="dsc__link" style="opacity:.5;cursor:default">
-                    {{ __('admin/main.home_card_view') }}
-                </span>
+                <a href="{{ route('admin.categories.index') }}" class="dsc__link"
+                   aria-label="{{ __('admin/main.home_card_view_categories') }}">
+                    {{ __('admin/main.home_card_view') }} <span class="dsc__arrow">{{ $arrow }}</span>
+                </a>
                 <div class="dsc__bar-wrap" aria-hidden="true">
                     <div class="dsc__bar-fill" data-width="{{ $stats['ratio_categories'] }}"></div>
                 </div>
@@ -96,9 +99,10 @@
                 <div class="dsc__sub">{{ __('admin/main.home_stat_faqs_sub') }}</div>
             </div>
             <div class="dsc__foot">
-                <span class="dsc__link" style="opacity:.5;cursor:default">
-                    {{ __('admin/main.home_card_view') }}
-                </span>
+                <a href="{{ route('admin.faqs.index') }}" class="dsc__link"
+                   aria-label="{{ __('admin/main.home_card_view_faqs') }}">
+                    {{ __('admin/main.home_card_view') }} <span class="dsc__arrow">{{ $arrow }}</span>
+                </a>
                 <div class="dsc__bar-wrap" aria-hidden="true">
                     <div class="dsc__bar-fill" data-width="{{ $stats['ratio_faqs'] }}"></div>
                 </div>
@@ -119,9 +123,10 @@
                 <div class="dsc__sub">{{ $stats['active_posts'] }} {{ __('admin/main.home_stat_active') }}</div>
             </div>
             <div class="dsc__foot">
-                <span class="dsc__link" style="opacity:.5;cursor:default">
-                    {{ __('admin/main.home_card_view') }}
-                </span>
+                <a href="{{ route('admin.posts.index') }}" class="dsc__link"
+                   aria-label="{{ __('admin/main.home_card_view_posts') }}">
+                    {{ __('admin/main.home_card_view') }} <span class="dsc__arrow">{{ $arrow }}</span>
+                </a>
                 <div class="dsc__bar-wrap" aria-hidden="true">
                     <div class="dsc__bar-fill" data-width="{{ $stats['ratio_posts'] }}"></div>
                 </div>
@@ -142,9 +147,10 @@
                 <div class="dsc__sub">{{ $stats['active_sliders'] }} {{ __('admin/main.home_stat_active') }}</div>
             </div>
             <div class="dsc__foot">
-                <span class="dsc__link" style="opacity:.5;cursor:default">
-                    {{ __('admin/main.home_card_view') }}
-                </span>
+                <a href="{{ route('admin.sliders.index') }}" class="dsc__link"
+                   aria-label="{{ __('admin/main.home_card_view_sliders') }}">
+                    {{ __('admin/main.home_card_view') }} <span class="dsc__arrow">{{ $arrow }}</span>
+                </a>
                 <div class="dsc__bar-wrap" aria-hidden="true">
                     <div class="dsc__bar-fill" data-width="{{ $stats['ratio_sliders'] }}"></div>
                 </div>
