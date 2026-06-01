@@ -38,7 +38,7 @@
                     </div>
                     <div class="row g-3">
                         <x-form.text :options="['name' => 'mail_username', 'value' => isset($settings['mail_username']) ? $settings['mail_username'] : '', 'label' => 'mail_username', 'class' => 'col-md-6']" />
-                        <x-form.text :options="['name' => 'mail_password', 'value' => isset($settings['mail_password']) ? $settings['mail_password'] : '', 'label' => 'mail_password', 'class' => 'col-md-6']" />
+                        <x-form.password :options="['name' => 'mail_password', 'value' => isset($settings['mail_password']) ? $settings['mail_password'] : '', 'label' => 'mail_password', 'class' => 'col-md-6']" />
                     </div>
                 </div>
 

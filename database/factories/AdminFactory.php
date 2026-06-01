@@ -30,6 +30,7 @@ public function definition(): array
             'password' => 'Password@123',
             'type' => AdminType::SUPER_ADMIN,
             'is_notify' => $this->faker->boolean,
+            'role_id' => null,
         ];
     }
 

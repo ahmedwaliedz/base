@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model {
     use FilterableTrait, HasFactory, Translatable, GeneralTrait, HasConfiguredTranslations;
 
+    public const RELATIONS = ['admins', 'permissions', 'translations'];
+
+    protected $fillable = ['ar', 'en'];
+
     public $translatedAttributes = ['name'];
 
     public function admins() {

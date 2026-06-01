@@ -92,17 +92,13 @@ If a route must bypass permission checks, document it in the middleware exceptio
 
 ## OTP Authentication Setup
 
-OTP authentication can be configured via `.env`:
-
-| Provider | Description |
-|----------|-------------|
-| `log` | Logs OTP codes to `storage/logs/laravel.log` via `LogCodeSender`.
-
-### Example Configuration
+OTP authentication uses `LogCodeSender` to deliver activation codes. OTP codes are logged to `storage/logs/laravel.log` for local/development use.
 
 ```env
-OTP_PROVIDER=log
+# No OTP_PROVIDER setting is needed — LogCodeSender is always used.
 ```
+
+Mail / Twilio provider switching is not currently implemented.
 
 ### API Requests
 
@@ -127,7 +123,7 @@ Content-Type: application/json
 }
 ```
 
-> Note: When using `OTP_PROVIDER=log`, the code appears in `storage/logs/laravel.log`.
+> Note: Activation codes appear in `storage/logs/laravel.log` via `LogCodeSender`.
 
 ## API Examples
 

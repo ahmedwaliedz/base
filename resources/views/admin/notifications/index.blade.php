@@ -64,14 +64,14 @@
                 $notificationTypesSelect.find('option:not(:first)').remove();
 
                 if (selectedClass === 'App\\Models\\User') {
-                    @foreach(\App\Models\User::getAvailableNotificationTypes() as $type)
+                    @foreach($availableUserNotificationTypes as $type)
                     $('<option>', {
                         value: "{{ $type->value }}",
                         text:  "{{ $type->label() }}"
                     }).appendTo($notificationTypesSelect);
                     @endforeach
                 } else if (selectedClass === 'App\\Models\\Admin') {
-                    @foreach(\App\Models\Admin::getAvailableNotificationTypes() as $type)
+                    @foreach($availableAdminNotificationTypes as $type)
                     $('<option>', {
                         value: "{{ $type->value }}",
                         text:  "{{ $type->label() }}"

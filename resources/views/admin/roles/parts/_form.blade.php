@@ -33,7 +33,7 @@
                 <div class="perm-group">
                     <div class="perm-group__header">
                         <i class="ti ti-lock-square"></i>
-                        {{ \App\Traits\Role\RoleTrait::translateRouteName('admin.' . $groupKey) }}
+                        {{ $permissionGroupLabels['admin.' . $groupKey] ?? $groupKey }}
                     </div>
                     <div class="perm-group__body">
                         <select

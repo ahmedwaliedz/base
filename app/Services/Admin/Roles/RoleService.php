@@ -3,11 +3,12 @@
 namespace App\Services\Admin\Roles;
 
 use App\Exceptions\ServiceException;
+use App\Models\Admin;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Traits\Role\RoleTrait;
+use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -32,6 +33,45 @@ class RoleService
         }
 
         return $query->paginate($filters['per_page'] ?? 9);
+    }
+
+    /**
+     * Get aggregated role statistics.
+     *
+     * @return array
+     */
+    public function getStatistics(): array
+    {
+        $now = Carbon::now();
+
+        $totalRoles = Role::query()->count();
+        $assignedAdmins = Admin::whereNotNull('role_id')->count();
+        $unassignedRoles = Role::query()->doesntHave('admins')->count();
+
+        $avgPermissions = (int) round(
+            DB::table('roles')
+                ->leftJoin(DB::raw('(SELECT role_id, COUNT(*) as permission_count FROM permission_role GROUP BY role_id) as pr'), 'roles.id', '=', 'pr.role_id')
+                ->selectRaw('AVG(COALESCE(pr.permission_count, 0)) as avg_permissions')
+                ->first()?->avg_permissions ?? 0
+        );
+
+        $mostPopulated = Role::query()
+            ->with('translations')
+            ->withCount('admins')
+            ->orderByDesc('admins_count')
+            ->first();
+        $createdThisMonth = Role::query()
+            ->where('created_at', '>=', $now->copy()->startOfMonth())
+            ->count();
+
+        return [
+            'totalRoles' => $totalRoles,
+            'assignedAdmins' => $assignedAdmins,
+            'unassignedRoles' => $unassignedRoles,
+            'avgPermissions' => $avgPermissions,
+            'mostPopulated' => $mostPopulated,
+            'createdThisMonth' => $createdThisMonth,
+        ];
     }
 
     /**
@@ -182,8 +222,16 @@ class RoleService
      */
     public function getFormViewData(?Role $role = null): array
     {
+        $permissionsByGroup = $this->getAdminRoutesGrouped();
+
+        $permissionGroupLabels = [];
+        foreach (array_keys($permissionsByGroup) as $groupKey) {
+            $permissionGroupLabels['admin.' . $groupKey] = self::translateRouteName('admin.' . $groupKey);
+        }
+
         $data = [
-            'permissionsByGroup' => $this->getAdminRoutesGrouped(),
+            'permissionsByGroup' => $permissionsByGroup,
+            'permissionGroupLabels' => $permissionGroupLabels,
         ];
 
         if ($role) {

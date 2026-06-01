@@ -6,16 +6,12 @@ use App\Exceptions\ServiceException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Role\StoreRequest;
 use App\Http\Requests\Admin\Role\UpdateRequest;
-use App\Models\Admin;
 use App\Models\Permission;
-use App\Models\Role;
 use App\Services\Admin\Roles\RoleService;
 use App\Traits\Response\ResponseTrait;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
@@ -48,36 +44,7 @@ class RoleController extends Controller
      */
     public function statistics(Request $request): Response
     {
-        $now = Carbon::now();
-
-        $totalRoles = Role::query()->count();
-        $assignedAdmins = Admin::whereNotNull('role_id')->count();
-        $unassignedRoles = Role::query()->doesntHave('admins')->count();
-
-        $avgPermissions = (int) round(
-            DB::table('roles')
-                ->leftJoin(DB::raw('(SELECT role_id, COUNT(*) as permission_count FROM permission_role GROUP BY role_id) as pr'), 'roles.id', '=', 'pr.role_id')
-                ->selectRaw('AVG(COALESCE(pr.permission_count, 0)) as avg_permissions')
-                ->first()?->avg_permissions ?? 0
-        );
-
-        $mostPopulated = Role::query()
-            ->with('translations')
-            ->withCount('admins')
-            ->orderByDesc('admins_count')
-            ->first();
-        $createdThisMonth = Role::query()
-            ->where('created_at', '>=', $now->copy()->startOfMonth())
-            ->count();
-
-        return response()->view('admin.roles.parts.statistics', compact(
-            'totalRoles',
-            'assignedAdmins',
-            'unassignedRoles',
-            'avgPermissions',
-            'mostPopulated',
-            'createdThisMonth'
-        ));
+        return response()->view('admin.roles.parts.statistics', $this->roleService->getStatistics());
     }
 
     /**
@@ -136,6 +103,7 @@ class RoleController extends Controller
             'role' => $role,
             'permissions' => $viewData['permissions'],
             'permissionsByGroup' => $viewData['permissionsByGroup'],
+            'permissionGroupLabels' => $viewData['permissionGroupLabels'],
             'coverage' => $coverage,
         ]);
     }
@@ -245,9 +213,14 @@ class RoleController extends Controller
      */
     private function prepareRoleData(Request $request): array
     {
+        $validated = $request->validated();
+
         return [
-            'role' => $request->only(['ar', 'en']),
-            'permissions' => $request->input('permissions', []),
+            'role' => [
+                'ar' => $validated['ar'] ?? [],
+                'en' => $validated['en'] ?? [],
+            ],
+            'permissions' => $validated['permissions'] ?? [],
         ];
     }
 }

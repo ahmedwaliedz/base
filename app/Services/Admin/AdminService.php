@@ -46,6 +46,10 @@ class AdminService extends AuthenticatableBaseService
             : [];
 
         $permissionsByGroup = self::getAdminRoutesGrouped();
+        $permissionGroupLabels = [];
+        foreach (array_keys($permissionsByGroup) as $groupKey) {
+            $permissionGroupLabels['admin.' . $groupKey] = self::translateRouteName('admin.' . $groupKey);
+        }
         $permissionsCount = count($permissions);
 
         return array_merge($this->showVars(), [
@@ -54,6 +58,7 @@ class AdminService extends AuthenticatableBaseService
             'lowerClassName' => $this->lowerClassName,
             'permissions' => $permissions,
             'permissionsByGroup' => $permissionsByGroup,
+            'permissionGroupLabels' => $permissionGroupLabels,
             'permissionsCount' => $permissionsCount,
         ]);
     }

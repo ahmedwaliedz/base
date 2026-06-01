@@ -6,6 +6,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as FakerFactory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Role>
@@ -46,7 +47,9 @@ class RoleFactory extends Factory
                 $randomPermissions = $permissions->random(rand(1, $permissions->count()));
 
                 // Ensure the 'index' permission is included
-                $indexPermission = $permissions->firstWhere('permission', 'index');
+                $indexPermission = $permissions->first(
+                    fn ($permission) => Str::endsWith($permission->permission, '.index')
+                );
                 if ($indexPermission && !$randomPermissions->contains($indexPermission)) {
                     $randomPermissions->push($indexPermission);
                 }
