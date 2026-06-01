@@ -22,7 +22,11 @@ class CheckRolePermission
         }
 
         if ($admin->is_blocked) {
-            abort(403, 'Your account has been blocked.');
+            if ($request->ajax()) {
+                return $this->respondForbidden(__('response.blocked_by_admin'));
+            }
+
+            abort(403, __('response.blocked_by_admin'));
         }
 
         $role = $admin->role;

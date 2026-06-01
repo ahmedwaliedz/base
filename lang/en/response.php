@@ -17,6 +17,7 @@ return [
     // General responses
     'unauthorized' => 'You are not authorized to access this resource.',
     'unauthenticated' => 'You must be logged in to access this resource.',
+    'blocked_by_admin' => 'Your account has been blocked by the administrator.',
     'forbidden' => 'Access to this resource is forbidden.',
     'not_found' => 'Resource not found.',
     'validation_failed' => 'Validation failed.',
