@@ -1,0 +1,168 @@
+---
+alwaysApply: false
+description: "Code review and PR audit patterns — use when reviewing pull requests, auditing security, checking N+1 queries, validating architecture compliance, or enforcing CI governance"
+globs: []
+---
+
+> **⚠️ Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. These skills cover **Laravel 11–13** and **PHP 8.2–8.5**. Features tagged with a higher version (Laravel 12+, 13+, PHP 8.3+, 8.4+, 8.5+) are included for forward awareness — do NOT use them in current code unless the project has been upgraded to that version.
+
+# Laravel Code Review Skills (2025–2026)
+
+## How to Use This File
+This catalog defines focused skills for auditing Laravel pull requests, enforcing framework conventions, and identifying anti-patterns before merge. Each skill includes a concise definition, a real-world usage trigger, a practical example (for high-impact checks), and a verifiable source.
+
+**Review Prioritization Matrix:**
+1. 🔴 **Security & Data Integrity** (Mass assignment, secrets, injection prevention)
+2. 🟠 **Performance & Reliability** (N+1, caching, queue idempotency, transactions)
+3. 🟡 **Architecture & Maintainability** (DI, SoC, form requests, routing)
+4. 🟢 **Testing & CI Governance** (Coverage, static analysis, branch protection)
+
+**Pre-Merge Quick Checklist:**
+- [ ] No hardcoded secrets or `dump()/dd()` left in production paths
+- [ ] Form Requests used for all mutation endpoints
+- [ ] Eager loading applied for relational lists/collections
+- [ ] Tests cover happy path + critical edge cases
+- [ ] CI gates (Pint, PHPStan/Larastan, tests) pass green
+
+**Project-specific checklist:**
+- [ ] `$request->validated()` used, not `$request->all()`
+- [ ] Foreign key fields validated with `exists:table,id`
+- [ ] Blade views contain no DB queries, service calls, or model lookups
+- [ ] New `admin.*` routes have matching permission entries in `lang/*/admin/routes.php`
+- [ ] Boolean/toggle fields render correct edit-state in forms
+- [ ] Non-nullable seeder columns without defaults are populated
+- [ ] RBAC permission checks are not hardcoded outside the middleware
+
+---
+
+## Review Process Rules
+
+### Evidence standard
+- Every finding must include the **exact file path and line number** of the issue.
+- Do not invent files, methods, traits, routes, configs, or conventions that do not exist in the repository.
+- If a finding is based on inference (not directly observable), label it explicitly as **`[inference]`**.
+
+### Reporting format
+
+1. **Findings** — ordered by severity (🔴 Security → 🟠 Performance → 🟡 Architecture → 🟢 Testing)
+2. **Residual risks** — things that were not checked but may be relevant
+3. **Testing gaps** — what should be tested but is not
+4. **Fix prompts** — for each fixable finding, provide:
+   - Exact target file(s)
+   - Minimal change description
+   - Validation steps to confirm the fix
+
+## 🔐 Security & Compliance
+
+**Mass Assignment & Security Audit** — Verifies `$fillable`/`$guarded` properties and rejects unsafe direct request-to-model binding. Prevents unauthorized field updates.
+- **Use when:** Reviewing form submissions, API endpoints, or user-uploaded data handlers.
+- **Example:** `❌ User::update($request->all())` → `✅ User::update($request->validated())` (backed by Form Request)
+- **Source:** https://laravel.com/docs/13.x/eloquent#mass-assignment
+
+**Blade & Frontend Security Review** — Ensures all dynamic output is escaped via `{{ }}`, CSRF tokens are present in forms, and `@verbatim`/`{!! !!}` are used explicitly only when necessary.
+- **Use when:** Reviewing templates, Livewire components, or Inertia page props containing user-generated content.
+- **Source:** https://laravel.com/docs/13.x/blade#displaying-data
+
+**Environment Config & Secret Safety** — Validates that credentials, API keys, and sensitive values are sourced exclusively from `.env` or secret managers, never hardcoded.
+- **Use when:** Reviewing deployment scripts, third-party integrations, or new service configurations.
+- **Example:** `❌ env('STRIPE_SECRET')` in runtime → `✅ config('services.stripe.secret')`
+- **Source:** https://laravel.com/docs/13.x/configuration
+
+**Dependency & Package Security Audit** — Checks for abandoned packages, known CVEs, and permissive version constraints (`*`, `^1.0`). Recommends `composer audit` and Dependabot/Renovate integration.
+- **Use when:** Reviewing dependency updates, preparing major upgrades, or onboarding third-party libraries.
+- **Source:** https://getcomposer.org/doc/03-cli.md#audit
+
+---
+
+## ⚡ Performance & Database
+
+**N+1 Query Detection in PRs** — Identifies unoptimized eager loading in loops and recommends `->with()` or `->load()` refinements during code inspection.
+- **Use when:** Reviewing database-heavy features, list endpoints, or API resource collections.
+- **Example:** `❌ foreach ($posts as $post) { echo $post->author->name; }` → `✅ $posts = Post::with('author')->get();`
+- **Source:** https://laravel.com/docs/13.x/eloquent-loading
+
+**Eloquent Query Builder Optimization** — Recommends raw queries, chunking, or `cursor()` when ORM abstractions introduce memory leaks or unnecessary overhead.
+- **Use when:** Reviewing complex aggregations, background export jobs, or large-scale data migrations.
+- **Source:** https://laravel.com/docs/13.x/queries
+
+**Database Index & Migration Review** — Validates that foreign keys, frequently filtered columns, and composite search paths have corresponding indexes. Flags missing `unsigned()` or `nullable()` constraints.
+- **Use when:** Reviewing new migrations, schema changes, or slow-query reports.
+- **Source:** https://laravel.com/docs/13.x/migrations
+
+**Caching Strategy & Invalidation Audit** — Ensures cache tags are used for grouped invalidation, TTLs match data volatility, and race conditions (stale reads) are prevented via atomic cache-and-update patterns.
+- **Use when:** Reviewing read-heavy endpoints, session handlers, or computed dashboard metrics.
+- **Source:** https://laravel.com/docs/13.x/cache
+
+**Performance Profiling & Regression Detection** — Flags new unbounded loops, missing indexes, or synchronous heavy computations introduced in diffs. Recommends Blackfire/Tideways integration for baseline comparison.
+- **Use when:** Reviewing optimization PRs, auditing feature additions, or monitoring SLO deviations.
+- **Source:** https://laravel.com/docs/13.x/optimization
+
+---
+
+## 🏗 Architecture & Clean Code
+
+**Service Container & DI Pattern Review** — Enforces constructor injection over `Facade` abuse or `app()->make()` in controllers/services. Improves testability and lifecycle management.
+- **Use when:** Reviewing new services, refactoring legacy controllers, or validating unit test isolation.
+- **Example:** `❌ Cache::remember(...)` in business logic → `✅ public function __construct(CacheManager $cache) { ... }`
+- **Source:** https://laravel.com/docs/container
+
+**Routing & Middleware Order Audit** — Verifies route grouping, named routes, and correct middleware sequencing. Ensures auth/permission gates execute before resource loading.
+- **Use when:** Reviewing API definitions, SPA routing setups, or authentication/authorization flows.
+- **Source:** https://laravel.com/docs/13.x/middleware
+
+**Architecture & Separation of Concerns** — Identifies fat controllers, recommends Action/Service classes, and enforces domain boundaries. Prevents business logic leakage into routes or views.
+- **Use when:** Reviewing complex features, onboarding new developers, or planning architectural refactors.
+- **Source:** https://laravel.com/docs/13.x/controllers
+
+**Queue & Job Design Review** — Validates retry logic, timeouts, idempotency (unique IDs/DB locks), and proper exception handling. Prevents duplicate processing and worker deadlocks.
+- **Use when:** Reviewing async workflows, webhook handlers, or background task implementations.
+- **Example:** `❌ public function handle() { $this->sendEmail(); }` → `✅ public function __invoke() { DB::transaction(fn () => $this->sendEmail()); }`
+- **Source:** https://laravel.com/docs/13.x/queues
+
+**Error Handling & Exception Strategy** — Checks for custom exception mapping, graceful degradation, appropriate HTTP status codes, and avoids swallowing errors in `catch` blocks.
+- **Use when:** Reviewing API responses, global error handlers, or user-facing fallback flows.
+- **Source:** https://laravel.com/docs/13.x/errors
+
+---
+
+## 🧪 Testing & Validation
+
+**Validation & Form Request Compliance** — Ensures input rules are centralized in dedicated Form Requests. Enforces role-based validation logic and reusable rule sets.
+- **Use when:** Reviewing POST/PUT endpoints, auditing data integrity, or enforcing DRY validation.
+- **Source:** https://laravel.com/docs/13.x/validation#form-request-validation
+
+**Test Coverage & Assertion Validation** — Checks for meaningful assertions, proper test isolation (`RefreshDatabase`), and missing edge-case coverage. Flags brittle UI tests or over-mocked unit tests.
+- **Use when:** Reviewing feature branches, validating bug fixes, or enforcing CI quality gates.
+- **Source:** https://laravel.com/docs/13.x/testing
+
+**Testing Strategy & Mock Boundaries** — Validates appropriate use of `Mockery`/`PHPUnit` stubs vs. real repository/database layers. Enforces TDD/BDD patterns where applicable.
+- **Use when:** Reviewing unit test suites, refactoring legacy test code, or establishing team testing standards.
+- **Source:** https://phpunit.readthedocs.io/en/11.0/test-doubles.html
+
+---
+
+## 🛠 CI/CD, Static Analysis & Governance
+
+**Static Analysis & Linter Interpretation** — Translates PHPStan/Larastan and Pint warnings into actionable refactoring steps. Flags nullable return types and undefined array keys. 📌 Recommended: Larastan 2.0+ & PHPStan 1.10+ for strict generic typing and modern PHP 8.3+ features.
+- **Use when:** Reviewing CI feedback, modernizing legacy code, or enforcing strict PHP 8.3+ typing.
+- **Source:** https://laravel.com/docs/13.x/static-analysis
+
+**Branch Protection & PR Governance** — Enforces required status checks, minimum reviewers, conventional commits, and linear history. Prevents force pushes to protected branches.
+- **Use when:** Configuring repository settings, establishing team PR policies, or auditing CI/CD pipelines.
+- **Source:** https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/about-protected-branches
+
+**Documentation & Contract Compliance** — Validates inline docblocks, API resource schemas, OpenAPI/Swagger specs, and external developer guides. Ensures public APIs are versioned and backward-compatible.
+- **Use when:** Reviewing public APIs, preparing releases, or maintaining team knowledge bases.
+- **Source:** https://laravel.com/docs/13.x/requests
+
+---
+
+## ☁️ Configuration & Deployment
+
+**Environment Parity & Config Caching** — Verifies `config()` and `env()` usage boundaries. Ensures production builds use `php artisan config:cache` and environment-specific overrides are isolated.
+- **Use when:** Reviewing deployment scripts, staging-to-prod promotions, or multi-environment setups.
+- **Source:** https://laravel.com/docs/13.x/configuration#configuration-caching
+
+**Automated Quality Gates** — Integrates AI agents, Laravel Pint, and PHPStan into CI pipelines to auto-reject violations before human review. Reduces cognitive load on maintainers. ⚠️ Guardrail: AI agents should only assist with initial triage & formatting suggestions. Security, architecture, and business logic must always undergo mandatory human review.
+- **Use when:** Setting up CI/CD workflows, scaling review throughput, or enforcing baseline standards.
+- **Source:** https://laravel.com/docs/13.x/pint

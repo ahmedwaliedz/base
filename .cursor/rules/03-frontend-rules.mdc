@@ -72,3 +72,40 @@ Form component labels must be plain keys (e.g. `'name'`, `'slug'`) - NOT `__('ad
 - `{section}-action-{type}` (view/edit/delete/restore)
 
 See `.cursor/styles/admin-ui-standards.md` for full documentation.
+
+---
+
+## Dark RTL Dashboard Rules
+
+- **Preserve the dark RTL admin theme.** Do not change the admin visual system without explicit approval.
+- Use **RTL-safe logical CSS properties** instead of directional hardcodes:
+  - `margin-inline-start` / `margin-inline-end` instead of `margin-left` / `margin-right`
+  - `padding-inline` / `padding-block` instead of `padding-left` / `padding-right`
+  - `inset-inline-start` / `inset-inline-end` instead of `left` / `right`
+  - `text-align: start` / `end` instead of `left` / `right`
+- Avoid hardcoded `left` / `right` in new CSS; the admin already has RTL class toggles.
+
+### Table columns
+
+- Every table column must carry an **intentional alignment class** (text-start, text-center, text-end).
+- Status, toggle, and action columns must be explicitly aligned (typically `text-center`).
+
+### Toggle / switch
+
+- A toggle/switch must **visually differentiate active vs inactive** state (color, background, icon).
+- Do not render a toggle that always looks the same regardless of model value.
+
+### Create / edit forms
+
+- Use **consistent Bootstrap column sizes** (`col-md-6`, `col-md-4`, `col-md-12`) for form field grids.
+- Avoid single-field rows unless the field is intentionally full width (e.g., textarea, rich editor).
+
+### Labels
+
+- All visible admin UI labels must use **translation keys** (`__('admin/main.name')`) — never raw key strings or hardcoded labels.
+- The only exception is `<x-form.*>` component labels, which accept plain keys (e.g. `'name'`) because the component resolves the translation internally.
+
+### Select / toggle edit state
+
+- When rendering a `<select>` or toggle for a **boolean or status field**, the current model value must be correctly `selected` / `checked` in the edit page.
+- Verify that `old()` fallback does not override the model value on edit forms.

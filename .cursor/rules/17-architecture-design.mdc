@@ -1,0 +1,42 @@
+---
+alwaysApply: false
+description: "Architecture and design patterns — use when discussing or implementing service layers, repositories, DTOs, clean architecture, CQRS, modular monoliths, or multi-tenancy"
+globs: ["app/Services/**", "app/Contracts/**", "app/Actions/**", "app/Repositories/**"]
+---
+
+> **⚠️ Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. These skills cover **Laravel 11–13** and **PHP 8.2–8.5**. Features tagged with a higher version (Laravel 12+, 13+, PHP 8.3+, 8.4+, 8.5+) are included for forward awareness — do NOT use them in current code unless the project has been upgraded to that version.
+
+# Architecture & Design Skills (2025–2026)
+
+## How to Use This File
+
+This file catalogs 20 foundational-to-advanced skills specific to software architecture and design patterns within Laravel. Each skill includes a concise definition, a real-world usage trigger, and a source reference.
+
+When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Use these skills as the foundation before referencing advanced infrastructure or scaling patterns.
+
+Prefer modern architectural idioms for new applications; when refactoring legacy codebases, apply patterns incrementally and document trade-offs where appropriate.
+
+Source URLs point to official Laravel documentation and authoritative architecture resources. For patterns without dedicated Laravel docs (most architecture patterns), the best available reference is used.
+
+## Skill Catalog
+
+- **MVC Pattern in Laravel** — separates concerns into models, views, and controllers for organized application structure. *Use when:* organizing codebases, enabling team parallelism, or simplifying testing. *Source:* https://laravel.com/docs/13.x/structure
+- **Service Layer Abstraction** — encapsulates business logic outside controllers for reusability and testability. *Use when:* sharing logic across endpoints, isolating domain rules, or enabling dependency injection. *Source:* training
+- **Repository Pattern (When/When Not)** — abstracts data access behind interfaces; avoid when simple Eloquent queries suffice. *Use when:* swapping data sources, enabling complex query composition, or facilitating testing. *Source:* training
+- **Action Classes** — single-purpose invokable classes for discrete business operations with explicit inputs. *Use when:* replacing fat controllers, enabling command-query separation, or improving test granularity. *Source:* training
+- **DTOs & Value Objects** — models immutable data structures with validation and behavior for type safety. *Use when:* passing complex parameters, enforcing invariants, or clarifying API contracts. *Source:* training
+- **Clean Architecture Boundaries** — organizes code into layers with dependency inversion to protect core business logic. *Use when:* building long-lived applications, enabling framework independence, or managing complex domains. *Source:* https://www.martinfowler.com/bliki/CleanArchitecture.html
+- **Hexagonal/Ports-and-Adapters** — isolates core logic from external concerns via defined interfaces and adapters. *Use when:* supporting multiple delivery mechanisms, enabling testing isolation, or evolving infrastructure. *Source:* training
+- **Contract-First Design** — defines interfaces (Laravel Contracts) before implementing concrete classes to enable swappable bindings and clean dependency injection. *Use when:* building highly testable systems, supporting multiple implementations, or enforcing architectural seams between layers. *Source:* training
+- **DDD Lite: Entities & Aggregates** — applies strategic domain patterns for complex business rules without full overhead. *Use when:* modeling rich domains, ensuring consistency boundaries, or enabling event workflows. *Source:* training
+- **CQRS Where Appropriate** — separates read and write models to optimize for query performance or write complexity. *Use when:* building reporting dashboards, handling high-write throughput, or enabling eventual consistency. *Source:* training
+- **Event Sourcing Awareness** — stores state changes as immutable events to rebuild state by replaying streams. *Use when:* requiring full audit trails, enabling temporal queries, or supporting undo workflows. *Source:* training
+- **Modular Monolith Structure** — organizes code into domain-focused modules with explicit boundaries while sharing infrastructure. *Use when:* scaling team size, preparing for future extraction, or managing complexity safely. *Source:* https://www.martinfowler.com/articles/microservice-patterns.html
+- **Multi-Tenancy Strategies** — isolates customer data via single-DB schema separation or multi-DB provisioning approaches. *Use when:* building SaaS platforms, enforcing data isolation, or customizing per-tenant behavior. *Source:* training
+- **Queue-Based Decoupling** — uses message queues to separate time-sensitive actions from background processing workflows. *Use when:* improving response times, enabling retry logic, or integrating async systems. *Source:* https://laravel.com/docs/13.x/queues
+- **Pipeline Pattern** — passes a payload through an ordered sequence of stages, each transforming or short-circuiting (Laravel ships `Illuminate\Pipeline\Pipeline`). *Use when:* composing middleware-like flows, building data import/order processing chains, or modeling step-wise validation. *Source:* training
+- **Saga Pattern for Distributed Transactions** — coordinates compensating actions across services to maintain eventual data consistency. *Use when:* orchestrating multi-step processes, handling partial failures, or avoiding two-phase commit. *Source:* training
+- **Feature Flag Integration (Pennant)** — toggles functionality at runtime for gradual rollouts or A/B testing scenarios. *Use when:* deploying risky changes safely, personalizing experiences, or enabling canary releases. *Source:* https://laravel.com/docs/13.x/pennant
+- **Bounded Contexts Definition** — defines explicit boundaries between subdomains to manage business complexity effectively. *Use when:* aligning code with capabilities, enabling team autonomy, or preventing model pollution. *Source:* training
+- **Anti-Corruption Layers** — isolates legacy or external systems behind translation adapters to protect domain integrity. *Use when:* integrating poorly designed APIs, modernizing incrementally, or enforcing architectural boundaries. *Source:* training
+- **Strangler Fig Migration Pattern** — incrementally replaces legacy functionality with new implementations behind routing logic. *Use when:* modernizing monoliths, reducing rewrite risks, or enabling parallel development streams. *Source:* training

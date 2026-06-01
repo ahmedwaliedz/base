@@ -1,0 +1,45 @@
+---
+alwaysApply: false
+description: "Laravel ecosystem awareness — use when evaluating or integrating Sanctum, Passport, Horizon, Reverb, Pulse, Pennant, Octane, Nova, Cashier, Scout, Socialite, or other official packages"
+globs: ["config/horizon.php", "config/telescope.php", "config/pulse.php", "config/pennant.php"]
+---
+
+> **⚠️ Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. These skills cover **Laravel 11–13** and **PHP 8.2–8.5**. Features tagged with a higher version (Laravel 12+, 13+, PHP 8.3+, 8.4+, 8.5+) are included for forward awareness — do NOT use them in current code unless the project has been upgraded to that version.
+
+# Ecosystem Awareness Skills (2025–2026)
+
+## How to Use This File
+
+This file catalogs 23 foundational-to-advanced skills specific to the official and community Laravel ecosystem. Each skill includes a concise definition, a real-world usage trigger, and a source reference.
+
+When assisting users, match their request to the most relevant package or platform name and cite it when explaining recommendations. Use these ecosystem tools to solve common problems rapidly before building custom solutions from scratch.
+
+Prefer official Laravel-backed packages for new projects; when evaluating legacy stacks, document migration paths and note first-party alternatives that reduce long-term maintenance overhead.
+
+Source URLs point to official Laravel documentation and ecosystem product pages. For patterns without dedicated documentation, the best available reference is used.
+
+## Skill Catalog
+
+- **Sanctum for SPA & Token Auth** — provides lightweight API token authentication with CSRF protection for SPAs. *Use when:* securing Inertia/Vue/React apps, building mobile APIs, or avoiding OAuth complexity. *Source:* https://laravel.com/docs/13.x/sanctum
+- **Passport for Full OAuth2 Server** — implements RFC-compliant OAuth2 authorization server with token management and scopes. *Use when:* building public APIs, enabling third-party integrations, or supporting complex grant types. *Source:* https://laravel.com/docs/13.x/passport
+- **Horizon for Redis Queue Dashboard** — monitors queue metrics, manages workers, and provides retry UI for failed jobs. *Use when:* scaling background processing, debugging job failures, or optimizing throughput. *Source:* https://laravel.com/docs/13.x/horizon
+- **Reverb for First-Party WebSockets** — provides scalable, self-hosted WebSocket server integrated with Laravel broadcasting. *Use when:* implementing real-time features, replacing Pusher, or reducing third-party dependencies. *Source:* https://laravel.com/docs/13.x/reverb
+- **Pulse for Real-Time App Monitoring** — aggregates performance metrics, slow queries, and exceptions in a visual dashboard. *Use when:* diagnosing production issues, tracking SLOs, or alerting on anomalies. *Source:* https://laravel.com/docs/13.x/pulse
+- **Pennant for Feature Flag Management** — toggles features at runtime for gradual rollouts, A/B testing, or kill switches. *Use when:* deploying risky changes safely, personalizing experiences, or enabling canary releases. *Source:* https://laravel.com/docs/13.x/pennant
+- **Octane for High-Performance Serving** — uses Swoole, RoadRunner, or FrankenPHP to keep app in memory between requests. *Use when:* achieving sub-millisecond latency, reducing bootstrap overhead, or scaling efficiently. *Source:* https://laravel.com/docs/13.x/octane
+- **Forge for Server Provisioning** — automates VPS setup, Nginx config, SSL, and deployment for Laravel applications. *Use when:* managing infrastructure, enabling one-click deploys, or standardizing environments. *Source:* https://forge.laravel.com/docs
+- **Vapor for Serverless AWS Deployment** — deploys Laravel to AWS Lambda with auto-scaling, queues, and asset handling. *Use when:* eliminating server management, handling spiky traffic, or reducing infrastructure cost. *Source:* https://vapor.laravel.com/docs
+- **Laravel Cloud for Managed Platform** — provides usage-based, auto-scaling hosting with integrated databases and monitoring. *Use when:* reducing DevOps overhead, enabling rapid prototyping, or scaling without infrastructure management. *Source:* https://cloud.laravel.com/docs
+- **Folio for Page-Based Routing** — enables file-system routing for pages and API endpoints without explicit route definitions. *Use when:* building content sites, reducing boilerplate, or adopting Next.js-like patterns. *Source:* https://laravel.com/docs/13.x/folio
+- **Volt for Functional Livewire Components** — writes Livewire components as single-file, function-based units with reactive state. *Use when:* simplifying component logic, reducing class boilerplate, or adopting functional patterns. *Source:* https://laravel.com/docs/13.x/volt
+- **Nova for Admin Panel Scaffolding** — provides customizable admin interface with resource management, filters, and actions. *Use when:* building internal tools, managing content, or accelerating CRUD development. *Source:* https://nova.laravel.com/docs
+- **Jetstream & Fortify for Auth Scaffolding** — provides pre-built authentication, profiles, and team management with Livewire or Inertia. *Use when:* launching MVPs quickly, standardizing auth flows, or reducing boilerplate. Breeze → Jetstream migration requires manual feature addition (2FA, teams, API tokens); plan your stack choice early to avoid refactoring overhead. *Source:* https://laravel.com/docs/13.x/jetstream
+- **Breeze for Minimal Auth Scaffolding** — offers lightweight authentication with login, registration, and password reset using Blade, Livewire, or Inertia. *Use when:* starting simple projects, prototyping MVPs, or preferring minimal boilerplate without team management. *Source:* https://laravel.com/docs/starter-kits#laravel-breeze
+- **Cashier for Stripe/Paddle Subscriptions** — manages recurring billing, trials, and invoices with minimal code. *Use when:* implementing SaaS pricing, handling upgrades/downgrades, or automating dunning. *Source:* https://laravel.com/docs/13.x/billing
+- **Scout for Full-Text Search Integration** — indexes Eloquent models and queries via Algolia, Meilisearch, or database drivers. *Use when:* building search features, enabling fuzzy matching, or offloading complex queries. *Source:* https://laravel.com/docs/13.x/scout
+- **Socialite for OAuth Login Providers** — simplifies authentication via Google, GitHub, Twitter, and other OAuth services. *Use when:* enabling social sign-in, reducing password management, or supporting enterprise SSO. *Source:* https://laravel.com/docs/13.x/socialite
+- **Echo for Broadcasting Client Integration** — provides JavaScript client for listening to Laravel broadcast events via Pusher, Reverb, or others. *Use when:* implementing real-time UI updates, chat features, or live notifications. *Source:* https://laravel.com/docs/13.x/broadcasting
+- **Sail for Docker-Based Local Development** — provides lightweight Docker scaffolding with pre-configured services for local Laravel development. *Use when:* standardizing team environments, avoiding local PHP installation, or replicating production stack locally. *Source:* https://laravel.com/docs/13.x/sail
+- **Herding for PHP Version Switching** — provides automatic PHP version switching for macOS and Windows development environments. *Use when:* working across multiple Laravel/PHP versions or streamlining local environment setup. Linux developers should use `mise` or `asdf` as cross-platform equivalents for seamless version management. *Source:* https://github.com/laravel/herding
+- **Dusk for Browser Automation Testing** — provides expressive Chrome/Firefox testing for JavaScript interactions and DOM manipulation. *Use when:* writing end-to-end tests, validating complex frontend flows, or automating browser-based user journeys. Native Laravel integration (RefreshDatabase, model factories, service container access) makes it uniquely convenient for full-stack E2E despite heavier overhead than modern alternatives like Playwright. *Source:* https://laravel.com/docs/13.x/dusk
+- **Pest for Expressive PHP Testing** — provides an elegant wrapper around PHPUnit with fluent expectations, datasets, and parallel execution. *Use when:* writing readable tests, reducing PHPUnit boilerplate, or adopting modern testing patterns. Pest maintains 100% PHPUnit compatibility; existing test suites run unchanged, eliminating migration friction. *Source:* https://pestphp.com/docs

@@ -1,0 +1,60 @@
+---
+alwaysApply: false
+description: "Testing and QA patterns — use when writing tests, configuring PHPUnit/Pest, mocking, faking, static analysis, CI quality gates, or browser testing"
+globs: ["tests/**", "phpunit.xml", "phpstan.neon*", "pint.json"]
+---
+
+> **⚠️ Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. These skills cover **Laravel 11–13** and **PHP 8.2–8.5**. Features tagged with a higher version (Laravel 12+, 13+, PHP 8.3+, 8.4+, 8.5+) are included for forward awareness — do NOT use them in current code unless the project has been upgraded to that version.
+
+# Testing & QA Skills (2025–2026)
+
+## How to Use This File
+
+This file catalogs 20 foundational-to-advanced skills specific to testing and quality assurance within the Laravel ecosystem. Each skill includes a concise definition, a real-world usage trigger, and a source reference.
+
+When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Use these skills as the foundation before referencing advanced CI/CD or performance patterns.
+
+Prefer Laravel 13 and Pest 3 idioms for new test suites; when editing legacy test suites, respect existing PHPUnit conventions and note migration paths where appropriate.
+
+Source URLs point to the Laravel 13.x docs because they are forward-cumulative — the same pages describe behavior present in 11.x and 12.x, with version-specific features clearly tagged (e.g., "Laravel 13+"). When working in an older Laravel version, the linked documentation still applies; only the version-tagged features require an upgrade.
+
+## Skill Catalog
+
+- **PHPUnit & Pest 3 Structure** — organizes tests into descriptive suites with expressive assertion syntax and lifecycle hooks. *Use when:* verifying business logic, preventing regressions, or documenting expected behavior. *Source:* https://laravel.com/docs/13.x/testing
+- **Test-Driven Development (TDD)** — writes failing tests first, then implements only enough production code to make them pass. *Use when:* clarifying ambiguous requirements, designing testable interfaces, or building a regression safety net from day one. *Source:* training
+- **Feature vs Unit Test Scope** — distinguishes HTTP-level integration tests from isolated class or method verification. *Use when:* balancing test speed versus coverage, mocking external dependencies, or validating user journeys. *Source:* https://laravel.com/docs/13.x/testing#feature-tests
+- **HTTP Test Helpers** — simulates requests with authentication, headers, and payloads for controller validation. *Use when:* validating API endpoints, testing middleware effects, or asserting response structures. *Source:* https://laravel.com/docs/13.x/http-tests
+- **Database Testing with RefreshDatabase** — wraps each test in transactions to isolate data changes and reset state. *Use when:* testing model interactions, validating migrations, or ensuring test independence. *Source:* https://laravel.com/docs/13.x/database-testing
+- **Mocking with Mockery** — creates test doubles for dependencies with expectation verification and argument matching. *Use when:* isolating units under test, simulating external services, or verifying collaboration protocols. *Source:* https://laravel.com/docs/13.x/mocking
+- **Faking Facades (Mail, Queue, Event, Http)** — replaces side-effect services with in-memory spies for assertion without execution. *Use when:* testing notification logic, validating job dispatch, or asserting HTTP client usage. *Source:* https://laravel.com/docs/13.x/mocking#facades
+- **Factories with States & Sequences** — defines reusable model blueprints with variations for different test scenarios. *Use when:* generating realistic test data, covering edge cases, or reducing fixture boilerplate. *Source:* https://laravel.com/docs/13.x/database-testing#defining-model-factories
+- **Parallel Test Execution** — runs test suites concurrently across multiple processes to reduce total execution time. *Use when:* scaling CI pipelines, handling large test suites, or improving developer feedback loops. *Source:* https://laravel.com/docs/13.x/testing#running-tests-in-parallel
+- **Code Coverage Reporting** — measures which lines and branches are exercised by tests to identify untested code. *Use when:* enforcing quality gates, prioritizing test writing, or meeting compliance requirements. *Source:* training
+- **Mutation Testing with Infection** — introduces small code changes to verify tests fail, ensuring test effectiveness. *Use when:* improving test quality, detecting weak assertions, or justifying coverage metrics. *Source:* https://infection.github.io
+- **Pest Architecture Testing** — declares enforceable rules about layering, namespaces, and dependencies (e.g., controllers must not touch the database directly). *Use when:* protecting hexagonal/service-layer boundaries, preventing accidental coupling, or codifying ADR decisions as executable tests. *Source:* https://pestphp.com/docs/arch-testing
+- **PHPStan/Larastan Static Analysis** — performs type inference and rule checking to catch errors before runtime execution. *Use when:* preventing null pointer exceptions, enforcing strict types, or enabling safe refactoring. *Source:* https://laravel.com/docs/13.x/static-analysis
+- **Laravel Pint Code Style Enforcement** — auto-formats PHP code to match framework conventions via CLI or pre-commit hook. *Use when:* maintaining team consistency, reducing PR review noise, or onboarding new developers. *Source:* https://laravel.com/docs/13.x/pint
+- **PHP CS Fixer & Rector for Automation** — applies configurable rules for code style and automated version-safe refactoring. *Use when:* modernizing legacy code, enforcing architectural patterns, or preparing for framework upgrades. *Source:* training
+- **CI Quality Gates** — configures pipelines to block merges on test failure, lint errors, or coverage thresholds. *Use when:* maintaining code health, preventing regressions, or enforcing team standards. *Source:* training
+- **Browser Testing with Laravel Dusk** — automates real browser interactions for JavaScript-heavy feature validation. *Use when:* testing Livewire/Inertia apps, verifying authentication flows, or capturing screenshots on failure. *Source:* https://laravel.com/docs/13.x/dusk
+- **Contract Testing for APIs** — validates that API providers and consumers adhere to agreed-upon request/response schemas. *Use when:* managing microservice boundaries, preventing breaking changes, or enabling independent deployment. *Source:* training
+- **Performance Regression Testing** — benchmarks critical paths to detect slowdowns introduced by recent code changes. *Use when:* optimizing queries, validating caching strategies, or ensuring SLA compliance. *Source:* training
+- **Security Scanning in CI** — integrates dependency CVE checks and static security analysis into pull request workflows. *Use when:* preventing vulnerable dependencies, enforcing secure coding practices, or meeting compliance audits. *Source:* training
+
+---
+
+## Project-Specific Testing Rules
+
+Add or update tests when changing validation, RBAC, services, migrations, or critical dashboard behavior.
+
+### Required test/check coverage
+
+| Area | What to test/check |
+|------|-------------------|
+| Admin routes | Every `admin.*` route has a corresponding permission string in `lang/*/admin/routes.php` |
+| Translation keys | No missing keys for labels rendered in admin views (scan `__('admin/...')` calls against `lang/*/admin/` files) |
+| Boolean/toggle edit state | Select/checkbox renders the existing model value correctly (not just default state) |
+| Seeder compatibility | All non-nullable columns without defaults are provided; translations follow parent-first + batch pattern |
+| N+1 prevention | Important index/show pages eager-load all displayed relations (add a test that asserts no lazy loading if feasible) |
+
+If tests cannot be added, document manual verification steps in the PR or commit message.

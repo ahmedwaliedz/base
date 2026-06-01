@@ -8,6 +8,15 @@ Only open deeper `.cursor` files when the task area matches the routing table in
 
 Do not read the full `.cursor` tree unless explicitly asked.
 
+Route by category:
+- Backend -> `rules/02-architecture.mdc` + `rules/04-backend-rules.mdc`
+- Frontend/Blade -> `rules/03-frontend-rules.mdc`
+- RBAC -> `rules/08-custom-rbac.mdc`
+- DB/Seeder/Model -> `rules/05-database-rules.mdc` + `rules/12-database-eloquent.mdc`
+- Security -> `rules/18-security.mdc`
+- Performance -> `rules/19-performance.mdc`
+- Tests -> `rules/16-testing-qa.mdc`
+
 Task:
 - [Paste the exact checklist item, bug, feature, or plan section here]
 
@@ -33,6 +42,10 @@ Rules:
 - Do not introduce new architecture unless clearly required.
 - Reuse existing services, components, traits, base controllers, and CRUD patterns.
 - Keep old behavior untouched unless the task explicitly changes it.
+- Use `$request->validated()` - never `$request->all()` for create/update.
+- Validate foreign keys with `exists:table,id`.
+- Keep Blade free of DB queries, service calls, and model lookups.
+- Eager-load all relations displayed in admin views.
 - If RBAC permission behavior is unclear, stop and ask before changing it.
 - Update the plan/checklist only after implementation and verification.
 

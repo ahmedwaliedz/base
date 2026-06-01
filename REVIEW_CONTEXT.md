@@ -36,20 +36,27 @@ Use it instead of re-reading the full `.cursor` tree unless the task touches a n
 - Watch for N+1 queries in list pages and API responses.
 - Ensure tests cover happy path, validation failures, and critical edge cases.
 
+## Evidence Requirements
+
+- Every finding must cite the **exact file path and line number**.
+- Do not reference files, methods, traits, routes, or configs that do not exist in the repository.
+- If a finding is based on inference (not directly observable), label it `[inference]`.
+
 ## Open Only If Needed - Routing Table
 
-Open these `.cursor` files only when the changed area matches the routing rule:
+Open these `.cursor` files **only** when the changed area matches the routing rule:
 
-| Changed Area | Open `.cursor` File |
-|--------------|---------------------|
+| Changed Area | Open `.cursor` File(s) |
+|--------------|------------------------|
 | `resources/views/**`, `app/View/Components/**`, `resources/js/**`, `resources/css/**`, `public/style/admin/**` | `rules/03-frontend-rules.mdc` |
 | `routes/admin.php`, sidebar/menu files, role/permission code, admin route names, permission checks | `rules/08-custom-rbac.mdc` |
 | `app/Models/**`, `database/migrations/**`, seeders, factories, relationships, query-heavy services | `rules/05-database-rules.mdc` + `rules/12-database-eloquent.mdc` |
-| Forms, Form Requests, uploads, auth, admin/user actions, permissions, user input | `rules/18-security.mdc` |
-| List pages, dashboards, counts, filters, reports, loops, notifications, eager loading, heavy queries | `rules/19-performance.mdc` |
-| `tests/**`, missing tests, changed behavior without tests | `rules/16-testing-qa.mdc` |
+| Forms, Form Requests, uploads, auth, admin/user actions, permissions, user input, secrets, hidden fields | `rules/18-security.mdc` |
+| List pages, dashboards, counts, filters, reports, loops, notifications, eager loading, heavy queries, view composers | `rules/19-performance.mdc` |
+| `tests/**`, missing tests, changed behavior without tests, seeder compatibility, translation keys | `rules/16-testing-qa.mdc` |
 | Full PR / deep audit only | `rules/22-code-review.mdc` |
 | Implementation workflow / process review only | `workflows/development-workflow.md` or `workflows/hotfix-workflow.md` |
+| Controller/service/request architecture, Blade restrictions, FK validation | `rules/02-architecture.mdc` + `rules/04-backend-rules.mdc` |
 
 ## Routing Rule
 
@@ -67,6 +74,7 @@ Constraints:
 - Make the smallest safe change.
 - Do not touch unrelated files.
 - Keep validation in Form Requests and business logic in Services.
+- Use $request->validated(), not $request->all().
 - Add or update tests if behavior changes.
 
 Expected result:
@@ -78,3 +86,4 @@ Expected result:
 - Use this file first.
 - Only open deeper `.cursor` files when the changed area matches the routing table above.
 - If the task is localized, review only the impacted files plus the rules that apply to them.
+- Keep token usage efficient: do not read the full `.cursor` tree unless explicitly asked.

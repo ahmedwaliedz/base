@@ -36,3 +36,27 @@ alwaysApply: true
 ## Evolvability
 
 - Design tables so future changes can be applied safely; keep schema aligned with real domain needs.
+
+## Seeders
+
+- **Seeder fields must match migration constraints.** If a column is non-nullable and has no database default, seeders must provide a value.
+- Do not rely on upload/file traits to assign plain string file paths during seeding unless the trait explicitly supports it. When models use file upload traits, use direct `DB::table()` inserts with known paths, or a verified safe model path.
+- For translated entities, insert the parent row first, then insert all translation rows in one batch:
+  ```php
+  $id = DB::table('countries')->insertGetId([...]);
+  DB::table('country_translations')->insert([
+      ['country_id' => $id, 'locale' => 'en', 'name' => '...'],
+      ['country_id' => $id, 'locale' => 'ar', 'name' => '...'],
+  ]);
+  ```
+- Batched translation inserts (inserting both locales in a single `->insert()` call) are preferred over repeated per-locale calls.
+- Do not change seeded data unless the task explicitly requires data changes.
+
+## Model conventions
+
+- Models used in dashboard tables/cards must declare their key relationships (e.g., `public const RELATIONS = ['role'];`).
+- Boolean/status fields must have an explicit `$casts` declaration:
+  ```php
+  protected $casts = ['is_active' => 'boolean', 'is_blocked' => 'boolean'];
+  ```
+- Relations used in admin index views must be eager-loaded by the service or controller — not lazy-loaded in templates.

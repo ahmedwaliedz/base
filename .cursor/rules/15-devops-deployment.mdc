@@ -1,0 +1,42 @@
+---
+alwaysApply: false
+description: "DevOps and deployment patterns — use when working with Docker, Nginx, CI/CD, queue workers, Redis, logging, monitoring, Sail, or production deployment"
+globs: ["docker-compose.*", "Dockerfile", ".github/**", "deploy/**"]
+---
+
+> **⚠️ Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. These skills cover **Laravel 11–13** and **PHP 8.2–8.5**. Features tagged with a higher version (Laravel 12+, 13+, PHP 8.3+, 8.4+, 8.5+) are included for forward awareness — do NOT use them in current code unless the project has been upgraded to that version.
+
+# DevOps & Deployment Skills (2025–2026)
+
+## How to Use This File
+
+This file catalogs 20 foundational-to-advanced skills specific to DevOps and deployment within the Laravel ecosystem. Each skill includes a concise definition, a real-world usage trigger, and a source reference.
+
+When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Use these skills as the foundation before referencing advanced architecture or scaling patterns.
+
+Prefer modern infrastructure idioms for new code; when editing legacy environments, respect existing provisioning constraints and note upgrade paths where appropriate.
+
+Source URLs point to the Laravel 13.x docs because they are forward-cumulative — the same pages describe behavior present in 11.x and 12.x, with version-specific features clearly tagged (e.g., "Laravel 13+"). When working in an older Laravel version, the linked documentation still applies; only the version-tagged features require an upgrade.
+
+## Skill Catalog
+
+- **Docker Multi-Stage Builds** — creates optimized, minimal production images with separate build and runtime stages. *Use when:* reducing image size, improving build reproducibility, or enabling CI/CD pipeline integration. *Source:* training
+- **docker-compose for Local Environments** — orchestrates Laravel, PHP-FPM, Nginx, Redis, and database services locally. *Use when:* standardizing team setups, replicating production topology, or enabling one-command onboarding. *Source:* https://laravel.com/docs/13.x/sail
+- **Nginx Configuration for Laravel** — configures reverse proxy, PHP-FPM passthrough, and static asset serving. *Use when:* deploying to VPS, optimizing TLS termination, or enabling HTTP/2 push. *Source:* https://laravel.com/docs/13.x/deployment
+- **PHP-FPM Tuning & Process Management** — adjusts pm.max_children, request_terminate_timeout, and opcache for throughput. *Use when:* handling high concurrency, preventing memory leaks, or optimizing cold-start performance. *Source:* training
+- **Redis for Cache & Queue Backends** — provides in-memory data structures for caching, sessions, and job queues. *Use when:* scaling horizontally, reducing database load, or enabling real-time features. *Source:* https://laravel.com/docs/13.x/redis
+- **Supervisor for Queue Worker Management** — monitors and restarts Laravel queue workers as system services. *Use when:* ensuring job processing reliability, enabling auto-recovery, or managing multiple queue priorities. *Source:* https://laravel.com/docs/13.x/queues#supervisor-configuration
+- **GitHub Actions CI/CD Pipelines** — automates testing, linting, and deployment on push or pull request events. *Use when:* enforcing code quality, enabling preview deployments, or integrating with Laravel Cloud. *Source:* training
+- **Zero-Downtime Deployment Strategies** — uses atomic symlinks, health checks, and graceful worker draining for seamless releases. *Use when:* maintaining SLAs, avoiding user disruption, or enabling frequent releases. *Source:* training
+- **Blue/Green Deployment Patterns** — maintains parallel environments and switches traffic after validation. *Use when:* testing production changes safely, enabling instant rollback, or supporting A/B testing. *Source:* training
+- **.env Management & Secret Handling** — separates configuration from code and integrates with vaults or AWS Secrets Manager. *Use when:* securing credentials, enabling environment-specific overrides, or complying with security audits. *Source:* https://laravel.com/docs/13.x/configuration#environment-configuration
+- **Structured Logging & Log Channels** — configures JSON logs, contextual metadata, and multiple outputs for aggregation. *Use when:* enabling log aggregation, debugging distributed systems, or meeting compliance requirements. *Source:* https://laravel.com/docs/13.x/logging
+- **Error Tracking Integration (Sentry/Flare)** — captures exceptions with stack traces, user context, and release tracking. *Use when:* monitoring production health, prioritizing bug fixes, or alerting on error spikes. *Source:* training
+- **Server Hardening Basics** — disables dangerous PHP functions, configures firewall rules, and restricts file permissions. *Use when:* reducing attack surface, complying with security standards, or preparing for penetration testing. *Source:* training
+- **SSL/TLS Configuration & HTTPS Enforcement** — obtains certificates via Let's Encrypt and redirects HTTP to HTTPS. *Use when:* securing data in transit, meeting browser requirements, or enabling HTTP/2. *Source:* training
+- **Reverse Proxy & Load Balancer Setup** — distributes traffic across multiple app instances with health checks. *Use when:* scaling horizontally, improving fault tolerance, or enabling geographic distribution. *Source:* training
+- **Laravel Reverb Production Deployment** — configures WebSocket server with Nginx proxy, Supervisor, and scaling considerations. *Use when:* implementing real-time features, broadcasting events, or replacing Pusher with self-hosted solution. *Source:* https://laravel.com/docs/reverb
+- **Laravel Pulse Monitoring Setup** — installs performance dashboard for tracking slow queries, jobs, and exceptions in real-time. *Use when:* diagnosing production issues, identifying bottlenecks, or monitoring SLOs. *Source:* https://laravel.com/docs/pulse
+- **Laravel Cloud Usage-Based Scaling** — leverages managed platform with auto-scaling, databases, and integrated monitoring. *Use when:* reducing DevOps overhead, enabling rapid prototyping, or scaling without infrastructure management. *Source:* https://cloud.laravel.com/pricing
+- **Native Health Check Endpoints (Laravel 11+)** — exposes a built-in `/up` route returning HTTP 200 when the application boots successfully. *Use when:* configuring Kubernetes liveness/readiness probes, AWS ALB target group checks, or external uptime monitors. *Source:* https://laravel.com/docs/13.x/deployment
+- **Laravel Octane & FrankenPHP** — keeps the framework bootstrapped in memory via Swoole, RoadRunner, or FrankenPHP for sub-millisecond request handling. *Use when:* needing extreme throughput, eliminating per-request boot overhead, or hosting long-lived application workers. *Source:* https://laravel.com/docs/13.x/octane

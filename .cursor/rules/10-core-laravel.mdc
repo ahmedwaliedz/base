@@ -1,0 +1,48 @@
+---
+alwaysApply: false
+description: "Core Laravel patterns — use when working with routing, middleware, controllers, service container, providers, Blade, validation, Artisan, queues, events, or request lifecycle"
+globs: ["routes/**", "app/Http/Controllers/**", "app/Http/Middleware/**", "app/Providers/**", "app/Http/Requests/**", "resources/views/**"]
+---
+
+> **⚠️ Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. These skills cover **Laravel 11–13** and **PHP 8.2–8.5**. Features tagged with a higher version (Laravel 12+, 13+, PHP 8.3+, 8.4+, 8.5+) are included for forward awareness — do NOT use them in current code unless the project has been upgraded to that version.
+
+# Core Laravel Skills (2025–2026)
+
+## How to Use This File
+
+This file catalogs 24 foundational-to-advanced skills specific to Core Laravel development. Each skill includes a concise definition, a real-world usage trigger, and a source reference.
+
+When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Use these skills as the foundation before referencing advanced patterns from other categories.
+
+Prefer Laravel 13 idioms for new code; when editing legacy code, respect the existing version's constraints and note upgrade paths where appropriate.
+
+Source URLs point to the Laravel 13.x docs because they are forward-cumulative — the same pages describe behavior present in 11.x and 12.x. Skills tagged with a specific version (e.g., "Laravel 12+") indicate when the feature first became available; the cited doc page still applies to all listed target versions.
+
+## Skill Catalog
+
+- **Request Lifecycle** — understands HTTP kernel, middleware pipeline, service provider booting, and response lifecycle. *Use when:* debugging request flow, optimizing middleware order, or tracing boot sequence. *Source:* https://laravel.com/docs/13.x/lifecycle
+- **Service Container** — Laravel's IoC container for binding interfaces to implementations and resolving dependencies. *Use when:* wiring services, writing testable code, building packages, decoupling implementations behind contracts. *Source:* https://laravel.com/docs/container
+- **Service Providers** — central place to configure application services, bindings, and boot logic. *Use when:* registering custom bindings, extending framework components, or organizing package setup. *Source:* https://laravel.com/docs/providers
+- **Facades** — static interface to container-resolved services providing expressive syntax. *Use when:* writing concise application code while retaining testability via facade swapping. *Source:* https://laravel.com/docs/facades
+- **Dependency Injection** — automatic resolution of class dependencies via constructor or method injection. *Use when:* building testable controllers, services, or jobs without manual container calls. *Source:* https://laravel.com/docs/container#dependency-injection
+- **Basic Routing** — defines URI-to-controller closures or actions with HTTP verb constraints. *Use when:* creating simple endpoints, prototyping features, or handling static page requests. *Source:* https://laravel.com/docs/13.x/routing
+- **Named & Resource Routes** — assigns symbolic names to routes and generates RESTful resource controller mappings. *Use when:* generating URLs in views, organizing CRUD endpoints, or enabling route model binding. *Source:* https://laravel.com/docs/13.x/routing#named-routes
+- **Route Model Binding** — automatically injects model instances based on route parameter values. *Use when:* reducing boilerplate in controllers, enforcing implicit authorization, or simplifying resource endpoints. *Source:* https://laravel.com/docs/13.x/routing#route-model-binding
+- **Global & Route Middleware** — applies cross-cutting concerns like auth, throttling, or CORS to requests. *Use when:* enforcing authentication, adding request logging, or transforming responses globally. *Source:* https://laravel.com/docs/13.x/middleware
+- **Terminable Middleware** — executes logic after the response has been sent to the browser. *Use when:* logging response metrics, triggering async jobs, or cleaning up resources post-request. *Source:* https://laravel.com/docs/13.x/middleware#terminable-middleware
+- **Single-Action Controllers** — invokable classes handling one HTTP action with focused responsibility. *Use when:* implementing simple endpoints, API resources, or actions without full controller scaffolding. *Source:* https://laravel.com/docs/13.x/controllers#single-action-controllers
+- **Blade Directives & Components** — templating syntax for logic, inheritance, and reusable UI fragments. *Use when:* building dynamic views, extracting UI patterns, or implementing layout composition. *Source:* https://laravel.com/docs/13.x/blade
+- **Form Request Validation** — dedicated classes encapsulating authorization and validation rules for input. *Use when:* centralizing validation logic, reusing rules across controllers, or enabling testable input handling. *Source:* https://laravel.com/docs/13.x/validation#form-request-validation
+- **Artisan CLI** — command-line interface for scaffolding, queue management, and application maintenance. *Use when:* generating boilerplate, running migrations, or automating deployment tasks. *Source:* https://laravel.com/docs/13.x/artisan
+- **Environment Configuration** — manages environment-specific settings via `.env` files and config caching. *Use when:* separating dev/staging/prod configs, securing credentials, or enabling feature flags. *Source:* https://laravel.com/docs/13.x/configuration
+- **Event-Listener System** — implements observer pattern for decoupled domain event handling. *Use when:* triggering side effects, broadcasting state changes, or integrating async workflows. *Source:* https://laravel.com/docs/13.x/events
+- **Queues and Jobs** — background processing for time-consuming tasks using sync, database, Redis, or other drivers. *Use when:* sending emails, processing uploads, calling slow third-party APIs, or improving response times. *Source:* https://laravel.com/docs/13.x/queues
+- **Route Caching (Laravel 11+)** — compiles route definitions into a single cached file for faster registration. *Use when:* deploying to production, optimizing cold-start performance, or reducing bootstrap time. *Source:* https://laravel.com/docs/13.x/routing#route-caching
+- **Queue Routing (Laravel 13+)** — defines default queue/connection routing rules for job classes centrally. *Use when:* standardizing job dispatch destinations, simplifying queue config, or enabling environment-specific routing. *Source:* https://laravel.com/docs/13.x/releases#queue-routing
+- **Native Route Attributes (Laravel 12+)** — defines routes directly on controller methods using PHP 8 attributes instead of route files. *Use when:* building modular applications where locality of routing logic improves maintainability. *Source:* https://laravel.com/docs/13.x/releases
+- **Fluent Date Validation (Laravel 11.4+)** — validates dates using expressive fluent syntax with methods like `after`, `before`, `afterOrEqual`. *Use when:* writing readable, complex date-based validation logic for forms or APIs. *Source:* https://laravel.com/docs/13.x/validation
+- **Collection Pipelines** — transforms data using chained methods and higher-order messages on Laravel collections. *Use when:* filtering, mapping, reducing, or pivoting arrays and Eloquent query results. *Source:* https://laravel.com/docs/collections
+- **Native PHP Attributes (Laravel 13+)** — leverages framework-wide support for native PHP 8 attributes on models, controllers, and observers. *Use when:* replacing DocBlocks or config files with modern, statically-analyzable PHP metadata. *Source:* https://laravel.com/docs/13.x/releases
+- **Interruptible Jobs (Laravel 13+)** — queued jobs that can be gracefully paused or stopped by the system. *Use when:* handling long-running processes that must respect deployment signals or scaling events. *Source:* https://laravel.com/docs/13.x/releases
+
+<!-- Excluded from Core (belongs elsewhere): Broadcasting & Reverb → Frontend Integration or APIs & Integration -->

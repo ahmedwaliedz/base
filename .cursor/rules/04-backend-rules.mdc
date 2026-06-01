@@ -40,3 +40,16 @@ alwaysApply: true
 ## Edge cases
 
 - Handle failure paths explicitly (exceptions, failed jobs, validation errors); align API errors with the global API exception handling in `bootstrap/app.php` where applicable.
+
+## Admin data flow
+
+- Controllers receive a prepared service result and pass it directly to the view — no querying in controllers.
+- Services return array data for admin views (merged with base CRUD vars) or a query builder for index lists.
+- Every `$request->validated()` result is the only input forwarded to services — never pass the raw `$request` object to service methods.
+
+## Foreign key validation
+
+- All `_id` fields in create/update payloads must be validated against the referenced table:
+  - `'role_id' => 'required|exists:roles,id'`
+  - Use `Rule::exists(...)` when extra conditions (e.g. `whereNull('deleted_at')`) are needed.
+- Do not skip FK validation even when a select dropdown limits choices — validation is the last defense.

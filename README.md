@@ -76,16 +76,17 @@ This project uses a custom RBAC system that must not be replaced with external p
 
 ### Adding a New Permission
 
-1. Create a permission record in the `permissions` table with the exact route name (e.g., `admin.products.index`)
-2. Attach the permission to a role using `$role->permissions()->attach($permissionId)`
-3. Add the middleware to your route: `->middleware('check.role.permission')`
+1. Create a permission record in the `permissions` table using the exact admin route name, for example `admin.products.index`.
+2. Attach the permission to the intended role using the existing role-permission relationship.
+3. Place the route inside the existing protected admin route group in `routes/admin.php`. Routes in that group are automatically checked by `App\Http\Middleware\Admin\CheckRolePermission`.
 
 **Example:**
 ```php
 Route::get('/products', [ProductController::class, 'index'])
-    ->name('admin.products.index')
-    ->middleware('check.role.permission');
+    ->name('admin.products.index');
 ```
+
+If a route must bypass permission checks, document it in the middleware exception list (`exceptedRoutesFromRoles()` in `app/Traits/Route/RouteTrait.php`) instead of adding ad-hoc controller or Blade checks.
 
 > **Warning**: Do not install external permission packages as they will conflict with the existing custom RBAC architecture.
 

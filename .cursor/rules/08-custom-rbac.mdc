@@ -1,0 +1,60 @@
+---
+alwaysApply: true
+---
+
+# 🛡️ Custom RBAC System - STRICTLY READ-ONLY
+
+## Tables
+- `permissions`
+- `permission_role`
+- `roles`
+- `admins`
+
+## Middleware
+- `CheckRolePermission`: compares route name vs permission string
+
+## Bypass
+- `AdminType::SUPER_ADMIN` skips all checks automatically
+
+## Exclusions
+- `exceptedRoutesFromRoles()` array in middleware
+
+## 🚫 NEVER
+- Modify the RBAC tables
+- Replace with external packages (e.g., spatie/laravel-permission)
+- Refactor the existing permission logic
+- Suggest alternative permission systems
+
+## ✅ ALWAYS
+- Route name MUST exactly match permission string
+  - Example: `admin.users.index` → permission `admin.users.index`
+- If unsure about permission logic → STOP and ask for clarification
+
+## Permission check placement
+
+- Permission checks belong in the `CheckRolePermission` middleware — do not scatter `if (in_array(...))` or role checks across controllers or Blade.
+- Route-to-permission mapping follows the actual convention: the route name *is* the permission string (e.g. `admin.users.index` matches `'admin.users.index'` stored in `permission_role`).
+- Display labels for permissions live in `lang/{locale}/admin/routes.php` — update that file when adding new route permissions.
+
+## Exception routes
+
+Exception/override routes live in `app/Traits/Route/RouteTrait.php`:
+```php
+public static function exceptedRoutesFromRoles(): array
+```
+These bypass permission checks for all non-super-admin roles. Only add routes here after explicit security review.
+
+## New routes
+
+- Any new `admin.*` route should have a corresponding permission string or a documented bypass in `exceptedRoutesFromRoles()`.
+- When adding a new resource to `routes/admin.php`, also add its route entries to `lang/{locale}/admin/routes.php` so they appear in the permission assignment UI.
+
+## Review checklist
+
+When auditing RBAC, verify:
+- Every `admin.*` route in `routes/admin.php` has a matching entry in `lang/{locale}/admin/routes.php`.
+- Every permission string in the database is prefixed with `admin.` (middleware filters by this prefix).
+- No hardcoded role checks (`$admin->type === 'super_admin'`) exist outside the middleware — the middleware centralizes this logic.
+
+## ⚠️ CRITICAL
+If any code change involves permissions, roles, or admin access control → STOP and request explicit confirmation before proceeding.

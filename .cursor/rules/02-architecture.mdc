@@ -47,3 +47,14 @@ alwaysApply: true
   - Thin controller
   - Consistent Blade or API structure
 - Do not introduce one-off CRUD implementations.
+
+## Admin Dashboard Backend
+
+- Business logic must live in `app/Services/Admin/` — never in controllers or Blade.
+- Controllers must stay thin: extract prepared data via services and pass it to views.
+- Store/update actions must type-hint a dedicated FormRequest.
+- Use `$request->validated()` (or explicitly sanitized data), never `$request->all()`.
+- Foreign key fields must be validated with `exists:table,id` or `Rule::exists(...)` in the FormRequest.
+- Admin index/show pages must eager-load every relation rendered in tables, cards, or detail sections.
+- Do not call services, models, or DB facades from any `.blade.php` file.
+- Do not run `count()`, `first()`, `get()`, or model lookups inside Blade loops.

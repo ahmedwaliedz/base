@@ -1,0 +1,54 @@
+---
+alwaysApply: false
+description: "Database and Eloquent patterns — use when working with migrations, models, relationships, scopes, factories, seeders, query builder, transactions, or database schema design"
+globs: ["database/**", "app/Models/**", "app/Repositories/**"]
+---
+
+> **⚠️ Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. These skills cover **Laravel 11–13** and **PHP 8.2–8.5**. Features tagged with a higher version (Laravel 12+, 13+, PHP 8.3+, 8.4+, 8.5+) are included for forward awareness — do NOT use them in current code unless the project has been upgraded to that version.
+
+# Databases & Eloquent Skills (2025–2026)
+
+## How to Use This File
+
+This file catalogs 19 foundational-to-advanced skills specific to Database and Eloquent development within Laravel. Each skill includes a concise definition, a real-world usage trigger, and a source reference.
+
+When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Use these skills as the foundation before referencing advanced architecture or performance patterns from other categories.
+
+Prefer Laravel 13 idioms for new code; when editing legacy code, respect the existing version's constraints and note upgrade paths where appropriate.
+
+Source URLs point to the Laravel 13.x docs because they are forward-cumulative — the same pages describe behavior present in 11.x and 12.x, with version-specific features clearly tagged (e.g., "Laravel 13+"). When working in an older Laravel version, the linked documentation still applies; only the version-tagged features require an upgrade.
+
+## Skill Catalog
+
+- **Migrations & Schema Builder** — defines version-controlled database structure changes using a fluent PHP DSL. *Use when:* evolving schemas, enabling team collaboration, or ensuring environment consistency. *Source:* https://laravel.com/docs/13.x/migrations
+- **Seeders & Factories** — populates databases with test or demo data using model blueprints and states. *Use when:* setting up local environments, writing integration tests, or generating realistic datasets. *Source:* https://laravel.com/docs/13.x/seeding
+- **Eloquent Models & Conventions** — maps database tables to PHP classes with automatic timestamp, casting, and serialization handling. *Use when:* implementing domain entities, reducing boilerplate queries, or enabling relationship navigation. *Source:* https://laravel.com/docs/13.x/eloquent
+- **Mutators, Accessors & Custom Casts** — transforms attribute values on retrieval or assignment using built-in or user-defined logic. *Use when:* formatting dates, encrypting fields, or serializing complex types safely. *Source:* https://laravel.com/docs/13.x/eloquent-mutators
+- **Relationships (hasOne, hasMany, belongsTo)** — defines foreign-key associations between models with configurable eager or lazy loading strategies. *Use when:* modeling domain associations, reducing database roundtrips, or enabling nested serialization. *Source:* https://laravel.com/docs/13.x/eloquent-relationships
+- **Polymorphic & Many-to-Many Relations** — supports flexible associations via morph maps and intermediate pivot table structures. *Use when:* building taggable content, activity feeds, or multi-model attachment systems. *Source:* https://laravel.com/docs/13.x/eloquent-relationships#polymorphic-relations
+- **Local & Global Scopes** — encapsulates reusable query constraints as model methods or automatic filtering rules. *Use when:* enforcing tenant isolation, applying status filters, or simplifying complex query logic. *Source:* https://laravel.com/docs/13.x/eloquent#local-scopes
+- **Eager Loading & N+1 Prevention** — loads related models in minimal queries using `with()` or `loadMissing()` methods efficiently. *Use when:* optimizing list views, reducing database roundtrips, or improving API response times. *Source:* https://laravel.com/docs/13.x/eloquent-loading
+- **Query Builder & Raw Expressions** — constructs fluent SQL queries with secure parameter binding and database-agnostic syntax support. *Use when:* writing complex aggregations, optimizing performance-critical paths, or accessing vendor-specific features. *Source:* https://laravel.com/docs/13.x/queries
+- **Transactions & Savepoints** — groups multiple database operations into atomic units with nested rollback capabilities. *Use when:* ensuring data consistency, handling partial failures, or implementing compensating transaction actions. *Source:* https://laravel.com/docs/13.x/database#database-transactions
+- **Optimistic & Pessimistic Locking** — prevents concurrent update conflicts via version checks or strict row-level locks. *Use when:* managing inventory systems, handling high-concurrency edits, or ensuring serializable operations. *Source:* https://laravel.com/docs/13.x/queries#pessimistic-locking
+- **Indexing Strategies (B-tree, Composite)** — designs efficient indexes for query patterns to reduce full-table scan overhead. *Use when:* optimizing slow queries, supporting filter/sort combinations, or improving read throughput. *Source:* training
+- **JSON Columns & Document Queries** — stores and queries semi-structured data using native database JSON types and operators. *Use when:* implementing flexible schemas, storing metadata payloads, or enabling dynamic filter capabilities. *Source:* https://laravel.com/docs/13.x/queries#json-where-clauses
+- **Full-Text Search Integration** — leverages database-native or external search engines for keyword relevance ranking and fuzzy matching. *Use when:* building content search, implementing autocomplete features, or supporting complex text queries. *Source:* https://laravel.com/docs/13.x/queries#full-text-where-clauses
+- **MySQL DELETE…JOIN with ORDER BY/LIMIT (Laravel 13+)** — performs joined delete queries with row ordering and result limiting on MySQL/MariaDB drivers. *Use when:* batch-cleaning related records, deleting oldest-N rows by join condition, or pruning denormalized tables safely. *Source:* https://laravel.com/docs/13.x/queries
+- **Soft Deletes & Restore Logic** — marks records as deleted without physical removal, enabling data recovery and audit trails. *Use when:* implementing user-facing deletion, maintaining referential integrity, or supporting undo workflows. *Source:* https://laravel.com/docs/13.x/eloquent#soft-deleting
+- **Model Events & Observers** — hooks into model lifecycle events for cross-cutting logic like auditing or caching. *Use when:* maintaining denormalized data, enforcing business rules automatically, or tracking changes. *Source:* https://laravel.com/docs/13.x/eloquent#events
+- **Chunking & Lazy Collections** — processes large datasets in memory-efficient batches or generator-based streams for performance. *Use when:* exporting large reports, running background jobs, or handling big data imports. *Source:* https://laravel.com/docs/13.x/eloquent#chunking-results
+- **Query Caching Strategies** — caches query results with tags, TTL expiration, and invalidation hooks to reduce database load. *Use when:* serving high-traffic endpoints, reducing latency for read-heavy views, or optimizing performance. *Source:* training
+
+---
+
+## Project-Specific Rules
+
+### Seeders
+- Required non-nullable columns without DB defaults must be provided in seeders.
+- When models use file upload traits, seeders should use `DB::table()` inserts with known string paths — do not rely on trait methods that expect `UploadedFile` instances.
+- Translated seeders: insert parent row first, then batch-insert all locale rows in a single `->insert([])` call.
+
+### Eager loading
+- Dashboard index/show services must eager-load all relations rendered in views.
+- Use model-level `public const RELATIONS` to declare relationships needed in admin pages.

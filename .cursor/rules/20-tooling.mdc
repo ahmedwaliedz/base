@@ -1,0 +1,42 @@
+---
+alwaysApply: false
+description: "Tooling and workflow patterns — use when setting up IDE, debugging with Xdebug/Ray/Telescope, Git strategies, pre-commit hooks, or development automation"
+globs: [".editorconfig", "Makefile", "Taskfile.*", ".git/**"]
+---
+
+> **⚠️ Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. These skills cover **Laravel 11–13** and **PHP 8.2–8.5**. Features tagged with a higher version (Laravel 12+, 13+, PHP 8.3+, 8.4+, 8.5+) are included for forward awareness — do NOT use them in current code unless the project has been upgraded to that version.
+
+# Tooling & Workflow Skills (2025–2026)
+
+## How to Use This File
+
+This file catalogs 20 foundational-to-advanced skills specific to developer tooling, local environments, and workflow automation within Laravel. Each skill includes a concise definition, a real-world usage trigger, and a source reference.
+
+When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Use these tools to streamline local development, debugging, and version control before moving to production deployment or architecture scaling.
+
+Prefer modern local environment setups for new work; when adapting to legacy workflows, document constraints and suggest incremental upgrades for IDE, debugging, or CI tooling where practical.
+
+Source URLs point to official Laravel documentation, JetBrains, VS Code Marketplace, and other authoritative tooling references. For patterns without dedicated documentation (e.g., most Git workflows), the best available reference is used.
+
+## Skill Catalog
+
+- **Git Rebase vs Merge Strategies** — chooses history rewriting for linear logs or merge commits for audit trails. *Use when:* maintaining clean history, resolving conflicts, or preparing pull requests. *Source:* https://git-scm.com/book/en/v2/Git-Branching-Rebasing
+- **Conventional Commits & Semantic Versioning** — structures commit messages to auto-generate changelogs and version bumps. *Use when:* automating releases, improving commit clarity, or enabling tooling integration. *Source:* training
+- **Trunk-Based Development vs GitFlow** — adopts short-lived feature branches with frequent main merges or release branches for versioning. *Use when:* enabling continuous deployment, managing release cycles, or coordinating team workflows. *Source:* training
+- **PR Review Checklist & Etiquette** — defines expectations for testing, documentation, and feedback in pull requests. *Use when:* maintaining code quality, onboarding developers, or enforcing team standards. *Source:* training
+- **PHPStorm Laravel Plugin Setup** — configures IDE with Laravel-specific inspections, Blade support, and integrated test runners. *Use when:* improving developer productivity, enabling safe refactoring, or integrating Xdebug. *Source:* https://www.jetbrains.com/phpstorm/
+- **VS Code + Intelephense + Extensions** — sets up lightweight editor with PHP intelligence and Laravel snippets. *Use when:* preferring open-source tooling, customizing workflows, or reducing resource usage. *Source:* https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client
+- **Xdebug Step Debugging Configuration** — enables breakpoints, stack traces, and variable inspection for local development. *Use when:* diagnosing complex logic, understanding request flow, or teaching framework internals. *Source:* https://xdebug.org/docs/step_debug
+- **Ray Debugging Tool Integration** — provides expressive, IDE-integrated debugging with dump, measure, and trace helpers. *Use when:* rapid prototyping, exploring data structures, or replacing var_dump in development. *Source:* https://myray.app
+- **Laravel Telescope for Local Debugging** — monitors requests, jobs, queries, and exceptions in a dedicated local UI. *Use when:* diagnosing performance issues, understanding data flow, or auditing application behavior. *Source:* https://laravel.com/docs/13.x/telescope
+- **Laravel Pulse for Production Monitoring** — provides real-time dashboards for slow queries, exceptions, and usage metrics. *Use when:* identifying bottlenecks, tracking SLOs, or alerting on anomalies. *Source:* https://laravel.com/docs/13.x/pulse
+- **Laravel Tinker REPL** — provides an interactive PHP shell wired into the application container for ad-hoc model queries, service testing, and data inspection. *Use when:* probing data without writing routes, validating Eloquent queries interactively, or teaching framework internals. *Source:* https://laravel.com/docs/13.x/artisan
+- **Laravel Herd/Valet for Local Serving** — runs PHP/Nginx natively on macOS/Windows for instant project serving. *Use when:* avoiding Docker overhead, switching projects quickly, or simplifying onboarding. *Source:* https://laravel.com/docs/13.x/valet
+- **Laravel Sail for Docker Environments** — provides Docker Compose configuration for consistent, isolated local environments. *Use when:* replicating production topology, enabling team standardization, or testing infrastructure. *Source:* https://laravel.com/docs/13.x/sail
+- **Makefile/Taskfile for Automation** — defines common commands as executable targets for team workflow consistency. *Use when:* onboarding new developers, scripting CI steps, or reducing command memorization. *Source:* training
+- **Composer Scripts for Workflow Automation** — defines custom commands in `composer.json` to chain linting, testing, and code-generation steps into the Composer lifecycle. *Use when:* unifying tooling entry points across the team, hooking quality gates into install/update, or sharing reusable workflow recipes. *Source:* training
+- **Pre-commit Hooks with Pint/PHPStan** — runs linters and static analysis before commits to catch issues early. *Use when:* enforcing code quality, reducing review cycles, or preventing CI failures. *Source:* training
+- **Database Migration Best Practices** — writes reversible, idempotent migrations with explicit down() methods and testing. *Use when:* collaborating on schema changes, enabling rollbacks, or maintaining stability. *Source:* training
+- **Environment Parity Strategies** — aligns local, staging, and production configs to reduce environment-specific bugs. *Use when:* debugging deployment mismatches, preparing releases, or enabling feature flags. *Source:* training
+- **AI-Assisted Development Workflows (Laravel 13+)** — integrates AI SDK and IDE copilot tools for code generation, test writing, and documentation. *Use when:* accelerating prototyping, exploring API designs, or reducing boilerplate. *Source:* https://laravel.com/docs/13.x/ai-sdk
+- **Vector Store CLI Integration (Laravel 13+)** — uses Artisan commands to manage embedding generation, chunking, and vector database indexing. *Use when:* building AI features, managing RAG pipelines, or debugging semantic search locally. *Source:* training

@@ -1,0 +1,68 @@
+---
+alwaysApply: false
+description: "Performance optimization patterns — use when working with caching, query optimization, N+1 prevention, lazy collections, queue tuning, Octane, or response caching"
+globs: ["config/cache.php", "config/queue.php", "config/octane.php", "app/Jobs/**"]
+---
+
+> **⚠️ Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. These skills cover **Laravel 11–13** and **PHP 8.2–8.5**. Features tagged with a higher version (Laravel 12+, 13+, PHP 8.3+, 8.4+, 8.5+) are included for forward awareness — do NOT use them in current code unless the project has been upgraded to that version.
+
+# Performance Skills (2025–2026)
+
+## How to Use This File
+
+This file catalogs 20 foundational-to-advanced skills specific to application performance optimization within Laravel. Each skill includes a concise definition, a real-world usage trigger, and a source reference.
+
+When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Prioritize caching, query optimization, and configuration tuning before suggesting advanced scaling infrastructure.
+
+Apply Laravel 13 performance defaults for new applications; when optimizing legacy systems, implement incremental improvements and validate changes with profiling tools before deployment.
+
+Source URLs point to official Laravel documentation. For patterns without dedicated Laravel docs (most performance patterns), the best available reference is used.
+
+## Skill Catalog
+
+- **Route, Config & View Caching** — compiles framework metadata into single files to reduce filesystem I/O during bootstrap. *Use when:* deploying to production, optimizing cold starts, or reducing request overhead. *Source:* https://laravel.com/docs/13.x/deployment
+- **Query Caching with Tags** — caches query results with invalidation hooks for automatic cache busting on model changes. *Use when:* serving high-traffic read endpoints, reducing database load, or optimizing latency. *Source:* training
+- **Cache Tags for Selective Invalidation** — groups related cached items under tags so logical sets can be flushed atomically without wiping the entire cache store. *Use when:* invalidating per-user or per-resource cache groups, building dependency-aware cache layers, or coordinating multi-key busts on writes. *Source:* https://laravel.com/docs/13.x/cache
+- **OPcache Configuration & JIT Compilation** — configures PHP opcode caching and just-in-time compilation for CPU-bound workloads. *Use when:* optimizing CPU-intensive operations, reducing script compilation overhead, or improving throughput. *Source:* training
+- **Query Profiling** — uses Telescope or query logging to identify inefficient data access patterns. *Use when:* optimizing slow pages, reducing database roundtrips, or improving API response times. *Source:* https://laravel.com/docs/13.x/telescope
+- **N+1 Lazy Loading Prevention** — uses `Model::preventLazyLoading()` to surface unoptimized relationship queries in development before they reach production. *Use when:* enforcing eager-loading discipline, catching N+1 patterns in CI, or hardening critical Eloquent code paths. *Source:* https://laravel.com/docs/13.x/eloquent-relationships
+- **Eloquent vs Query Builder Tradeoffs** — chooses abstraction level based on readability, performance, and complexity requirements. *Use when:* optimizing critical paths, writing complex aggregations, or maintaining developer velocity. *Source:* training
+- **Lazy Collections & Chunking** — processes records in memory-efficient streams to avoid out-of-memory errors. *Use when:* exporting reports, running background jobs, or handling large dataset imports. *Source:* https://laravel.com/docs/13.x/collections
+- **Job Batching & Chain Coordination** — groups related jobs with progress tracking and callback handling for workflows. *Use when:* processing bulk imports, orchestrating multi-step operations, or enabling user progress. *Source:* https://laravel.com/docs/13.x/queues
+- **Queue Worker Tuning** — configures worker processes, memory limits, and auto-restart policies for reliability. *Use when:* scaling background processing, preventing memory leaks, or ensuring consistent throughput. *Source:* https://laravel.com/docs/13.x/queues
+- **Horizontal Scaling with Load Balancers** — distributes traffic across multiple app instances behind a reverse proxy. *Use when:* handling traffic spikes, improving fault tolerance, or enabling zero-downtime deployments. *Source:* training
+- **Read Replicas for Query Offloading** — directs read queries to replica databases to reduce primary write contention. *Use when:* scaling read-heavy applications, improving report performance, or isolating analytical workloads. *Source:* training
+- **Connection Pooling & Persistent Connections** — reuses database connections across requests to reduce handshake overhead. *Use when:* optimizing high-concurrency apps, reducing latency, or managing strict connection limits. *Source:* training
+- **CDN Integration for Static Assets** — serves images, CSS, and JS from edge locations to reduce origin load. *Use when:* improving global performance, reducing bandwidth costs, or enabling cache strategies. *Source:* training
+- **Image Optimization & Lazy Loading** — compresses, resizes, and defers image loading to improve perceived performance. *Use when:* building content-rich pages, supporting mobile users, or reducing bounce rates. *Source:* training
+- **Response Caching & ETag Validation** — caches HTTP responses with entity tags to enable conditional request handling. *Use when:* serving cacheable API responses, reducing bandwidth, or improving client performance. *Source:* training
+- **Laravel Octane Process Models** — uses Swoole, RoadRunner, or FrankenPHP to keep application in memory between requests. *Use when:* achieving sub-millisecond response times, reducing bootstrap overhead, or scaling efficiently. *Source:* https://laravel.com/docs/13.x/octane
+- **Memory Leak Avoidance Patterns** — clears static caches, resets singletons, and avoids circular references in long-running processes. *Use when:* using Octane, processing large batches, or running background CLI daemons. *Source:* training
+- **Cache::touch() TTL Extension (Laravel 13+)** — extends cache item lifetime without retrieving and re-storing values. *Use when:* implementing sliding expiration, optimizing cache hit rates, or reducing serialization overhead. *Source:* training
+- **Vector Query Optimization (Laravel 13+)** — leverages pgvector indexes and similarity thresholds for efficient semantic search. *Use when:* building AI-powered search, recommendation engines, or content clustering at scale. *Source:* training
+
+---
+
+## Project-Specific Performance Rules
+
+### N+1 prevention
+
+- **Admin index/show pages must eager-load every relation rendered in tables, cards, or detail sections.**
+- Verify that service `index()` methods chain `->with(['relation1', 'relation2'])` before returning the query builder.
+- Do not call `->count()`, `->first()`, `->get()`, or any model lookup inside Blade `@foreach`, `@while`, or any loop construct.
+- Use model-level `public const RELATIONS` to document required eager loads.
+
+### Shared layout data
+
+- Dashboard layout data (menus, notifications, sidebar counts) should use view composers or controller-provided `view()->share()` — never repeated queries in layout Blade files.
+- If a service method is called in multiple views, extract the data to a view composer service or repository.
+
+### Laravel strict mode (local dev)
+
+- Use `Model::shouldBeStrict()` (the project already uses this in `AppServiceProvider`) to catch lazy loading, attribute discarding, and missing attributes in local development.
+- Do not commit Debugbar service providers or debug middleware — the project does not currently include Debugbar.
+
+### Query patterns
+
+- Paginate admin index queries — do not `->get()` unbounded collections for listing pages.
+- Use `chunk()` or `cursor()` for export jobs and seeders that process large datasets.

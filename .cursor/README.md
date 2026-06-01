@@ -73,16 +73,16 @@ These 9 rules apply to all development:
 - **Key sections:** Naming conventions, PSR-12, complexity limits, comments policy
 
 #### `02-architecture.mdc`
-- **What:** Architecture patterns — service layer, thin controllers, dependency injection
+- **What:** Architecture patterns — service layer, thin controllers, dependency injection, admin dashboard backend rules
 - **How to use:** Automatic (enforced on every skill)
 - **Connected to:** `04-backend-rules.mdc`, skills in `development-phase/`, `feature-analysis.md`
-- **Key sections:** Service-based architecture, layer responsibilities, coupling reduction
+- **Key sections:** Service-based architecture, layer responsibilities, coupling reduction, **Admin Dashboard Backend** (thin controllers, services, Form Requests, Blade restrictions, eager loading)
 
 #### `03-frontend-rules.mdc`
-- **What:** Frontend/UI standards — Blade, components, forms, responsive design
+- **What:** Frontend/UI standards — Blade, components, forms, responsive design, dark RTL dashboard
 - **How to use:** Automatic (applied when building UI)
 - **Connected to:** `ui-page-build.md`, Blade components in `resources/views/`
-- **Key sections:** Blade practices, component structure, accessibility, CSS conventions
+- **Key sections:** Blade practices, component structure, accessibility, CSS conventions, **Dark RTL Dashboard Rules** (RTL-safe CSS, table alignment, toggle state, form grid consistency, translation labels)
 
 #### `04-backend-rules.mdc`
 - **What:** Backend standards — controllers (thin), services, Form Requests, validation
@@ -91,10 +91,10 @@ These 9 rules apply to all development:
 - **Key sections:** Controller structure, service layer, Form Request validation, response format
 
 #### `05-database-rules.mdc`
-- **What:** Database design — migrations, models, relationships, seeders
+- **What:** Database design — migrations, models, relationships, seeders, model conventions
 - **How to use:** Automatic (applied when touching database)
 - **Connected to:** `12-database-eloquent.mdc`, `database-design.md`, migrations in `database/`
-- **Key sections:** Migration naming, model structure, indexes, soft deletes, relationship conventions
+- **Key sections:** Migration naming, model structure, indexes, soft deletes, relationship conventions, **Seeders** (migration-constraint matching, upload-trait caveat, batch translations), **Model conventions** ($casts, RELATIONS constant, eager loading)
 
 #### `06-collaboration-rules.mdc`
 - **What:** Team collaboration — commits, code review, documentation, communication
@@ -112,7 +112,7 @@ These 9 rules apply to all development:
 - **What:** RBAC protection — enforces the custom permission system, prevents refactoring or replacement
 - **How to use:** Automatic + STOP before any permission-related code
 - **Connected to:** `04-backend-rules.mdc`, `backend-feature-implementation.md`, `auth-permissions.md`
-- **Key sections:** RBAC tables (admins, roles, permissions), middleware rules, route name = permission string matching, bypass rules
+- **Key sections:** RBAC tables (admins, roles, permissions), middleware-owned permission checks, route name = permission string matching, bypass rules, **exception routes** (`exceptedRoutesFromRoles()`), new `admin.*` route requirements, RBAC audit checklist
 
 ---
 
@@ -771,6 +771,19 @@ A feature/task is NOT complete unless:
 - **RBAC system (`08-custom-rbac.mdc`) is CRITICAL — protect it**
 - Consistency is more important than creativity
 - All 51 files work together — they're not independent
+
+---
+
+## Compact Entry Points
+
+Before diving into the full file tree, start with these two root-level documents. They route you to the smallest relevant set of `.cursor` files by task category.
+
+| Document | When to use |
+|----------|-------------|
+| `REVIEW_CONTEXT.md` | Code review and PR audit sessions — routing table by changed area |
+| `CODE_WRITING_CONTEXT.md` | Implementation sessions — routing table by task area |
+
+Both files tell agents to open deeper `.cursor` files only when the task matches the routing rule, keeping token usage efficient.
 
 ---
 

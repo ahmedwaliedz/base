@@ -236,9 +236,9 @@ tests/
 
 ## Middleware Aliases
 
-| Alias | Class |
-|-------|-------|
-| `check.role.permission` | CheckRolePermission |
+| Alias / Usage | Class |
+|---------------|-------|
+| Applied by class in `routes/admin.php` | CheckRolePermission |
 | `auth:sanctum` | Laravel Sanctum |
 | `api.lang` | ApiLang |
 
@@ -262,6 +262,59 @@ tests/
 | Headers | `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff` |
 
 ---
+
+## Dashboard Architecture
+
+- **Controller → Service → Model → View** flow for admin pages.
+- `AdminBaseController` provides generic CRUD (index, create, store, edit, update, show, destroy). Custom controllers may extend `Controller` directly for non-CRUD pages.
+- `CrudBaseService` (extended by `AuthenticatableBaseService`) handles data access, pagination, and CRUD operations.
+- Services return either a query builder (for index lists) or a prepared `$vars` array (for create/edit/show pages).
+- Controllers call services and pass results to Blade — they do not query the database.
+
+## Responsibilities
+
+| Layer | Responsibility |
+|-------|---------------|
+| Controller | Orchestrate request flow, resolve FormRequest, call service, return view/response |
+| Service | Business logic, data access, eager loading, export |
+| Form Request | Validation rules, authorization, boolean normalization, FK validation |
+| Blade view | Presentation only — no DB queries, service calls, or model lookups |
+
+## Admin UI Conventions
+
+- **Dark RTL theme** using Bootstrap admin template with RTL/LTR toggle via theme customizer.
+- Form components: `<x-form.*>` and table components: `<x-table.*>`.
+- Form labels in `<x-form.*>` use plain keys (translated internally); all other labels use `__('admin/...')` keys.
+- CSS uses class namespacing per section (`{section}-action-{type}`, `{section}-show-header`, `admin-stat-card`).
+- Action buttons follow a color convention: view (blue), edit (green), delete (red), restore (teal).
+
+## Translation Conventions
+
+- Admin translations stored in `lang/{locale}/admin/` split by domain: `main.php`, `routes.php`, `inputs.php`, `auth.php`, `validation.php`.
+- Permission display labels live in `routes.php` — one entry per admin route name.
+- Enum labels use `__('admin/main.{value}')` via `GeneralEnumTrait`.
+- Component labels use a `admin/inputs.{key}` lookup path — plain keys are passed, not full translation strings.
+
+## Seeder / File Upload Caveat
+
+- Models with `UPLOAD_TYPE = 'custom'` (via `app/Traits/Upload/`) expect file paths as plain strings in the DB. Seeders can provide known filename strings (e.g. `'default.png'`) directly.
+- Models using Spatie Media Library should be seeded through the model's `create()` method only if upload traits are bypassed or properly mocked.
+- Translation seeders must insert parent rows first, then batch both locales in a single `->insert([])` call.
+
+## RBAC Convention
+
+- Route name === permission string (e.g. `admin.admins.index`).
+- `CheckRolePermission` middleware intercepts all authenticated admin routes and compares the current route name against the admin's role permissions.
+- `AdminType::SUPER_ADMIN` bypasses all checks.
+- Exception routes (bypassed permissions) live in `app/Traits/Route/RouteTrait.php::exceptedRoutesFromRoles()`.
+- Permission labels are defined in `lang/{locale}/admin/routes.php` and appear in the role assignment UI.
+
+## Performance / N+1 Expectations
+
+- All admin index/show services must eager-load every relation displayed in the view.
+- Blade templates must never contain `->count()`, `->first()`, `->get()`, or model lookups.
+- Shared dashboard data (menus, counts) should use view composers or controller `view()->share()`.
+- The project uses `Model::shouldBeStrict()` in `AppServiceProvider` for local development, which catches lazy loading, attribute discarding, and missing attributes.
 
 ## Notes
 

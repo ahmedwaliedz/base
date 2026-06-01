@@ -1,0 +1,41 @@
+---
+alwaysApply: false
+description: "API and integration patterns — use when building REST APIs, API resources, rate limiting, pagination, webhooks, HTTP client calls, OAuth, or third-party integrations"
+globs: ["routes/api/**", "app/Http/Controllers/Api/**", "app/Http/Resources/**"]
+---
+
+> **⚠️ Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. These skills cover **Laravel 11–13** and **PHP 8.2–8.5**. Features tagged with a higher version (Laravel 12+, 13+, PHP 8.3+, 8.4+, 8.5+) are included for forward awareness — do NOT use them in current code unless the project has been upgraded to that version.
+
+# APIs & Integration Skills (2025–2026)
+
+## How to Use This File
+
+This file catalogs 19 foundational-to-advanced skills specific to API development and third-party integration within Laravel. Each skill includes a concise definition, a real-world usage trigger, and a source reference.
+
+When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Use these skills as the foundation before referencing advanced architecture or performance patterns.
+
+Prefer Laravel 13 idioms for new code; when editing legacy code, respect the existing version constraints and note upgrade paths where appropriate.
+
+Source URLs point to the Laravel 13.x docs because they are forward-cumulative — the same pages describe behavior present in 11.x and 12.x, with version-specific features clearly tagged (e.g., "Laravel 13+"). When working in an older Laravel version, the linked documentation still applies; only the version-tagged features require an upgrade.
+
+## Skill Catalog
+
+- **RESTful Resource Conventions** — follows HTTP verb and URI patterns for CRUD operations with status codes. *Use when:* designing public APIs, ensuring client predictability, or enabling HATEOAS navigation. *Source:* https://laravel.com/docs/13.x/controllers#resource-controllers
+- **API Resources & Transformers** — serializes models/collections into JSON with field selection and relationship inclusion. *Use when:* building versioned APIs, supporting sparse fieldsets, or formatting responses for mobile clients. *Source:* https://laravel.com/docs/13.x/eloquent-resources
+- **Conditional Attributes & WhenLoaded** — includes fields or relationships only when explicitly requested or loaded. *Use when:* optimizing payload size, supporting client-driven projections, or hiding sensitive data conditionally. *Source:* https://laravel.com/docs/13.x/eloquent-resources#conditional-attributes
+- **API Versioning Strategies** — manages breaking changes via URI versioning, header negotiation, or media type evolution. *Use when:* maintaining backward compatibility, supporting multiple client versions, or deprecating endpoints gracefully. *Source:* training
+- **Rate Limiting (Per-User/IP/Endpoint)** — throttles request volume using cache-backed counters and middleware. *Use when:* preventing abuse, enforcing tiered access, or protecting expensive operations. *Source:* https://laravel.com/docs/13.x/routing#rate-limiting
+- **Pagination (Length-Aware, Cursor)** — returns paginated collections with metadata for navigation and performance. *Use when:* building list endpoints, supporting infinite scroll, or enabling efficient offset-free pagination. *Source:* https://laravel.com/docs/13.x/pagination
+- **Filtering, Sorting & Field Selection** — allows clients to constrain, order, and project result sets via query parameters. *Use when:* building flexible data APIs, reducing payload size, or enabling client-side customization. *Source:* training
+- **JSON:API Specification Support (Laravel 13+)** — generates spec-compliant responses with resource objects, relationships, and links. *Use when:* integrating with JSON:API clients, enabling standardized error formats, or supporting sparse fieldsets. *Source:* https://laravel.com/docs/13.x/releases
+- **OpenAPI/Swagger Generation** — documents API endpoints with machine-readable schemas for client generation and testing. *Use when:* onboarding external developers, enabling automated SDK generation, or validating contract compliance. *Source:* training
+- **OAuth2 Flows & Token Management** — implements authorization code, client credentials, or JWT-based authentication patterns. *Use when:* securing third-party integrations, enabling SSO, or building token-based APIs. *Source:* https://laravel.com/docs/13.x/passport
+- **Idempotency Keys for Safe Retries** — ensures duplicate requests produce identical results without side effects. *Use when:* handling payment processing, webhook redelivery, or unreliable client retries. *Source:* training
+- **Webhook Handling & Signature Verification** — receives and validates asynchronous events from external services securely. *Use when:* integrating Stripe, GitHub, or other event-driven platforms with replay protection. *Source:* training
+- **Laravel HTTP Client & Guzzle Integration** — provides fluent, testable HTTP request building with retry and timeout handling. *Use when:* consuming third-party APIs, implementing circuit breakers, or mocking external services in tests. *Source:* https://laravel.com/docs/13.x/http-client
+- **Retry Logic with Exponential Backoff** — automatically retries transient failures with increasing delays to avoid thundering herds. *Use when:* calling flaky external services, handling rate limit responses, or implementing resilient integrations. *Source:* https://laravel.com/docs/13.x/http-client#retries
+- **HTTP Pool Concurrency (Laravel 13+)** — dispatches multiple outbound HTTP requests concurrently via `Http::pool()` for parallel fan-out fetches. *Use when:* aggregating data from multiple microservices, batch-fetching from third-party APIs, or reducing total latency on independent calls. *Source:* https://laravel.com/docs/13.x/http-client#concurrent-requests
+- **Circuit Breaker Pattern** — stops calling failing services temporarily to allow recovery and prevent cascade failures. *Use when:* building resilient microservices, protecting downstream dependencies, or implementing graceful degradation. *Source:* training
+- **Third-Party SDK Integration Patterns** — wraps external libraries with Laravel-friendly facades, configuration, and testing hooks. *Use when:* abstracting vendor complexity, enabling environment-specific mocking, or standardizing error handling. *Source:* training
+- **Vector Search Integration (Laravel 13+)** — enables semantic similarity queries using pgvector or external embedding stores. *Use when:* building AI-powered search, recommendation engines, or content clustering features. *Source:* https://laravel.com/docs/13.x/releases
+- **AI SDK Agent Patterns (Laravel 13+)** — builds tool-calling agents with structured outputs using the first-party AI SDK. *Use when:* implementing conversational interfaces, automating workflows, or generating content with LLMs. *Source:* https://laravel.com/docs/13.x/ai-sdk

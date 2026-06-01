@@ -1,0 +1,41 @@
+---
+alwaysApply: false
+description: "PHP ecosystem patterns — use when working with Composer, PSR standards, PHP 8.2+ features like enums, readonly, typed properties, match expressions, or SOLID/GoF patterns"
+globs: ["composer.json", "app/**/*.php"]
+---
+
+> **⚠️ Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. These skills cover **Laravel 11–13** and **PHP 8.2–8.5**. Features tagged with a higher version (Laravel 12+, 13+, PHP 8.3+, 8.4+, 8.5+) are included for forward awareness — do NOT use them in current code unless the project has been upgraded to that version.
+
+# PHP Ecosystem Skills (2025–2026)
+
+## How to Use This File
+
+This file catalogs 19 foundational-to-advanced skills specific to the PHP ecosystem within Laravel development. Each skill includes a concise definition, a real-world usage trigger, and a source reference.
+
+When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Use these skills as the foundation before referencing advanced patterns from other categories.
+
+Prefer PHP 8.2+ idioms for new code; features from PHP 8.3+ through 8.5+ are included for forward awareness only — do NOT use them unless the project has been upgraded to that version. When editing legacy code, respect the existing version's constraints and note upgrade paths where appropriate.
+
+Source URLs point to official PHP manual pages and php.watch version references. Skills tagged with a specific PHP version (e.g., "PHP 8.4+") indicate when the feature first became available; the cited doc page applies to all listed target versions where the feature exists.
+
+## Skill Catalog
+
+- **Composer Dependency Management** — declares, autoloads, and resolves PHP package dependencies with semantic versioning. *Use when:* initializing projects, adding libraries, or managing autoloading strategies. *Source:* https://getcomposer.org/doc
+- **PSR Standards Compliance** — adheres to PHP-FIG interoperability specs for autoloading, coding style, and HTTP messages. *Use when:* ensuring package compatibility, enabling framework integration, or maintaining code consistency. *Source:* https://www.php-fig.org/psr
+- **Typed Properties & Return Types** — declares scalar, union, and intersection types for class properties and methods. *Use when:* improving static analysis, enabling IDE autocomplete, or preventing runtime type errors. *Source:* https://www.php.net/manual/en/language.types.declarations.php
+- **Readonly Properties & Classes (PHP 8.2+)** — enforces immutability for properties or entire classes after initialization. *Use when:* modeling value objects, preventing unintended mutation, or clarifying API contracts. *Source:* https://php.watch/versions/8.2/readonly
+- **Enums (Pure & Backed)** — defines enumerated types with optional scalar backing values for type-safe constants. *Use when:* replacing magic strings, modeling state machines, or enabling exhaustive match expressions. *Source:* https://www.php.net/manual/en/language.types.enumerations.php
+- **Fibers for Cooperative Concurrency** — enables lightweight, interruptible execution contexts for async patterns. *Use when:* implementing custom schedulers, building coroutine-based libraries, or managing long-running tasks. *Source:* https://www.php.net/manual/en/language.fibers.php
+- **Attributes for Metadata** — attaches structured annotations to classes, methods, or properties via native syntax. *Use when:* configuring routes, validation rules, or serialization behavior declaratively. *Source:* https://www.php.net/manual/en/language.attributes.php
+- **Match Expressions** — provides strict, expression-based branching with exhaustive pattern matching. *Use when:* replacing switch statements, handling enum variants, or computing values conditionally. *Source:* https://www.php.net/manual/en/control-structures.match.php
+- **Named Arguments** — passes parameters to functions by name instead of position, allowing optional arguments to be skipped. *Use when:* calling functions with many optional parameters, improving call-site readability, or skipping defaults selectively. *Source:* https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments
+- **First-Class Callable Syntax** — references methods and functions as closures using the `func(...)` syntax without invocation. *Use when:* passing methods to collections, registering event listeners, or composing higher-order functions cleanly. *Source:* https://www.php.net/manual/en/functions.first_class_callable_syntax.php
+- **Nullsafe Operator** — chains property/method access with automatic short-circuiting on null. *Use when:* navigating optional relationships, simplifying null checks, or writing defensive accessors. *Source:* https://www.php.net/manual/en/language.oop5.nullsafe.php
+- **Asymmetric Visibility (PHP 8.4+)** — declares different visibility for property read vs. write access. *Use when:* exposing immutable public state while retaining private mutability internally. *Source:* https://php.watch/versions/8.4/asymmetric-visibility
+- **Property Hooks (PHP 8.4+)** — defines custom getter/setter logic directly on property declarations. *Use when:* encapsulating computed properties, adding validation on assignment, or replacing explicit accessor methods. *Source:* https://php.watch/versions/8.4/property-hooks
+- **Pipe Operator (PHP 8.5+)** — chains function calls left-to-right with implicit value passing. *Use when:* composing transformations, reducing nested function calls, or expressing data pipelines declaratively. *Source:* https://php.watch/versions/8.5/pipe-operator
+- **Clone-With Syntax (PHP 8.5+)** — clones objects while modifying properties in a single expression. *Use when:* implementing immutable value objects, creating derived configurations, or enabling fluent APIs. *Source:* https://php.watch/versions/8.5/clone-with
+- **#[\NoDiscard] Attribute (PHP 8.5+)** — warns when a function's return value is ignored by the caller. *Use when:* enforcing critical result handling, preventing silent failures, or documenting side-effect expectations. *Source:* https://php.watch/versions/8.5/no-discard
+- **array_first()/array_last() (PHP 8.5+)** — retrieves first/last array element matching a callback without full iteration. *Use when:* optimizing collection lookups, simplifying conditional extraction, or replacing manual loops. *Source:* https://php.watch/versions/8.5/array-first-last
+- **SOLID Principles Application** — applies single responsibility, open/closed, Liskov substitution, interface segregation, and dependency inversion. *Use when:* designing extensible architectures, refactoring monoliths, or improving testability. *Source:* training
+- **GoF Patterns in PHP** — implements factory, strategy, observer, decorator, and adapter patterns using modern PHP features. *Use when:* solving recurring design problems, enabling polymorphism, or decoupling components. *Source:* training

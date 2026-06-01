@@ -1,0 +1,76 @@
+---
+alwaysApply: false
+description: "Security patterns — use when working with authentication, authorization, CSRF, XSS prevention, encryption, hashing, rate limiting, CORS, or security headers"
+globs: ["app/Policies/**", "app/Http/Middleware/**", "config/auth.php", "config/sanctum.php"]
+---
+
+> **⚠️ Version Warning:** This project currently runs **Laravel 11 / PHP 8.2+**. These skills cover **Laravel 11–13** and **PHP 8.2–8.5**. Features tagged with a higher version (Laravel 12+, 13+, PHP 8.3+, 8.4+, 8.5+) are included for forward awareness — do NOT use them in current code unless the project has been upgraded to that version.
+
+# Security Skills (2025–2026)
+
+## How to Use This File
+
+This file catalogs 20 foundational-to-advanced skills specific to application security within the Laravel ecosystem. Each skill includes a concise definition, a real-world usage trigger, and a source reference.
+
+When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Prioritize defensive patterns and framework-provided protections before suggesting third-party security tools.
+
+Apply Laravel 13 security defaults for new applications; when auditing legacy systems, document existing gaps and provide incremental hardening paths that align with current framework versions.
+
+Source URLs point to official Laravel documentation and OWASP references. For patterns without dedicated Laravel docs (e.g., secrets management, security headers), the best available reference is used.
+
+## Skill Catalog
+
+- **OWASP Top 10 Mitigation in Laravel** — applies framework features to prevent injection, XSS, broken auth, and other critical risks. *Use when:* conducting security reviews, hardening new features, or preparing for penetration tests. *Source:* https://owasp.org/www-project-top-ten
+- **CSRF Protection (Web vs API)** — enforces token validation for state-changing web requests while keeping stateless APIs stateless. *Use when:* building form-based apps, securing SPA integrations, or configuring Sanctum authentication. *Source:* https://laravel.com/docs/13.x/csrf
+- **XSS Prevention via Blade Escaping** — auto-escapes output in templates and restricts raw HTML rendering to trusted content. *Use when:* rendering user-generated content, integrating rich text editors, or preventing script injection. *Source:* https://laravel.com/docs/13.x/blade#displaying-data
+- **SQL Injection Prevention via Parameter Binding** — uses query builders or Eloquent to safely interpolate values without string concatenation. *Use when:* building dynamic queries, accepting user filters, or constructing report generators. *Source:* https://laravel.com/docs/13.x/queries
+- **Mass Assignment Protection ($fillable/$guarded)** — whitelists attributes eligible for bulk assignment from untrusted HTTP request payloads. *Use when:* accepting user input for model creation, preventing privilege escalation, or enforcing integrity. *Source:* https://laravel.com/docs/13.x/eloquent#mass-assignment
+- **Authorization via Gates & Policies** — defines ability checks and model-specific rules for fine-grained access control implementation. *Use when:* implementing role-based permissions, restricting resource access, or auditing authorization decisions. *Source:* https://laravel.com/docs/13.x/authorization
+- **Encryption at Rest for Sensitive Data** — encrypts database columns or files using Laravel's built-in cryptographic facilities securely. *Use when:* storing PII, complying with GDPR/HIPAA, or protecting API keys in configuration. *Source:* https://laravel.com/docs/13.x/encryption
+- **bcrypt & Argon2 Hashing Strategies** — uses adaptive, salted hashing for passwords with configurable computational cost factors. *Use when:* implementing user authentication, migrating legacy hashes, or meeting password policies. *Source:* https://laravel.com/docs/13.x/hashing
+- **Auth Session Management** — configures secure session cookie flags, idle/absolute timeouts, and multi-device logout to limit stolen-session blast radius. *Use when:* hardening high-value accounts, enforcing compliance session policies, or invalidating sessions after credential changes. *Source:* training
+- **Multi-Factor Auth (MFA)** — adds a second factor via TOTP authenticator apps or WebAuthn passkeys on top of password authentication. *Use when:* protecting admin panels, meeting regulatory MFA requirements, or reducing account takeover risk from credential leaks. *Source:* training
+- **Signed URLs for Temporary Access** — generates time-limited, tamper-proof URLs for password resets or secure file downloads. *Use when:* enabling secure email links, providing expiring resources, or preventing URL guessing. *Source:* https://laravel.com/docs/13.x/urls#signed-urls
+- **Rate Limiting as Security Control** — throttles authentication attempts and API calls to prevent brute force and enumeration. *Use when:* protecting login endpoints, mitigating automated attacks, or enforcing fair usage policies. *Source:* https://laravel.com/docs/13.x/routing#rate-limiting
+- **Secrets Management with Vault/AWS** — stores credentials in dedicated secret management stores instead of plain environment variables. *Use when:* managing production credentials, enabling automated rotation, or complying with security policies. *Source:* training
+- **Dependency CVE Scanning (Roave)** — checks Composer dependencies for known vulnerabilities automatically during continuous integration builds. *Use when:* preventing supply chain attacks, maintaining compliance, or justifying dependency updates. *Source:* training
+- **HTTPS Enforcement & HSTS Headers** — redirects HTTP traffic to HTTPS and configures Strict-Transport-Security to prevent downgrades. *Use when:* securing production deployments, meeting browser requirements, or enabling HTTP/2 protocols. *Source:* training
+- **Security Headers Configuration** — sets Content-Security-Policy, X-Frame-Options, and Referrer-Policy via application middleware layers. *Use when:* mitigating clickjacking, preventing XSS payloads, or reducing information leakage vectors. *Source:* training
+- **CORS Configuration for Cross-Origin APIs** — defines allowed origins, methods, and headers for safe browser-based cross-origin consumption. *Use when:* building public APIs, supporting frontend frameworks, or enabling third-party integrations. *Source:* https://laravel.com/docs/13.x/cors
+- **Sensitive Data Logging Redaction** — masks passwords, tokens, and PII in application logs to prevent accidental credential exposure. *Use when:* debugging production issues, complying with privacy regulations, or enabling safe log aggregation. *Source:* https://laravel.com/docs/13.x/logging
+- **Request Forgery Protection Enhancements (Laravel 13+)** — adds origin-aware verification via PreventRequestForgery middleware for advanced CSRF defense. *Use when:* hardening against modern CSRF attacks, supporting browser security standards, or meeting enterprise audits. *Source:* training
+- **Attribute-Based Authorization (Laravel 13+)** — uses #[Authorize] attribute for declarative policy checks directly on controller methods. *Use when:* simplifying authorization logic, enabling route-level permissions, or improving code readability. *Source:* training
+
+---
+
+## 🌐 API & Security Standards (Active)
+
+- **Response:** Always use `app/Traits/Response/` traits. Never `response()->json()` directly.
+- **Rate Limiting:** Auth → `throttle:5,1` | REST → `throttle:60,1`
+- **HTTPS:** Enforced in production via `AppServiceProvider::boot()`
+- **Headers:** `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`
+- **Hidden Fields:** `password`, `remember_token`, `token` MUST be in `$hidden`
+- **Validation:** External input sanitized via FormRequests only
+
+## Project-Specific Security Rules
+
+### Never trust hidden fields
+- Hidden form fields for `user_id`, `role_id`, `price`, `wallet`, `status`, `type`, or permission-sensitive values **must not be trusted**.
+- Always validate ownership/authorization server-side even when the field is not rendered in the UI.
+
+### Sensitive admin actions
+- Every state-changing admin action must be authorized (via middleware or explicit checks).
+- Do not allow mass toggling, deletion, or status changes without validation of each target record.
+
+### Secrets
+- Keep secrets out of committed code: no API keys, passwords, or tokens in seeders, views, config files (use `.env`), or Blade.
+- Passwords must be hashed via `Hash::make()` or the `bcrypt` cast — never stored in plain text.
+
+### File uploads
+- Validate MIME type, extension, and file size in the FormRequest (`mimes:jpg,jpeg,png,webp`, `max:2048`).
+- Never allow executable extensions (`php`, `exe`, `sh`, `bat`).
+- Use Spatie Media Library or the project's `app/Traits/Upload` — never manual `move()` / `storeAs()` with unsanitized filenames.
+
+### Mass assignment (admin)
+- Admin create/update actions must only pass `$request->validated()` to services — never `$request->all()`.
+- Model `$fillable` must be explicitly defined for all models exposed via admin CRUD.
