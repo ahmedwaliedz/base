@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Category;
 
 use App\Http\Requests\Admin\BaseAdminRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends BaseAdminRequest
 {
@@ -23,7 +24,11 @@ class StoreRequest extends BaseAdminRequest
             'slug' => ['required', 'string', self::MAX_STRING_LENGTH, 'unique:categories,slug'],
             'icon' => ['nullable', 'string', self::MAX_STRING_LENGTH],
             'is_active' => ['required', 'boolean'],
-            'parent_id' => ['nullable', 'integer', 'exists:categories,id'],
+            'parent_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('categories', 'id')->whereNull('parent_id'),
+            ],
             'ar' => ['required', 'array'],
             'ar.name' => ['required', 'string', self::MAX_STRING_LENGTH, 'min:2'],
             'en' => ['required', 'array'],

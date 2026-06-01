@@ -17,11 +17,24 @@ class CategoryService extends CrudBaseService
         return parent::index($request, $where)->with('translations')->withCount(['children']);
     }
 
+    public function createVars(): array
+    {
+        $parents = \App\Models\Category::with('translations')->whereNull('parent_id')->get();
+
+        return [
+            'parents' => $parents->map(fn($c) => ['id' => $c->id, 'name' => $c->name])->toArray(),
+        ];
+    }
+
     public function editVars($id = null): array
     {
-        $parents = $id
-            ? \App\Models\Category::whereNull('parent_id')->where('id', '!=', $id)->get()
-            : \App\Models\Category::whereNull('parent_id')->get();
+        $parentsQuery = \App\Models\Category::with('translations')->whereNull('parent_id');
+
+        if ($id) {
+            $parentsQuery->where('id', '!=', $id);
+        }
+
+        $parents = $parentsQuery->get();
 
         return [
             'parents' => $parents->map(fn($c) => ['id' => $c->id, 'name' => $c->name])->toArray(),

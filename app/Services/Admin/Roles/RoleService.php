@@ -136,15 +136,21 @@ class RoleService
             );
         }
 
+        $existingPermissions = Permission::whereIn('permission', $permissionNames)
+            ->get()
+            ->keyBy('permission');
+
         $permissionIds = [];
+
         foreach ($permissionNames as $permissionName) {
-            $permission = Permission::where('permission', $permissionName)->first();
-            if ($permission) {
-                $permissionIds[] = $permission->id;
-            } else {
+            $permission = $existingPermissions->get($permissionName);
+
+            if (! $permission) {
                 $permission = Permission::create(['permission' => $permissionName]);
-                $permissionIds[] = $permission->id;
+                $existingPermissions->put($permissionName, $permission);
             }
+
+            $permissionIds[] = $permission->id;
         }
 
         return $permissionIds;

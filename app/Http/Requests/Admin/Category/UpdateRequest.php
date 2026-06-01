@@ -20,11 +20,18 @@ class UpdateRequest extends BaseAdminRequest
 
     public function rules(): array
     {
+        $categoryId = $this->route('category');
+
         return [
-            'slug' => ['required', 'string', self::MAX_STRING_LENGTH, Rule::unique('categories', 'slug')->ignore($this->route('category'))],
+            'slug' => ['required', 'string', self::MAX_STRING_LENGTH, Rule::unique('categories', 'slug')->ignore($categoryId)],
             'icon' => ['nullable', 'string', self::MAX_STRING_LENGTH],
             'is_active' => ['required', 'boolean'],
-            'parent_id' => ['nullable', 'integer', 'exists:categories,id'],
+            'parent_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('categories', 'id')->whereNull('parent_id'),
+                Rule::notIn([$categoryId]),
+            ],
             'ar' => ['required', 'array'],
             'ar.name' => ['required', 'string', self::MAX_STRING_LENGTH, 'min:2'],
             'en' => ['required', 'array'],

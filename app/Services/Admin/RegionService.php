@@ -27,7 +27,7 @@ class RegionService extends CrudBaseService
     public function editVars($id = null): array
     {
         return [
-            'countries' => \App\Models\Country::get()->map(fn($c) => ['id' => $c->id, 'name' => $c->name])->toArray(),
+            'countries' => \App\Models\Country::with('translations')->get()->map(fn($c) => ['id' => $c->id, 'name' => $c->name])->toArray(),
         ];
     }
 

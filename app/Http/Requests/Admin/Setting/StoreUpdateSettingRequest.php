@@ -21,9 +21,9 @@ class StoreUpdateSettingRequest extends FormRequest
             "phone"             => self::REQUIRED_STRING_RULE.'|digits_between:8,15',
             "whatsapp"          => self::REQUIRED_STRING_RULE.'|digits_between:8,15',
             "email"             => 'required|email:rfc,dns|max:255',
-            'logo'              => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'no_data_image'     => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'fav_icon'          => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo'              => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'no_data_image'     => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'fav_icon'          => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
 
             // pricing data
             'app_commission'    => 'required|numeric|min:0|max:100',
@@ -43,7 +43,7 @@ class StoreUpdateSettingRequest extends FormRequest
             'mail_username'     => 'nullable|string|max:255',
             'mail_password'     => 'nullable|string|max:255',
             'mail_encryption'   => 'nullable|string|max:10',
-            'mail_from_address' => 'nullable|email|max:255',
+            'mail_from_address' => 'nullable|email:rfc,dns|max:255',
             'mail_from_name'    => 'nullable|string|max:255',
         ];
     }
