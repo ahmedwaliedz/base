@@ -168,6 +168,111 @@ Admin list pages support exporting data in multiple formats through the admin UI
 | Cache-related issues | Run `php artisan cache:clear` and `php artisan config:clear` |
 | Session expired | Check `SANCTUM_STATEFUL_DOMAINS` in `.env` matches your domain |
 
+## Deployment to InfinityFree
+
+InfinityFree is a free shared hosting provider with **no SSH/terminal access**. Files are deployed via FTP using the included GitHub workflow (`.github/workflows/infinity-free.yml`).
+
+### Important Production Settings
+
+Before deploying, configure the production `.env` file **on the server** with these values:
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://your-domain.com
+
+# Never use 127.0.0.1 or localhost — use the MySQL hostname from the InfinityFree panel
+DB_HOST=sqlXXX.infinityfree.com
+DB_PORT=3306
+DB_DATABASE=your_infinityfree_database
+DB_USERNAME=your_infinityfree_username
+DB_PASSWORD=your_infinityfree_password
+
+# Use file-based cache/session (database cache causes the "SQLSTATE[HY000] Connection refused" error)
+CACHE_STORE=file
+SESSION_DRIVER=file
+QUEUE_CONNECTION=sync
+
+# Disable debug bar
+DEBUGBAR_ENABLED=false
+```
+
+### Generate APP_KEY
+
+Run locally (never on the server):
+
+```bash
+php artisan key:generate --show
+```
+
+Copy the output and set it as `APP_KEY` in the production `.env` file.
+
+### Clearing Cache on the Server
+
+Since there is no terminal access:
+
+1. **During deploy** — The GitHub workflow automatically removes `bootstrap/cache/*.php` files before uploading.
+2. **Emergency** — Use the protected script at `public/server-maintenance-clear-cache.php` (see below). Delete this script after use.
+
+### Secret Rotation Warning
+
+> **`.env` was previously tracked in git.** Removing `.env` from tracking with `git rm --cached` does **not** remove it from git history. Anyone with repository access can view past versions of `.env`.
+>
+> You **must manually rotate** every secret that was ever in the tracked `.env`:
+>
+> - `APP_KEY` — generate a new key with `php artisan key:generate --show`
+> - Database credentials (`DB_USERNAME`, `DB_PASSWORD`)
+> - `JWT_SECRET`
+> - `X_API_KEY`
+> - Mail credentials (`MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM_ADDRESS`)
+> - `MAINTENANCE_CLEAR_TOKEN` (if set)
+> - Any API keys or tokens
+>
+> After rotating, update the production `.env` with the new values. Do **not** re-add `.env` to git tracking.
+
+### Emergency Cache Clear Script
+
+The file `public/server-maintenance-clear-cache.php` can delete stale Laravel bootstrap cache files without terminal access.
+
+**How token loading works:**
+The script does **not** rely on `getenv()` (which is unavailable on InfinityFree outside Laravel's boot cycle). Instead it:
+1. Reads `MAINTENANCE_CLEAR_TOKEN` directly from the project root `.env` file using a minimal line-by-line parser
+2. Falls back to `getenv()` if the `.env` file is not readable
+3. Uses `hash_equals()` for timing-safe token comparison
+
+**Setup:**
+1. Generate a random token: `openssl rand -hex 32`
+2. Add to production `.env`: `MAINTENANCE_CLEAR_TOKEN=your_generated_token`
+3. Visit: `https://your-domain.com/server-maintenance-clear-cache.php?token=your_generated_token`
+
+**Security:**
+- Reads only `MAINTENANCE_CLEAR_TOKEN` from `.env` — does not load or expose other values
+- Falls back to `getenv()` if `.env` is unreadable
+- Returns a generic `403 Forbidden` for any missing/invalid token (does not reveal whether a token exists)
+- Uses `hash_equals()` for timing-safe comparison — prevents timing attacks
+- Only deletes known bootstrap cache files (`config.php`, `routes-v7.php`, `events.php`, `packages.php`, `services.php`)
+- Does not accept file names from request input
+- Does not run shell commands or bootstrap Laravel
+
+**After use:**
+- Delete the script from the production server, or
+- Remove `MAINTENANCE_CLEAR_TOKEN` from `.env` to disable it, or
+- Generate and set a new token to re-authorize future use
+
+### Deployment Checklist
+
+1. [ ] Set real DB credentials in server `.env` (hostname from InfinityFree panel, not `127.0.0.1`)
+2. [ ] Set `APP_KEY` to the output of `php artisan key:generate --show`
+3. [ ] Set `CACHE_STORE=file`, `SESSION_DRIVER=file`, `QUEUE_CONNECTION=sync`
+4. [ ] Set `APP_DEBUG=false`, `DEBUGBAR_ENABLED=false`
+5. [ ] Delete remote `bootstrap/cache/config.php` once, or use the emergency cache clearer
+6. [ ] Redeploy through GitHub Actions
+7. [ ] Verify the site loads without SQL cache errors
+
+### Known Issues
+
+- **SQLSTATE[HY000] [2002] Connection refused on `cache` table** — Caused by `CACHE_STORE=database` (the Laravel 11 default) or stale cached config with `DB_HOST=127.0.0.1`. Fix by setting `CACHE_STORE=file` and clearing `bootstrap/cache/config.php`.
+
 ## License
 
 MIT

@@ -43,3 +43,10 @@ public/css/
 *.php~
 *.blade.php~
 DASHBOARD_FIX_PLAN_V2.md
+
+# Laravel cached bootstrap files (must not be deployed with stale local config)
+/bootstrap/cache/config.php
+/bootstrap/cache/routes-v7.php
+/bootstrap/cache/events.php
+/bootstrap/cache/packages.php
+/bootstrap/cache/services.php
