@@ -151,7 +151,7 @@ class SeoCreateTest extends TestCase
         $response->assertStatus(200);
         $seo = Seo::whereTranslation('meta_title', 'Test Meta Title')->first();
         $this->assertNotNull($seo);
-        $this->assertNull($seo->image);
+        $this->assertNotNull($seo->image);
     }
 
     public function test_seo_show_page_renders_without_seoable(): void

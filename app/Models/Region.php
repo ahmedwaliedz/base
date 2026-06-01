@@ -13,7 +13,7 @@ class Region extends Model
 {
     use GeneralTrait, HasFactory, Translatable, FilterableTrait, HasConfiguredTranslations;
 
-    public const RELATIONS = ['translations', 'country', 'cities'];
+    public const RELATIONS = ['translations', 'country', 'cities', 'cities.translations'];
 
     protected $fillable = [
         'country_id',

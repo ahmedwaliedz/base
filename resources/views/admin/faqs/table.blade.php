@@ -2,11 +2,12 @@
 
 @section('table')
     @foreach ($faqs as $faq)
-        <tr class="data-rows {{ $faq->deleted_at ? 'deleted-table-row' : '' }}" data-faq-id="{{ $faq->id }}">
-            @if (!$faq->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $faq->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
+        @php $faqDeleted = method_exists($faq, 'trashed') && $faq->trashed(); @endphp
+        <tr class="data-rows {{ $faqDeleted ? 'deleted-table-row' : '' }}" data-faq-id="{{ $faq->id }}">
+            @if (!$faqDeleted)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $faq->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
             <td>{{ Str::limit($faq->question, 50) }}</td>
             <td>{{ Str::limit($faq->answer, 80) }}</td>
-            <td>@if(!$faq->deleted_at)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $faq->id }}" data-route="{{ route('admin.faqs.switchIsActive', ['id' => $faq->id]) }}" {{ $faq->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
+            <td>@if(!$faqDeleted)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $faq->id }}" data-route="{{ route('admin.faqs.switchIsActive', ['id' => $faq->id]) }}" {{ $faq->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
             <td>
                 <div class="d-flex align-items-center gap-2 flex-nowrap faqs-row-actions">
                     <a href="{{ route('admin.faqs.show', ['faq' => $faq]) }}"
@@ -17,7 +18,7 @@
                         <i class="ti ti-eye" aria-hidden="true"></i>
                     </a>
 
-                    @if (!$faq->deleted_at)
+                    @if (!$faqDeleted)
                         <a href="{{ route('admin.faqs.edit', ['faq' => $faq]) }}"
                            class="custom-icon faqs-action-btn faqs-action-edit"
                            data-bs-toggle="tooltip" data-bs-placement="top"
@@ -27,7 +28,7 @@
                         </a>
                     @endif
 
-                    @if ($faq->deleted_at)
+                    @if ($faqDeleted)
                         <a href="javascript:void(0);" data-id="{{ $faq->id }}"
                            data-route="{{ route('admin.faqs.restore', ['id' => $faq->id]) }}"
                            class="custom-icon faqs-action-btn faqs-action-restore restore-row"

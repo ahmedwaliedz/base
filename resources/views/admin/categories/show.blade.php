@@ -10,7 +10,7 @@
         {{ __('admin/main.category_details') }}
     </h5>
     <div class="d-flex gap-2 flex-wrap">
-        @if ($category->deleted_at)
+        @if (method_exists($category, 'trashed') && $category->trashed())
             <a href="#" data-id="{{ $category->id }}"
                data-route="{{ route('admin.categories.restore', ['id' => $category->id]) }}"
                class="btn btn-sm btn-success restore-row">
@@ -50,7 +50,9 @@
                     @if ($category->icon)
                         @include('admin.admins.parts.detail-row', ['icon' => 'ti-icons', 'label' => __('admin/main.icon'), 'value' => $category->icon])
                     @endif
-                    @include('admin.admins.parts.file-detail-row', ['icon' => 'ti-photo', 'label' => __('admin/main.image'), 'value' => $category->image])
+                    @if (isset($category->image))
+                        @include('admin.admins.parts.file-detail-row', ['icon' => 'ti-photo', 'label' => __('admin/main.image'), 'value' => $category->image])
+                    @endif
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-calendar', 'label' => __('admin/main.created_at'), 'value' => $category->created_at?->format('Y-m-d H:i')])
                 </div>
             </div>

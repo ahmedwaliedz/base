@@ -31,12 +31,12 @@ class DashboardAuthenticationTest extends TestCase
     {
         $admin = Admin::factory()->create([
             'email' => 'test@example.com',
-            'password' => bcrypt('password123'),
+            'password' => 'Password@123',
         ]);
 
-        $response = $this->post(route('admin.login'), [
+        $response = $this->postJson(route('admin.login'), [
             'email' => 'test@example.com',
-            'password' => 'password123',
+            'password' => 'Password@123',
         ]);
 
         $response->assertStatus(200);
@@ -47,12 +47,12 @@ class DashboardAuthenticationTest extends TestCase
     {
         $admin = Admin::factory()->create([
             'email' => 'test@example.com',
-            'password' => bcrypt('password123'),
+            'password' => 'Password@123',
         ]);
 
-        $response = $this->post(route('admin.login'), [
+        $response = $this->postJson(route('admin.login'), [
             'email' => 'test@example.com',
-            'password' => 'wrongpassword',
+            'password' => 'Wrong@123',
         ]);
 
         $response->assertStatus(422);
@@ -61,12 +61,13 @@ class DashboardAuthenticationTest extends TestCase
 
     public function test_login_with_nonexistent_email_fails(): void
     {
-        $response = $this->post(route('admin.login'), [
+        $response = $this->postJson(route('admin.login'), [
             'email' => 'nonexistent@example.com',
-            'password' => 'anypassword',
+            'password' => 'Test@12345',
         ]);
 
         $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['email']);
         $this->assertGuest('admin');
     }
 
@@ -74,23 +75,23 @@ class DashboardAuthenticationTest extends TestCase
     {
         $admin = Admin::factory()->create([
             'email' => 'blocked@example.com',
-            'password' => bcrypt('password123'),
+            'password' => 'Password@123',
             'is_blocked' => true,
         ]);
 
-        $response = $this->post(route('admin.login'), [
+        $response = $this->postJson(route('admin.login'), [
             'email' => 'blocked@example.com',
-            'password' => 'password123',
+            'password' => 'Password@123',
         ]);
 
-        $response->assertStatus(403);
+        $response->assertStatus(423);
         $this->assertGuest('admin');
     }
 
     public function test_login_requires_email(): void
     {
-        $response = $this->post(route('admin.login'), [
-            'password' => 'password123',
+        $response = $this->postJson(route('admin.login'), [
+            'password' => 'Test@123',
         ]);
 
         $response->assertStatus(422);
@@ -99,7 +100,7 @@ class DashboardAuthenticationTest extends TestCase
 
     public function test_login_requires_password(): void
     {
-        $response = $this->post(route('admin.login'), [
+        $response = $this->postJson(route('admin.login'), [
             'email' => 'test@example.com',
         ]);
 
@@ -111,7 +112,7 @@ class DashboardAuthenticationTest extends TestCase
     {
         $this->actingAs($this->superAdmin, 'admin');
 
-        $response = $this->get(route('admin.logout'));
+        $response = $this->post(route('admin.logout'));
 
         $response->assertRedirect(route('admin.loginPage'));
         $this->assertGuest('admin');

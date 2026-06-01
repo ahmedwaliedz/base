@@ -10,7 +10,7 @@
         {{ __('admin/main.region_details') }}
     </h5>
     <div class="d-flex gap-2 flex-wrap">
-        @if ($region->deleted_at)
+        @if (method_exists($region, 'trashed') && $region->trashed())
             <a href="#" data-id="{{ $region->id }}"
                data-route="{{ route('admin.regions.restore', ['id' => $region->id]) }}"
                class="btn btn-sm btn-success restore-row">

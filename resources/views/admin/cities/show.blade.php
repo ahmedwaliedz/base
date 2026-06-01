@@ -10,7 +10,7 @@
         {{ __('admin/main.city_details') }}
     </h5>
     <div class="d-flex gap-2 flex-wrap">
-        @if ($city->deleted_at)
+        @if (method_exists($city, 'trashed') && $city->trashed())
             <a href="#" data-id="{{ $city->id }}"
                data-route="{{ route('admin.cities.restore', ['id' => $city->id]) }}"
                class="btn btn-sm btn-success restore-row">

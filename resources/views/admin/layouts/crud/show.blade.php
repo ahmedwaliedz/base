@@ -6,7 +6,7 @@
 @endpush
 
 @section('content')
-    @if ($model->deleted_at)
+    @if (method_exists($model, 'trashed') && $model->trashed())
         <div class="card mb-2" style="background-color: #96111c5b; border-color: #f5c6cb;">
             <div class="card-body text-center">
                 <div class="row ">

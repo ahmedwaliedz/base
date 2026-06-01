@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class DistrictTranslation extends Model
 {
-    //
+    protected $fillable = ['name'];
 }

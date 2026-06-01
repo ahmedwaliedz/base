@@ -21,8 +21,14 @@ class CheckRolePermission
             abort(401, 'Unauthenticated');
         }
 
+        if ($admin->is_blocked) {
+            abort(403, 'Your account has been blocked.');
+        }
+
         $role = $admin->role;
-        $permissionsList = $role?->permissions->pluck('permission')->filter(fn($p) => Str::startsWith($p, 'admin.'))->toArray();
+        $permissionsList = $role?->permissions
+            ? $role->permissions->pluck('permission')->filter(fn($p) => Str::startsWith($p, 'admin.'))->toArray()
+            : [];
         $currentRouteName = $request->route()->getName();
 
         return match ($admin->type) {

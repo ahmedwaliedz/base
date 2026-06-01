@@ -12,7 +12,7 @@ class City extends Model
 {
     use HasFactory, GeneralTrait, Translatable, HasConfiguredTranslations;
 
-    public const RELATIONS = ['translations', 'country', 'region', 'districts'];
+    public const RELATIONS = ['translations', 'country', 'region', 'districts', 'districts.translations'];
 
     protected $fillable = ['country_id', 'region_id', 'is_active'];
 

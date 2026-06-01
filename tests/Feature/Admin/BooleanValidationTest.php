@@ -22,7 +22,10 @@ class BooleanValidationTest extends TestCase
     {
         parent::setUp();
 
-        $this->country = Country::create(['code' => '20', 'name' => 'Egypt', 'name_ar' => 'مصر', 'is_active' => true]);
+        $this->country = Country::create(['code' => '20', 'is_active' => true]);
+        $this->country->translateOrNew('en')->name = 'Egypt';
+        $this->country->translateOrNew('ar')->name = 'مصر';
+        $this->country->save();
         $this->superAdmin = Admin::factory()->create();
     }
 

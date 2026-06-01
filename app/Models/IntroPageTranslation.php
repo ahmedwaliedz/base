@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class IntroPageTranslation extends Model
 {
-    //
+    protected $fillable = ['title', 'description'];
 }

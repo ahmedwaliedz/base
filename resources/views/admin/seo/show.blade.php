@@ -10,7 +10,7 @@
         {{ __('admin/main.seo_details') }}
     </h5>
     <div class="d-flex gap-2 flex-wrap">
-        @if ($seo->deleted_at)
+        @if (method_exists($seo, 'trashed') && $seo->trashed())
             <a href="#" data-id="{{ $seo->id }}"
                data-route="{{ route('admin.seo.restore', ['id' => $seo->id]) }}"
                class="btn btn-sm btn-success restore-row">

@@ -112,6 +112,16 @@ class Admin extends Authenticatable /* implements HasMedia */
         return $this->belongsTo(Role::class);
     }
 
+    public function getRememberToken(): ?string
+    {
+        return null;
+    }
+
+    public function setRememberToken($value): void
+    {
+        // no-op: admins table has no remember_token column
+    }
+
     /**
      * Get available notification types for admins
      */
