@@ -66,9 +66,9 @@ Route::middleware([AdminSetLocale::class, 'web'])->group(function () {
             Route::group(['prefix' => 'app-notifications'], function () {
                 Route::get('', [AppNotificationController::class, 'index'])->name('app-notifications.index');
                 Route::post('{notification}/read', [AppNotificationController::class, 'markAsRead'])->name('app-notifications.markAsRead');
-                Route::patch('{notification}/read', [AppNotificationController::class, 'markAsRead']);
+                Route::patch('{notification}/read', [AppNotificationController::class, 'markAsRead'])->name('app-notifications.markAsRead.patch');
                 Route::post('mark-all-as-read', [AppNotificationController::class, 'markAllAsRead'])->name('app-notifications.markAllAsRead');
-                Route::patch('mark-all-as-read', [AppNotificationController::class, 'markAllAsRead']);
+                Route::patch('mark-all-as-read', [AppNotificationController::class, 'markAllAsRead'])->name('app-notifications.markAllAsRead.patch');
             });
 
             // settings routes

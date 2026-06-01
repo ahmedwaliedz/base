@@ -11,7 +11,7 @@
                         <h6 class="role-card__name" title="{{ $role->name }}">{{ $role->name }}</h6>
                         <span class="role-card__meta">
                             <i class="ti ti-users" style="font-size: 0.7rem;"></i>
-                            {{ __('admin/main.total_admin_um', ['num' => $role->admins()->count()]) }}
+                            {{ __('admin/main.total_admin_um', ['num' => $role->admins_count]) }}
                         </span>
                     </div>
                 </div>
@@ -48,8 +48,8 @@
                             </li>
                         @endforeach
                     </ul>
-                    @if($role->admins->count() > 5)
-                        <span class="role-card__avatar-overflow">+{{ $role->admins->count() - 5 }}</span>
+                    @if($role->admins_count > 5)
+                        <span class="role-card__avatar-overflow">+{{ $role->admins_count - 5 }}</span>
                     @endif
                 @else
                     <span class="role-card__meta-soft">

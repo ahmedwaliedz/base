@@ -24,11 +24,19 @@ class RegionService extends CrudBaseService
         return $data;
     }
 
-    public function editVars($id = null): array
+    public function createVars(): array
     {
         return [
-            'countries' => \App\Models\Country::with('translations')->get()->map(fn($c) => ['id' => $c->id, 'name' => $c->name])->toArray(),
+            'countries' => \App\Models\Country::with('translations')
+                ->get()
+                ->map(fn($c) => ['id' => $c->id, 'name' => $c->name])
+                ->toArray(),
         ];
+    }
+
+    public function editVars($id = null): array
+    {
+        return $this->createVars();
     }
 
     public function switchIsActive(int|string $id): bool

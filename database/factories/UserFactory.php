@@ -32,7 +32,7 @@ class UserFactory extends Factory
 
         return [
             'name' => fake()->name(),
-            'phone' => PhoneNormalizer::normalize($this->faker->unique()->regexify('\05[0-9]{8}')),
+            'phone' => PhoneNormalizer::normalize($this->faker->unique()->regexify('[1-9][0-9]{8}')),
             'country_code' => $country->code,
             'email' => fake()->unique()->userName().'@gmail.com',
             'email_verified_at' => now(),

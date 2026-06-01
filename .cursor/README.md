@@ -25,14 +25,14 @@ The goal is to ensure:
 
 ```
 .cursor/
-├── rules/              # 21 mandatory development standards
+├── rules/              # 22 mandatory development standards
 ├── skills/             # 19 task execution guides
 │   ├── setup-phase/    # New project setup (3)
 │   ├── development-phase/  # Feature implementation (13)
 │   └── specialized/    # Advanced tasks (3)
 ├── context/            # 3 project-specific knowledge files
 ├── workflows/          # 3 execution sequences
-└── templates/          # 5 reusable code starting points
+└── templates/          # 7 reusable code starting points
 ```
 
 ---
@@ -52,7 +52,7 @@ The goal is to ensure:
 
 ---
 
-## 📋 Rules Reference (21 files)
+## 📋 Rules Reference (22 files)
 
 Rules auto-apply based on which files you're editing. **No prompt needed** — they're always active.
 

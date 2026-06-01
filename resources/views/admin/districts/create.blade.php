@@ -5,7 +5,7 @@
     @csrf
     <div class="admins-form-section">
         <div class="row g-3">
-            <x-form.select :options="['name' => 'city_id', 'label' => 'city', 'class' => 'col-md-12', 'isRequired' => true, 'options' => App\Models\City::get()->map(fn($c) => ['id' => $c->id, 'name' => $c->name])]" />
+            <x-form.select :options="['name' => 'city_id', 'label' => 'city', 'class' => 'col-md-12', 'isRequired' => true, 'options' => $cities]" />
             <x-form.select :options="['name' => 'is_active', 'label' => 'is_active', 'class' => 'col-md-12', 'isRequired' => true, 'value' => 1, 'options' => [['id' => 1, 'name' => __('admin/main.yes')], ['id' => 0, 'name' => __('admin/main.no')]]]" />
         </div>
     </div>

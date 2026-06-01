@@ -9,14 +9,14 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $routes = \Route::getRoutes();
-        $permissions = [];
         foreach ($routes as $route) {
-            if (str_contains($route->getName(), 'admin.')) {
-                $permissions[] = [
-                    'permission' => $route->getName(),
-                ];
+            $routeName = $route->getName();
+            if ($routeName && str_contains($routeName, 'admin.')) {
+                \DB::table('permissions')->updateOrInsert(
+                    ['permission' => $routeName],
+                    ['permission' => $routeName]
+                );
             }
         }
-        \DB::table('permissions')->insert($permissions);
     }
 }

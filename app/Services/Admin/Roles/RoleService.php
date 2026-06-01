@@ -18,13 +18,20 @@ class RoleService
     /**
      * Get all roles with their associated admins
      *
-     * @return Collection
+     * @param array $filters
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getAllRoles()
+    public function getAllRoles(array $filters = [])
     {
-        return Role::with(['translations', 'admins' => function ($query) {
+        $query = Role::with(['translations', 'admins' => function ($query) {
             $query->limit(5);
-        }])->paginate(9);
+        }])->withCount('admins');
+
+        if (! empty($filters)) {
+            $query = $query->search($filters);
+        }
+
+        return $query->paginate($filters['per_page'] ?? 9);
     }
 
     /**

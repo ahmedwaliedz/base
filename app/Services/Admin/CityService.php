@@ -19,11 +19,19 @@ class CityService extends CrudBaseService
             ->withCount('districts');
     }
 
-    public function editVars($id = null): array
+    public function createVars(): array
     {
         return [
-            'regions' => \App\Models\Region::get()->map(fn($r) => ['id' => $r->id, 'name' => $r->name])->toArray(),
+            'regions' => \App\Models\Region::with('translations')
+                ->get()
+                ->map(fn($r) => ['id' => $r->id, 'name' => $r->name])
+                ->toArray(),
         ];
+    }
+
+    public function editVars($id = null): array
+    {
+        return $this->createVars();
     }
 
     public function switchIsActive(int|string $id): bool

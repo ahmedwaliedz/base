@@ -18,7 +18,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
- 
+
 class RoleController extends Controller
 {
     use ResponseTrait;
@@ -33,8 +33,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            //            $roles = $this->roleService->getAllRoles();
-            $roles = Role::with('translations')->search($request->filters)->paginate($request->filters['per_page'] ?? 9);
+            $roles = $this->roleService->getAllRoles($request->filters ?? []);
 
             return view('admin.roles.parts.cards', compact('roles'))->render();
         }

@@ -82,8 +82,8 @@ This project uses a custom RBAC system that must not be replaced with external p
 
 **Example:**
 ```php
-Route::get('/products', [ProductController::class, 'index'])
-    ->name('admin.products.index');
+Route::get('/users', [UserController::class, 'index'])
+    ->name('admin.users.index');
 ```
 
 If a route must bypass permission checks, document it in the middleware exception list (`exceptedRoutesFromRoles()` in `app/Traits/Route/RouteTrait.php`) instead of adding ad-hoc controller or Blade checks.
@@ -96,9 +96,7 @@ OTP authentication can be configured via `.env`:
 
 | Provider | Description |
 |----------|-------------|
-| `log` | Logs OTP codes to `storage/logs/laravel.log` (for local testing) |
-| `mail` | Sends OTP codes via email |
-| `twilio` | Sends OTP codes via Twilio SMS |
+| `log` | Logs OTP codes to `storage/logs/laravel.log` via `LogCodeSender`.
 
 ### Example Configuration
 
@@ -152,12 +150,9 @@ GET /api/v1/auth/me
 Authorization: Bearer {token}
 ```
 
-### Export Users
+### Admin Export
 
-```bash
-GET /api/v1/users/export?format=excel
-Authorization: Bearer {token}
-```
+Admin list pages support exporting data in multiple formats through the admin UI.
 
 ### Available Export Formats
 

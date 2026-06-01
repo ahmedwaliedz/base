@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\AdminType;
 use App\Models\Country;
 use App\Models\Role;
+use App\Support\PhoneNormalizer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
@@ -15,11 +16,17 @@ class AdminFactory extends Factory
 {
 public function definition(): array
     {
+        $country = Country::inRandomOrder()->first() ?? Country::create([
+            'code' => '20',
+            'name' => 'Egypt',
+            'is_active' => true,
+        ]);
+
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail(),
-            'phone' => $this->faker->unique()->regexify('\+05[0-9]{8}'),
-            'country_code' => Country::get()->isNotEmpty() ? $this->faker->randomElement(Country::pluck('code')->toArray()) : '20',
+            'phone' => PhoneNormalizer::normalize($this->faker->unique()->regexify('[1-9][0-9]{8}')),
+            'country_code' => $country->code,
             'password' => 'Password@123',
             'type' => AdminType::SUPER_ADMIN,
             'is_notify' => $this->faker->boolean,
