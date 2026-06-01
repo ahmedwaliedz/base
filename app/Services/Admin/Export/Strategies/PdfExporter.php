@@ -2,14 +2,15 @@
 namespace App\Services\Admin\Export\Strategies;
 
 use App\Services\Admin\Export\Contracts\ExporterInterface;
+use App\Services\Admin\Export\Support\ExportColumnResolver;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\View;
 
 class PdfExporter implements ExporterInterface {
     public function export($query, array $options = []) {
-        $rows     = $query->get();
-        $columns  = $options['columns'] ?? $this->getDefaultColumns($rows);
-        // Translate labels if they are translation keys
+        $columns  = ! empty($options['columns'])
+            ? $options['columns']
+            : $this->getDefaultColumns($query);
         $columns  = array_map(function ($col) {
             if (is_array($col)) {
                 $label = $col['label'] ?? '';
@@ -17,6 +18,8 @@ class PdfExporter implements ExporterInterface {
             }
             return $col;
         }, $columns);
+
+        $rows     = $query->get();
         $title    = __("admin/main.export") . ' - ' . class_basename($options['model'] ?? 'Model');
         $filename = strtolower(class_basename($options['model'] ?? 'data')) . '-' . now()->format('Ymd-His') . '.pdf';
 
@@ -26,12 +29,13 @@ class PdfExporter implements ExporterInterface {
         return $pdf->download($filename);
     }
 
-    protected function getDefaultColumns($rows) {
-        if ($rows->isEmpty()) {
+    protected function getDefaultColumns($query) {
+        $first = (clone $query)->limit(1)->get()->first();
+
+        if (! $first) {
             return [];
         }
 
-        $first = (array) $rows->first();
-        return collect($first)->keys()->map(fn($key) => ['key' => $key, 'label' => ucfirst($key)])->toArray();
+        return ExportColumnResolver::columnsFromSample($first);
     }
 }

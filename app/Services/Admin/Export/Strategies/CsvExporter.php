@@ -2,25 +2,24 @@
 namespace App\Services\Admin\Export\Strategies;
 
 use App\Services\Admin\Export\Contracts\ExporterInterface;
+use App\Services\Admin\Export\Support\ExportColumnResolver;
+use App\Services\Admin\Export\Support\SpreadsheetCellSanitizer;
 use Illuminate\Support\Str;
 
 class CsvExporter implements ExporterInterface {
     public function export($query, array $options = []) {
-        $rows = $query->get();
-        $columns = $options['columns'] ?? $this->getDefaultColumns($rows);
+        $columns = ! empty($options['columns'])
+            ? $options['columns']
+            : $this->getDefaultColumns($query);
 
-        // Prepare filename
         $baseName = strtolower(class_basename($options['model'] ?? 'data'));
         $filename = $baseName . '-' . now()->format('Ymd-His') . '.csv';
 
-        // Streamed response to avoid memory spikes on large datasets
-        $callback = function () use ($rows, $columns) {
+        $callback = function () use ($query, $columns) {
             $output = fopen('php://output', 'w');
 
-            // Add UTF-8 BOM so Excel correctly detects encoding for Arabic/English
             fwrite($output, "\xEF\xBB\xBF");
 
-            // Header row (translated when label is a trans key)
             $headers = [];
             foreach ($columns as $col) {
                 if (is_array($col)) {
@@ -32,18 +31,22 @@ class CsvExporter implements ExporterInterface {
             }
             fputcsv($output, $headers);
 
-            // Data rows
-            foreach ($rows as $row) {
+            foreach ($query->cursor() as $row) {
                 $rowArray = [];
                 foreach ($columns as $col) {
                     $key = is_array($col) ? ($col['key'] ?? null) : $col;
-                    $value = $this->extractValue($row, $key);
-                    // Normalize line breaks and ensure scalar string
+
+                    if (isset($col['value']) && is_callable($col['value'])) {
+                        $value = call_user_func($col['value'], $row);
+                    } else {
+                        $value = $this->extractValue($row, $key);
+                    }
+
                     if (is_array($value) || is_object($value)) {
                         $value = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
                     }
                     $value = str_replace(["\r\n", "\r"], "\n", (string) $value);
-                    $rowArray[] = $value;
+                    $rowArray[] = SpreadsheetCellSanitizer::sanitize($value);
                 }
                 fputcsv($output, $rowArray);
             }
@@ -56,20 +59,19 @@ class CsvExporter implements ExporterInterface {
         ]);
     }
 
-    protected function getDefaultColumns($rows) {
-        if ($rows->isEmpty()) {
+    protected function getDefaultColumns($query) {
+        $first = (clone $query)->limit(1)->get()->first();
+
+        if (! $first) {
             return [];
         }
-        $first = (array) $rows->first();
-        return collect($first)->keys()->map(fn($key) => ['key' => $key, 'label' => ucfirst($key)])->toArray();
+
+        return ExportColumnResolver::columnsFromSample($first);
     }
 
     protected function extractValue($row, $key) {
         if ($key === null) return '';
-        // Support Eloquent attribute access and dot notation
-        $value = data_get($row, $key);
-        return $value;
+
+        return data_get($row, $key);
     }
 }
-
-

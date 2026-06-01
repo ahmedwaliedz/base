@@ -175,13 +175,16 @@ class CrudBaseService {
 
     public function export(Request $request) {
         $query = $this->index($request);
-        // Prefer normalized/translated columns via hook
-        $columns       = $this->getExportColumns() ?? (defined($this->model . '::EXPORT_COLUMNS') ? $this->model::EXPORT_COLUMNS : []);
+        $columns = $this->getExportColumns() ?? (defined($this->model . '::EXPORT_COLUMNS') ? $this->model::EXPORT_COLUMNS : []);
         $exportService = new ExportService();
-        return $exportService->handle($request, $query, [
-            'columns' => $columns,
-            'model'   => $this->model,
-        ]);
+
+        $options = ['model' => $this->model];
+
+        if (! empty($columns)) {
+            $options['columns'] = $columns;
+        }
+
+        return $exportService->handle($request, $query, $options);
     }
 
     // * common variables for views
@@ -218,11 +221,13 @@ class CrudBaseService {
                         $normalized[] = ['key' => $col, 'label' => ucfirst(str_replace('_', ' ', $col))];
                     } elseif (is_array($col)) {
                         $key = $col['key'] ?? null;
-                        if ($key) {
+                        if (is_string($key) && $key !== '') {
                             $label = $col['label'] ?? ucfirst(str_replace('_', ' ', $key));
-                            // Translate if provided as a translation key
-                            $label        = is_string($label) && str_contains($label, '/') ? __($label) : $label;
-                            $normalized[] = ['key' => $key, 'label' => $label];
+                            if (is_string($label) && str_contains($label, '/')) {
+                                $label = __($label);
+                            }
+                            $col['label'] = $label;
+                            $normalized[] = $col;
                         }
                     }
                 }
