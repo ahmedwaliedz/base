@@ -154,6 +154,30 @@ class ContactComplaintToggleTest extends TestCase
         $response->assertStatus(404);
     }
 
+    public function test_contact_message_show_marks_unread_as_read(): void
+    {
+        $message = ContactMessage::factory()->create(['is_read' => false]);
+
+        $response = $this->actingAsSuperAdmin()->get(
+            route('admin.contact-messages.show', ['contact_message' => $message->id])
+        );
+
+        $response->assertOk();
+        $this->assertDatabaseHas('contact_messages', ['id' => $message->id, 'is_read' => true]);
+    }
+
+    public function test_contact_message_show_keeps_already_read_as_read(): void
+    {
+        $message = ContactMessage::factory()->create(['is_read' => true]);
+
+        $response = $this->actingAsSuperAdmin()->get(
+            route('admin.contact-messages.show', ['contact_message' => $message->id])
+        );
+
+        $response->assertOk();
+        $this->assertDatabaseHas('contact_messages', ['id' => $message->id, 'is_read' => true]);
+    }
+
     public function test_guest_cannot_toggle_read(): void
     {
         $message = ContactMessage::factory()->create();

@@ -17,6 +17,18 @@ class ContactMessageService extends CrudBaseService
         return parent::index($request, $where)->withTrashed()->withCount('replays');
     }
 
+    public function show($id)
+    {
+        $result = parent::show($id);
+
+        $message = $result['model'] ?? null;
+        if ($message && ! $message->is_read) {
+            $message->update(['is_read' => true]);
+        }
+
+        return $result;
+    }
+
     public function switchIsRead(int|string $id): bool
     {
         $message = ContactMessage::query()->withTrashed()->findOrFail($id);
