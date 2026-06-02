@@ -22,7 +22,7 @@ Laravel 11 base project with:
 - Admin panel with Blade templates
 - Versioned REST API (api/v1)
 - Authentication system (Sanctum + OTP + Password)
-- Export functionality (Excel, PDF, Word, etc.)
+- Export functionality (Excel, PDF, CSV, JSON, Copy, Print, HTML)
 - Multilingual support (Arabic/English)
 
 ---
@@ -39,7 +39,7 @@ Laravel 11 base project with:
 | Admin Panel | Blade templates |
 | File Storage | Spatie Media Library |
 | Translations | Astrotomic Translatable |
-| Export | Maatwebsite Excel, PHPWord |
+| Export | Maatwebsite Excel |
 | Frontend | Vite (JS/CSS bundling) |
 
 ---
@@ -127,7 +127,7 @@ tests/
 | `astrotomic/laravel-translatable` | Multilingual models |
 | `spatie/laravel-medialibrary` | File/image uploads |
 | `maatwebsite/excel` | Excel exports |
-| `phpoffice/phpword` | Word document exports |
+| `phpoffice/phpword` | Word document upload validation (password-protected docs, generic uploads) |
 
 ---
 
@@ -139,7 +139,7 @@ tests/
 - Country/City/Region management
 - Notification system
 - Settings management
-- Export functionality (Excel, PDF, Word, Print, etc.)
+- Export functionality (Excel, PDF, CSV, JSON, Copy, Print, HTML)
 - File upload handling via Spatie
 - API response structure
 
@@ -190,6 +190,7 @@ tests/
 - Must follow response format in API
 - Validation must be in Form Requests
 - Business logic must be in Services
+- Word export is intentionally unsupported. Supported export formats are Excel, CSV, PDF, Print, JSON, Copy, HTML. Future features must not add Word export unless explicitly requested.
 
 ---
 

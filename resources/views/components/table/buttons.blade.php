@@ -11,7 +11,6 @@
     'exportPrint'    => false,
     'exportPdf'      => false,
     'exportExcel'    => false,
-    'exportWord'     => false,
     'exportJson'     => false,
     'exportCopy'     => false,
     'hasPagination'  => false,
@@ -59,7 +58,7 @@
             </button>
         @endif
 
-        @if($hasExport && ($exportPrint || $exportPdf || $exportExcel || $exportWord || $exportJson || $exportCopy))
+        @if($hasExport && ($exportPrint || $exportPdf || $exportExcel || $exportJson || $exportCopy))
             <div class="btn-group">
                 <button type="button" class="btn btn-label-success dropdown-toggle waves-effect"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -75,9 +74,6 @@
                     @if($exportExcel)
                         <li><a class="dropdown-item export-action" data-format="xlsx" href="javascript:void(0);"><i class="ti ti-file-spreadsheet me-2"></i>{{ __('admin/main.export_excel') }}</a></li>
                         <li><a class="dropdown-item export-action" data-format="csv" href="javascript:void(0);"><i class="ti ti-file me-2"></i>{{ __('admin/main.export_csv') }}</a></li>
-                    @endif
-                    @if($exportWord)
-                        <li><a class="dropdown-item export-action" data-format="docx" href="javascript:void(0);"><i class="ti ti-file-text me-2"></i>{{ __('admin/main.export_word') }}</a></li>
                     @endif
                     @if($exportJson)
                         <li><a class="dropdown-item export-action" data-format="json" href="javascript:void(0);"><i class="ti ti-json me-2"></i>{{ __('admin/main.export_json') }}</a></li>

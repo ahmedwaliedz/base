@@ -64,7 +64,6 @@ This project uses:
 | Astrotomic Translatable | Multilingual | When entity needs Arabic/English content |
 | Spatie Media Library | File/Image handling | When entity has uploads |
 | Maatwebsite Excel | Export | When export functionality needed |
-| PHPWord | Document generation | When document export needed |
 
 ---
 

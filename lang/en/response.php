@@ -23,4 +23,7 @@ return [
     'validation_failed' => 'Validation failed.',
     'internal_error' => 'Internal server error. Please try again later.',
     'success' => 'Success',
+
+    // Export
+    'unsupported_export_format' => 'Unsupported export format: :format',
 ];

@@ -28,4 +28,7 @@ return [
     'not_found' => 'المورد غير موجود',
     'validation_failed' => 'فشل في التحقق من البيانات',
     'success' => 'نجح',
+
+    // Export
+    'unsupported_export_format' => 'صيغة التصدير غير مدعومة: :format',
 ];

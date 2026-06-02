@@ -7,7 +7,7 @@ A production-ready Laravel 11 admin panel with API authentication and custom Rol
 - **Admin Panel**: Full CRUD for admins, users, roles, countries
 - **API Authentication**: Login with password or OTP code
 - **Custom RBAC**: Permission-based route protection (no external packages)
-- **Export**: CSV, Excel, PDF, Print, JSON, Word exports
+- **Export**: CSV, Excel, PDF, Print, JSON, Copy, HTML exports
 - **Translations**: Multi-language support (Arabic, English)
 - **Media**: File uploads with Spatie Media Library
 
@@ -18,7 +18,6 @@ A production-ready Laravel 11 admin panel with API authentication and custom Rol
 - Laravel Sanctum
 - Spatie Media Library
 - Maatwebsite Excel
-- PHPWord
 
 ## Prerequisites
 
@@ -157,7 +156,10 @@ Admin list pages support exporting data in multiple formats through the admin UI
 - `pdf`
 - `print`
 - `json`
-- `word`
+- `copy`
+- `html`
+
+> **Note:** Word export (`docx`) is intentionally unsupported because it caused memory instability on low-memory/shared hosting. Use Excel or PDF instead.
 
 ## Troubleshooting
 

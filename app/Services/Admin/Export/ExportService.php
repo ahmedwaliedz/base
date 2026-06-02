@@ -1,7 +1,9 @@
 <?php
 namespace App\Services\Admin\Export;
 
+use App\Exceptions\ServiceException;
 use Illuminate\Http\Request;
+use InvalidArgumentException;
 
 class ExportService {
     public function handle(Request $request, $query, array $options = []) {
@@ -13,8 +15,16 @@ class ExportService {
             $query->whereIn('id', $ids);
         }
 
-        $exporter = ExportFactory::make($format);
+        try {
+            $exporter = ExportFactory::make($format);
+        } catch (InvalidArgumentException) {
+            return response()->json(['message' => __('response.unsupported_export_format', ['format' => $format])], 400);
+        }
 
-        return $exporter->export($query, $options);
+        try {
+            return $exporter->export($query, $options);
+        } catch (ServiceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
+        }
     }
 }

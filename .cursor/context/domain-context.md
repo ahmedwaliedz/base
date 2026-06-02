@@ -75,7 +75,7 @@ Notification
 1. User clicks export button
 2. Controller receives request
 3. Service prepares data
-4. Export strategy (Excel/PDF/Word) generates file
+4. Export strategy (Excel/PDF/CSV/JSON/etc.) generates file
 5. Return file to user
 
 ---
