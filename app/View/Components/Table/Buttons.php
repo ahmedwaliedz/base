@@ -25,7 +25,6 @@ class Buttons extends Component
         public bool $exportPrint = false,
         public bool $exportPdf = false,
         public bool $exportExcel = false,
-        public bool $exportWord = false,
         public bool $exportJson = false,
         public bool $exportCopy = false,
         public bool $hasPagination = false,

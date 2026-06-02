@@ -21,7 +21,6 @@
         :exportCopy="true"
         :exportPdf="true"
         :exportExcel="true"
-        :exportWord="true"
         :exportJson="true"
         :hasPagination="true"
         :perPage="20"

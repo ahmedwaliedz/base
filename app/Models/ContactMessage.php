@@ -27,6 +27,10 @@ class ContactMessage extends Model
         'contactable_type',
     ];
 
+    protected $casts = [
+        'is_read' => 'boolean',
+    ];
+
     public static function is_retrievable(): bool
     {
         return true;

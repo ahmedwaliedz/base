@@ -299,9 +299,8 @@ $(document).on('click', '.export-action', function(e) {
         if (w) { w.focus(); }
         return;
     }
-    // allow docx/xlsx/csv to proceed as direct downloads
 
-    const downloadFormat = (format === 'csv' ? 'csv' : (format === 'docx' ? 'docx' : (format === 'xlsx' ? 'xlsx' : 'json')));
+    const downloadFormat = (format === 'csv' ? 'csv' : (format === 'xlsx' ? 'xlsx' : 'json'));
     triggerExport(downloadFormat, filters, false, selectedIds)
         .then(({ blob }) => {
             downloadBlob(blob, buildFileName(downloadFormat));
@@ -416,7 +415,7 @@ function buildFileName(format) {
     const path = (window.location.pathname || '').split('/').filter(Boolean);
     const resource = path[path.length - 1] || 'export';
     const ts = new Date().toISOString().replace(/[:.]/g, '-');
-    const ext = (format === 'csv' ? 'csv' : (format === 'docx' ? 'docx' : (format === 'xlsx' ? 'xlsx' : 'json')));
+    const ext = (format === 'csv' ? 'csv' : (format === 'xlsx' ? 'xlsx' : 'json'));
     return resource + '-' + ts + '.' + ext;
 }
 

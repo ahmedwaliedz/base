@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Admin;
 
 use App\Enums\ComplaintStatus;
-use App\Enums\ComplaintType;
 use App\Models\Admin;
 use App\Models\Complaint;
 use App\Models\ContactMessage;
