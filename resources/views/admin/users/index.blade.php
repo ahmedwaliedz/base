@@ -1,5 +1,24 @@
 @extends('admin.layouts.crud.index')
 
+@push('css')
+    <style>
+        .users-table-scroll .card-datatable.table-responsive {
+            overflow-x: auto;
+            overflow-y: visible;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .users-table-scroll .datatables-products.table {
+            min-width: 64rem;
+            width: 100%;
+        }
+
+        .users-table-scroll .users-table-row {
+            z-index: auto;
+        }
+    </style>
+@endpush
+
 @push('content')
     <x-table.statistics :loaderCards="6" />
 
@@ -43,14 +62,16 @@
     <x-table.bulk-actions :hasDelete="true"
                           :deleteRoute="route('admin.users.destroyAll')" />
 
-    <x-table.table :hasCheckbox="true"
-                   :hasActions="true"
-                   :headers="[
-                       __('admin/main.name'),
-                       __('admin/main.phone'),
-                       __('admin/main.email'),
-                       __('admin/main.status'),
-                   ]" />
+    <div class="users-table-scroll">
+        <x-table.table :hasCheckbox="true"
+                       :hasActions="true"
+                       :headers="[
+                           __('admin/main.name'),
+                           __('admin/main.phone'),
+                           __('admin/main.email'),
+                           __('admin/main.status'),
+                       ]" />
+    </div>
 
     <x-model.notification :route="route('admin.notifications.sendNotifications')"
                           :class="'App\Models\User'" />

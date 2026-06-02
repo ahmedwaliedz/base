@@ -69,7 +69,7 @@
             <p class="crud-stats__value">{{ number_format($createdThisMonth ?? 0) }}</p>
         </div>
         <span class="crud-stats__icon" aria-hidden="true">
-            <i class="ti ti-calendar-month"></i>
+            <i class="ti ti-calendar-stats"></i>
         </span>
     </div>
 </div>
