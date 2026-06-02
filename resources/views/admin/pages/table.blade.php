@@ -5,9 +5,9 @@
 
 @section('table')
     @foreach ($pages as $page)
-        <tr class="data-rows pages-table-row {{ $page->deleted_at ? 'deleted-table-row' : '' }}"
+        <tr class="data-rows pages-table-row {{ method_exists($page, 'trashed') && $page->trashed() ? 'deleted-table-row' : '' }}"
             data-page-id="{{ $page->id }}">
-            @if (! $page->deleted_at)
+            @if (!(method_exists($page, 'trashed') && $page->trashed()))
                 <td class="dt-checkboxes-cell">
                     <input type="checkbox" value="{{ $page->id }}" data-id="{{ $page->id }}"
                            class="dt-checkboxes form-check-input"
@@ -44,7 +44,7 @@
                         <i class="ti ti-eye" aria-hidden="true"></i>
                     </a>
 
-                    @if (! $page->deleted_at)
+                    @if (!(method_exists($page, 'trashed') && $page->trashed()))
                         <a href="{{ route('admin.pages.edit', ['page' => $page]) }}"
                            class="custom-icon pages-action-btn pages-action-edit"
                            data-bs-toggle="tooltip" data-bs-placement="top"
@@ -54,7 +54,7 @@
                         </a>
                     @endif
 
-                    @if ($page->deleted_at)
+                    @if (method_exists($page, 'trashed') && $page->trashed())
                         <a href="javascript:void(0);" data-id="{{ $page->id }}"
                            data-route="{{ route('admin.pages.restore', ['id' => $page->id]) }}"
                            class="custom-icon pages-action-btn pages-action-restore restore-row"

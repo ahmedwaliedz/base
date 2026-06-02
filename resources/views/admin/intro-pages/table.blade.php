@@ -2,12 +2,12 @@
 
 @section('table')
     @foreach ($introPages as $introPage)
-        <tr class="data-rows {{ $introPage->deleted_at ? 'deleted-table-row' : '' }}" data-intro-page-id="{{ $introPage->id }}">
-            @if (!$introPage->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $introPage->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
+        <tr class="data-rows {{ method_exists($introPage, 'trashed') && $introPage->trashed() ? 'deleted-table-row' : '' }}" data-intro-page-id="{{ $introPage->id }}">
+            @if (!(method_exists($introPage, 'trashed') && $introPage->trashed()))<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $introPage->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
             <td><div class="avatar-wrapper"><img src="{{ $introPage->image ?: asset('style/admin/img/placeholder.png') }}" class="rounded-2" alt="" style="width:36px;height:36px;object-fit:cover"></div></td>
             <td>{{ $introPage->title }}</td>
             <td class="text-nowrap">{{ $introPage->link }}</td>
-            <td>@if(!$introPage->deleted_at)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $introPage->id }}" data-route="{{ route('admin.intro-pages.switchIsActive', ['id' => $introPage->id]) }}" {{ $introPage->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
+            <td>@if(!(method_exists($introPage, 'trashed') && $introPage->trashed()))<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $introPage->id }}" data-route="{{ route('admin.intro-pages.switchIsActive', ['id' => $introPage->id]) }}" {{ $introPage->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
             <td>
                 <div class="d-flex align-items-center gap-2 flex-nowrap intro-pages-row-actions">
                     <a href="{{ route('admin.intro-pages.show', ['intro_page' => $introPage]) }}"
@@ -18,7 +18,7 @@
                         <i class="ti ti-eye" aria-hidden="true"></i>
                     </a>
 
-                    @if (!$introPage->deleted_at)
+                    @if (!(method_exists($introPage, 'trashed') && $introPage->trashed()))
                         <a href="{{ route('admin.intro-pages.edit', ['intro_page' => $introPage]) }}"
                            class="custom-icon intro-pages-action-btn intro-pages-action-edit"
                            data-bs-toggle="tooltip" data-bs-placement="top"
@@ -28,7 +28,7 @@
                         </a>
                     @endif
 
-                    @if ($introPage->deleted_at)
+                    @if (method_exists($introPage, 'trashed') && $introPage->trashed())
                         <a href="javascript:void(0);" data-id="{{ $introPage->id }}"
                            data-route="{{ route('admin.intro-pages.restore', ['id' => $introPage->id]) }}"
                            class="custom-icon intro-pages-action-btn intro-pages-action-restore restore-row"

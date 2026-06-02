@@ -10,7 +10,7 @@
         {{ __('admin/main.slider_details') }}
     </h5>
     <div class="d-flex gap-2 flex-wrap">
-        @if ($slider->deleted_at)
+        @if (method_exists($slider, 'trashed') && $slider->trashed())
             <a href="#" data-id="{{ $slider->id }}"
                data-route="{{ route('admin.sliders.restore', ['id' => $slider->id]) }}"
                class="btn btn-sm btn-success restore-row">

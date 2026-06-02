@@ -2,12 +2,12 @@
 
 @section('table')
     @foreach ($cities as $city)
-        <tr class="data-rows {{ $city->deleted_at ? 'deleted-table-row' : '' }}" data-city-id="{{ $city->id }}">
-            @if (!$city->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $city->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
+        <tr class="data-rows {{ method_exists($city, 'trashed') && $city->trashed() ? 'deleted-table-row' : '' }}" data-city-id="{{ $city->id }}">
+            @if (!(method_exists($city, 'trashed') && $city->trashed()))<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $city->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
             <td>{{ $city->name }}</td>
             <td>{{ $city->region?->name ?? '—' }}</td>
             <td><span class="badge bg-label-info">{{ $city->districts_count ?? 0 }}</span></td>
-            <td>@if(!$city->deleted_at)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $city->id }}" data-route="{{ route('admin.cities.switchIsActive', ['id' => $city->id]) }}" {{ $city->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
+            <td>@if(!(method_exists($city, 'trashed') && $city->trashed()))<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $city->id }}" data-route="{{ route('admin.cities.switchIsActive', ['id' => $city->id]) }}" {{ $city->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
             <td>
                 <div class="d-flex align-items-center gap-2 flex-nowrap cities-row-actions">
                     <a href="{{ route('admin.cities.show', ['city' => $city]) }}"
@@ -18,7 +18,7 @@
                         <i class="ti ti-eye" aria-hidden="true"></i>
                     </a>
 
-                    @if (!$city->deleted_at)
+                    @if (!(method_exists($city, 'trashed') && $city->trashed()))
                         <a href="{{ route('admin.cities.edit', ['city' => $city]) }}"
                            class="custom-icon cities-action-btn cities-action-edit"
                            data-bs-toggle="tooltip" data-bs-placement="top"
@@ -28,7 +28,7 @@
                         </a>
                     @endif
 
-                    @if ($city->deleted_at)
+                    @if (method_exists($city, 'trashed') && $city->trashed())
                         <a href="javascript:void(0);" data-id="{{ $city->id }}"
                            data-route="{{ route('admin.cities.restore', ['id' => $city->id]) }}"
                            class="custom-icon cities-action-btn cities-action-restore restore-row"

@@ -2,8 +2,8 @@
 
 @section('table')
     @foreach ($seo as $item)
-        <tr class="data-rows {{ $item->deleted_at ? 'deleted-table-row' : '' }}" data-seo-id="{{ $item->id }}">
-            @if (!$item->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $item->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
+        <tr class="data-rows {{ method_exists($item, 'trashed') && $item->trashed() ? 'deleted-table-row' : '' }}" data-seo-id="{{ $item->id }}">
+            @if (!(method_exists($item, 'trashed') && $item->trashed()))<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $item->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
             <td><div class="avatar-wrapper"><img src="{{ $item->image ?: asset('style/admin/img/placeholder.png') }}" class="rounded-2" alt="" style="width:36px;height:36px;object-fit:cover"></div></td>
             <td>{{ Str::limit($item->meta_title, 40) }}</td>
             <td>{{ Str::limit($item->meta_description, 60) }}</td>
@@ -18,7 +18,7 @@
                         <i class="ti ti-eye" aria-hidden="true"></i>
                     </a>
 
-                    @if (!$item->deleted_at)
+                    @if (!(method_exists($item, 'trashed') && $item->trashed()))
                         <a href="{{ route('admin.seo.edit', ['seo' => $item]) }}"
                            class="custom-icon seo-action-btn seo-action-edit"
                            data-bs-toggle="tooltip" data-bs-placement="top"
@@ -28,7 +28,7 @@
                         </a>
                     @endif
 
-                    @if ($item->deleted_at)
+                    @if (method_exists($item, 'trashed') && $item->trashed())
                         <a href="javascript:void(0);" data-id="{{ $item->id }}"
                            data-route="{{ route('admin.seo.restore', ['id' => $item->id]) }}"
                            class="custom-icon seo-action-btn seo-action-restore restore-row"

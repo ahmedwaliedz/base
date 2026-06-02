@@ -2,11 +2,11 @@
 
 @section('table')
     @foreach ($socials as $social)
-        <tr class="data-rows {{ $social->deleted_at ? 'deleted-table-row' : '' }}" data-social-id="{{ $social->id }}">
-            @if (!$social->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $social->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
-            <td><div class="avatar-wrapper"><img src="{{ $social->image ?: asset('style/admin/img/placeholder.png') }}" class="rounded-2" alt="" style="width:36px;height:36px;object-fit:cover"></div></td>
+        <tr class="data-rows {{ method_exists($social, 'trashed') && $social->trashed() ? 'deleted-table-row' : '' }}" data-social-id="{{ $social->id }}">
+            @if (!(method_exists($social, 'trashed') && $social->trashed()))<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $social->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
+            <td><div class="avatar-wrapper"><img src="{{ $social->image ? asset($social->image) : asset('style/admin/img/placeholder.png') }}" class="rounded-2" alt="" style="width:36px;height:36px;object-fit:cover"></div></td>
             <td class="text-nowrap">{{ $social->link }}</td>
-            <td>@if(!$social->deleted_at)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $social->id }}" data-route="{{ route('admin.socials.switchIsActive', ['id' => $social->id]) }}" {{ $social->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
+            <td>@if(!(method_exists($social, 'trashed') && $social->trashed()))<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $social->id }}" data-route="{{ route('admin.socials.switchIsActive', ['id' => $social->id]) }}" {{ $social->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
             <td>
                 <div class="d-flex align-items-center gap-2 flex-nowrap socials-row-actions">
                     <a href="{{ route('admin.socials.show', ['social' => $social]) }}"
@@ -17,7 +17,7 @@
                         <i class="ti ti-eye" aria-hidden="true"></i>
                     </a>
 
-                    @if (!$social->deleted_at)
+                    @if (!(method_exists($social, 'trashed') && $social->trashed()))
                         <a href="{{ route('admin.socials.edit', ['social' => $social]) }}"
                            class="custom-icon socials-action-btn socials-action-edit"
                            data-bs-toggle="tooltip" data-bs-placement="top"
@@ -27,7 +27,7 @@
                         </a>
                     @endif
 
-                    @if ($social->deleted_at)
+                    @if (method_exists($social, 'trashed') && $social->trashed())
                         <a href="javascript:void(0);" data-id="{{ $social->id }}"
                            data-route="{{ route('admin.socials.restore', ['id' => $social->id]) }}"
                            class="custom-icon socials-action-btn socials-action-restore restore-row"

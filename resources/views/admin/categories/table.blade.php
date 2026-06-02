@@ -2,12 +2,12 @@
 
 @section('table')
     @foreach ($categories as $category)
-        <tr class="data-rows {{ $category->deleted_at ? 'deleted-table-row' : '' }}" data-category-id="{{ $category->id }}">
-            @if (!$category->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $category->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
+        <tr class="data-rows {{ method_exists($category, 'trashed') && $category->trashed() ? 'deleted-table-row' : '' }}" data-category-id="{{ $category->id }}">
+            @if (!(method_exists($category, 'trashed') && $category->trashed()))<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $category->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
             <td><div class="d-flex align-items-center gap-2">@if($category->icon)<i class="{{ $category->icon }}"></i>@endif<span>{{ $category->name }}</span></div></td>
             <td>{{ $category->parent?->name ?? '—' }}</td>
             <td><span class="badge bg-label-info">{{ $category->children_count ?? 0 }}</span></td>
-            <td>@if(!$category->deleted_at)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $category->id }}" data-route="{{ route('admin.categories.switchIsActive', ['id' => $category->id]) }}" {{ $category->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
+            <td>@if(!(method_exists($category, 'trashed') && $category->trashed()))<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $category->id }}" data-route="{{ route('admin.categories.switchIsActive', ['id' => $category->id]) }}" {{ $category->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
             <td>
                 <div class="d-flex align-items-center gap-2 flex-nowrap categories-row-actions">
                     <a href="{{ route('admin.categories.show', ['category' => $category]) }}"
@@ -18,7 +18,7 @@
                         <i class="ti ti-eye" aria-hidden="true"></i>
                     </a>
 
-                    @if (!$category->deleted_at)
+                    @if (!(method_exists($category, 'trashed') && $category->trashed()))
                         <a href="{{ route('admin.categories.edit', ['category' => $category]) }}"
                            class="custom-icon categories-action-btn categories-action-edit"
                            data-bs-toggle="tooltip" data-bs-placement="top"
@@ -28,7 +28,7 @@
                         </a>
                     @endif
 
-                    @if ($category->deleted_at)
+                    @if (method_exists($category, 'trashed') && $category->trashed())
                         <a href="javascript:void(0);" data-id="{{ $category->id }}"
                            data-route="{{ route('admin.categories.restore', ['id' => $category->id]) }}"
                            class="custom-icon categories-action-btn categories-action-restore restore-row"

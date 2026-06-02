@@ -10,7 +10,7 @@
         {{ __('admin/main.faq_details') }}
     </h5>
     <div class="d-flex gap-2 flex-wrap">
-        @if ($faq->deleted_at)
+        @if (method_exists($faq, 'trashed') && $faq->trashed())
             <a href="#" data-id="{{ $faq->id }}"
                data-route="{{ route('admin.faqs.restore', ['id' => $faq->id]) }}"
                class="btn btn-sm btn-success restore-row">

@@ -10,7 +10,7 @@
         {{ __('admin/main.social_details') }}
     </h5>
     <div class="d-flex gap-2 flex-wrap">
-        @if ($social->deleted_at)
+        @if (method_exists($social, 'trashed') && $social->trashed())
             <a href="#" data-id="{{ $social->id }}"
                data-route="{{ route('admin.socials.restore', ['id' => $social->id]) }}"
                class="btn btn-sm btn-success restore-row">
@@ -43,7 +43,7 @@
             </div>
             <div class="admin-details-card__body">
                 <div class="row g-3">
-                    @include('admin.admins.parts.file-detail-row', ['icon' => 'ti-photo', 'label' => __('admin/main.image'), 'value' => $social->image])
+                    @include('admin.admins.parts.file-detail-row', ['icon' => 'ti-photo', 'label' => __('admin/main.image'), 'value' => $social->image ? asset($social->image) : null])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-circle-check', 'label' => __('admin/main.status'), 'value' => $social->is_active ? __('admin/main.active') : __('admin/main.inactive')])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-link', 'label' => __('admin/main.link'), 'value' => $social->link])
                     @include('admin.admins.parts.detail-row', ['icon' => 'ti-calendar', 'label' => __('admin/main.created_at'), 'value' => $social->created_at?->format('Y-m-d H:i')])

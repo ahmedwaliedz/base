@@ -10,7 +10,7 @@
         {{ __('admin/main.intro_page_details') }}
     </h5>
     <div class="d-flex gap-2 flex-wrap">
-        @if ($intropage->deleted_at)
+        @if (method_exists($intropage, 'trashed') && $intropage->trashed())
             <a href="#" data-id="{{ $intropage->id }}"
                data-route="{{ route('admin.intro-pages.restore', ['id' => $intropage->id]) }}"
                class="btn btn-sm btn-success restore-row">

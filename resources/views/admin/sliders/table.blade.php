@@ -2,12 +2,12 @@
 
 @section('table')
     @foreach ($sliders as $slider)
-        <tr class="data-rows {{ $slider->deleted_at ? 'deleted-table-row' : '' }}" data-slider-id="{{ $slider->id }}">
-            @if (!$slider->deleted_at)<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $slider->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
+        <tr class="data-rows {{ method_exists($slider, 'trashed') && $slider->trashed() ? 'deleted-table-row' : '' }}" data-slider-id="{{ $slider->id }}">
+            @if (!(method_exists($slider, 'trashed') && $slider->trashed()))<td class="dt-checkboxes-cell"><input type="checkbox" value="{{ $slider->id }}" class="dt-checkboxes form-check-input"></td>@else<td></td>@endif
             <td><div class="avatar-wrapper"><img src="{{ $slider->image ?: asset('style/admin/img/placeholder.png') }}" class="rounded-2" alt="" style="width:36px;height:36px;object-fit:cover"></div></td>
             <td>{{ $slider->title }}</td>
             <td class="text-nowrap">{{ $slider->link }}</td>
-            <td>@if(!$slider->deleted_at)<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $slider->id }}" data-route="{{ route('admin.sliders.switchActive', ['id' => $slider->id]) }}" {{ $slider->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
+            <td>@if(!(method_exists($slider, 'trashed') && $slider->trashed()))<div class="form-check form-switch mb-0 d-flex justify-content-center"><input class="form-check-input switch-active" type="checkbox" role="switch" data-id="{{ $slider->id }}" data-route="{{ route('admin.sliders.switchActive', ['id' => $slider->id]) }}" {{ $slider->is_active ? 'checked' : '' }}></div>@else<span class="text-muted">—</span>@endif</td>
             <td>
                 <div class="d-flex align-items-center gap-2 flex-nowrap sliders-row-actions">
                     <a href="{{ route('admin.sliders.show', ['slider' => $slider]) }}"
@@ -18,7 +18,7 @@
                         <i class="ti ti-eye" aria-hidden="true"></i>
                     </a>
 
-                    @if (!$slider->deleted_at)
+                    @if (!(method_exists($slider, 'trashed') && $slider->trashed()))
                         <a href="{{ route('admin.sliders.edit', ['slider' => $slider]) }}"
                            class="custom-icon sliders-action-btn sliders-action-edit"
                            data-bs-toggle="tooltip" data-bs-placement="top"
@@ -28,7 +28,7 @@
                         </a>
                     @endif
 
-                    @if ($slider->deleted_at)
+                    @if (method_exists($slider, 'trashed') && $slider->trashed())
                         <a href="javascript:void(0);" data-id="{{ $slider->id }}"
                            data-route="{{ route('admin.sliders.restore', ['id' => $slider->id]) }}"
                            class="custom-icon sliders-action-btn sliders-action-restore restore-row"
