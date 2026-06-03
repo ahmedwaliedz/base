@@ -22,6 +22,8 @@ Laravel 11 base project with:
 - Admin panel with Blade templates
 - Versioned REST API (api/v1)
 - Authentication system (Sanctum + OTP + Password)
+- Realtime-ready chat architecture options: Laravel Reverb OR a Node.js websocket service
+- Optional Vue.js frontend for interactive chat and realtime screens when added by a feature
 - Export functionality (Excel, PDF, CSV, JSON, Copy, Print, HTML)
 - Multilingual support (Arabic/English)
 
@@ -37,10 +39,12 @@ Laravel 11 base project with:
 | Auth | Laravel Sanctum |
 | API Versioning | api/v1 |
 | Admin Panel | Blade templates |
+| Frontend UI | Blade; Vue.js may be added for interactive screens |
 | File Storage | Spatie Media Library |
 | Translations | Astrotomic Translatable |
 | Export | Maatwebsite Excel |
 | Frontend | Vite (JS/CSS bundling) |
+| Realtime | Optional: choose Laravel Reverb OR a Node.js websocket gateway per feature |
 
 ---
 
@@ -168,6 +172,7 @@ tests/
   - Blade templates
   - Custom components (form inputs, tables)
   - Responsive design
+  - Optional Vue components for realtime interactions
 
 ---
 

@@ -26,10 +26,10 @@ The goal is to ensure:
 ```
 .cursor/
 ├── rules/              # 22 mandatory development standards
-├── skills/             # 19 task execution guides
+├── skills/             # 20 task execution guides
 │   ├── setup-phase/    # New project setup (3)
 │   ├── development-phase/  # Feature implementation (13)
-│   └── specialized/    # Advanced tasks (3)
+│   └── specialized/    # Advanced tasks (4)
 ├── context/            # 3 project-specific knowledge files
 ├── workflows/          # 3 execution sequences
 └── templates/          # 7 reusable code starting points
@@ -200,7 +200,7 @@ Applied based on which files you're editing. Use their skills/workflows to trigg
 
 ---
 
-## 🎯 Skills Reference (19 files)
+## 🎯 Skills Reference (20 files)
 
 Skills are **task execution guides**. Use them by triggering with a prompt or workflow.
 
@@ -334,7 +334,7 @@ Used during feature implementation. Most commonly used skills.
 
 ---
 
-### Specialized (3 skills)
+### Specialized (4 skills)
 
 Used for advanced or domain-specific tasks.
 
@@ -358,6 +358,13 @@ Used for advanced or domain-specific tasks.
 - **Connected to:** `13-api-integration.mdc`, `18-security.mdc`, services
 - **When to use:** When adding third-party integrations
 - **Output:** Service class, webhook handlers, API key configuration, error handling
+
+#### `realtime-chat.md`
+- **What:** Guides implementation of private realtime chat — customer-admin chat, customer-customer chat, Reverb, Node.js websocket gateways, Vue realtime UI, private channels, unread counts, read receipts
+- **Trigger:** "Use realtime-chat skill to implement [Feature] with [Reverb OR Node.js]"
+- **Connected to:** `14-frontend-integration.mdc`, `15-devops-deployment.mdc`, `18-security.mdc`, `19-performance.mdc`, `21-ecosystem.mdc`
+- **When to use:** When adding realtime chat, messaging, or live communication features
+- **Output:** Chat module following transport decision, with services, controllers, auth, tests, and documentation
 
 ---
 
@@ -770,7 +777,7 @@ A feature/task is NOT complete unless:
 - Do not introduce new patterns without strong justification
 - **RBAC system (`08-custom-rbac.mdc`) is CRITICAL — protect it**
 - Consistency is more important than creativity
-- All 51 files work together — they're not independent
+- All 52 files work together — they're not independent
 
 ---
 

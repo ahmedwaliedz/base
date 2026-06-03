@@ -8,6 +8,16 @@ globs: ["docker-compose.*", "Dockerfile", ".github/**", "deploy/**"]
 
 # DevOps & Deployment Skills (2025–2026)
 
+## Realtime Deployment Notes
+
+Choose one realtime transport for a feature unless the product explicitly requires parallel implementations for comparison or migration.
+
+- Use Laravel Reverb when the project wants first-party broadcasting with Laravel-managed auth, events, and channel permissions.
+- Use a Node.js websocket service instead of Reverb when you need a separate realtime process for socket fanout or custom room handling.
+- Keep Node.js deployment details explicit: runtime version, process manager, restart policy, health checks, and environment variables.
+- Keep persistence and authorization in Laravel even when Node.js owns the websocket connection layer.
+- Document how the frontend connects to the realtime endpoint, including channel auth and origin restrictions.
+
 ## How to Use This File
 
 This file catalogs 20 foundational-to-advanced skills specific to DevOps and deployment within the Laravel ecosystem. Each skill includes a concise definition, a real-world usage trigger, and a source reference.

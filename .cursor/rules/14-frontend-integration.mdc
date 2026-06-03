@@ -39,6 +39,14 @@ Source URLs default to Laravel 11.x docs (the current project version). Where a 
 - **Client-Side Validation & Error Display** — mirrors server validation rules in frontend for immediate user feedback. *Use when:* improving UX, reducing roundtrips, or ensuring form completeness before submission. *Source:* training
 - **Form Handling with Livewire/Inertia** — binds form state, handles submission, and displays validation errors reactively. *Use when:* building complex multi-step forms, implementing real-time validation, or reducing boilerplate. *Source:* training
 
+## Vue + Broadcast UI Notes
+
+- Use Vue when the page needs live chat, typing indicators, unread badges, or incremental message streaming.
+- Keep Vue components focused on rendering and local interaction state; keep persistence, authorization, and message rules in Laravel services.
+- Use Echo or similar clients only for subscribing to Laravel broadcast channels and updating the UI.
+- Prefer optimistic UI updates only when the backend has a clear source of truth and a rollback path for failed sends.
+- Use Vite for bundling Vue entry points and shared chat assets.
+
 ## Project-Specific Admin UI Design Tokens
 
 ### Color Palette
