@@ -74,12 +74,12 @@ Generic CSS selectors in `filter.css`:
 ```
 +------------------------------------+
 |  Header: icon + title + actions    |
++------------------------------------+
+|  Stat Cards Row (4 cards)          |
 +----------------+-------------------+
 |  Profile Card  |  Details Card     |
 |  (left column) |  (right column)   |
 +----------------+-------------------+
-|  Stat Cards Row (4 cards)          |
-+------------------------------------+
 |  Related Data Section (optional)   |
 +------------------------------------+
 ```

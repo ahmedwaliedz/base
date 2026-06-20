@@ -431,39 +431,51 @@ Context files provide project-specific knowledge. They're **passive reference** 
 
 ---
 
-## 🏗️ Templates Reference (5 files)
+## 🏗️ Templates Reference (7 files)
 
 Templates are **reusable starting structures** for common code patterns. Used by skills automatically.
 
 #### `service-template.md`
-- **What:** Template for Service classes — method structure, dependency injection, error handling
+- **What:** Template for service classes — business logic placement, CRUD base reuse, transactions, and dependency injection
 - **Used by:** `backend-feature-implementation.md`, `create-module.md`, `admin-crud-orchestrator.md`
 - **Auto-applied:** When creating services
-- **Key sections:** Constructor, public methods, protected methods, error handling
+- **Key sections:** Service types, rules, API and admin CRUD wiring, checklist
 
 #### `form-request-template.md`
-- **What:** Template for Form Request validation classes — rules, authorization, custom messages
+- **What:** Template for Form Request validation classes — API and admin request base classes, rules, and normalization
 - **Used by:** `backend-feature-implementation.md`, `create-module.md`
 - **Auto-applied:** When creating Form Requests
-- **Key sections:** Authorization, validation rules, custom messages, attributes, error handling
+- **Key sections:** API requests, admin requests, authorization, project references
 
 #### `controller-template.md`
-- **What:** Template for thin Controllers — dependency injection, method structure, orchestration (no business logic)
+- **What:** Template for thin controllers — API and admin base patterns, service injection, and response delegation
 - **Used by:** `backend-feature-implementation.md`, `create-module.md`, `admin-crud-orchestrator.md`
 - **Auto-applied:** When creating controllers
-- **Key sections:** Constructor, thin controller methods, service delegation, response format
+- **Key sections:** API controller rules, admin controller rules, references
 
 #### `api-endpoint-template.md`
-- **What:** Template for API endpoints — route structure, controller method, JsonResource, response format
+- **What:** Template for API v1 endpoints — route structure, controller pattern, JsonResource, response traits, and auth conventions
 - **Used by:** `create-api-with-postman.md`, `create-module.md`
 - **Auto-applied:** When creating API endpoints
-- **Key sections:** Route definition, controller method, JsonResource class, error responses, Postman example
+- **Key sections:** Routing, required layers, controller response pattern, auth, build checklist
+
+#### `show-view-template.md`
+- **What:** Template for admin show views — header, statistics cards, profile/details cards, and optional related data section
+- **Used by:** `admin-crud-orchestrator.md`, `ui-page-build.md`
+- **Auto-applied:** When creating admin show pages
+- **Key sections:** Structure overview, full template, required data, partial reference
+
+#### `table-view-template.md`
+- **What:** Template for admin index/table views — header, filters, statistics cards, colored action buttons, and pagination
+- **Used by:** `admin-crud-orchestrator.md`, `ui-page-build.md`
+- **Auto-applied:** When creating admin list pages
+- **Key sections:** Structure overview, full template, action button classes, deleted row handling
 
 #### `test-template.md`
-- **What:** Template for Feature Tests — test structure, setup, assertions, naming conventions
+- **What:** Template for PHPUnit tests — feature and unit test conventions, RefreshDatabase, API prefixes, and assertions
 - **Used by:** `testing.md`, `admin-crud-orchestrator.md`
 - **Auto-applied:** When creating tests
-- **Key sections:** Test class structure, setUp method, test method naming, assertions, mocking patterns
+- **Key sections:** Conventions, rules, example skeleton, checklist
 
 ---
 
@@ -480,7 +492,7 @@ Use these patterns when building features. Each combination shows which rules, s
 - Skills: `admin-crud-orchestrator.md` (does everything)
 - Rules applied automatically: `00`, `01`, `02`, `04`, `05`, `06`, `07`, `08`, `10`, `11`, `12`
 - Context: `project-context.md`, `domain-context.md`, `team-context.md`
-- Templates: `service-template.md`, `form-request-template.md`, `controller-template.md`, `test-template.md`
+- Templates: `service-template.md`, `form-request-template.md`, `controller-template.md`, `show-view-template.md`, `table-view-template.md`, `test-template.md`
 
 **Prompt:**
 ```
@@ -777,7 +789,7 @@ A feature/task is NOT complete unless:
 - Do not introduce new patterns without strong justification
 - **RBAC system (`08-custom-rbac.mdc`) is CRITICAL — protect it**
 - Consistency is more important than creativity
-- All 52 files work together — they're not independent
+- All 58 files work together — they're not independent
 
 ---
 
@@ -787,8 +799,8 @@ Before diving into the full file tree, start with these two root-level documents
 
 | Document | When to use |
 |----------|-------------|
-| `REVIEW_CONTEXT.md` | Code review and PR audit sessions — routing table by changed area |
-| `CODE_WRITING_CONTEXT.md` | Implementation sessions — routing table by task area |
+| [`REVIEW_CONTEXT.md`](../REVIEW_CONTEXT.md) | Code review and PR audit sessions — routing table by changed area |
+| [`CODE_WRITING_CONTEXT.md`](../CODE_WRITING_CONTEXT.md) | Implementation sessions — routing table by task area |
 
 Both files tell agents to open deeper `.cursor` files only when the task matches the routing rule, keeping token usage efficient.
 
