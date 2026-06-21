@@ -1,82 +1,86 @@
 # Code Writing Context
 
-This file is the compact source of truth for implementation sessions in this repo.
-Use it instead of re-reading the full `.cursor` tree unless the task touches a routed area below.
+This file is the authoritative execution router for implementation sessions in this repo. Use it instead of re-reading the full `.cursor` tree unless the task touches a routed area below.
 
-## Writing Mode
+## Execution mode
 
 - Implement code from an approved plan, checklist item, bug report, or clearly scoped request.
 - Preserve the existing Laravel architecture and admin dashboard patterns.
-- Make the smallest safe change that fully solves the requested item.
+- Make the smallest complete change that solves the requested item.
 - Do not introduce new patterns unless the repo already uses them or they are clearly required.
 - Do not touch unrelated files.
-- If a change involves RBAC permissions, roles, or admin access control and the intended permission behavior is unclear, stop and ask.
+- If a change involves RBAC permissions, roles, or admin access control and the intended behavior is unclear, stop and ask.
 
-## Always Use
+## Execution workflow
 
-1. `CODE_WRITING_CONTEXT.md` (this file)
-2. The active plan/checklist file when provided
-3. The specific files related to the requested item
-4. Existing nearby implementation patterns
-5. Related tests when available
+1. **Parse the requested outcome.** Understand the business behavior, scope, and acceptance criteria.
+2. **Identify target files and affected project areas.** Look at the diff, plan, or request.
+3. **Inspect current code and neighboring implementations.** Match existing patterns.
+4. **Detect the current technology baseline.** Read `.cursor/context/technology-baseline.md` and confirm installed versions from `composer.json`, `composer.lock`, and `phpunit.xml`.
+5. **Load the smallest relevant context:**
+   - Start with the mandatory baseline:
+     - [`.cursor/context/technology-baseline.md`](.cursor/context/technology-baseline.md)
+     - [`.cursor/rules/01-code-quality.mdc`](.cursor/rules/01-code-quality.mdc)
+     - [`.cursor/rules/02-architecture.mdc`](.cursor/rules/02-architecture.mdc)
+     - [`.cursor/rules/18-security.mdc`](.cursor/rules/18-security.mdc)
+   - Then load only the domain-specific rules that match the changed files. See [`clean-code-guard`](.cursor/skills/guards/clean-code-guard/SKILL.md) for the full production-code routing table.
+   - Examples:
+     - Controllers/services/requests/jobs → [`.cursor/rules/04-backend-rules.mdc`](.cursor/rules/04-backend-rules.mdc)
+     - Models/migrations/database → [`.cursor/rules/05-database-rules.mdc`](.cursor/rules/05-database-rules.mdc) + [`.cursor/rules/12-database-eloquent.mdc`](.cursor/rules/12-database-eloquent.mdc)
+     - Blade/frontend → [`.cursor/rules/03-frontend-rules.mdc`](.cursor/rules/03-frontend-rules.mdc) + [`.cursor/rules/14-frontend-integration.mdc`](.cursor/rules/14-frontend-integration.mdc)
+     - API → [`.cursor/rules/07-api-postman-mcp-documentation-rules.mdc`](.cursor/rules/07-api-postman-mcp-documentation-rules.mdc) + [`.cursor/rules/13-api-integration.mdc`](.cursor/rules/13-api-integration.mdc)
+     - RBAC changes → [`.cursor/rules/08-custom-rbac.mdc`](.cursor/rules/08-custom-rbac.mdc)
+6. **Select one primary implementation skill.** Do not load every skill automatically.
+7. **Select secondary skills only when required.**
+8. **Load only relevant references.**
+9. **Select the relevant workflow.**
+10. **Select relevant templates.**
+11. **Identify project-specific constraints** from context files and neighboring code.
+12. **Implement the smallest complete solution.**
+13. **Add or update meaningful tests.**
+14. **Update affected documentation** when behavior, routes, or API contracts change.
+15. **Run appropriate guard passes.** In implementation mode, guards may fix confirmed critical/high findings and rerun up to two cycles. Report persistent or unclear findings to the user.
+16. **Run available verification commands.**
+17. **Report completed work, verification, and residual risks.**
 
-## Implementation Priorities
+## Task routing
 
-1. Security and data integrity
-2. Runtime correctness and route/page stability
-3. Architecture compliance
-4. Performance and N+1 prevention
-5. Validation and error handling
-6. Tests and regression safety
-7. UI consistency, translations, and RTL/LTR behavior
+| Task type | Primary skill | Secondary skills | Workflow | Templates |
+|---|---|---|---|---|
+| Requirement analysis | [`feature-analysis`](.cursor/skills/development-phase/feature-analysis/SKILL.md) | [`database-design`](.cursor/skills/development-phase/database-design/SKILL.md) if schema changes | [`development-workflow`](.cursor/workflows/development-workflow.md) | none |
+| Backend behavior | [`backend-feature-implementation`](.cursor/skills/development-phase/backend-feature-implementation/SKILL.md) | [`feature-analysis`](.cursor/skills/development-phase/feature-analysis/SKILL.md) | [`development-workflow`](.cursor/workflows/development-workflow.md) | `service-template.md`, `form-request-template.md`, `controller-template.md` |
+| Full feature | [`laravel-feature-end-to-end`](.cursor/skills/development-phase/laravel-feature-end-to-end/SKILL.md) | As needed per layer | [`development-workflow`](.cursor/workflows/development-workflow.md) | All relevant |
+| New module | [`create-module`](.cursor/skills/development-phase/create-module/SKILL.md) | [`backend-feature-implementation`](.cursor/skills/development-phase/backend-feature-implementation/SKILL.md), [`ui-page-build`](.cursor/skills/development-phase/ui-page-build/SKILL.md) | [`development-workflow`](.cursor/workflows/development-workflow.md) | All relevant |
+| Admin CRUD | [`admin-crud-orchestrator`](.cursor/skills/development-phase/admin-crud-orchestrator/SKILL.md) | [`ui-page-build`](.cursor/skills/development-phase/ui-page-build/SKILL.md), [`testing`](.cursor/skills/development-phase/testing/SKILL.md) | [`development-workflow`](.cursor/workflows/development-workflow.md) | `show-view-template.md`, `table-view-template.md`, `service-template.md`, `form-request-template.md`, `controller-template.md`, `test-template.md` |
+| API and Postman | [`create-api-with-postman`](.cursor/skills/development-phase/create-api-with-postman/SKILL.md) | [`backend-feature-implementation`](.cursor/skills/development-phase/backend-feature-implementation/SKILL.md) | [`development-workflow`](.cursor/workflows/development-workflow.md) | `api-endpoint-template.md`, `form-request-template.md`, `controller-template.md` |
+| UI/Blade page | [`ui-page-build`](.cursor/skills/development-phase/ui-page-build/SKILL.md) | [`admin-crud-orchestrator`](.cursor/skills/development-phase/admin-crud-orchestrator/SKILL.md) if part of CRUD | [`development-workflow`](.cursor/workflows/development-workflow.md) | `show-view-template.md`, `table-view-template.md` |
+| Database changes | [`database-design`](.cursor/skills/development-phase/database-design/SKILL.md) | [`feature-analysis`](.cursor/skills/development-phase/feature-analysis/SKILL.md) | [`development-workflow`](.cursor/workflows/development-workflow.md) | none |
+| Bug fix | [`bug-fixing`](.cursor/skills/development-phase/bug-fixing/SKILL.md) | [`testing`](.cursor/skills/development-phase/testing/SKILL.md) | [`hotfix-workflow`](.cursor/workflows/hotfix-workflow.md) | `test-template.md` |
+| Refactor | [`refactor`](.cursor/skills/development-phase/refactor/SKILL.md) | [`testing`](.cursor/skills/development-phase/testing/SKILL.md) | [`hotfix-workflow`](.cursor/workflows/hotfix-workflow.md) or [`development-workflow`](.cursor/workflows/development-workflow.md) | none |
+| Tests | [`testing`](.cursor/skills/development-phase/testing/SKILL.md) | Governing production skill | [`development-workflow`](.cursor/workflows/development-workflow.md) or [`hotfix-workflow`](.cursor/workflows/hotfix-workflow.md) | `test-template.md` |
+| Authentication/RBAC | [`auth-permissions`](.cursor/skills/specialized/auth-permissions/SKILL.md) | [`backend-feature-implementation`](.cursor/skills/development-phase/backend-feature-implementation/SKILL.md) | [`development-workflow`](.cursor/workflows/development-workflow.md) | none |
+| File handling | [`file-upload`](.cursor/skills/specialized/file-upload/SKILL.md) | [`backend-feature-implementation`](.cursor/skills/development-phase/backend-feature-implementation/SKILL.md) | [`development-workflow`](.cursor/workflows/development-workflow.md) | none |
+| External systems | [`integration`](.cursor/skills/specialized/integration/SKILL.md) | [`backend-feature-implementation`](.cursor/skills/development-phase/backend-feature-implementation/SKILL.md) | [`development-workflow`](.cursor/workflows/development-workflow.md) | none |
+| Realtime functionality | [`realtime-chat`](.cursor/skills/specialized/realtime-chat/SKILL.md) | As needed | [`development-workflow`](.cursor/workflows/development-workflow.md) | none |
 
-## Laravel Implementation Rules
+## After implementation
 
-- Controllers stay thin and only coordinate request flow.
-- Validation belongs in Form Requests for non-trivial writes.
-- Business logic belongs in Services.
-- Blade stays presentation-only.
-- Do not query the database or call services directly from Blade.
-- Reuse existing services, traits, Blade components, base controllers, and CRUD patterns before creating new ones.
-- Use existing admin route conventions in `routes/admin.php` with the `admin.` name prefix.
-- Route names must align with the custom RBAC permission string convention.
-- Use Eloquent relationships, scopes, eager loading, and pagination where appropriate.
-- Add or update tests when behavior changes, a route is added, or a regression is fixed.
+Run guards based on what changed. In authorized implementation mode, each guard inspects the change, reports findings, fixes confirmed critical/high in-scope findings, reruns validation, and repeats up to two cycles. Review-only mode reports findings without editing.
 
-## Work From A Plan
+- Production code changed → [`clean-code-guard`](.cursor/skills/guards/clean-code-guard/SKILL.md)
+- Tests changed → [`test-guard`](.cursor/skills/guards/test-guard/SKILL.md)
+- Documentation changed or documented behavior affected → [`docs-guard`](.cursor/skills/guards/docs-guard/SKILL.md)
+- Substantial features, modules, APIs, CRUD work, cross-layer changes, or risky fixes → [`feature-finalization-and-validation`](.cursor/skills/development-phase/feature-finalization-and-validation/SKILL.md)
 
-- Execute one checklist item or one small related group at a time.
-- Before editing, identify the affected layers: route, controller, request, service, model, migration, view, translation, test.
-- Mark checklist items complete only after implementation and verification.
-- If the plan conflicts with current code, follow current code and update the plan or ask before risky changes.
-- Keep old behavior untouched unless the plan explicitly says to change it.
+Each guard loads a minimal mandatory baseline and then conditionally adds rules, skills, and references based on the changed area. See the guard skill for its routing table.
 
-## Open Only If Needed - Routing Table
+## Verification
 
-Open these `.cursor` files only when the task area matches the routing rule:
+- `php artisan test`
+- `vendor/bin/pint` when formatting is in scope
+- Targeted route or UI verification when needed
 
-| Task Area | Open `.cursor` File(s) |
-|-----------|------------------------|
-| New feature, feature extension, or multi-layer implementation | `workflows/development-workflow.md` |
-| Bug fix, broken page, runtime error, or urgent regression | `workflows/hotfix-workflow.md` + `skills/development-phase/bug-fixing.md` |
-| Planning affected layers before implementation | `skills/development-phase/feature-analysis.md` |
-| Backend logic, services, controllers, Form Requests, admin actions, FK validation, Blade restrictions | `rules/02-architecture.mdc` + `rules/04-backend-rules.mdc` + `skills/development-phase/backend-feature-implementation.md` |
-| Blade pages, admin UI, dark RTL theme, form components, table alignment, toggle state, translation labels | `rules/03-frontend-rules.mdc` + `skills/development-phase/ui-page-build.md` |
-| `routes/admin.php`, sidebar/menu files, role/permission code, admin route names, permission checks | `rules/08-custom-rbac.mdc` |
-| Models, migrations, seeders, factories, relationships, query-heavy services, model casts, translation seed pattern | `rules/05-database-rules.mdc` + `rules/12-database-eloquent.mdc` |
-| Forms, uploads, secrets, hidden fields, mass assignment, admin authorization | `rules/18-security.mdc` |
-| List pages, dashboards, counts, filters, reports, loops, notifications, eager loading, heavy queries, view composers | `rules/19-performance.mdc` |
-| API endpoints, API resources, response shape, Postman/docs | `rules/07-api-postman-mcp-documentation-rules.mdc` + `rules/13-api-integration.mdc` |
-| Tests, missing tests, changed behavior without tests, regression coverage, translation key checks | `rules/16-testing-qa.mdc` + `skills/development-phase/testing.md` |
-| Refactor-only request | `skills/development-phase/refactor.md` |
-| Final validation before delivery | `rules/22-code-review.mdc` + `skills/development-phase/feature-finalization-and-validation.md` |
-
-## Routing Rule
-
-If the task is already covered by this file and nearby code patterns, do not open extra `.cursor` files.
-Keep token usage efficient: do not read the full `.cursor` tree unless explicitly asked.
-
-## Safety Rules
+## Safety rules
 
 - Never replace the custom RBAC system or change permission tables/logic without explicit confirmation.
 - Never hide exceptions with broad `try/catch` unless the error handling is intentional and user-facing.
@@ -86,7 +90,7 @@ Keep token usage efficient: do not read the full `.cursor` tree unless explicitl
 - Never introduce duplicate components, services, or helpers when an existing pattern fits.
 - Never mark work complete without at least one verification step.
 
-## Verification Standard
+## Reporting standard
 
 At the end of implementation, report:
 
@@ -94,12 +98,6 @@ At the end of implementation, report:
 - What behavior changed
 - Verification performed
 - Tests added or updated
+- Guard passes run and their results
 - Any tests not run and why
 - Any remaining risk or follow-up
-
-## Working Rule For Future Sessions
-
-- Use this file first.
-- Open deeper `.cursor` files only when the task area matches the routing table above.
-- Keep implementation scoped to the requested plan item.
-- Prefer root-cause fixes and project-native patterns over broad rewrites.

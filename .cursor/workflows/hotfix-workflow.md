@@ -1,111 +1,80 @@
 # Hotfix Workflow
 
 ## Purpose
-Define the safest and fastest workflow for urgent fixes in an existing project.
 
-This workflow focuses on identifying the root cause, applying the smallest safe fix, and reducing regression risk.
+Define the safest and fastest workflow for urgent fixes in an existing project. This workflow focuses on identifying the root cause, applying the smallest safe fix, and reducing regression risk.
 
----
+## Trigger
 
-## When to Use
-- When fixing urgent production or staging issues
-- When a bug blocks a critical business flow
-- When a minimal fix is needed quickly
-- When broad refactoring is not appropriate
+- Fixing urgent production or staging issues
+- A bug blocking a critical business flow
+- A minimal fix is needed quickly
+- Broad refactoring is not appropriate
 
----
+## Preconditions
 
-## Workflow Steps
+- The bug is reproduced or clearly described.
+- Affected code and flows are identified.
+
+## Workflow
 
 ### Step 1: Identify the Problem Clearly
-Use:
-- bug-fixing skill
 
-Goals:
-- define the exact bug
-- understand expected behavior
-- identify affected flows
-- identify urgency and impact
-
-Output:
-- bug summary
-- affected area
-- expected vs actual behavior
-
----
+- **Primary skill:** [`bug-fixing`](../skills/development-phase/bug-fixing/SKILL.md)
+- **Output:** Bug summary, affected area, expected vs actual behavior
 
 ### Step 2: Find the Root Cause
-Use:
-- bug-fixing skill
 
-Goals:
-- trace execution path
-- inspect validation, service, controller, DB, or integration layers
-- isolate the actual cause
-- avoid treating symptoms only
-
-Output:
-- root cause
-- affected files/layers
-
----
+- **Primary skill:** [`bug-fixing`](../skills/development-phase/bug-fixing/SKILL.md)
+- **Output:** Root cause and affected files/layers
 
 ### Step 3: Apply the Smallest Safe Fix
-Use:
-- bug-fixing skill
 
-Goals:
-- implement the minimum safe change
-- avoid unrelated refactors
-- preserve existing behavior outside the fix scope
-
-Output:
-- fix approach
-- changed files
-- risk notes
-
----
+- **Primary skill:** [`bug-fixing`](../skills/development-phase/bug-fixing/SKILL.md)
+- **Output:** Fix approach, changed files, risk notes
 
 ### Step 4: Validate Regression Risk
-Use:
-- testing skill
-- feature-finalization-and-validation skill when needed
 
-Goals:
-- test the broken flow
-- test nearby flows likely to be affected
-- confirm architecture was not broken during the fix
-
-Output:
-- regression notes
-- test results
-
----
+- **Primary skill:** [`testing`](../skills/development-phase/testing/SKILL.md)
+- **Supporting skill:** [`feature-finalization-and-validation`](../skills/development-phase/feature-finalization-and-validation/SKILL.md) when needed
+- **Rules:** [`../rules/16-testing-qa.mdc`](../rules/16-testing-qa.mdc)
+- **Output:** Regression notes and test results
 
 ### Step 5: Final Review
-Goals:
-- confirm the issue is fixed
-- confirm no critical side effects
-- confirm the fix remains aligned with project rules
 
-Output:
-- final hotfix summary
-- ready/not ready decision
+- Confirm the issue is fixed.
+- Confirm no critical side effects.
+- Confirm the fix remains aligned with project rules.
 
----
+## Guard passes
 
-## Rules Enforcement
+Run guards after the affected content is changed. In authorized hotfix mode, fix confirmed critical/high findings in scope, rerun the guard, and repeat up to two cycles. Report persistent or unclear findings to the user.
+
+- Production code changed → [`clean-code-guard`](../skills/guards/clean-code-guard/SKILL.md)
+- Tests changed → [`test-guard`](../skills/guards/test-guard/SKILL.md)
+- Documentation changed → [`docs-guard`](../skills/guards/docs-guard/SKILL.md)
+
+## Verification
+
+- Run targeted tests for the broken flow.
+- Run broader relevant tests when the fix touches shared code.
+- `php artisan test`
+
+## Completion criteria
+
+A hotfix is complete only when:
+
+- The root cause is identified.
+- The smallest safe fix is applied.
+- Regression risk is checked.
+- Relevant guard passes produce no unresolved critical or high findings.
+- The issue is confirmed resolved.
+- No known correctness, security, or data-integrity defect remains.
+- Medium/low findings are either fixed, accepted with justification, or reported as residual risk.
+
+## Rules enforcement
+
 - Do not apply broad refactors in a hotfix unless absolutely required.
 - Do not fix symptoms without identifying root cause.
 - Do not break architecture rules while rushing.
 - Keep the fix isolated and reviewable.
-
----
-
-## Completion Standard
-A hotfix is complete only when:
-- the root cause is identified
-- the smallest safe fix is applied
-- regression risk is checked
-- the issue is confirmed resolved
-- no major side effects remain

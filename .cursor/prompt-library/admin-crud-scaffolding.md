@@ -272,7 +272,7 @@ Special:
 - [ ] All UI text uses `__()` with `admin/main` or `admin/inputs` keys
 - [ ] Stat cards use color variants: `bg-primary`, `bg-success`, `bg-info`, `bg-warning`
 - [ ] Soft-delete handling: check `deleted_at`, show restore button, add `table-danger` class
-- [ ] Reference `.cursor/styles/admin-ui-standards.md` for full design patterns
+- [ ] Reference [`.cursor/styles/admin-ui-standards.md`](../styles/admin-ui-standards.md) for full design patterns
 
 ---
 

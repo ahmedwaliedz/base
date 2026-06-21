@@ -77,13 +77,13 @@ app/
 │   ├── Api/                # API services
 │   └── OTP/                # OTP handling
 ├── Traits/                 # Shared traits
-├── Policies/               # Authorization policies
+├── Policies/               # Authorization policies (only if used; not currently present)
 └── Exceptions/            # Custom exceptions
 
 config/
 ├── sanctum.php            # Sanctum config
 ├── translatable.php       # Translatable config
-├── medialibrary.php       # Media library config
+├── media-library.php      # Media library config (published Spatie config)
 
 database/
 ├── migrations/            # Database migrations

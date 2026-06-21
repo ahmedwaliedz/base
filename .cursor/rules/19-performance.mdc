@@ -14,7 +14,7 @@ This file catalogs 20 foundational-to-advanced skills specific to application pe
 
 When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Prioritize caching, query optimization, and configuration tuning before suggesting advanced scaling infrastructure.
 
-Apply Laravel 13 performance defaults for new applications; when optimizing legacy systems, implement incremental improvements and validate changes with profiling tools before deployment.
+Apply Laravel 11 performance defaults; Laravel 13 features are listed for forward awareness only and must not be used in current code.
 
 Source URLs point to official Laravel documentation. For patterns without dedicated Laravel docs (most performance patterns), the best available reference is used.
 

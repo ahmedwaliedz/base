@@ -34,7 +34,7 @@ Define how the team prefers to build and structure code.
 | Type | Location |
 |------|----------|
 | Admin Services | `app/Services/Admin/` |
-| API Services | `app/Services/Api/` |
+| API Services | `app/Services/{Domain}/` (e.g., `app/Services/Countries/`) — no `app/Services/Api/` directory currently exists |
 | Form Requests | `app/Http/Requests/` |
 | Admin Controllers | `app/Http/Controllers/Admin/` |
 | API Controllers | `app/Http/Controllers/Api/V1/` |
@@ -148,8 +148,9 @@ return $this->errorResponse('Error message', 422);
 
 ## Important References
 
-- **Global Rules:** `.cursor/rules/00-global-rules.mdc`
-- **Backend Rules:** `.cursor/rules/04-backend-rules.mdc`
-- **Database Rules:** `.cursor/rules/05-database-rules.mdc`
-- **API Documentation Rules:** `.cursor/rules/07-api-postman-mcp-documentation-rules.mdc`
-- **Project Context:** `.cursor/context/project-context.md`
+- **Global Rules:** [`../rules/00-global-rules.mdc`](../rules/00-global-rules.mdc)
+- **Backend Rules:** [`../rules/04-backend-rules.mdc`](../rules/04-backend-rules.mdc)
+- **Database Rules:** [`../rules/05-database-rules.mdc`](../rules/05-database-rules.mdc)
+- **API Documentation Rules:** [`../rules/07-api-postman-mcp-documentation-rules.mdc`](../rules/07-api-postman-mcp-documentation-rules.mdc)
+- **Project Context:** [`./project-context.md`](./project-context.md)
+- **Technology Baseline:** [`./technology-baseline.md`](./technology-baseline.md)

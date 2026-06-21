@@ -1,129 +1,99 @@
 # Development Workflow
 
 ## Purpose
-Define the standard development sequence for implementing a feature in the project.
 
-This workflow ensures each feature is analyzed, structured, implemented, documented, tested, and reviewed in the correct order.
+Coordinate the standard sequence for implementing a feature in the project. This workflow ensures each feature is analyzed, structured, implemented, documented, tested, reviewed, and finalized in the correct order.
 
----
+## Trigger
 
-## When to Use
-- When implementing a new feature
-- When extending an existing module
-- When building APIs, UI pages, or workflows
-- During normal feature development
+- Implementing a new feature
+- Extending an existing module
+- Building APIs, UI pages, or workflows
+- Normal feature development
 
----
+## Preconditions
 
-## Workflow Steps
+- Project has been initialized and adapted to the domain.
+- Project readiness review is complete.
+- Required context files are available.
+
+## Workflow
 
 ### Step 1: Analyze the Feature
-- **Trigger:** `feature-analysis` skill
-- **Must follow:** `rules/02-architecture.mdc`, `rules/05-database-rules.mdc`
-- **Goals:**
-  - Understand the feature goal and business intent
-  - Identify affected modules and layers
-  - Define schema needs and validation rules
-  - Identify API/UI requirements
-  - Map edge cases and state transitions
-- **Output:** Structured analysis doc
 
----
+- **Primary skill:** [`feature-analysis`](../skills/development-phase/feature-analysis/SKILL.md)
+- **Rules:** [`../rules/02-architecture.mdc`](../rules/02-architecture.mdc), [`../rules/05-database-rules.mdc`](../rules/05-database-rules.mdc)
+- **Output:** Structured analysis document
 
 ### Step 2: Map Feature to Module
-- **Trigger:** `feature-to-module-execution` skill OR `create-module` skill (if new module needed)
-- **Must follow:** `rules/02-architecture.mdc`
-- **Goals:**
-  - Decide: extend existing module or create new one?
-  - Map feature to correct layers (Service, Controller, Request, Routes)
-  - Prepare execution order
-  - Identify required templates
-- **Output:** Module mapping document, execution order
 
----
+- **Primary skill:** [`feature-to-module-execution`](../skills/development-phase/feature-to-module-execution/SKILL.md)
+- **Alternative when a new module is needed:** [`create-module`](../skills/development-phase/create-module/SKILL.md)
+- **Rules:** [`../rules/02-architecture.mdc`](../rules/02-architecture.mdc)
+- **Output:** Module mapping and execution order
 
 ### Step 3: Implement Backend
-- **Trigger:** `backend-feature-implementation` skill
-- **Must follow:** `rules/04-backend-rules.mdc`, `rules/08-custom-rbac.mdc`
-- **Goals:**
-  - Create or update Form Requests for validation
-  - Create or update Service classes (business logic)
-  - Keep controllers thin (orchestration only)
-  - Implement RBAC checks if needed
-  - Write database migrations
-- **Output:** Service, FormRequest, Controller (thin), Migration
 
----
+- **Primary skill:** [`backend-feature-implementation`](../skills/development-phase/backend-feature-implementation/SKILL.md)
+- **Rules:** [`../rules/04-backend-rules.mdc`](../rules/04-backend-rules.mdc), [`../rules/08-custom-rbac.mdc`](../rules/08-custom-rbac.mdc)
+- **Templates:** [`../templates/service-template.md`](../templates/service-template.md), [`../templates/form-request-template.md`](../templates/form-request-template.md), [`../templates/controller-template.md`](../templates/controller-template.md)
+- **Output:** Service, Form Request, thin controller, migration
 
 ### Step 4: Implement API or UI
+
 Choose based on feature type.
 
-#### If API:
-- **Trigger:** `create-api-with-postman` skill
-- **Must follow:** `rules/07-api-postman-mcp-documentation-rules.mdc`
-- **Goals:**
-  - Define endpoints (routes)
-  - Implement consistent response format
-  - Document params, body, enums, responses
-  - Prepare Postman examples
-- **Output:** Routes, JsonResource, Postman docs, examples
+#### API
 
-#### If UI:
-- **Trigger:** `ui-page-build` skill
-- **Must follow:** `rules/03-frontend-rules.mdc`
-- **Goals:**
-  - Build pages, forms, lists, or actions
-  - Keep UI consistent with existing design
-  - Keep Blade for presentation only
-  - Implement form validation feedback
-- **Output:** Page structure, form structure, list behavior, UI actions
+- **Primary skill:** [`create-api-with-postman`](../skills/development-phase/create-api-with-postman/SKILL.md)
+- **Rules:** [`../rules/07-api-postman-mcp-documentation-rules.mdc`](../rules/07-api-postman-mcp-documentation-rules.mdc)
+- **Templates:** [`../templates/api-endpoint-template.md`](../templates/api-endpoint-template.md)
+- **Output:** Routes, JsonResource, Postman documentation
 
----
+#### UI
+
+- **Primary skill:** [`ui-page-build`](../skills/development-phase/ui-page-build/SKILL.md)
+- **Rules:** [`../rules/03-frontend-rules.mdc`](../rules/03-frontend-rules.mdc)
+- **Templates:** [`../templates/show-view-template.md`](../templates/show-view-template.md), [`../templates/table-view-template.md`](../templates/table-view-template.md)
+- **Output:** Blade pages and components
 
 ### Step 5: Test the Feature
-- **Trigger:** `testing` skill
-- **Must follow:** `rules/16-testing-qa.mdc`
-- **Goals:**
-  - Test success cases and happy path
-  - Test validation failures
-  - Test permission/auth failures
-  - Test edge cases and state transitions
-  - Protect against regressions
-- **Output:** Feature test class, test coverage report
 
----
+- **Primary skill:** [`testing`](../skills/development-phase/testing/SKILL.md)
+- **Rules:** [`../rules/16-testing-qa.mdc`](../rules/16-testing-qa.mdc)
+- **Templates:** [`../templates/test-template.md`](../templates/test-template.md)
+- **Output:** PHPUnit feature/unit tests
 
 ### Step 6: Finalize and Validate
-- **Trigger:** `feature-finalization-and-validation` skill
-- **Must follow:** `rules/01-code-quality.mdc`, `rules/22-code-review.mdc`
-- **Goals:**
-  - Verify architecture compliance
-  - Verify correctness and edge cases
-  - Verify naming consistency
-  - Verify documentation is complete
-  - Verify tests cover critical flows
-- **Output:** Validation report, issues list, ready/not ready decision
 
----
+- **Primary skill:** [`feature-finalization-and-validation`](../skills/development-phase/feature-finalization-and-validation/SKILL.md)
+- **Rules:** [`../rules/01-code-quality.mdc`](../rules/01-code-quality.mdc), [`../rules/22-code-review.mdc`](../rules/22-code-review.mdc)
+- **Output:** Validation report and ready/not-ready decision
 
-## Rules Enforcement
-- Do not skip feature analysis.
-- Do not skip module mapping (decide module scope before implementation).
-- Do not write business logic in controllers or Blade.
-- Do not skip testing or final validation.
-- Do not create undocumented APIs when documentation is required.
-- Keep implementation aligned with project rules and context.
-- Always verify RBAC and permissions for protected resources.
+## Guard passes
 
----
+Run guards after the affected content is changed. When implementation is already authorized, use guard-pass mode: report findings, fix confirmed critical/high findings in scope, rerun the guard, and repeat up to two cycles. If a finding persists or needs expanded authority, report it to the user.
 
-## Completion Standard
+- Production code changed → [`clean-code-guard`](../skills/guards/clean-code-guard/SKILL.md)
+- Tests changed → [`test-guard`](../skills/guards/test-guard/SKILL.md)
+- Documentation, Postman, or README changed → [`docs-guard`](../skills/guards/docs-guard/SKILL.md)
+- Mixed changes → run all applicable guards
+
+## Verification
+
+- `php artisan test`
+- `vendor/bin/pint` when formatting is in scope
+- Manual verification of changed routes or UI flows
+
+## Completion criteria
+
 A development workflow is complete only when:
-- the feature has been analyzed thoroughly
-- the correct module (new or existing) has been identified
-- backend is implemented correctly with proper service/controller separation
-- API or UI is complete and documented
-- all critical paths have tests
-- final validation passes all checks
-- no rule violations remain
-- the feature is ready for delivery
+
+- The feature has been analyzed thoroughly.
+- The correct module (new or existing) has been identified.
+- Backend is implemented with proper service/controller separation.
+- API or UI is complete and documented.
+- All critical paths have tests.
+- Relevant guard passes produce no unresolved critical or high findings.
+- No known correctness, security, or data-integrity defect remains.
+- Medium/low findings are either fixed, accepted with justification, or reported as residual risk.

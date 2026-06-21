@@ -15,14 +15,14 @@ This catalog defines focused skills for auditing Laravel pull requests, enforcin
 1. 🔴 **Security & Data Integrity** (Mass assignment, secrets, injection prevention)
 2. 🟠 **Performance & Reliability** (N+1, caching, queue idempotency, transactions)
 3. 🟡 **Architecture & Maintainability** (DI, SoC, form requests, routing)
-4. 🟢 **Testing & CI Governance** (Coverage, static analysis, branch protection)
+4. 🟢 **Testing & CI Governance** (Test coverage, Pint, branch protection)
 
 **Pre-Merge Quick Checklist:**
 - [ ] No hardcoded secrets or `dump()/dd()` left in production paths
 - [ ] Form Requests used for all mutation endpoints
 - [ ] Eager loading applied for relational lists/collections
 - [ ] Tests cover happy path + critical edge cases
-- [ ] CI gates (Pint, PHPStan/Larastan, tests) pass green
+- [ ] `vendor/bin/pint` and `php artisan test` pass green
 
 **Project-specific checklist:**
 - [ ] `$request->validated()` used, not `$request->all()`
@@ -132,7 +132,7 @@ This catalog defines focused skills for auditing Laravel pull requests, enforcin
 - **Source:** https://laravel.com/docs/13.x/validation#form-request-validation
 
 **Test Coverage & Assertion Validation** — Checks for meaningful assertions, proper test isolation (`RefreshDatabase`), and missing edge-case coverage. Flags brittle UI tests or over-mocked unit tests.
-- **Use when:** Reviewing feature branches, validating bug fixes, or enforcing CI quality gates.
+- **Use when:** Reviewing feature branches, validating bug fixes, or checking test coverage.
 - **Source:** https://laravel.com/docs/13.x/testing
 
 **Testing Strategy & Mock Boundaries** — Validates appropriate use of `Mockery`/`PHPUnit` stubs vs. real repository/database layers. Enforces TDD/BDD patterns where applicable.
@@ -143,9 +143,9 @@ This catalog defines focused skills for auditing Laravel pull requests, enforcin
 
 ## 🛠 CI/CD, Static Analysis & Governance
 
-**Static Analysis & Linter Interpretation** — Translates PHPStan/Larastan and Pint warnings into actionable refactoring steps. Flags nullable return types and undefined array keys. 📌 Recommended: Larastan 2.0+ & PHPStan 1.10+ for strict generic typing and modern PHP 8.3+ features.
-- **Use when:** Reviewing CI feedback, modernizing legacy code, or enforcing strict PHP 8.3+ typing.
-- **Source:** https://laravel.com/docs/13.x/static-analysis
+**Laravel Pint Interpretation** — Translates Pint warnings into actionable formatting steps. PHPStan/Larastan are not installed; do not treat them as available unless added to the project.
+- **Use when:** Reviewing Pint output or fixing formatting issues.
+- **Source:** https://laravel.com/docs/13.x/pint
 
 **Branch Protection & PR Governance** — Enforces required status checks, minimum reviewers, conventional commits, and linear history. Prevents force pushes to protected branches.
 - **Use when:** Configuring repository settings, establishing team PR policies, or auditing CI/CD pipelines.
@@ -163,6 +163,6 @@ This catalog defines focused skills for auditing Laravel pull requests, enforcin
 - **Use when:** Reviewing deployment scripts, staging-to-prod promotions, or multi-environment setups.
 - **Source:** https://laravel.com/docs/13.x/configuration#configuration-caching
 
-**Automated Quality Gates** — Integrates AI agents, Laravel Pint, and PHPStan into CI pipelines to auto-reject violations before human review. Reduces cognitive load on maintainers. ⚠️ Guardrail: AI agents should only assist with initial triage & formatting suggestions. Security, architecture, and business logic must always undergo mandatory human review.
+**Automated Quality Gates** — Configures CI to run `php artisan test` and Laravel Pint before human review. PHPStan/Larastan are not installed and must not be treated as required unless explicitly added. Security, architecture, and business logic must always undergo mandatory human review.
 - **Use when:** Setting up CI/CD workflows, scaling review throughput, or enforcing baseline standards.
 - **Source:** https://laravel.com/docs/13.x/pint

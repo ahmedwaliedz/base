@@ -73,4 +73,4 @@ Do **not** duplicate CRUD logic in the controller; add methods on the service or
 
 - `app/Services/Countries/CountryService.php`
 - `app/Services/Admin/Base/CrudBaseService.php`
-- `.cursor/context/project-context.md`
+- [`../context/project-context.md`](../context/project-context.md)

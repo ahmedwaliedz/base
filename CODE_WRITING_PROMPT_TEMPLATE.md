@@ -1,73 +1,121 @@
 # Code Writing Prompt Template
 
-Use this when asking Codex to implement code in this repo from a plan, checklist, bug report, or feature request.
+Use this template when asking an agent to implement code in this repo from a plan, checklist, bug report, or feature request.
+
+## User-provided information
+
+Fill in everything the agent needs to know. Unknown fields can be left blank or marked "not provided."
 
 ```text
-Implement the requested item using `CODE_WRITING_CONTEXT.md` first.
-Only open deeper `.cursor` files when the task area matches the routing table in `CODE_WRITING_CONTEXT.md`.
+Requested outcome:
+- [What should the code do?]
 
-Do not read the full `.cursor` tree unless explicitly asked.
+Business behavior:
+- [Why is this change needed?]
 
-Route by category:
-- Backend -> `rules/02-architecture.mdc` + `rules/04-backend-rules.mdc`
-- Frontend/Blade -> `rules/03-frontend-rules.mdc`
-- RBAC -> `rules/08-custom-rbac.mdc`
-- DB/Seeder/Model -> `rules/05-database-rules.mdc` + `rules/12-database-eloquent.mdc`
-- Security -> `rules/18-security.mdc`
-- Performance -> `rules/19-performance.mdc`
-- Tests -> `rules/16-testing-qa.mdc`
+Scope:
+- [What is included and excluded?]
 
-Task:
-- [Paste the exact checklist item, bug, feature, or plan section here]
+Target project area:
+- [Backend / API / UI / DB / RBAC / Integration / etc.]
 
-Plan file if relevant:
-- [Paste the plan file path here, for example `ADMIN_DASHBOARD_FIX_PLAN.md`]
+Known target files:
+- [File paths if already known]
+
+Expected inputs and outputs:
+- [Request/response shape, UI state, etc.]
+
+Validation requirements:
+- [Rules, constraints, required fields]
+
+Authorization requirements:
+- [Roles, permissions, ownership]
+
+Database effects:
+- [Migrations, new columns, relationships]
+
+API requirements:
+- [Endpoints, methods, status codes]
+
+UI requirements:
+- [Pages, components, user flow]
+
+Test expectations:
+- [Required coverage or specific scenarios]
+
+Documentation expectations:
+- [README, PHPDoc, Postman, .cursor docs]
+
+Compatibility constraints:
+- [Laravel 11, PHP 8.2, PHPUnit 11, etc.]
+
+Explicit exclusions:
+- [What should NOT be changed]
+
+Acceptance criteria:
+- [How to know the task is complete]
+
+Available verification commands:
+- [Tests, linting, manual checks]
+```
+
+## Agent-derived routing
+
+The agent populates this section after inspecting the repository.
+
+| Field | Value |
+|---|---|
+| Detected task type | [e.g. backend behavior, admin CRUD, API endpoint] |
+| Current technology baseline | [from `.cursor/context/technology-baseline.md`] |
+| Mandatory rules | [list] |
+| Primary skill | [path to `SKILL.md`] |
+| Secondary skills | [paths if needed] |
+| References to load | [only relevant references] |
+| Workflow to use | [development-workflow / hotfix-workflow / setup-workflow] |
+| Templates to use | [relevant template names] |
+| Required guards | [clean-code-guard / test-guard / docs-guard] |
+| Verification plan | [commands and manual checks] |
+
+## Implementation instructions
+
+Use [`CODE_WRITING_CONTEXT.md`](CODE_WRITING_CONTEXT.md) first. Open deeper `.cursor` files only when the task area matches the routing table. Do not read the full `.cursor` tree unless explicitly asked.
 
 Focus on:
-- runtime correctness
-- security and data integrity
-- preserving existing Laravel architecture
-- thin controllers
+
+- Runtime correctness
+- Security and data integrity
+- Preserving existing Laravel architecture
+- Thin controllers
 - Form Requests for non-trivial validation
 - Services for business logic
 - Blade presentation-only
 - RBAC route-name/permission alignment
 - N+1 and performance safety
-- tests or verification for changed behavior
+- Tests or verification for changed behavior
 
 Rules:
+
 - Inspect only the task, directly related files, nearby patterns, and routed `.cursor` files.
-- Make the smallest safe change that fully solves the item.
+- Make the smallest complete change that solves the item.
 - Do not touch unrelated files.
 - Do not introduce new architecture unless clearly required.
 - Reuse existing services, components, traits, base controllers, and CRUD patterns.
 - Keep old behavior untouched unless the task explicitly changes it.
-- Use `$request->validated()` - never `$request->all()` for create/update.
+- Use `$request->validated()` — never `$request->all()` for create/update.
 - Validate foreign keys with `exists:table,id`.
 - Keep Blade free of DB queries, service calls, and model lookups.
 - Eager-load all relations displayed in admin views.
 - If RBAC permission behavior is unclear, stop and ask before changing it.
 - Update the plan/checklist only after implementation and verification.
 
-Implementation flow:
-1. Identify affected layers: route, controller, request, service, model, migration, view, translation, test.
-2. Inspect existing patterns for those layers.
-3. Implement the smallest safe change.
-4. Add or update tests when behavior changes, a route is added, or a regression is fixed.
-5. Run the most relevant verification available.
-6. Report files changed, verification, tests, and remaining risk.
+## Final response
 
-Final response must include:
+The final response must include:
+
 1. What was implemented.
 2. Files changed.
 3. Verification performed.
-4. Tests added or updated.
-5. Any tests not run and why.
-6. Any remaining risk or follow-up.
-```
-
-## Best Location
-
-- Keep this file in the repo root for quick reuse during implementation work.
-- Keep detailed standards in `.cursor/`.
-- Use `CODE_WRITING_CONTEXT.md` as the compact implementation guide and routing map.
+4. Guard passes run and their results.
+5. Tests added or updated.
+6. Any tests not run and why.
+7. Any remaining risk or follow-up.

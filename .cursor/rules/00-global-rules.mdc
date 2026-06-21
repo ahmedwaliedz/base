@@ -4,9 +4,9 @@ alwaysApply: true
 
 # 📌 AI Execution Priority
 
-1. Read `context/project-context.md` first (project identity and structure)
-2. Read `rules/08-custom-rbac.mdc` before any permission-related changes
-3. Follow `workflows/` sequence for new features (don't skip analysis or validation)
+1. Read [`../context/project-context.md`](../context/project-context.md) first (project identity and structure)
+2. Read [`08-custom-rbac.mdc`](08-custom-rbac.mdc) before any permission-related changes
+3. Follow [`../workflows/`](../workflows/) sequence for new features (don't skip analysis or validation)
 4. Prefer existing patterns in `app/Services/`, `app/Http/Requests/`, `app/Http/Resources/`
 5. If rule conflict occurs, `00-global-rules.mdc` overrides others
 
@@ -17,8 +17,7 @@ alwaysApply: true
 ## Project stack
 
 - Laravel 11, PHP 8.2+, **admin (Blade)** and **versioned API** (`api/v1/…`). Details, paths, and packages: **`.cursor/context/project-context.md`** — read or update it when versions or entrypoints change.
-- Key packages: Sanctum, Astrotomic Transl
-atable, Spatie Media Library (see project-context).
+- Key packages: Sanctum, Astrotomic Translatable, Spatie Media Library (see project-context).
 
 ## General principles
 

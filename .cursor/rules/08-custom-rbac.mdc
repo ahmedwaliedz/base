@@ -32,9 +32,10 @@ alwaysApply: true
 
 ## Permission check placement
 
-- Permission checks belong in the `CheckRolePermission` middleware — do not scatter `if (in_array(...))` or role checks across controllers or Blade.
+- Permission checks belong in the `CheckRolePermission` middleware — do not scatter `if (in_array(...))` or role checks across controllers, services, policies, gates, or Blade.
 - Route-to-permission mapping follows the actual convention: the route name *is* the permission string (e.g. `admin.users.index` matches `'admin.users.index'` stored in `permission_role`).
 - Display labels for permissions live in `lang/{locale}/admin/routes.php` — update that file when adding new route permissions.
+- Policies and gates are for record-level or ownership authorization only. Do not use them to enforce or duplicate admin route permissions.
 
 ## Exception routes
 

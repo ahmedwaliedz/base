@@ -14,7 +14,7 @@ This file catalogs 24 foundational-to-advanced skills specific to Core Laravel d
 
 When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Use these skills as the foundation before referencing advanced patterns from other categories.
 
-Prefer Laravel 13 idioms for new code; when editing legacy code, respect the existing version's constraints and note upgrade paths where appropriate.
+Prefer Laravel 11 idioms for new code; Laravel 12/13 features are listed for forward awareness only and must not be used in current code.
 
 Source URLs point to the Laravel 13.x docs because they are forward-cumulative — the same pages describe behavior present in 11.x and 12.x. Skills tagged with a specific version (e.g., "Laravel 12+") indicate when the feature first became available; the cited doc page still applies to all listed target versions.
 

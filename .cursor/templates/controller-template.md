@@ -90,4 +90,4 @@ Add methods only when they are not already provided by the shared admin base; ov
 
 - Admin bases: `app/Http/Controllers/Admin/AdminBaseController.php`, `AuthenticatableBaseController.php`
 - API example: `app/Http/Controllers/Api/V1/CountriesController.php`
-- Project layout: `.cursor/context/project-context.md`
+- Project layout: [`../context/project-context.md`](../context/project-context.md)

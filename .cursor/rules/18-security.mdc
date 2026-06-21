@@ -14,7 +14,7 @@ This file catalogs 20 foundational-to-advanced skills specific to application se
 
 When assisting users, match their request to the most relevant skill name and cite it when explaining recommendations. Prioritize defensive patterns and framework-provided protections before suggesting third-party security tools.
 
-Apply Laravel 13 security defaults for new applications; when auditing legacy systems, document existing gaps and provide incremental hardening paths that align with current framework versions.
+Apply Laravel 11 security defaults; Laravel 13 features are listed for forward awareness only and must not be used in current code.
 
 Source URLs point to official Laravel documentation and OWASP references. For patterns without dedicated Laravel docs (e.g., secrets management, security headers), the best available reference is used.
 
@@ -25,7 +25,7 @@ Source URLs point to official Laravel documentation and OWASP references. For pa
 - **XSS Prevention via Blade Escaping** — auto-escapes output in templates and restricts raw HTML rendering to trusted content. *Use when:* rendering user-generated content, integrating rich text editors, or preventing script injection. *Source:* https://laravel.com/docs/13.x/blade#displaying-data
 - **SQL Injection Prevention via Parameter Binding** — uses query builders or Eloquent to safely interpolate values without string concatenation. *Use when:* building dynamic queries, accepting user filters, or constructing report generators. *Source:* https://laravel.com/docs/13.x/queries
 - **Mass Assignment Protection ($fillable/$guarded)** — whitelists attributes eligible for bulk assignment from untrusted HTTP request payloads. *Use when:* accepting user input for model creation, preventing privilege escalation, or enforcing integrity. *Source:* https://laravel.com/docs/13.x/eloquent#mass-assignment
-- **Authorization via Gates & Policies** — defines ability checks and model-specific rules for fine-grained access control implementation. *Use when:* implementing role-based permissions, restricting resource access, or auditing authorization decisions. *Source:* https://laravel.com/docs/13.x/authorization
+- **Authorization via Gates & Policies (record-level only)** — defines ability checks and model-specific rules for resource ownership. *Use when:* a feature needs record-level authorization beyond the custom admin route permission system. Admin route permissions are enforced by `CheckRolePermission` middleware, not policies. *Source:* https://laravel.com/docs/13.x/authorization
 - **Encryption at Rest for Sensitive Data** — encrypts database columns or files using Laravel's built-in cryptographic facilities securely. *Use when:* storing PII, complying with GDPR/HIPAA, or protecting API keys in configuration. *Source:* https://laravel.com/docs/13.x/encryption
 - **bcrypt & Argon2 Hashing Strategies** — uses adaptive, salted hashing for passwords with configurable computational cost factors. *Use when:* implementing user authentication, migrating legacy hashes, or meeting password policies. *Source:* https://laravel.com/docs/13.x/hashing
 - **Auth Session Management** — configures secure session cookie flags, idle/absolute timeouts, and multi-device logout to limit stolen-session blast radius. *Use when:* hardening high-value accounts, enforcing compliance session policies, or invalidating sessions after credential changes. *Source:* training
